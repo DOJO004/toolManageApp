@@ -1,7 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import LinkBtn from "./linkBtn";
+import Menu from "./menu/menu";
+import { useState } from "react";
+import User from "./user";
 
 const Navbar = () => {
+  const [openMenu, setOpenMenu] = useState(false);
+  const navbarToggle = () => {
+    setOpenMenu(!openMenu);
+  };
+
   const linkItem = [
     {
       src: "/returnTool.png",
@@ -55,19 +65,35 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="text-white md:max-w-28 bg-gray-500 text-center">
+    <div className="md:max-w-28 bg-gray-500 text-center relative h-screen">
       <div className="mb-4 flex justify-center md:justify-start">
         <Image
           src={"/logo.png"}
           alt="logo"
           width={50}
           height={50}
-          className="bg-white rounded-full mx-auto"
+          className="bg-white rounded-full mx-auto mt-2"
         />
       </div>
-      <div className="flex justify-center md:flex-col">
-        <LinkBtn linkItem={linkItem} />
+      <div className="flex justify-center md:flex-col ">
+        <LinkBtn linkItem={linkItem} navbarToggle={navbarToggle} />
       </div>
+      <div className="hidden md:flex md:flex-col md:mt-64">
+        <User />
+      </div>
+      <div
+        className={`${
+          openMenu ? "block" : "hidden"
+        } md:absolute md:top-0 md:-right-32`}
+      >
+        <Menu />
+      </div>
+      {/* mask */}
+      <div
+        className={` w-screen h-screen bg-green-500 opacity-30 absolute top-44 md:left-72 md:top-0 ${
+          openMenu ? "block" : "hidden"
+        }`}
+      ></div>
     </div>
   );
 };
