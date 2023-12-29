@@ -19,7 +19,7 @@ const LinkBtn = ({ linkItem, navbarToggle }: LinkBtnProps) => {
     <>
       {linkItem.map((item, index) => (
         <div
-          className="m-2 cursor-pointer rounded-md hover:bg-indigo-500"
+          className="m-2 cursor-pointer rounded-xl hover:bg-indigo-500"
           key={index}
           onClick={() => navbarToggle()}
         >
@@ -30,7 +30,7 @@ const LinkBtn = ({ linkItem, navbarToggle }: LinkBtnProps) => {
             height={item.height}
             className="mx-auto"
           />
-          <p className="hidden md:block ">{item.name}</p>
+          <p className="hidden text-sm truncate md:block">{item.name}</p>
         </div>
       ))}
     </>

@@ -8,7 +8,7 @@ const User = () => {
         alt=""
         width={50}
         height={50}
-        className="flex mx-auto"
+        className="flex p-1 mx-auto bg-white rounded-full"
       />
       <p>username</p>
     </>
