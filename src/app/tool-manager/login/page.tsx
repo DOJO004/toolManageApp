@@ -22,7 +22,7 @@ export default function Page() {
       document.cookie = "userToken=" + token;
       document.cookie = "loginTime=" + loginTime;
 
-      router.push("/tool-manager/tool-status");
+      router.push("/tool-manager/tool-info");
     } else {
       setErrorMessage("登入失敗，請重新嘗試。");
     }

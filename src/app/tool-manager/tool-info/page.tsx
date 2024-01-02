@@ -1,8 +1,8 @@
 "use client";
 import PageController from "@/app/ui/pageController/pageController";
-import PieChart from "@/app/ui/toolStatus/piechart";
-import ToolInfoList from "@/app/ui/toolStatus/toolInfoList";
-import ToolInfoLog from "@/app/ui/toolStatus/toolInfoLog";
+import PieChart from "@/app/ui/toolInfo/piechart";
+import ToolInfoList from "@/app/ui/toolInfo/toolInfoList";
+import ToolInfoLog from "@/app/ui/toolInfo/toolInfoLog";
 import {
   apiGetToolStockStatusInfoList,
   apiGetToolSpecOpLogList,

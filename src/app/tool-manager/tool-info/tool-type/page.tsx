@@ -1,5 +1,5 @@
 "use client";
-import ToolTypeIndex from "@/app/ui/toolStatus/toolType";
+import ToolTypeIndex from "@/app/ui/toolInfo/toolType";
 import { apiGetToolTypeInFoList } from "@/scripts/api";
 import { useEffect, useState } from "react";
 
@@ -8,7 +8,6 @@ export default function Page() {
 
   const fetchGetToolTypeList = async () => {
     const res = await apiGetToolTypeInFoList();
-    console.log(res);
     if (res.data?.Values?.ReqInt === 0) {
       setToolTypeList(res.data.Values.ToolTypeList);
     }
@@ -20,9 +19,7 @@ export default function Page() {
     fetchGetToolTypeList();
   }, []);
 
-  useEffect(() => {
-    console.log("6666", toolTypeList);
-  }, [toolTypeList]);
+  useEffect(() => {}, [toolTypeList]);
   return (
     <div className="flex justify-center ">
       <ToolTypeIndex toolTypeList={toolTypeList} />
