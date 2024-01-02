@@ -2,11 +2,11 @@ import Navbar from "../ui/navbar/navbar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="md:flex">
-      <div className="m-2">
+    <div className=" md:flex">
+      <div className="max-w-xl m-2 mx-auto md:mx-0">
         <Navbar />
       </div>
-      <div className="m-2 md:w-full">{children}</div>
+      <div className="max-w-xl m-2 mx-auto md:mx-auto">{children}</div>
     </div>
   );
 };

@@ -1,14 +1,22 @@
 interface NoticeProps {
-  errorMessage: string;
-  successMessage: string;
+  errorMessage?: string;
+  successMessage?: string;
   isError: boolean;
 }
 
-export function ErrorMessage({ errorMessage }: { errorMessage: string }) {
+interface ErrorMessage {
+  errorMessage: string;
+}
+
+interface SuccessMessage {
+  successMessage: string;
+}
+
+export function ErrorMessage({ errorMessage }: ErrorMessage) {
   return <p className="text-center text-red-500">{errorMessage}</p>;
 }
 
-export function SuccessMessage({ successMessage }: { successMessage: string }) {
+export function SuccessMessage({ successMessage }: SuccessMessage) {
   return <p className="text-center text-green-500">{successMessage}</p>;
 }
 

@@ -392,7 +392,18 @@ export const restorageToolStockInfo = async (body)=>{
 }
 
 // disabledToolTypeInfo
-export const disabledToolTypeInfo = async (body)=>{
+export const disabledToolTypeInfo = async (id)=>{
+    const body={
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "DisabledToolTypeIDs": [
+          id
+        ]
+      }
     try{
         const res = await apiInstance.post("tool_info/DisabledToolTypeInfo",body)
         return res
@@ -503,7 +514,7 @@ export const apiModifyProductLineInfo = async (body)=>{
 }
 
 // disabledProductLineInfo
-export const apiDisabledProductLineInfo = async (body) =>{
+export const disabledProductLineInfo = async (body) =>{
     try{
         const res = await apiInstance.post("machine_info/DisabledProductLineInfo",body)
         return res
@@ -515,7 +526,7 @@ export const apiDisabledProductLineInfo = async (body) =>{
 }
 
 // disableMachineTypeInfo
-export const apiDisableMachineTypeInfo = async (id) =>{
+export const disableMachineTypeInfo = async (id) =>{
     const body = {
         "UserToken": getUserToken(),
         "LoginTime": getLoginTime(),
@@ -736,4 +747,10 @@ export const apiGetElabelSpecInfoList = async()=>{
         console.error("Error",error);
     return error
     }
+}
+
+
+export const confirmDisable=()=>{
+    const res = window.confirm("確定刪除嗎?")
+    return res
 }

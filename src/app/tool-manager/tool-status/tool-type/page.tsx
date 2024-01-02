@@ -14,6 +14,8 @@ export default function Page() {
     }
   };
 
+  const getEditItem = () => {};
+
   useEffect(() => {
     fetchGetToolTypeList();
   }, []);

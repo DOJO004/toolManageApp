@@ -11,28 +11,32 @@ interface ToolTypeIndexProps {
 
 const ToolTypeIndex = ({ toolTypeList }: ToolTypeIndexProps) => {
   return (
-    <div className="relative w-full max-w-xl p-2 text-center bg-gray-900 rounded-xl">
+    <div className="relative w-full p-2 text-center bg-gray-900 rounded-xl">
       <p className="text-xl ">刀具類型</p>
       <div className="grid grid-cols-3 gap-2">
-        <div>刀具類型ID</div>
-        <div>刀具類型名稱</div>
+        <div>ID</div>
+        <div>名稱</div>
         <div>編輯</div>
       </div>
       <div className="grid grid-cols-3 gap-2">
         {toolTypeList.map((item, index) => (
           <>
-            <div>{item.Name}</div>
-            <div>{item.ToolTypeID}</div>
-            <div>編輯</div>
+            <div className="truncate ">{item.ToolTypeID}</div>
+            <div className="truncate ">{item.Name}</div>
+            <div>
+              <Link href={`/tool-manager/tool-status/tool-type/${index}/edit`}>
+                編輯
+              </Link>
+            </div>
           </>
         ))}
       </div>
-      <div className="absolute top-2 right-5">
+      <div className="absolute top-3 right-2">
         <Link
           href="/tool-manager/tool-status/tool-type/new"
           className="p-1 text-sm bg-indigo-500 rounded-md"
         >
-          新增刀具類型
+          新增
         </Link>
       </div>
     </div>
