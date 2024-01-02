@@ -24,21 +24,21 @@ const ToolTypeIndex = ({ toolTypeList }: ToolTypeIndexProps) => {
             <div className="truncate ">{item.ToolTypeID}</div>
             <div className="truncate ">{item.Name}</div>
             <div>
-              <Link href={`/tool-manager/tool-status/tool-type/${index}/edit`}>
+              <Link href={`/tool-manager/tool-info/tool-type/${index}/edit`}>
                 編輯
               </Link>
             </div>
           </>
         ))}
       </div>
-      <div className="absolute top-3 right-2">
+      <button className="absolute top-3 right-2">
         <Link
-          href="/tool-manager/tool-status/tool-type/new"
+          href="/tool-manager/tool-info/tool-type/new"
           className="p-1 text-sm bg-indigo-500 rounded-md"
         >
           新增
         </Link>
-      </div>
+      </button>
     </div>
   );
 };

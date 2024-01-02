@@ -1,5 +1,5 @@
 "use client";
-import NewToolType from "@/app/ui/toolStatus/toolType/new";
+import NewToolType from "@/app/ui/toolInfo/toolType/new";
 import { apiAddToolTypeInfo } from "@/scripts/api";
 import { FormEvent, useState } from "react";
 

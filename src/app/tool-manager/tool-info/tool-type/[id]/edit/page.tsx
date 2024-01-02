@@ -1,5 +1,5 @@
 "use client";
-import ToolTypeEdit from "@/app/ui/toolStatus/toolType/edit";
+import ToolTypeEdit from "@/app/ui/toolInfo/toolType/edit";
 import {
   apiGetToolTypeInFoList,
   apiModifyToolTypeInfo,
@@ -22,7 +22,7 @@ export default function Page({ params }: { params: { id: string } }) {
     setNotice(true);
     if (res?.data?.Values?.ReqInt === 0) {
       cleanInput();
-      router.push("/tool-manager/tool-status/tool-type");
+      router.push("/tool-manager/tool-info/tool-type");
     } else {
       setIsError(true);
     }
@@ -47,7 +47,7 @@ export default function Page({ params }: { params: { id: string } }) {
     if (confirm) {
       const res = await disabledToolTypeInfo(toolTypeID);
       if (res?.data?.Values?.ReqInt === 0) {
-        router.push("/tool-manager/tool-status/tool-type");
+        router.push("/tool-manager/tool-info/tool-type");
       } else {
         console.log("disable tool type false.");
       }

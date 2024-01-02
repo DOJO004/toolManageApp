@@ -269,7 +269,7 @@ export const apiGetToolSpecList = async ()=>{
 }
 
 // addToolSpecInfo
-export const apiAddToolSpecInfo = async (newToolSpecID, newToolName, newToolType, newBladeDiameter, newBladeHeight, newTotalLength, newHandleDiameter,  newSafetyStock, newProcessCnt, newProcessTime, newProcessLength, newRepairCnt)=>{
+export const apiAddToolSpecInfo = async (toolSpecInfo)=>{
     const body = {
         "UserToken": getUserToken(),
         "LoginTime": getLoginTime(),
@@ -278,21 +278,21 @@ export const apiAddToolSpecInfo = async (newToolSpecID, newToolName, newToolType
             "Tag2Tool_W"
         ],
         "ToolsData": {
-            "ToolSpecID": newToolSpecID,
-            "Name": newToolName,
-            "ToolType": newToolType,
+            "ToolSpecID": toolSpecInfo.ToolSpecID,
+            "Name": toolSpecInfo.Name,
+            "ToolType": toolSpecInfo.ToolType,
             "Specification": {
-                "BladeDiameter": newBladeDiameter,
-                "BladeHeight": newBladeHeight,
-                "TotalLength": newTotalLength,
-                "HandleDiameter": newHandleDiameter
+                "BladeDiameter": toolSpecInfo.Specification.BladeDiameter,
+                "BladeHeight": toolSpecInfo.Specification.BladeHeight,
+                "TotalLength": toolSpecInfo.Specification.TotalLength,
+                "HandleDiameter": toolSpecInfo.Specification.HandleDiameter
             },
-            "SafetyStock": newSafetyStock,
+            "SafetyStock": toolSpecInfo.SafetyStock,
             "MaxLife": {
-                "ProcessCnt": newProcessCnt,
-                "ProcessTime": newProcessTime,
-                "ProcessLength": newProcessLength,
-                "RepairCnt": newRepairCnt
+                "ProcessCnt": toolSpecInfo.MaxLife.ProcessCnt,
+                "ProcessTime": toolSpecInfo.MaxLife.ProcessTime,
+                "ProcessLength": toolSpecInfo.MaxLife.ProcessLength,
+                "RepairCnt": toolSpecInfo.MaxLife.RepairCnt
             }
         }
     }

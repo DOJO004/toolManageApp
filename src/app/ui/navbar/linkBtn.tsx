@@ -11,7 +11,7 @@ interface LinkItem {
 
 interface LinkBtnProps {
   linkItem: LinkItem[];
-  navbarToggle: () => void;
+  navbarToggle: (name: string) => void;
 }
 
 const LinkBtn = ({ linkItem, navbarToggle }: LinkBtnProps) => {
@@ -21,7 +21,7 @@ const LinkBtn = ({ linkItem, navbarToggle }: LinkBtnProps) => {
         <div
           className="m-2 cursor-pointer rounded-xl hover:bg-indigo-500"
           key={index}
-          onClick={() => navbarToggle()}
+          onClick={() => navbarToggle(item.name)}
         >
           <Image
             src={item.src}

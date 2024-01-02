@@ -11,8 +11,8 @@ export default function Home() {
           </span>
         </p>
       </div>
-      <div className="px-12 py-4 my-4 text-xl bg-blue-500  rounded-xl">
-        <Link href="/tool-manager/tool-status">Login</Link>
+      <div className="px-12 py-4 my-4 text-xl bg-blue-500 rounded-xl">
+        <Link href="/tool-manager/tool-info">Login</Link>
       </div>
     </div>
   );

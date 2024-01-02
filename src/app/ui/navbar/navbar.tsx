@@ -2,16 +2,25 @@
 
 import Image from "next/image";
 import LinkBtn from "./linkBtn";
-import Menu from "./menu/menu";
-import { useState } from "react";
+import ToolStatusMenu from "./toolInfoMenu/menu";
+import MachineInfoMenu from "./machineInfoMenu/menu";
+import { useEffect, useState, createContext } from "react";
 import User from "./user";
+import ElabelInfoMenu from "./elabelInfoMenu/menu";
+import UserInfoMenu from "./userInfoMenu/menu";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const navbarToggle = () => {
-    setOpenMenu(!openMenu);
-  };
+  const [clickItemName, setClickItemName] = useState("");
 
+  const navbarToggle = (name: string) => {
+    if (clickItemName != name) {
+      setOpenMenu(true);
+    } else {
+      setOpenMenu(!openMenu);
+    }
+    setClickItemName(name);
+  };
   const linkItem = [
     {
       src: "/returnTool.png",
@@ -19,6 +28,7 @@ const Navbar = () => {
       width: 30,
       height: 30,
       name: "歸還刀具",
+      path: "/tool-manager/return-tool",
     },
     {
       src: "/receiveTool.png",
@@ -26,6 +36,7 @@ const Navbar = () => {
       width: 30,
       height: 30,
       name: "領取刀具",
+      path: "/tool-manager/receive-tool",
     },
     {
       src: "/repairAndScrap.png",
@@ -33,6 +44,7 @@ const Navbar = () => {
       width: 30,
       height: 30,
       name: "修整/報廢",
+      path: "repair-and-scrap",
     },
     {
       src: "/toolInfo.png",
@@ -40,6 +52,7 @@ const Navbar = () => {
       width: 30,
       height: 30,
       name: "刀具資訊",
+      path: "/tool-manager/tool-info",
     },
     {
       src: "/machineInfo.png",
@@ -47,6 +60,7 @@ const Navbar = () => {
       width: 30,
       height: 30,
       name: "設備資訊",
+      path: "/tool-manager/machine-info",
     },
     {
       src: "/elabelInfo.png",
@@ -54,6 +68,7 @@ const Navbar = () => {
       width: 30,
       height: 30,
       name: "電子標籤資訊",
+      path: "/tool-manager/elabel-info",
     },
     {
       src: "/userInfo.png",
@@ -61,9 +76,9 @@ const Navbar = () => {
       width: 30,
       height: 30,
       name: "使用者資訊",
+      path: "/tool-manager/user-info",
     },
   ];
-
   return (
     <div className="md:flex">
       <div className="relative text-center bg-gray-900 rounded-xl md:max-w-28 md:h-screen">
@@ -88,11 +103,16 @@ const Navbar = () => {
           openMenu ? "block" : "hidden"
         } bg-gray-900 rounded-xl min-w-32`}
       >
-        <Menu />
+        {clickItemName === "刀具資訊" && (
+          <ToolStatusMenu setOpenMenu={setOpenMenu} />
+        )}
+        {clickItemName === "設備資訊" && <MachineInfoMenu />}
+        {clickItemName === "電子標籤資訊" && <ElabelInfoMenu />}
+        {clickItemName === "使用者資訊" && <UserInfoMenu />}
       </div>
       {/* mask */}
       <div
-        className={` w-screen h-screen bg-green-500 opacity-30 absolute top-48 md:left-64 md:top-0 ${
+        className={` w-screen h-screen bg-black opacity-30 rounded-xl z-10 absolute top-48 md:left-64 md:top-0 ${
           openMenu ? "block" : "hidden"
         }`}
       ></div>
