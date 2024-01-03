@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
 
 interface LinkItem {
   src: string;
@@ -12,15 +11,24 @@ interface LinkItem {
 interface LinkBtnProps {
   linkItem: LinkItem[];
   navbarToggle: (name: string) => void;
+  clickItemName: string;
+  openMenu: boolean;
 }
 
-const LinkBtn = ({ linkItem, navbarToggle }: LinkBtnProps) => {
+const LinkBtn = ({
+  linkItem,
+  navbarToggle,
+  clickItemName,
+  openMenu,
+}: LinkBtnProps) => {
   return (
     <>
       {linkItem.map((item, index) => (
         <div
-          className="m-2 cursor-pointer rounded-xl hover:bg-indigo-500"
-          key={index}
+          className={`m-2 cursor-pointer rounded-xl hover:bg-indigo-500 ${
+            clickItemName === item.name && openMenu ? "bg-indigo-500" : ""
+          }`}
+          key={item.name}
           onClick={() => navbarToggle(item.name)}
         >
           <Image

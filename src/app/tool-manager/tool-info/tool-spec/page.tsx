@@ -1,7 +1,7 @@
 "use client";
 import ToolSpecIndex from "@/app/ui/toolInfo/toolSpec";
 import { apiGetToolSpecList } from "@/scripts/api";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Page() {
   const [toolSpecList, setToolSpecList] = useState([]);

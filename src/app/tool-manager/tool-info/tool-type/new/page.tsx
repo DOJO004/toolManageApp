@@ -14,7 +14,7 @@ export default function Page() {
     const res = await apiAddToolTypeInfo(toolTypeID, toolTypeName);
     setNotice(true);
     if (res?.data?.Values?.ReqInt === 0) {
-      cleanInput();
+      cleanFormData();
       setIsError(false);
     } else {
       setIsError(true);
@@ -22,7 +22,7 @@ export default function Page() {
     console.log(res);
   };
 
-  const cleanInput = () => {
+  const cleanFormData = () => {
     setToolTypeID("");
     setToolTypeName("");
   };

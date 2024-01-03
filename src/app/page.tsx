@@ -12,7 +12,7 @@ export default function Home() {
         </p>
       </div>
       <div className="px-12 py-4 my-4 text-xl bg-blue-500 rounded-xl">
-        <Link href="/tool-manager/tool-info">Login</Link>
+        <Link href="/tool-manager/login">Login</Link>
       </div>
     </div>
   );
