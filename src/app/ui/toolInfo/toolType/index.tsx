@@ -13,7 +13,7 @@ const ToolTypeIndex = ({ toolTypeList }: ToolTypeIndexProps) => {
   return (
     <div className="relative w-full p-2 text-center bg-gray-900 rounded-xl">
       <p className="text-xl ">刀具類型</p>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-2 p-1 bg-gray-800 rounded-xl">
         <div>ID</div>
         <div>名稱</div>
         <div>編輯</div>

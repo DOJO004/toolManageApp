@@ -4,7 +4,7 @@ import Image from "next/image";
 import LinkBtn from "./linkBtn";
 import ToolStatusMenu from "./toolInfoMenu/menu";
 import MachineInfoMenu from "./machineInfoMenu/menu";
-import { useEffect, useState, createContext } from "react";
+import { useEffect, useState } from "react";
 import User from "./user";
 import ElabelInfoMenu from "./elabelInfoMenu/menu";
 import UserInfoMenu from "./userInfoMenu/menu";
@@ -79,6 +79,7 @@ const Navbar = () => {
       path: "/tool-manager/user-info",
     },
   ];
+
   return (
     <div className="md:flex">
       <div className="relative text-center bg-gray-900 rounded-xl md:max-w-28 md:h-screen">
@@ -92,7 +93,12 @@ const Navbar = () => {
           />
         </div>
         <div className="flex justify-center md:flex-col ">
-          <LinkBtn linkItem={linkItem} navbarToggle={navbarToggle} />
+          <LinkBtn
+            linkItem={linkItem}
+            navbarToggle={navbarToggle}
+            clickItemName={clickItemName}
+            openMenu={openMenu}
+          />
         </div>
         <div className="hidden md:flex md:flex-col md:mt-4">
           <User />
@@ -112,7 +118,7 @@ const Navbar = () => {
       </div>
       {/* mask */}
       <div
-        className={` w-screen h-screen bg-black opacity-30 rounded-xl z-10 absolute top-48 md:left-64 md:top-0 ${
+        className={` w-screen h-screen bg-black opacity-30 rounded-xl z-10 absolute top-44 md:left-64 md:top-0 ${
           openMenu ? "block" : "hidden"
         }`}
       ></div>
