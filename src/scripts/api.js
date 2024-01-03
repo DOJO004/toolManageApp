@@ -503,7 +503,21 @@ export const apiGetProductLineInfoList = async ()=>{
 }
 
 // addProductLineInfoList
-export const apiAddProductLineInfo = async (body)=>{
+export const apiAddProductLineInfo = async (id,name)=>{
+    const body={
+            "UserToken": getUserToken(),
+            "LoginTime": getLoginTime(),
+            "NeedPermissions": [
+              "Tag2Tool_R",
+              "Tag2Tool_W"
+            ],
+            "ProductLineInfos": [
+              {
+                "ProductLineID": id,
+                "ProductLineName": name
+              }
+            ]
+    }
     try{
         const res = await apiInstance.post("machine_info/AddProductLineInfo",body)
         return res
@@ -515,7 +529,19 @@ export const apiAddProductLineInfo = async (body)=>{
 }
 
 // modifyProductLineInfo
-export const apiModifyProductLineInfo = async (body)=>{
+export const apiModifyProductLineInfo = async (id,name)=>{
+    const body={
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "ModifyData": {
+          "ProductLineID": id,
+          "ProductLineName":name,
+        }
+      }
     try {
         const res = await apiInstance.post("machine_info/ModifyProductLineInfo",body)
         return res
@@ -527,7 +553,18 @@ export const apiModifyProductLineInfo = async (body)=>{
 }
 
 // disabledProductLineInfo
-export const disabledProductLineInfo = async (body) =>{
+export const disabledProductLineInfo = async (id) =>{
+    const body={
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "DisabledProductLineIDs": [
+          id
+        ]
+      }
     try{
         const res = await apiInstance.post("machine_info/DisabledProductLineInfo",body)
         return res

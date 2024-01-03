@@ -1,5 +1,8 @@
 import MenuLinkBtn from "./menuLinkBtn";
-const MachineInfoMenu = () => {
+interface MachineInfoMenuProps {
+  setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const MachineInfoMenu = ({ setOpenMenu }: MachineInfoMenuProps) => {
   const menuItem = [
     {
       src: "/types.png",
@@ -28,7 +31,7 @@ const MachineInfoMenu = () => {
   ];
   return (
     <div className="flex justify-center md:flex-col">
-      <MenuLinkBtn menuItem={menuItem} />
+      <MenuLinkBtn menuItem={menuItem} setOpenMenu={setOpenMenu} />
     </div>
   );
 };

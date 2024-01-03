@@ -10,9 +10,10 @@ interface MenuItem {
 
 interface MenuItemProps {
   menuItem: MenuItem[];
+  setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MenuLinkBtn = ({ menuItem }: MenuItemProps) => {
+const MenuLinkBtn = ({ menuItem, setOpenMenu }: MenuItemProps) => {
   return (
     <>
       <div className="flex md:block">
@@ -21,6 +22,7 @@ const MenuLinkBtn = ({ menuItem }: MenuItemProps) => {
             key={index}
             href={item.path}
             className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
+            onClick={() => setOpenMenu(false)}
           >
             <Image
               src={item.src}
