@@ -112,9 +112,15 @@ const Navbar = () => {
         {clickItemName === "刀具資訊" && (
           <ToolStatusMenu setOpenMenu={setOpenMenu} />
         )}
-        {clickItemName === "設備資訊" && <MachineInfoMenu />}
-        {clickItemName === "電子標籤資訊" && <ElabelInfoMenu />}
-        {clickItemName === "使用者資訊" && <UserInfoMenu />}
+        {clickItemName === "設備資訊" && (
+          <MachineInfoMenu setOpenMenu={setOpenMenu} />
+        )}
+        {clickItemName === "電子標籤資訊" && (
+          <ElabelInfoMenu setOpenMenu={setOpenMenu} />
+        )}
+        {clickItemName === "使用者資訊" && (
+          <UserInfoMenu setOpenMenu={setOpenMenu} />
+        )}
       </div>
       {/* mask */}
       <div
