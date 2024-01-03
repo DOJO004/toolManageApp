@@ -1,7 +1,7 @@
 "use client";
 import ToolSpecNew from "@/app/ui/toolInfo/toolSpec/new";
 import { apiAddToolSpecInfo, apiGetToolTypeInFoList } from "@/scripts/api";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
   const [currentPage, setCurrentPage] = useState(1);

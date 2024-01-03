@@ -3,12 +3,9 @@ interface BackBtnProps {
 }
 const BackBtn = ({ backFunction }: BackBtnProps) => {
   return (
-    <button
-      className="text-xl font-bold text-white "
-      onClick={() => backFunction()}
-    >
+    <p className="text-xl font-bold text-white " onClick={() => backFunction()}>
       ←
-    </button>
+    </p>
   );
 };
 export default BackBtn;

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LinkBtn from "../../linkBtn";
 interface ToolSpecItem {
   ToolSpecID: string;
   Name: string;
@@ -65,12 +66,7 @@ const ToolSpecIndex = ({ toolSpecList }: ToolSpecIndexProps) => {
         ))}
       </div>
       <button className="absolute top-3 right-2">
-        <Link
-          href="/tool-manager/tool-info/tool-spec/new"
-          className="p-1 text-sm bg-indigo-500 rounded-md"
-        >
-          新增
-        </Link>
+        <LinkBtn link={"/tool-manager/tool-info/tool-spec/new"} />
       </button>
     </div>
   );
