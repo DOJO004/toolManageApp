@@ -724,7 +724,7 @@ export const apiGetMachineInfoList = async () =>{
 }
 
 // modifyMachineTypeInfo
-export const apiModifyMachineTypeInfo = async (modifyMachineTypeID, modifyMachineTypeName) =>{
+export const apiModifyMachineTypeInfo = async (id, name) =>{
     const body = {
         "UserToken": getUserToken(),
         "LoginTime": getLoginTime(),
@@ -734,8 +734,8 @@ export const apiModifyMachineTypeInfo = async (modifyMachineTypeID, modifyMachin
         ],
         "ModifyData":
         {
-            "MachineTypeID": modifyMachineTypeID,
-            "MachineTypeName": modifyMachineTypeName,
+            "MachineTypeID": id,
+            "MachineTypeName": name,
         }
     }
     try{
@@ -798,7 +798,6 @@ export const apiGetElabelSpecInfoList = async()=>{
     return error
     }
 }
-
 
 export const confirmDisable=()=>{
     const res = window.confirm("確定刪除嗎?")

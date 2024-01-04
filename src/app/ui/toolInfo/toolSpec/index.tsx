@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LinkBtn from "../../linkBtn";
+import React from "react";
 interface ToolSpecItem {
   ToolSpecID: string;
   Name: string;
@@ -43,7 +44,7 @@ const ToolSpecIndex = ({ toolSpecList }: ToolSpecIndexProps) => {
       </div>
       <div className="grid grid-cols-12 gap-2">
         {toolSpecList.map((item, index) => (
-          <>
+          <React.Fragment key={item.ToolSpecID}>
             <div className="truncate ">{item.ToolSpecID}</div>
             <div className="truncate ">{item.Name}</div>
             <div className="truncate ">{item.Specification.BladeDiameter}</div>
@@ -62,7 +63,7 @@ const ToolSpecIndex = ({ toolSpecList }: ToolSpecIndexProps) => {
                 編輯
               </Link>
             </div>
-          </>
+          </React.Fragment>
         ))}
       </div>
       <button className="absolute top-3 right-2">

@@ -1,5 +1,5 @@
 interface DeleteBtnProps {
-  disableFunction?: () => void;
+  disableFunction: () => void;
 }
 const DeleteBtn = ({ disableFunction }: DeleteBtnProps) => {
   return (

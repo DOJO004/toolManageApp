@@ -38,7 +38,11 @@ const Login = ({
           onChange={(e) => setUserPassword(e.target.value)}
           value={userPassword}
         />
-        <button className="flex p-2 ml-auto bg-blue-500 rounded-xl min-w-24">
+        <button
+          className={`flex p-2 ml-auto bg-blue-500 rounded-xl min-w-24 ${
+            waitLogin ? "bg-gray-500" : ""
+          }`}
+        >
           <p className="mx-auto">{waitLogin ? "登入中..." : "登入"}</p>
         </button>
       </form>

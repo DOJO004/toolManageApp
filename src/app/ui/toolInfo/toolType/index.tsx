@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LinkBtn from "../../linkBtn";
+import React from "react";
 
 interface ToolTypeListItem {
   Name: string;
@@ -21,7 +22,7 @@ const ToolTypeIndex = ({ toolTypeList }: ToolTypeIndexProps) => {
       </div>
       <div className="grid grid-cols-3 gap-2">
         {toolTypeList.map((item, index) => (
-          <>
+          <React.Fragment key={item.ToolTypeID}>
             <div className="truncate ">{item.ToolTypeID}</div>
             <div className="truncate ">{item.Name}</div>
             <div>
@@ -29,7 +30,7 @@ const ToolTypeIndex = ({ toolTypeList }: ToolTypeIndexProps) => {
                 編輯
               </Link>
             </div>
-          </>
+          </React.Fragment>
         ))}
       </div>
       <button className="absolute top-3 right-2">
