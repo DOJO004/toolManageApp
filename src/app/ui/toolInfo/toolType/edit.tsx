@@ -34,7 +34,7 @@ const ToolTypeEdit = ({
         {notice && <Notice isError={isError} />}
         <input
           type="text"
-          className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
+          className="block pl-2 my-2 text-gray-300 rounded-md min-h-10 min-w-72"
           placeholder="刀具ID"
           value={toolTypeID}
           readOnly

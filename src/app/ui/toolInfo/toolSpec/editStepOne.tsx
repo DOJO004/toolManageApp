@@ -59,7 +59,7 @@ const EditStepOne = ({
       <input
         type="text"
         placeholder="ID"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto my-2 text-gray-300 rounded-md min-h-10 min-w-72"
         value={toolInfo.ToolSpecID}
         readOnly
       />
