@@ -1,5 +1,5 @@
 import React from "react";
-import LinkBtn from "../../linkBtn";
+import { AddBtn } from "../../buttons";
 
 interface ToolStockIndexProps {
   toolStockList: ToolStockItem[];
@@ -52,7 +52,7 @@ const ToolStockIndex = ({ toolStockList }: ToolStockIndexProps) => {
         ))}
       </div>
       <button className="absolute top-2 right-5">
-        <LinkBtn link="/tool-manager/tool-info/tool-stock/new" />
+        <AddBtn link="/tool-manager/tool-info/tool-stock/new" />
       </button>
     </div>
   );

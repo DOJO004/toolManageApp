@@ -1,7 +1,8 @@
 import { useRouter } from "next/navigation";
-import BackBtn from "../../backBtn";
 import React, { FormEvent } from "react";
 import Notice from "../../notice";
+import { BackBtn } from "../../buttons";
+
 interface MachineTypeNewProps {
   machineTypeID: string;
   setMachineTypeID: React.Dispatch<React.SetStateAction<string>>;

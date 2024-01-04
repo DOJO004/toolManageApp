@@ -1,5 +1,5 @@
 import Link from "next/link";
-import LinkBtn from "../../linkBtn";
+import { AddBtn } from "../../buttons";
 import React from "react";
 
 interface ToolTypeListItem {
@@ -34,7 +34,7 @@ const ToolTypeIndex = ({ toolTypeList }: ToolTypeIndexProps) => {
         ))}
       </div>
       <button className="absolute top-3 right-2">
-        <LinkBtn link={"/tool-manager/tool-info/tool-type/new"} />
+        <AddBtn link={"/tool-manager/tool-info/tool-type/new"} />
       </button>
     </div>
   );

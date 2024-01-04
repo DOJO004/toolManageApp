@@ -4,7 +4,7 @@ import Image from "next/image";
 import LinkBtn from "./linkBtn";
 import ToolStatusMenu from "./toolInfoMenu/menu";
 import MachineInfoMenu from "./machineInfoMenu/menu";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import User from "./user";
 import ElabelInfoMenu from "./elabelInfoMenu/menu";
 import UserInfoMenu from "./userInfoMenu/menu";

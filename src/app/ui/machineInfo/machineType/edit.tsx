@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FormEvent } from "react";
-import BackBtn from "../../backBtn";
-import DeleteBtn from "../../deleteBtn";
+import { DeleteBtn, BackBtn } from "../../buttons";
 
 interface MachineTypeItem {
   MachineTypeID: string;
@@ -48,7 +47,7 @@ const MachineTypeEdit = ({
         完成
       </button>
       <div className="absolute top-2 right-5">
-        <DeleteBtn disableFunction={fetchDeleteMachineType} />
+        <DeleteBtn deleteFunction={fetchDeleteMachineType} />
       </div>
       <div className="absolute top-3 left-5">
         <BackBtn backFunction={router.back} />

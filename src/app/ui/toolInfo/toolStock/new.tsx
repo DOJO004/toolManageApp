@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import Notice from "../../notice";
-import BackBtn from "../../backBtn";
+import { BackBtn } from "../../buttons";
 import { useRouter } from "next/navigation";
 
 interface ToolStockNewProps {

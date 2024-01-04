@@ -1,6 +1,5 @@
 import React, { FormEvent } from "react";
-import LinkBtn from "../../linkBtn";
-import BackBtn from "../../backBtn";
+import { BackBtn } from "../../buttons";
 import { useRouter } from "next/navigation";
 import Notice from "../../notice";
 

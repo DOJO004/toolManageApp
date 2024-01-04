@@ -1,8 +1,7 @@
 import Notice from "@/app/ui/notice";
 import React, { FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import DeleteBtn from "../../deleteBtn";
-import BackBtn from "../../backBtn";
+import { BackBtn, DeleteBtn } from "../../buttons";
 
 interface ToolTypeEditProps {
   toolTypeID: string;
@@ -49,7 +48,7 @@ const ToolTypeEdit = ({
         <button className="p-2 bg-blue-500 rounded-md ">完成</button>
       </form>
       <div className="absolute top-2 right-4">
-        <DeleteBtn disableFunction={fetchDisableToolType} />
+        <DeleteBtn deleteFunction={fetchDisableToolType} />
       </div>
       <div className="absolute top-2 left-2">
         <BackBtn backFunction={router.back} />

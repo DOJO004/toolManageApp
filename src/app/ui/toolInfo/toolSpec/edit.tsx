@@ -3,9 +3,8 @@ import Notice from "../../notice";
 import EditStepOne from "./editStepOne";
 import EditStepTwo from "./editStepTwo";
 import EditStepThree from "./editStepThree";
-import DeleteBtn from "../../deleteBtn";
-import BackBtn from "../../backBtn";
 import { useRouter } from "next/navigation";
+import { BackBtn, DeleteBtn } from "../../buttons";
 
 interface ToolTypeListItem {
   ToolTypeID: string;
@@ -86,7 +85,7 @@ const ToolSpecEdit = ({
           />
         </div>
         <div className="absolute top-3 right-3">
-          <DeleteBtn disableFunction={fetchDisableToolSpecInfo} />
+          <DeleteBtn deleteFunction={fetchDisableToolSpecInfo} />
         </div>
         <div className="absolute top-2 left-5">
           <BackBtn backFunction={router.back} />

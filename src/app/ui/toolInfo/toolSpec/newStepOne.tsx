@@ -46,7 +46,7 @@ const NewStepOne = ({
           setToolSpecInfo({ ...toolSpecInfo, ToolType: e.target.value })
         }
       >
-        <option value="" className="text-black" disabled>
+        <option value="" className="text-gray-300" disabled>
           請選擇刀具類型
         </option>
         {toolTypeList.map((item, index) => (
@@ -62,7 +62,7 @@ const NewStepOne = ({
       <input
         type="text"
         placeholder="ID"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto my-2 text-gray-300 rounded-md min-h-10 min-w-72"
         value={toolSpecInfo.ToolSpecID}
         onChange={(e) =>
           setToolSpecInfo({ ...toolSpecInfo, ToolSpecID: e.target.value })
