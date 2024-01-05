@@ -45,7 +45,7 @@ const ToolStockNew = ({
 }: ToolStockNewProps) => {
   const router = useRouter();
   return (
-    <div className="relative mb-2 md:w-fit md:mx-auto">
+    <div className="relative mb-2 md:w-fit md:mx-2">
       <form
         className="flex flex-col justify-center w-full p-4 bg-gray-900 rounded-xl"
         onSubmit={(e) => fetchAddToolStock(e)}

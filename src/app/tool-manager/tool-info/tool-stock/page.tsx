@@ -63,7 +63,7 @@ export default function Page() {
     fetchGetToolSpecID();
   }, []);
   return (
-    <div>
+    <div className="flex flex-col md:flex-row">
       {newMode && (
         <ToolStockNew
           toolSpecList={toolSpecList}

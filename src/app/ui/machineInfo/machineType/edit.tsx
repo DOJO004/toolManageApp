@@ -31,19 +31,23 @@ const MachineTypeEdit = ({
   return (
     <div className="relative mb-2">
       <form
-        className="flex flex-col justify-center w-full p-4 bg-gray-900 rounded-xl"
+        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 rounded-xl"
         onSubmit={(e) => fetchEditMachineType(e)}
       >
         <p className="text-xl text-center">編輯設備類型</p>
         {notice && <Notice isError={isError} />}
+        <label htmlFor="MachineTypeID">ID</label>
         <input
+          id="MachineTypeID"
           type="text"
           value={machineType.MachineTypeID}
           placeholder="設備ID"
           className="block pl-2 mx-auto my-2 text-gray-300 rounded-md min-h-10 min-w-72"
           readOnly
         />
+        <label htmlFor="MachineTypeName">名稱</label>
         <input
+          id="MachineTypeName"
           type="text"
           value={machineType.MachineTypeName}
           placeholder="設備名稱"

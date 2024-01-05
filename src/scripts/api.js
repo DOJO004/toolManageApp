@@ -634,7 +634,7 @@ export const apiGetMachineTypeInfoList = async ()=>{
 }
 
 // getMachineStatusInfoList
-export const apiGetMachineStatusInfoList = async()=>{
+export const apiGetMachineStatusInfoList = async(id)=>{
     const body ={
         "UserToken": getUserToken(),
         "LoginTime": getLoginTime(),
@@ -642,9 +642,12 @@ export const apiGetMachineStatusInfoList = async()=>{
           "Tag2Tool_R",
           "Tag2Tool_W"
         ],
-        "RecordsPerPage": 10,
+        "RecordsPerPage": 99,
         "PageNo": 1,
         "ProductLineID": "",
+        "MachineTypeID": "",
+        "Status": 10,
+        "ActivationBasic": 0
       }
     try{
         const res = await apiInstance.post("machine_info/GetMachineStatusInfoList", body)
