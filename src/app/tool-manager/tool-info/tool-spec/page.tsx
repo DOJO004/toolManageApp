@@ -199,36 +199,38 @@ export default function Page() {
   };
 
   return (
-    <div>
-      {newMode && (
-        <ToolSpecNew
-          toolTypeList={toolTypeList}
-          toolSpecInfo={toolSpecInfo}
-          setToolSpecInfo={setToolSpecInfo}
-          fetchNewToolSpecInfo={fetchNewToolSpecInfo}
-          changeNewMode={changeNewMode}
-          currentPage={currentPage}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          notice={notice}
-          isError={isError}
-        />
-      )}
-      {editMode && (
-        <ToolSpecEdit
-          toolTypeList={toolTypeList}
-          editToolSpec={editToolSpec}
-          setEditToolSpec={setEditToolSpec}
-          fetchEditToolInfo={fetchEditToolInfo}
-          fetchDisableToolSpecInfo={fetchDisableToolSpecInfo}
-          currentPage={currentPage}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          notice={notice}
-          isError={isError}
-          changeMode={changeEditMode}
-        />
-      )}
+    <div className="flex flex-col md:flex-row">
+      <div className="md:mx-2">
+        {newMode && (
+          <ToolSpecNew
+            toolTypeList={toolTypeList}
+            toolSpecInfo={toolSpecInfo}
+            setToolSpecInfo={setToolSpecInfo}
+            fetchNewToolSpecInfo={fetchNewToolSpecInfo}
+            changeNewMode={changeNewMode}
+            currentPage={currentPage}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            notice={notice}
+            isError={isError}
+          />
+        )}
+        {editMode && (
+          <ToolSpecEdit
+            toolTypeList={toolTypeList}
+            editToolSpec={editToolSpec}
+            setEditToolSpec={setEditToolSpec}
+            fetchEditToolInfo={fetchEditToolInfo}
+            fetchDisableToolSpecInfo={fetchDisableToolSpecInfo}
+            currentPage={currentPage}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            notice={notice}
+            isError={isError}
+            changeMode={changeEditMode}
+          />
+        )}
+      </div>
       <ToolSpecIndex
         toolSpecList={toolSpecList}
         changeNewMode={changeNewMode}

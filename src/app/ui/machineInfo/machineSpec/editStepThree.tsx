@@ -39,7 +39,7 @@ const EditStepThree = ({
         id="MT"
         type="text"
         value={machineSpec.SystemInfo.MT}
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({
             ...machineSpec,
@@ -55,7 +55,7 @@ const EditStepThree = ({
         id="AxisIndex"
         type="text"
         value={machineSpec.AxisInfos[0].AxisIndex}
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({
             ...machineSpec,
@@ -73,7 +73,7 @@ const EditStepThree = ({
         id="AxisName"
         type="text"
         value={machineSpec.AxisInfos[0].AxisName}
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({
             ...machineSpec,
@@ -86,7 +86,7 @@ const EditStepThree = ({
           })
         }
       />
-      <div className="relative flex items-center mx-auto my-2 bg-white rounded-md w-fit min-w-72">
+      <div className="relative flex items-center mx-auto mb-2 bg-white rounded-md w-fit min-w-72">
         <input
           id="IsSpindle"
           type="checkbox"

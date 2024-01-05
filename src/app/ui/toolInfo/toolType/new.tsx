@@ -23,8 +23,7 @@ const ToolTypeNew = ({
   changeNewMode,
 }: ToolTypeNewProps) => {
   return (
-    <div className="relative">
-      {" "}
+    <div className="relative md:mx-2">
       <form
         className="flex flex-col justify-center w-full p-4 mb-2 bg-gray-900 rounded-xl"
         onSubmit={(e) => fetchNewToolType(e)}

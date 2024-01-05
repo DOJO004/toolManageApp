@@ -115,31 +115,33 @@ export default function Page() {
   };
 
   return (
-    <div>
-      {newMode && (
-        <ProductLineNew
-          productLineID={productLineID}
-          setProductLineID={setProductLineID}
-          productLineName={productLineName}
-          setProductLineName={setProductLineName}
-          fetchAddProductLine={fetchAddProductLine}
-          changeNewMode={changeNewMode}
-          notice={notice}
-          isError={isError}
-        />
-      )}
+    <div className="flex flex-col md:flex-row">
+      <div className=" md:mx-2">
+        {newMode && (
+          <ProductLineNew
+            productLineID={productLineID}
+            setProductLineID={setProductLineID}
+            productLineName={productLineName}
+            setProductLineName={setProductLineName}
+            fetchAddProductLine={fetchAddProductLine}
+            changeNewMode={changeNewMode}
+            notice={notice}
+            isError={isError}
+          />
+        )}
 
-      {editMode && (
-        <ProductLineEdit
-          fetchEditProductLine={fetchEditProductLine}
-          fetchDeleteProductLine={fetchDeleteProductLine}
-          productLine={productLine}
-          setProductLine={setProductLine}
-          changeEditMode={changeEditMode}
-          notice={notice}
-          isError={isError}
-        />
-      )}
+        {editMode && (
+          <ProductLineEdit
+            fetchEditProductLine={fetchEditProductLine}
+            fetchDeleteProductLine={fetchDeleteProductLine}
+            productLine={productLine}
+            setProductLine={setProductLine}
+            changeEditMode={changeEditMode}
+            notice={notice}
+            isError={isError}
+          />
+        )}
+      </div>
       <ProductLineIndex
         productLineList={productLineList}
         changeNewMode={changeNewMode}

@@ -29,23 +29,27 @@ const ToolTypeEdit = ({
 }: ToolTypeEditProps) => {
   const router = useRouter();
   return (
-    <div className="relative mb-2">
+    <div className="relative mb-2 md:mx-2">
       <form
-        className="flex flex-col justify-center w-full p-4 bg-gray-900 rounded-xl"
+        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 rounded-xl"
         onSubmit={(e) => fetchEditToolType(e)}
       >
         <p className="text-xl text-center">編輯刀具類型</p>
         {notice && <Notice isError={isError} />}
+        <label htmlFor="ToolTypeID">ID</label>
         <input
+          id="ToolTypeID"
           type="text"
-          className="block pl-2 my-2 text-gray-300 rounded-md min-h-10 min-w-72"
+          className="block pl-2 mb-2 text-gray-300 rounded-md min-h-10 min-w-72"
           placeholder="刀具ID"
           value={editToolType.ToolTypeID}
           readOnly
         />
+        <label htmlFor="Name">名稱</label>
         <input
+          id="Name"
           type="text"
-          className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
+          className="block pl-2 mb-2 text-black rounded-md min-h-10 min-w-72"
           placeholder="刀具類型名稱"
           value={editToolType.Name}
           onChange={(e) =>

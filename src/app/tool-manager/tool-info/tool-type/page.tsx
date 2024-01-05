@@ -119,7 +119,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col justify-center ">
+    <div className="flex flex-col justify-center md:flex-row">
       {newMode && (
         <ToolTypeNew
           toolTypeID={toolTypeID}

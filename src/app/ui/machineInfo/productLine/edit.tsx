@@ -34,14 +34,18 @@ const ProductLineEdit = ({
       >
         <p className="text-xl text-center ">編輯產線</p>
         {notice && <Notice isError={isError} />}
+        <label htmlFor="ProductLineID">ID</label>
         <input
+          id="ProductLineID"
           type="text"
           value={productLine.ProductLineID}
           placeholder="生產線ID"
           className="block pl-2 mx-auto my-2 text-gray-300 rounded-md min-h-10 min-w-72"
           readOnly
         />
+        <label htmlFor="ProductLineName">名稱</label>
         <input
+          id="ProductLineName"
           type="text"
           value={productLine.ProductLineName}
           placeholder="生產線名稱"

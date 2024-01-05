@@ -37,7 +37,7 @@ const EditStepOne = ({
         id="ProductLineID"
         type="text"
         value={machineSpec.ProductLineID}
-        className="block pl-2 mx-auto my-2 text-gray-300 rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-gray-300 rounded-md min-h-10 min-w-72"
         readOnly
       />
       <label htmlFor="MachineTypeID">設備類型ID</label>
@@ -45,14 +45,14 @@ const EditStepOne = ({
         id="MachineTypeID"
         type="text"
         value={machineSpec.MachineTypeID}
-        className="block pl-2 mx-auto my-2 text-gray-300 rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-gray-300 rounded-md min-h-10 min-w-72"
         readOnly
       />
       <label htmlFor="MachineSN">設備SN序號</label>
       <input
         id="MachineSN"
         type="text"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         value={machineSpec.MachineSN}
         onChange={(e) =>
           setMachineSpec({ ...machineSpec, MachineSN: e.target.value })
@@ -63,7 +63,7 @@ const EditStepOne = ({
         id="MachineName"
         type="text"
         value={machineSpec.MachineName}
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({ ...machineSpec, MachineName: e.target.value })
         }

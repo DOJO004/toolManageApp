@@ -40,7 +40,7 @@ const EditStepTwo = ({
         id="Brand"
         type="text"
         value={machineSpec.SystemInfo.Brand}
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({
             ...machineSpec,
@@ -56,7 +56,7 @@ const EditStepTwo = ({
         id="Series"
         type="text"
         value={machineSpec.SystemInfo.Series}
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({
             ...machineSpec,
@@ -72,7 +72,7 @@ const EditStepTwo = ({
         id="MachineIP"
         type="text"
         value={machineSpec.MachineIP}
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({ ...machineSpec, MachineIP: e.target.value })
         }
@@ -82,7 +82,7 @@ const EditStepTwo = ({
         id="ReaderID"
         type="text"
         value={machineSpec.ReaderID}
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({ ...machineSpec, ReaderID: e.target.value })
         }
