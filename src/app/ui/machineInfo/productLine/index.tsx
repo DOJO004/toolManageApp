@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import LinkBtn from "../../linkBtn";
+import { AddBtn } from "../../buttons";
 import DeleteBtn from "../../deleteBtn";
 
 interface ProductLineItem {
@@ -36,7 +36,7 @@ const ProductLineIndex = ({ productLineList }: ProductLineIndexProps) => {
         ))}
       </div>
       <button className="absolute top-3 right-2">
-        <LinkBtn link={"/tool-manager/machine-info/product-line/new"} />
+        <AddBtn link={"/tool-manager/machine-info/product-line/new"} />
       </button>
     </div>
   );

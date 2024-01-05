@@ -1,9 +1,5 @@
 import React from "react";
-import LinkBtn from "../../linkBtn";
-
-interface ToolStockIndexProps {
-  toolStockList: ToolStockItem[];
-}
+import { AddBtn } from "../../buttons";
 
 interface ToolStockItem {
   ToolSpecID: string;
@@ -17,7 +13,15 @@ interface ToolStockItem {
   ToolLifeList: [];
 }
 
-const ToolStockIndex = ({ toolStockList }: ToolStockIndexProps) => {
+interface ToolStockIndexProps {
+  toolStockList: ToolStockItem[];
+  changeNewMode: () => void;
+}
+
+const ToolStockIndex = ({
+  toolStockList,
+  changeNewMode,
+}: ToolStockIndexProps) => {
   return (
     <div className="relative w-full p-2 text-center bg-gray-900 max-w-fit rounded-xl">
       <p className="text-xl">刀具庫存</p>
@@ -51,9 +55,9 @@ const ToolStockIndex = ({ toolStockList }: ToolStockIndexProps) => {
           </React.Fragment>
         ))}
       </div>
-      <button className="absolute top-2 right-5">
-        <LinkBtn link="/tool-manager/tool-info/tool-stock/new" />
-      </button>
+      <div className="absolute top-2 right-5">
+        <AddBtn changeNewMode={changeNewMode} />
+      </div>
     </div>
   );
 };

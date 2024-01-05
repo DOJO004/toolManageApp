@@ -36,7 +36,7 @@ const NewStepTwo = ({
         type="number"
         placeholder="Φ"
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.Specification.BladeDiameter}
+        value={toolSpecInfo?.Specification?.BladeDiameter}
         onChange={(e) =>
           setToolSpecInfo({
             ...toolSpecInfo,
@@ -51,7 +51,7 @@ const NewStepTwo = ({
         type="number"
         placeholder="刀具高度"
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.Specification.BladeHeight}
+        value={toolSpecInfo?.Specification?.BladeHeight}
         onChange={(e) =>
           setToolSpecInfo({
             ...toolSpecInfo,
@@ -66,7 +66,7 @@ const NewStepTwo = ({
         type="number"
         placeholder="總長度"
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.Specification.TotalLength}
+        value={toolSpecInfo?.Specification?.TotalLength}
         onChange={(e) =>
           setToolSpecInfo({
             ...toolSpecInfo,
@@ -81,7 +81,7 @@ const NewStepTwo = ({
         type="number"
         placeholder="手柄Φ"
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.Specification.HandleDiameter}
+        value={toolSpecInfo?.Specification?.HandleDiameter}
         onChange={(e) =>
           setToolSpecInfo({
             ...toolSpecInfo,

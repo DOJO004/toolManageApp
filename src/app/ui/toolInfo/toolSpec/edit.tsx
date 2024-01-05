@@ -3,9 +3,7 @@ import Notice from "../../notice";
 import EditStepOne from "./editStepOne";
 import EditStepTwo from "./editStepTwo";
 import EditStepThree from "./editStepThree";
-import DeleteBtn from "../../deleteBtn";
-import BackBtn from "../../backBtn";
-import { useRouter } from "next/navigation";
+import { CloseBtn, DeleteBtn } from "../../buttons";
 
 interface ToolTypeListItem {
   ToolTypeID: string;
@@ -32,20 +30,21 @@ interface ToolInfoItem {
 }
 
 interface ToolSpecEditProps {
-  toolInfo: ToolInfoItem;
-  setToolInfo: React.Dispatch<React.SetStateAction<ToolInfoItem>>;
+  editToolSpec: ToolInfoItem;
+  setEditToolSpec: React.Dispatch<React.SetStateAction<ToolInfoItem>>;
   toolTypeList: ToolTypeListItem[];
-  currentPage: number;
   nextPage: () => void;
   prevPage: () => void;
   fetchEditToolInfo: () => void;
+  fetchDisableToolSpecInfo: () => void;
+  changeMode: () => void;
   notice: boolean;
   isError: boolean;
-  fetchDisableToolSpecInfo: () => void;
+  currentPage: number;
 }
 const ToolSpecEdit = ({
-  toolInfo,
-  setToolInfo,
+  editToolSpec,
+  setEditToolSpec,
   toolTypeList,
   currentPage,
   nextPage,
@@ -54,42 +53,42 @@ const ToolSpecEdit = ({
   notice,
   isError,
   fetchDisableToolSpecInfo,
+  changeMode,
 }: ToolSpecEditProps) => {
-  const router = useRouter();
   return (
-    <div className="relative flex flex-col justify-center w-full p-4 text-center bg-gray-900 rounded-xl">
+    <div className="relative flex flex-col justify-center w-full p-4 mb-2 text-center bg-gray-900 md:mx-auto md:min-w-72 md:w-fit rounded-xl">
       <p>修改刀具規格</p>
       {notice && <Notice isError={isError} />}
       <div className="text-black ">
         <div className={currentPage === 1 ? "block" : "hidden"}>
           <EditStepOne
-            toolInfo={toolInfo}
-            setToolInfo={setToolInfo}
+            editToolSpec={editToolSpec}
+            setEditToolSpec={setEditToolSpec}
             nextPage={nextPage}
             toolTypeList={toolTypeList}
           />
         </div>
         <div className={currentPage === 2 ? "block" : "hidden"}>
           <EditStepTwo
-            toolInfo={toolInfo}
-            setToolInfo={setToolInfo}
+            editToolSpec={editToolSpec}
+            setEditToolSpec={setEditToolSpec}
             nextPage={nextPage}
             prevPage={prevPage}
           />
         </div>
         <div className={currentPage === 3 ? "block" : "hidden"}>
           <EditStepThree
-            toolInfo={toolInfo}
-            setToolInfo={setToolInfo}
+            editToolSpec={editToolSpec}
+            setEditToolSpec={setEditToolSpec}
             prevPage={prevPage}
             fetchEditToolInfo={fetchEditToolInfo}
           />
         </div>
         <div className="absolute top-3 right-3">
-          <DeleteBtn disableFunction={fetchDisableToolSpecInfo} />
+          <CloseBtn changeMode={changeMode} />
         </div>
-        <div className="absolute top-2 left-5">
-          <BackBtn backFunction={router.back} />
+        <div className="absolute top-3 left-3">
+          <DeleteBtn deleteFunction={fetchDisableToolSpecInfo} />
         </div>
       </div>
     </div>

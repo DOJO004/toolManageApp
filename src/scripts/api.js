@@ -663,7 +663,7 @@ export const apiAddMachineTypeInfo = async (machineTypeID,machineTypeName) =>{
 }
 
 // addMachineSpecInfo
-export const apiAddMachineSpecInfo = async (productLineID, machineTypeID, machineSN, machineName, machineIP, readerID,brand,series, mt, axisIndex, axisName, isSpindle) =>{
+export const apiAddMachineSpecInfo = async (machineSpec) =>{
     const body = {
         "UserToken": getUserToken(),
         "LoginTime": getLoginTime(),
@@ -672,22 +672,22 @@ export const apiAddMachineSpecInfo = async (productLineID, machineTypeID, machin
             "Tag2Tool_W"
         ],
         "MachineInfo": {
-            "ProductLineID": productLineID,
-            "MachineTypeID": machineTypeID,
-            "MachineSN": machineSN,
-            "MachineName": machineName,
-            "MachineIP": machineIP,
-            "ReaderID": readerID,
+            "ProductLineID": machineSpec.ProductLineID,
+            "MachineTypeID": machineSpec.MachineTypeID,
+            "MachineSN": machineSpec.MachineSN,
+            "MachineName": machineSpec.MachineName,
+            "MachineIP": machineSpec.MachineIP,
+            "ReaderID": machineSpec.ReaderID,
             "SystemInfo": {
-                "Brand": brand,
-                "Series": series,
-                "MT": mt
+                "Brand": machineSpec.SystemInfo.Brand,
+                "Series": machineSpec.SystemInfo.Series,
+                "MT": machineSpec.SystemInfo.MT
             },
             "AxisInfos": [
                 {
-                    "AxisIndex": axisIndex,
-                    "AxisName": axisName,
-                    "IsSpindle": isSpindle
+                "AxisIndex": machineSpec.AxisInfos.AxisIndex,
+                "AxisName": machineSpec.AxisInfos.AxisName,
+                "IsSpindle": machineSpec.AxisInfos.IsSpindle
                 }
             ]
         }
@@ -723,6 +723,21 @@ export const apiGetMachineInfoList = async () =>{
     }
 }
 
+// getMachineInfoByID
+export const apiGetMachineInfoByID = async (id) =>{
+    const body = {
+        "MachineID": id
+      }
+    try{
+        const res = await apiInstance.post("machine_info/GetMachineInfo",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+        return error
+    }
+}
+
 // modifyMachineTypeInfo
 export const apiModifyMachineTypeInfo = async (id, name) =>{
     const body = {
@@ -740,6 +755,49 @@ export const apiModifyMachineTypeInfo = async (id, name) =>{
     }
     try{
         const res = await apiInstance.post("machine_info/ModifyMachinTypeInfo",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+        return error
+    }
+}
+
+// editMachineInfo
+export const apiEditMachineInfo = async (machineSpec) =>{
+    console.log("brnd",machineSpec.SystemInfo.Brand.toString());
+    const body = {
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "MachineID": machineSpec.MachineID,
+        "ModifyDatas": {
+          "ProductLineID": machineSpec.ProductLineID.split(":")[0],
+          "MachineTypeID": machineSpec.MachineTypeID.split(":")[0],
+          "MachineSN": machineSpec.MachineSN,
+          "MachineName": machineSpec.MachineName,
+          "MachineIP": machineSpec.MachineIP,
+          "ReaderID": machineSpec.ReaderID,
+          "SystemInfo": {
+            "Brand": machineSpec.SystemInfo.Brand.toString(),
+            "Series": machineSpec.SystemInfo.Series,
+            "MT":machineSpec.SystemInfo.MT
+          },
+          "AxisInfos": [
+            {
+              "AxisIndex": machineSpec.AxisInfos[0].AxisIndex,
+              "AxisName": machineSpec.AxisInfos[0].AxisName,
+              "IsSpindle": machineSpec.AxisInfos[0].IsSpindle
+            }
+          ]
+        }
+      }
+      console.log("body",body);
+    try{
+        const res = await apiInstance.post("machine_info/ModifyMachineInfo",body)
         return res
     }
     catch(error){

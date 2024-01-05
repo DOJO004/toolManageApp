@@ -3,6 +3,7 @@ import NewStepOne from "./newStepOne";
 import NewStepTwo from "./newStepTwo";
 import NewStepThree from "./newStepThree";
 import Notice from "../../notice";
+import { CloseBtn } from "../../buttons";
 
 interface ToolTypeItem {
   Name: string;
@@ -33,6 +34,7 @@ interface ToolSpecNewProps {
   toolSpecInfo: ToolSpecItem;
   setToolSpecInfo: React.Dispatch<React.SetStateAction<ToolSpecItem>>;
   fetchNewToolSpecInfo: () => void;
+  changeNewMode: () => void;
   currentPage: number;
   nextPage: () => void;
   prevPage: () => void;
@@ -45,6 +47,7 @@ const ToolSpecNew = ({
   toolSpecInfo,
   setToolSpecInfo,
   fetchNewToolSpecInfo,
+  changeNewMode,
   currentPage,
   nextPage,
   prevPage,
@@ -52,7 +55,7 @@ const ToolSpecNew = ({
   isError,
 }: ToolSpecNewProps) => {
   return (
-    <div className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 rounded-xl">
+    <div className="relative flex flex-col justify-center w-full p-4 mb-2 text-center bg-gray-900 md:mx-auto md:w-fit rounded-xl">
       <p>新增刀具規格</p>
       {notice && <Notice isError={isError} />}
       <div className="text-black">
@@ -80,6 +83,9 @@ const ToolSpecNew = ({
             prevPage={prevPage}
           />
         </div>
+      </div>
+      <div className="absolute top-3 right-5">
+        <CloseBtn changeMode={changeNewMode} />
       </div>
     </div>
   );

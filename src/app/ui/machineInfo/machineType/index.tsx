@@ -1,5 +1,5 @@
 import React from "react";
-import LinkBtn from "../../linkBtn";
+import { AddBtn } from "../../buttons";
 import Link from "next/link";
 
 interface MachineTypeListItem {
@@ -35,7 +35,7 @@ const MachineTypeIndex = ({ machineTypeList }: MachineTypeIndexProps) => {
         ))}
       </div>
       <div className="absolute top-2 right-3">
-        <LinkBtn link="/tool-manager/machine-info/machine-type/new" />
+        <AddBtn link="/tool-manager/machine-info/machine-type/new" />
       </div>
     </div>
   );

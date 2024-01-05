@@ -36,7 +36,7 @@ const NewStepThree = ({
         type="number"
         placeholder="安全庫存"
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.SafetyStock}
+        value={toolSpecInfo?.SafetyStock}
         onChange={(e) =>
           setToolSpecInfo({
             ...toolSpecInfo,
@@ -48,7 +48,7 @@ const NewStepThree = ({
         type="number"
         placeholder="最大修整次數"
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.MaxLife.RepairCnt}
+        value={toolSpecInfo?.MaxLife?.RepairCnt}
         onChange={(e) =>
           setToolSpecInfo({
             ...toolSpecInfo,
@@ -63,7 +63,7 @@ const NewStepThree = ({
         type="number"
         placeholder="最大加工次數"
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.MaxLife.ProcessCnt}
+        value={toolSpecInfo?.MaxLife?.ProcessCnt}
         onChange={(e) =>
           setToolSpecInfo({
             ...toolSpecInfo,
@@ -78,7 +78,7 @@ const NewStepThree = ({
         type="number"
         placeholder="最大加工長度"
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.MaxLife.ProcessLength}
+        value={toolSpecInfo?.MaxLife?.ProcessLength}
         onChange={(e) =>
           setToolSpecInfo({
             ...toolSpecInfo,
@@ -93,7 +93,7 @@ const NewStepThree = ({
         type="number"
         placeholder="最大加工時間"
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.MaxLife.ProcessTime}
+        value={toolSpecInfo?.MaxLife?.ProcessTime}
         onChange={(e) =>
           setToolSpecInfo({
             ...toolSpecInfo,

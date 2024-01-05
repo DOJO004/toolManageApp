@@ -1,8 +1,8 @@
 import React, { FormEvent } from "react";
-import BackBtn from "../../backBtn";
 import Notice from "../../notice";
 import { useRouter } from "next/navigation";
-import DeleteBtn from "../../deleteBtn";
+import { BackBtn, DeleteBtn } from "../../buttons";
+
 interface ProductLineItem {
   ProductLineID: string;
   ProductLineName: string;
@@ -54,7 +54,7 @@ const ProductLineEdit = ({
         <BackBtn backFunction={router.back} />
       </div>
       <div className="absolute top-2 right-4">
-        <DeleteBtn disableFunction={fetchDeleteProductLine} />
+        <DeleteBtn deleteFunction={fetchDeleteProductLine} />
       </div>
     </form>
   );

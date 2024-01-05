@@ -1,5 +1,5 @@
 "use client";
-import NewToolType from "@/app/ui/toolInfo/toolType/new";
+import ToolTypeNew from "@/app/ui/toolInfo/toolType/new";
 import { apiAddToolTypeInfo } from "@/scripts/api";
 import { FormEvent, useState } from "react";
 
@@ -28,7 +28,7 @@ export default function Page() {
   };
 
   return (
-    <NewToolType
+    <ToolTypeNew
       toolTypeID={toolTypeID}
       setToolTypeID={setToolTypeID}
       toolTypeName={toolTypeName}
