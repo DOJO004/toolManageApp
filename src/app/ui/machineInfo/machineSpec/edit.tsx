@@ -1,10 +1,10 @@
 import React from "react";
-import NewStepOne from "./newStepOne";
-import NewStepTwo from "./newStepTwo";
-import NewStepThree from "./newStepThree";
-import Notice from "../../notice";
-import { BackBtn, CloseBtn } from "../../buttons";
+import { BackBtn, CloseBtn, DeleteBtn } from "../../buttons";
 import { useRouter } from "next/navigation";
+import EditStepOne from "./editStepOne";
+import EditStepTwo from "./editStepTwo";
+import EditStepThree from "./editStepThree";
+import Notice from "../../notice";
 
 interface MachineSpecItem {
   MachineID: string;
@@ -26,59 +26,44 @@ interface MachineSpecItem {
   }[];
 }
 
-interface ProductLineListItem {
-  ProductLineID: string;
-  ProductLineName: string;
-}
-
-interface MachineTypeListItem {
-  MachineTypeID: string;
-  MachineTypeName: string;
-}
-
-interface MachineSpecNewProps {
+interface MachineSpecEditProps {
   machineSpec: MachineSpecItem;
   setMachineSpec: React.Dispatch<React.SetStateAction<MachineSpecItem>>;
-  productLineList: ProductLineListItem[];
-  machineTypeList: MachineTypeListItem[];
-  currentPage: number;
+  fetchEditMachineSpec: () => void;
   nextPage: () => void;
   prevPage: () => void;
-  fetchAddMachineSpecInfo: () => void;
-  changeNewMode: () => void;
+  changeEditMode: () => void;
+  fetchDeleteMachineSpec: () => void;
+  currentPage: number;
   notice: boolean;
   isError: boolean;
 }
-
-const MachineSpecNew = ({
+const MachineSpecEdit = ({
   machineSpec,
   setMachineSpec,
-  productLineList,
+  fetchEditMachineSpec,
+  fetchDeleteMachineSpec,
   currentPage,
   nextPage,
   prevPage,
-  machineTypeList,
-  fetchAddMachineSpecInfo,
-  changeNewMode,
+  changeEditMode,
   notice,
   isError,
-}: MachineSpecNewProps) => {
+}: MachineSpecEditProps) => {
   const router = useRouter();
   return (
-    <div className="relative flex flex-col justify-center w-full p-4 mb-2 text-center bg-gray-900 md:mx-auto md:w-fit rounded-xl">
-      <p>新增設備規格</p>
+    <div className="relative flex flex-col justify-center w-full p-4 mb-2 text-center bg-gray-900 md:w-fit md:mx-auto rounded-xl">
+      <p className="text-xl">編輯設備規格</p>
       {notice && <Notice isError={isError} />}
       {currentPage === 1 && (
-        <NewStepOne
+        <EditStepOne
           machineSpec={machineSpec}
           setMachineSpec={setMachineSpec}
-          productLineList={productLineList}
-          machineTypeList={machineTypeList}
           nextPage={nextPage}
         />
       )}
       {currentPage === 2 && (
-        <NewStepTwo
+        <EditStepTwo
           machineSpec={machineSpec}
           setMachineSpec={setMachineSpec}
           nextPage={nextPage}
@@ -86,17 +71,20 @@ const MachineSpecNew = ({
         />
       )}
       {currentPage === 3 && (
-        <NewStepThree
+        <EditStepThree
           machineSpec={machineSpec}
           setMachineSpec={setMachineSpec}
+          fetchEditMachineSpec={fetchEditMachineSpec}
           prevPage={prevPage}
-          fetchAddMachineSpecInfo={fetchAddMachineSpecInfo}
         />
       )}
-      <div className="absolute top-3 right-5">
-        <CloseBtn changeMode={changeNewMode} />
+      <div className="absolute top-3 right-3">
+        <CloseBtn changeMode={changeEditMode} />
+      </div>
+      <div className="absolute top-3 left-3">
+        <DeleteBtn deleteFunction={fetchDeleteMachineSpec} />
       </div>
     </div>
   );
 };
-export default MachineSpecNew;
+export default MachineSpecEdit;

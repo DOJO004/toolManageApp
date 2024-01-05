@@ -1,6 +1,5 @@
 import React from "react";
 import { AddBtn } from "../../buttons";
-import Link from "next/link";
 
 interface MachineSpecListItem {
   MachineID: string;
@@ -26,9 +25,17 @@ interface MachineSpecListItem {
 
 interface MachineSpecIndexProps {
   machineSpecList: MachineSpecListItem[];
+  changeNewMode: () => void;
+  changeEditMode: (index: number) => void;
+  fetchGetMachineSpecList: (index: number) => void;
 }
 
-const MachineSpecIndex = ({ machineSpecList }: MachineSpecIndexProps) => {
+const MachineSpecIndex = ({
+  machineSpecList,
+  changeNewMode,
+  changeEditMode,
+  fetchGetMachineSpecList,
+}: MachineSpecIndexProps) => {
   return (
     <div className="relative w-full p-2 text-center bg-gray-900 max-w-7xl rounded-xl">
       <p className="text-xl text-center ">設備規格</p>
@@ -56,18 +63,18 @@ const MachineSpecIndex = ({ machineSpecList }: MachineSpecIndexProps) => {
             <div className="truncate ">{item.MachineIP}</div>
             <div className="truncate ">{item.ReaderID}</div>
             <div className="truncate ">{item.SystemInfo.MT}</div>
-            <div className="truncate ">
-              <Link
-                href={`/tool-manager/machine-info/machine-spec/${item.MachineID}/edit`}
-              >
-                編輯
-              </Link>
-            </div>
+            <button
+              onClick={() => {
+                changeEditMode(index), fetchGetMachineSpecList(index);
+              }}
+            >
+              編輯
+            </button>
           </React.Fragment>
         ))}
       </div>
-      <div className="absolute top-3 right-3">
-        <AddBtn link="/tool-manager/machine-info/machine-spec/new" />
+      <div className="absolute top-2 right-3">
+        <AddBtn changeNewMode={changeNewMode} />
       </div>
     </div>
   );

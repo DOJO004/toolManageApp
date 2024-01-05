@@ -8,9 +8,17 @@ interface MachineTypeListItem {
 }
 interface MachineTypeIndexProps {
   machineTypeList: MachineTypeListItem[];
+  changeNewMode: () => void;
+  changeEditMode: (index: number) => void;
+  fetchGetMachineTypeList: (index: number) => void;
 }
 
-const MachineTypeIndex = ({ machineTypeList }: MachineTypeIndexProps) => {
+const MachineTypeIndex = ({
+  machineTypeList,
+  changeNewMode,
+  changeEditMode,
+  fetchGetMachineTypeList,
+}: MachineTypeIndexProps) => {
   return (
     <div className="relative w-full p-2 mx-auto text-center bg-gray-900 min-w-fit rounded-xl">
       <p className="text-xl">設備類型</p>
@@ -24,18 +32,19 @@ const MachineTypeIndex = ({ machineTypeList }: MachineTypeIndexProps) => {
           <React.Fragment key={item.MachineTypeID}>
             <div className="truncate ">{item.MachineTypeID}</div>
             <div className="truncate ">{item.MachineTypeName}</div>
-            <div className="truncate ">
-              <Link
-                href={`/tool-manager/machine-info/machine-type/${index}/edit`}
-              >
-                編輯
-              </Link>
-            </div>
+            <button
+              className="truncate"
+              onClick={() => {
+                changeEditMode(index), fetchGetMachineTypeList(index);
+              }}
+            >
+              編輯
+            </button>
           </React.Fragment>
         ))}
       </div>
       <div className="absolute top-2 right-3">
-        <AddBtn link="/tool-manager/machine-info/machine-type/new" />
+        <AddBtn changeNewMode={changeNewMode} />
       </div>
     </div>
   );

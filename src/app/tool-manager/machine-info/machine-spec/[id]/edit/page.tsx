@@ -1,5 +1,5 @@
 "use client";
-import MachineSpecEdit from "@/app/ui/machineInfo/machineSpec/exit";
+import MachineSpecEdit from "@/app/ui/machineInfo/machineSpec/edit";
 import { apiEditMachineInfo, apiGetMachineInfoByID } from "@/scripts/api";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -27,6 +27,7 @@ export default function Page() {
       },
     ],
   });
+
   const fetchGetMachineSpec = async () => {
     const res = await apiGetMachineInfoByID(machineID);
     console.log("get machinespec", res);
