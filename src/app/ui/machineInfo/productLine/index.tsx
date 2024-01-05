@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import { AddBtn } from "../../buttons";
-import DeleteBtn from "../../deleteBtn";
 
 interface ProductLineItem {
   ProductLineID: string;
@@ -10,8 +9,16 @@ interface ProductLineItem {
 
 interface ProductLineIndexProps {
   productLineList: ProductLineItem[];
+  changeNewMode: () => void;
+  changeEditMode: (index: number) => void;
+  fetchGetProductLineList: (index: number) => void;
 }
-const ProductLineIndex = ({ productLineList }: ProductLineIndexProps) => {
+const ProductLineIndex = ({
+  productLineList,
+  changeNewMode,
+  changeEditMode,
+  fetchGetProductLineList,
+}: ProductLineIndexProps) => {
   return (
     <div className="relative w-full p-2 text-center bg-gray-900 rounded-xl md:min-w-96">
       <p className="text-xl">產線類型</p>
@@ -25,19 +32,20 @@ const ProductLineIndex = ({ productLineList }: ProductLineIndexProps) => {
           <React.Fragment key={item.ProductLineID}>
             <div className="truncate">{item.ProductLineID}</div>
             <div className="truncate">{item.ProductLineName}</div>
-            <div className="truncate">
-              <Link
-                href={`/tool-manager/machine-info/product-line/${index}/edit`}
-              >
-                編輯
-              </Link>
-            </div>
+            <button
+              className="truncate"
+              onClick={() => {
+                changeEditMode(index), fetchGetProductLineList(index);
+              }}
+            >
+              編輯
+            </button>
           </React.Fragment>
         ))}
       </div>
-      <button className="absolute top-3 right-2">
-        <AddBtn link={"/tool-manager/machine-info/product-line/new"} />
-      </button>
+      <div className="absolute top-2 right-2">
+        <AddBtn changeNewMode={changeNewMode} />
+      </div>
     </div>
   );
 };

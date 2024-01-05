@@ -598,7 +598,27 @@ export const disableMachineTypeInfo = async (id) =>{
     }
 }
 
-
+// disableMachineInfo
+export const disabledMachineInfo = async (id) =>{
+    const body = {
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "MachineID": id
+      }
+      
+    try{
+        const res = await apiInstance.post("machine_info/DisabledMachineInfo",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+        return error
+    }
+}
 
 
 // getMachineTypeInfoList

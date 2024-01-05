@@ -18,29 +18,29 @@ interface MachineSpecItem {
   }[];
 }
 
-interface NewStepTwoProps {
+interface EditStepTwoProps {
   machineSpec: MachineSpecItem;
   setMachineSpec: React.Dispatch<React.SetStateAction<MachineSpecItem>>;
   nextPage: () => void;
   prevPage: () => void;
 }
 
-const NewStepTwo = ({
+const EditStepTwo = ({
   machineSpec,
   setMachineSpec,
   nextPage,
   prevPage,
-}: NewStepTwoProps) => {
+}: EditStepTwoProps) => {
   return (
     <div>
       <p>○●○</p>
+
       <label htmlFor="Brand">品牌</label>
       <input
         id="Brand"
         type="text"
-        placeholder="品牌"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         value={machineSpec.SystemInfo.Brand}
+        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({
             ...machineSpec,
@@ -55,9 +55,8 @@ const NewStepTwo = ({
       <input
         id="Series"
         type="text"
-        placeholder="系列"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         value={machineSpec.SystemInfo.Series}
+        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({
             ...machineSpec,
@@ -72,9 +71,8 @@ const NewStepTwo = ({
       <input
         id="MachineIP"
         type="text"
-        placeholder="設備IP位址"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         value={machineSpec.MachineIP}
+        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({ ...machineSpec, MachineIP: e.target.value })
         }
@@ -83,9 +81,8 @@ const NewStepTwo = ({
       <input
         id="ReaderID"
         type="text"
-        placeholder="讀取器ID"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         value={machineSpec.ReaderID}
+        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({ ...machineSpec, ReaderID: e.target.value })
         }
@@ -105,5 +102,4 @@ const NewStepTwo = ({
     </div>
   );
 };
-
-export default NewStepTwo;
+export default EditStepTwo;

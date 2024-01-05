@@ -18,18 +18,19 @@ interface MachineSpecItem {
   }[];
 }
 
-interface NewStepThreeProps {
+interface EditStepThreeProps {
   machineSpec: MachineSpecItem;
   setMachineSpec: React.Dispatch<React.SetStateAction<MachineSpecItem>>;
+  fetchEditMachineSpec: () => void;
   prevPage: () => void;
-  fetchAddMachineSpecInfo: () => void;
 }
-const NewStepThree = ({
+
+const EditStepThree = ({
   machineSpec,
   setMachineSpec,
+  fetchEditMachineSpec,
   prevPage,
-  fetchAddMachineSpecInfo,
-}: NewStepThreeProps) => {
+}: EditStepThreeProps) => {
   return (
     <div>
       <p>○○●</p>
@@ -37,9 +38,8 @@ const NewStepThree = ({
       <input
         id="MT"
         type="text"
-        placeholder="MT"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         value={machineSpec.SystemInfo.MT}
+        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({
             ...machineSpec,
@@ -53,10 +53,9 @@ const NewStepThree = ({
       <label htmlFor="AxisIndex">AxisIndex</label>
       <input
         id="AxisIndex"
-        type="number"
-        placeholder="AxisIndex"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        type="text"
         value={machineSpec.AxisInfos[0].AxisIndex}
+        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({
             ...machineSpec,
@@ -73,9 +72,8 @@ const NewStepThree = ({
       <input
         id="AxisName"
         type="text"
-        placeholder="AxisName"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         value={machineSpec.AxisInfos[0].AxisName}
+        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setMachineSpec({
             ...machineSpec,
@@ -88,11 +86,11 @@ const NewStepThree = ({
           })
         }
       />
-      <div className="relative flex items-center mx-auto mb-2 bg-white rounded-md w-fit min-w-72">
+      <div className="relative flex items-center mx-auto my-2 bg-white rounded-md w-fit min-w-72">
         <input
           id="IsSpindle"
           type="checkbox"
-          placeholder="IsSpindle"
+          checked={machineSpec.AxisInfos[0].IsSpindle}
           className="absolute left-2 "
           onChange={(e) =>
             setMachineSpec({
@@ -118,7 +116,7 @@ const NewStepThree = ({
       </button>
       <button
         className="p-2 m-2 bg-blue-500 rounded-md min-w-32"
-        onClick={() => fetchAddMachineSpecInfo()}
+        onClick={() => fetchEditMachineSpec()}
       >
         完成
       </button>
@@ -126,4 +124,4 @@ const NewStepThree = ({
   );
 };
 
-export default NewStepThree;
+export default EditStepThree;
