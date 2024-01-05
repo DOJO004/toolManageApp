@@ -1,12 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
-const ElabelInfoMenu = () => {
+interface ElabelInfoMenuProps {
+  setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const ElabelInfoMenu = ({ setOpenMenu }: ElabelInfoMenuProps) => {
   return (
     <div className="flex justify-center md:flex-col">
       <div className="flex md:block">
         <Link
           href="/tool-manager/elabel-info"
           className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
+          onClick={() => setOpenMenu(false)}
         >
           <Image
             src={"/overView.png"}

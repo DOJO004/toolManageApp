@@ -830,7 +830,7 @@ export const apiEditMachineInfo = async (machineSpec) =>{
 }
 
 // addElabelInfo
-export const apiAddElabelInfo = async(elabelCode, elabelSN, stationCode, articleID, articleName)=>{
+export const apiAddElabelInfo = async(elabelInfo)=>{
     const body = {
         "UserToken": getUserToken(),
         "LoginTime": getLoginTime(),
@@ -839,15 +839,16 @@ export const apiAddElabelInfo = async(elabelCode, elabelSN, stationCode, article
             "Tag2Tool_W"
         ],
         "eLabelInfo": {
-            "LabelCode": elabelCode,
-            "eLabelSN": elabelSN,
+            "LabelCode": elabelInfo.LabelCode,
+            "eLabelSN": elabelInfo.eLabelSN,
             "eLabelSpec": {
-                "StationCode": stationCode,
-                "ArticleID": articleID,
-                "ArticleName": articleName
+                "StationCode": elabelInfo.eLabelSpec.StationCode,
+                "ArticleID": elabelInfo.eLabelSpec.ArticleID,
+                "ArticleName": elabelInfo.eLabelSpec.ArticleName
             }
         }
     }
+    console.log("body", body);
     try{
         const res = await apiInstance.post("elabel_info/AddELabelInfo",body)
         return res
@@ -867,11 +868,52 @@ export const apiGetElabelSpecInfoList = async()=>{
             "Tag2Tool_R",
             "Tag2Tool_W"
         ],
-        "RecordsPerPage": 10,
+        "RecordsPerPage": 99,
         "PageNo": 1,
     }
     try{
         const res = await apiInstance.post("elabel_info/GetELabelSpecInfoList",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+// editElabelInfo
+export const apiEditElabelInfo = async(elabelInfo)=>{
+    const body = {
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "LabelCode": "",
+        "eLabelSN": "",
+        "StationCode": "",
+        "ArticleID": "",
+        "ArticleName": ""
+      }
+    try{
+        const res = await apiInstance.post("elabel_info/ModifyELabelInfo",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+// getElabelInfoByLabelCode
+export const apiGetElabelInfoByLabelCode = async(labelCode, labelSN)=>{
+    const body = {
+        "LabelCode": labelCode,
+        "eLabelSN": labelSN
+      }
+    try{
+        const res = await apiInstance.post("elabel_info/GetELabelSpecInfo",body)
         return res
     }
     catch(error){

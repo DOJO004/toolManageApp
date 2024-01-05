@@ -1,13 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const UserInfoMenu = () => {
+interface UserInfoMenuProps {
+  setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
   return (
     <div className="flex justify-center md:flex-col">
       <div className="flex md:block">
         <Link
           href={"/tool-manager/user-info"}
           className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
+          onClick={() => setOpenMenu(false)}
         >
           <Image
             src="/overView.png"
