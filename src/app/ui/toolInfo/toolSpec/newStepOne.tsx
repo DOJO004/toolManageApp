@@ -40,7 +40,7 @@ const NewStepOne = ({
     <div>
       <p>●○○</p>
       <select
-        value={toolSpecInfo.ToolType}
+        value={toolSpecInfo?.ToolType}
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
         onChange={(e) =>
           setToolSpecInfo({ ...toolSpecInfo, ToolType: e.target.value })
@@ -62,8 +62,8 @@ const NewStepOne = ({
       <input
         type="text"
         placeholder="ID"
-        className="block pl-2 mx-auto my-2 text-gray-300 rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.ToolSpecID}
+        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
+        value={toolSpecInfo?.ToolSpecID}
         onChange={(e) =>
           setToolSpecInfo({ ...toolSpecInfo, ToolSpecID: e.target.value })
         }
@@ -72,7 +72,7 @@ const NewStepOne = ({
         type="text"
         placeholder="名稱"
         className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolSpecInfo.Name}
+        value={toolSpecInfo?.Name}
         onChange={(e) =>
           setToolSpecInfo({ ...toolSpecInfo, Name: e.target.value })
         }

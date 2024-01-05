@@ -1,7 +1,6 @@
 "use client";
 import ToolStockNew from "@/app/ui/toolInfo/toolStock/new";
 import { apiAddToolStock, apiGetToolSpecList } from "@/scripts/api";
-import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
@@ -10,7 +9,6 @@ export default function Page() {
   const [addQty, setAddQty] = useState("");
   const [notice, setNotice] = useState(false);
   const [isError, setIsError] = useState(false);
-  const router = useRouter();
 
   const fetchGetToolSpecID = async () => {
     const res = await apiGetToolSpecList();

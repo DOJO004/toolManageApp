@@ -17,88 +17,98 @@ interface ToolInfoItem {
   };
 }
 interface EditStepThreeProps {
-  toolInfo: ToolInfoItem;
-  setToolInfo: React.Dispatch<React.SetStateAction<ToolInfoItem>>;
+  editToolSpec: ToolInfoItem;
+  setEditToolSpec: React.Dispatch<React.SetStateAction<ToolInfoItem>>;
   prevPage: () => void;
   fetchEditToolInfo: () => void;
 }
 
 const EditStepThree = ({
-  toolInfo,
-  setToolInfo,
+  editToolSpec,
+  setEditToolSpec,
   prevPage,
   fetchEditToolInfo,
 }: EditStepThreeProps) => {
   return (
     <div>
       <p>○○●</p>
+      <label htmlFor="SafetyStock">安全庫存</label>
       <input
+        id="SafetyStock"
         type="number"
         placeholder="安全庫存"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolInfo.SafetyStock}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.SafetyStock}
         onChange={(e) =>
-          setToolInfo({
-            ...toolInfo,
+          setEditToolSpec({
+            ...editToolSpec,
             SafetyStock: e.target.value,
           })
         }
       />
+      <label htmlFor="RepairCnt">最大修整次數</label>
       <input
+        id="RepairCnt"
         type="number"
         placeholder="最大修整次數"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolInfo.MaxLife.RepairCnt}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.MaxLife?.RepairCnt}
         onChange={(e) =>
-          setToolInfo({
-            ...toolInfo,
+          setEditToolSpec({
+            ...editToolSpec,
             MaxLife: {
-              ...toolInfo.MaxLife,
+              ...editToolSpec.MaxLife,
               RepairCnt: e.target.value,
             },
           })
         }
       />
+      <label htmlFor="ProcessCnt">最大加工次數</label>
       <input
+        id="ProcessCnt"
         type="number"
         placeholder="最大加工次數"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolInfo.MaxLife.ProcessCnt}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.MaxLife?.ProcessCnt}
         onChange={(e) =>
-          setToolInfo({
-            ...toolInfo,
+          setEditToolSpec({
+            ...editToolSpec,
             MaxLife: {
-              ...toolInfo.MaxLife,
+              ...editToolSpec.MaxLife,
               ProcessCnt: e.target.value,
             },
           })
         }
       />
+      <label htmlFor="ProcessLength">最大加工長度</label>
       <input
+        id="ProcessLength"
         type="number"
         placeholder="最大加工長度"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolInfo.MaxLife.ProcessLength}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.MaxLife?.ProcessLength}
         onChange={(e) =>
-          setToolInfo({
-            ...toolInfo,
+          setEditToolSpec({
+            ...editToolSpec,
             MaxLife: {
-              ...toolInfo.MaxLife,
+              ...editToolSpec.MaxLife,
               ProcessLength: e.target.value,
             },
           })
         }
       />
+      <label htmlFor="ProcessTime">最大加工時間</label>
       <input
+        id="ProcessTime"
         type="number"
         placeholder="最大加工時間"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolInfo.MaxLife.ProcessTime}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.MaxLife?.ProcessTime}
         onChange={(e) =>
-          setToolInfo({
-            ...toolInfo,
+          setEditToolSpec({
+            ...editToolSpec,
             MaxLife: {
-              ...toolInfo.MaxLife,
+              ...editToolSpec.MaxLife,
               ProcessTime: e.target.value,
             },
           })

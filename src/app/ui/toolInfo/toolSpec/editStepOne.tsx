@@ -23,30 +23,34 @@ interface ToolTypeListItem {
 }
 
 interface EditStepOneProps {
-  toolInfo: ToolInfoItem;
-  setToolInfo: React.Dispatch<React.SetStateAction<ToolInfoItem>>;
+  editToolSpec: ToolInfoItem;
+  setEditToolSpec: React.Dispatch<React.SetStateAction<ToolInfoItem>>;
   toolTypeList: ToolTypeListItem[];
   nextPage: () => void;
 }
 
 const EditStepOne = ({
-  toolInfo,
-  setToolInfo,
+  editToolSpec,
+  setEditToolSpec,
   toolTypeList,
   nextPage,
 }: EditStepOneProps) => {
   return (
     <div>
       <p>●○○</p>
+      <label htmlFor="ToolType">刀具類型</label>
       <select
-        value={toolInfo.ToolType.split("/")[0]}
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        onChange={(e) => setToolInfo({ ...toolInfo, ToolType: e.target.value })}
+        id="ToolType"
+        value={editToolSpec?.ToolType.split("/")[0]}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        onChange={(e) =>
+          setEditToolSpec({ ...editToolSpec, ToolType: e.target.value })
+        }
       >
         <option value="" className="text-black" disabled>
           請選擇刀具類型
         </option>
-        {toolTypeList.map((item, index) => (
+        {toolTypeList?.map((item, index) => (
           <option
             value={item.ToolTypeID}
             key={item.ToolTypeID}
@@ -56,19 +60,25 @@ const EditStepOne = ({
           </option>
         ))}
       </select>
+      <label htmlFor="ToolSpecID">刀具規格ID</label>
       <input
+        id="ToolSpecID"
         type="text"
         placeholder="ID"
-        className="block pl-2 mx-auto my-2 text-gray-300 rounded-md min-h-10 min-w-72"
-        value={toolInfo.ToolSpecID}
+        className="block pl-2 mx-auto mb-2 text-gray-300 rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.ToolSpecID}
         readOnly
       />
+      <label htmlFor="Name">刀具名稱</label>
       <input
+        id="Name"
         type="text"
         placeholder="名稱"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolInfo.Name}
-        onChange={(e) => setToolInfo({ ...toolInfo, Name: e.target.value })}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.Name}
+        onChange={(e) =>
+          setEditToolSpec({ ...editToolSpec, Name: e.target.value })
+        }
       />
       <button
         className="p-2 bg-blue-500 rounded-md min-w-72"

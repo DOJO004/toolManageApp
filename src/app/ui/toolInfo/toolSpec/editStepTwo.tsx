@@ -18,76 +18,84 @@ interface ToolInfoItem {
 }
 
 interface EditStepTwoProps {
-  toolInfo: ToolInfoItem;
-  setToolInfo: React.Dispatch<React.SetStateAction<ToolInfoItem>>;
+  editToolSpec: ToolInfoItem;
+  setEditToolSpec: React.Dispatch<React.SetStateAction<ToolInfoItem>>;
   nextPage: () => void;
   prevPage: () => void;
 }
 
 const EditStepTwo = ({
-  toolInfo,
-  setToolInfo,
+  editToolSpec,
+  setEditToolSpec,
   nextPage,
   prevPage,
 }: EditStepTwoProps) => {
   return (
     <div>
       <p>○●○</p>
+      <label htmlFor="BladeDiameter">Φ</label>
       <input
+        id="BladeDiameter"
         type="number"
         placeholder="Φ"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolInfo.Specification.BladeDiameter}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.Specification?.BladeDiameter}
         onChange={(e) =>
-          setToolInfo({
-            ...toolInfo,
+          setEditToolSpec({
+            ...editToolSpec,
             Specification: {
-              ...toolInfo.Specification,
+              ...editToolSpec.Specification,
               BladeDiameter: e.target.value,
             },
           })
         }
       />
+      <label htmlFor="BladeHeight">刀具高度</label>
       <input
+        id="BladeHeight"
         type="number"
         placeholder="刀具高度"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolInfo.Specification.BladeHeight}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.Specification?.BladeHeight}
         onChange={(e) =>
-          setToolInfo({
-            ...toolInfo,
+          setEditToolSpec({
+            ...editToolSpec,
             Specification: {
-              ...toolInfo.Specification,
+              ...editToolSpec.Specification,
               BladeHeight: e.target.value,
             },
           })
         }
       />
+      <label htmlFor="TotalLength">總長度</label>
       <input
+        id="TotalLength"
         type="number"
         placeholder="總長度"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolInfo.Specification.TotalLength}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.Specification?.TotalLength}
         onChange={(e) =>
-          setToolInfo({
-            ...toolInfo,
+          setEditToolSpec({
+            ...editToolSpec,
             Specification: {
-              ...toolInfo.Specification,
+              ...editToolSpec.Specification,
               TotalLength: e.target.value,
             },
           })
         }
       />
+      <label htmlFor="HandleDiameter">手柄Φ</label>
       <input
+        id="HandleDiameter"
         type="number"
         placeholder="手柄Φ"
-        className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-        value={toolInfo.Specification.HandleDiameter}
+        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        value={editToolSpec?.Specification?.HandleDiameter}
         onChange={(e) =>
-          setToolInfo({
-            ...toolInfo,
+          setEditToolSpec({
+            ...editToolSpec,
             Specification: {
-              ...toolInfo.Specification,
+              ...editToolSpec.Specification,
               HandleDiameter: e.target.value,
             },
           })

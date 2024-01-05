@@ -20,7 +20,7 @@ interface DeleteBtnProps {
 export function DeleteBtn({ deleteFunction }: DeleteBtnProps) {
   return (
     <p
-      className="p-2 text-white bg-gray-500 rounded-md w-fit"
+      className="p-2 text-white bg-gray-500 rounded-md cursor-pointer w-fit hover:bg-gray-600"
       onClick={() => deleteFunction && deleteFunction()}
     >
       刪除
@@ -29,12 +29,26 @@ export function DeleteBtn({ deleteFunction }: DeleteBtnProps) {
 }
 
 interface AddBtnProps {
-  link: string;
+  changeNewMode: () => void;
 }
-export function AddBtn({ link }: AddBtnProps) {
+export function AddBtn({ changeNewMode }: AddBtnProps) {
   return (
-    <Link href={link} className="p-1 text-sm bg-indigo-500 rounded-md">
+    <button
+      className="p-1 text-sm bg-indigo-500 rounded-md hover:bg-indigo-600"
+      onClick={() => changeNewMode()}
+    >
       新增
-    </Link>
+    </button>
+  );
+}
+
+interface closeBtnProps {
+  changeMode: () => void;
+}
+export function CloseBtn({ changeMode }: closeBtnProps) {
+  return (
+    <button className="text-xl" onClick={() => changeMode()}>
+      X
+    </button>
   );
 }
