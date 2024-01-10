@@ -1,15 +1,15 @@
 import React, { FormEvent } from "react";
 import { CloseBtn } from "../buttons";
-import { userInfo } from "os";
 import Notice from "../notice";
-interface UserInfoItem {
-  DepartmentID: string;
-  UserAccount: string;
+interface EditUserInfoItem {
+  AccountID: string;
+  Department: string;
+  UserID: string;
   EmployeeID: string;
   UserName: string;
-  Password: string;
-  EMailAddress: string;
-  Permissions: string[];
+  Activated: string;
+  CreateTime: string;
+  LastModify: string;
 }
 
 interface DepartmentInfoItem {
@@ -17,39 +17,51 @@ interface DepartmentInfoItem {
   Name: string;
 }
 
-interface UserInfoNewProps {
+interface EditUserAccountAndPasswordItem {
+  Email: string;
+  Password: string;
+}
+
+interface UserInfoEditProps {
   departmentInfoList: DepartmentInfoItem[];
-  userInfo: UserInfoItem;
-  setUserInfo: React.Dispatch<React.SetStateAction<UserInfoItem>>;
-  changeNewMode: () => void;
-  fetchAddNewUser: (e: FormEvent) => void;
+  editUserInfo: EditUserInfoItem;
+  setEditUserInfo: React.Dispatch<React.SetStateAction<EditUserInfoItem>>;
+  editUserAccountAndPassword: EditUserAccountAndPasswordItem;
+  setEditUserAccountAndPassword: React.Dispatch<
+    React.SetStateAction<EditUserAccountAndPasswordItem>
+  >;
+  fetchEditUserInfo: (e: FormEvent) => void;
+  changeEditMode: () => void;
   notice: boolean;
   isError: boolean;
 }
-const UserInfoNew = ({
+
+const UserInfoEdit = ({
   departmentInfoList,
-  changeNewMode,
-  fetchAddNewUser,
-  userInfo,
-  setUserInfo,
+  editUserInfo,
+  setEditUserInfo,
+  editUserAccountAndPassword,
+  setEditUserAccountAndPassword,
+  fetchEditUserInfo,
+  changeEditMode,
   notice,
   isError,
-}: UserInfoNewProps) => {
+}: UserInfoEditProps) => {
   return (
     <div className="relative ">
       <form
         className="flex flex-col justify-center w-full max-w-sm p-4 mx-auto mb-2 bg-gray-900 rounded-xl"
-        onSubmit={(e) => fetchAddNewUser(e)}
+        onSubmit={(e) => fetchEditUserInfo(e)}
       >
-        <p className="text-xl text-center">新增使用者</p>
+        <p className="text-xl text-center">編輯使用者</p>
         {notice && <Notice isError={isError} />}
         <label htmlFor="DepartmentID">部門</label>
         <select
-          defaultValue={""}
+          defaultValue={editUserInfo.Department}
           id="DepartmentID"
           className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72 "
           onChange={(e) =>
-            setUserInfo({ ...userInfo, DepartmentID: e.target.value })
+            setEditUserInfo({ ...editUserInfo, Department: e.target.value })
           }
         >
           <option value="" className="text-black " disabled>
@@ -65,37 +77,15 @@ const UserInfoNew = ({
             </option>
           ))}
         </select>
-        <label htmlFor="UserAccount">使用者帳號</label>
-        <input
-          id="UserAccount"
-          type="text"
-          placeholder="使用者帳號"
-          className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-          value={userInfo.UserAccount}
-          onChange={(e) =>
-            setUserInfo({ ...userInfo, UserAccount: e.target.value })
-          }
-        />
         <label htmlFor="EmployeeID">員工ID</label>
         <input
           id="EmployeeID"
           type="text"
           placeholder="員工ID"
           className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-          value={userInfo.EmployeeID}
+          value={editUserInfo.EmployeeID}
           onChange={(e) =>
-            setUserInfo({ ...userInfo, EmployeeID: e.target.value })
-          }
-        />
-        <label htmlFor="EMailAddress">Email</label>
-        <input
-          id="EMailAddress"
-          type="email"
-          placeholder="Email"
-          className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-          value={userInfo.EMailAddress}
-          onChange={(e) =>
-            setUserInfo({ ...userInfo, EMailAddress: e.target.value })
+            setEditUserInfo({ ...editUserInfo, EmployeeID: e.target.value })
           }
         />
         <label htmlFor="UserName">使用者名稱</label>
@@ -104,20 +94,38 @@ const UserInfoNew = ({
           type="text"
           placeholder="使用者名稱"
           className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-          value={userInfo.UserName}
+          value={editUserInfo.UserName}
           onChange={(e) =>
-            setUserInfo({ ...userInfo, UserName: e.target.value })
+            setEditUserInfo({ ...editUserInfo, UserName: e.target.value })
           }
         />
+        <label htmlFor="EMailAddress">Email</label>
+        <input
+          id="EMailAddress"
+          type="email"
+          placeholder="Email"
+          className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
+          value={editUserAccountAndPassword.Email}
+          onChange={(e) =>
+            setEditUserAccountAndPassword({
+              ...editUserAccountAndPassword,
+              Email: e.target.value,
+            })
+          }
+        />
+
         <label htmlFor="Password">密碼</label>
         <input
           id="Password"
           type="password"
-          placeholder="密碼"
+          placeholder="請輸入新密碼"
           className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-          value={userInfo.Password}
+          value={editUserAccountAndPassword.Password}
           onChange={(e) =>
-            setUserInfo({ ...userInfo, Password: e.target.value })
+            setEditUserAccountAndPassword({
+              ...editUserAccountAndPassword,
+              Password: e.target.value,
+            })
           }
         />
         <button className="p-2 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
@@ -125,10 +133,10 @@ const UserInfoNew = ({
         </button>
       </form>
       <div className="absolute top-3 right-3">
-        <CloseBtn changeMode={changeNewMode} />
+        <CloseBtn changeMode={changeEditMode} />
       </div>
     </div>
   );
 };
 
-export default UserInfoNew;
+export default UserInfoEdit;

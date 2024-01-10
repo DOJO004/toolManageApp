@@ -1,27 +1,31 @@
 import { FormEvent } from "react";
 import { CloseBtn } from "../buttons";
+import Notice from "../notice";
 interface ElabelInfoItem {
   LabelCode: string;
   eLabelSN: string;
-  eLabelSpec: {
-    StationCode: string;
-    ArticleID: string;
-    ArticleName: string;
-  };
+  StationCode: string;
+  ArticleID: string;
+  ArticleName: string;
+  LastModify: string;
 }
 
 interface ElabelInfoEditProps {
-  elabelInfo: ElabelInfoItem;
-  setElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
+  editElabelInfo: ElabelInfoItem;
+  setEditElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
   fetchEditElabelInfo: (e: FormEvent) => void;
   changeEditMode: () => void;
+  notice: boolean;
+  isError: boolean;
 }
 
 const ElabelInfoEdit = ({
-  elabelInfo,
-  setElabelInfo,
+  editElabelInfo,
+  setEditElabelInfo,
   fetchEditElabelInfo,
   changeEditMode,
+  notice,
+  isError,
 }: ElabelInfoEditProps) => {
   return (
     <div className="relative ">
@@ -30,24 +34,26 @@ const ElabelInfoEdit = ({
         onSubmit={(e) => fetchEditElabelInfo(e)}
       >
         <p className="my-2 text-xl text-center ">編輯電子標籤</p>
+        {notice && <Notice isError={isError} />}
         <label htmlFor="LabelCode">標籤號碼</label>
         <input
           id="LabelCode"
           type="text"
-          value={elabelInfo.LabelCode}
+          value={editElabelInfo.LabelCode}
           onChange={(e) =>
-            setElabelInfo({ ...elabelInfo, LabelCode: e.target.value })
+            setEditElabelInfo({ ...editElabelInfo, LabelCode: e.target.value })
           }
           placeholder="標籤號碼"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+          disabled
         />
         <label htmlFor="eLabelSN">標籤SN</label>
         <input
           id="eLabelSN"
           type="text"
-          value={elabelInfo.eLabelSN}
+          value={editElabelInfo.eLabelSN}
           onChange={(e) =>
-            setElabelInfo({ ...elabelInfo, eLabelSN: e.target.value })
+            setEditElabelInfo({ ...editElabelInfo, eLabelSN: e.target.value })
           }
           placeholder="標籤SN"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
@@ -56,52 +62,46 @@ const ElabelInfoEdit = ({
         <input
           id="StationCode"
           type="text"
-          value={elabelInfo.eLabelSpec.StationCode}
+          value={editElabelInfo.StationCode}
           onChange={(e) =>
-            setElabelInfo({
-              ...elabelInfo,
-              eLabelSpec: {
-                ...elabelInfo.eLabelSpec,
-                StationCode: e.target.value,
-              },
+            setEditElabelInfo({
+              ...editElabelInfo,
+              StationCode: e.target.value,
             })
           }
           placeholder="站號"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+          disabled
         />
         <label htmlFor="ArticleID">ID</label>
         <input
           id="ArticleID"
           type="text"
-          value={elabelInfo.eLabelSpec.ArticleID}
+          value={editElabelInfo.ArticleID}
           onChange={(e) =>
-            setElabelInfo({
-              ...elabelInfo,
-              eLabelSpec: {
-                ...elabelInfo.eLabelSpec,
-                ArticleID: e.target.value,
-              },
+            setEditElabelInfo({
+              ...editElabelInfo,
+              ArticleID: e.target.value,
             })
           }
           placeholder="ID"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+          disabled
         />
         <label htmlFor="ArticleName">名稱</label>
         <input
           id="ArticleName"
           type="text"
-          value={elabelInfo.eLabelSpec.ArticleName}
+          value={editElabelInfo.ArticleName}
           onChange={(e) =>
-            setElabelInfo({
-              ...elabelInfo,
-              eLabelSpec: {
-                ...elabelInfo.eLabelSpec,
-                ArticleName: e.target.value,
-              },
+            setEditElabelInfo({
+              ...editElabelInfo,
+              ArticleName: e.target.value,
             })
           }
           placeholder="名稱"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+          disabled
         />
         <button className="p-2 my-2 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
           完成

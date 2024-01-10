@@ -10,7 +10,6 @@ export default function Page() {
   const [errorMessage, setErrorMessage] = useState("");
   const [waitLogin, setWaitLogin] = useState(false);
   const router = useRouter();
-
   const userLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setWaitLogin(true);

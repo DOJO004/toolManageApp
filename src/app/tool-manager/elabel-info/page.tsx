@@ -14,7 +14,6 @@ export default function Page() {
   // index
   const [newMode, setNewMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
-
   const [elabelList, setElabelList] = useState([
     {
       LabelCode: "",
@@ -26,12 +25,20 @@ export default function Page() {
     },
   ]);
 
+  const [notice, setNotice] = useState(false);
+  const [isError, setIsError] = useState(false);
+
   const changeNewMode = () => {
+    cleanNewElabelInput();
     setNewMode(!newMode);
+    setEditMode(false);
+    setNotice(false);
   };
 
   const changeEditMode = () => {
     setEditMode(!editMode);
+    setNewMode(false);
+    setNotice(false);
   };
 
   const fetchGetElabelSpecInfoList = async () => {
@@ -49,7 +56,7 @@ export default function Page() {
   }, []);
 
   //new
-  const [elabelInfo, setElabelInfo] = useState({
+  const [newElabelInfo, setNewElabelInfo] = useState({
     LabelCode: "",
     eLabelSN: "",
     eLabelSpec: {
@@ -61,18 +68,21 @@ export default function Page() {
 
   const fetchNewElabelInfo = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiAddElabelInfo(elabelInfo);
-    console.log(res);
+    const res = await apiAddElabelInfo(newElabelInfo);
+    console.log("new elabel info", res);
+    setNotice(true);
     if (res?.data?.Values?.ReqInt === 0) {
       cleanNewElabelInput();
       fetchGetElabelSpecInfoList();
+      setIsError(false);
     } else {
+      setIsError(true);
       console.log("add new elabel info false.");
     }
   };
 
   const cleanNewElabelInput = () => {
-    setElabelInfo({
+    setNewElabelInfo({
       LabelCode: "",
       eLabelSN: "",
       eLabelSpec: {
@@ -84,13 +94,24 @@ export default function Page() {
   };
 
   // edit
+  const [editElabelInfo, setEditElabelInfo] = useState({
+    LabelCode: "",
+    eLabelSN: "",
+    StationCode: "",
+    ArticleID: "",
+    ArticleName: "",
+    LastModify: "",
+  });
   const fetchEditElabelInfo = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiEditElabelInfo(elabelInfo);
+    const res = await apiEditElabelInfo(editElabelInfo);
     console.log(res);
+    setNotice(true);
     if (res?.data?.Values?.ReqInt === 0) {
+      setIsError(false);
       fetchGetElabelSpecInfoList();
     } else {
+      setIsError(true);
       console.log("edit elabel info false.");
     }
   };
@@ -102,7 +123,7 @@ export default function Page() {
     const res = await apiGetElabelInfoByLabelCode(labelCode, labelSN);
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
-      set;
+      setEditElabelInfo(res.data.Values.eLabelData);
     } else {
       console.log("get elabel info by label code false.");
     }
@@ -113,18 +134,22 @@ export default function Page() {
       <div className="mx-2">
         {newMode && (
           <ElabelInfoNew
-            elabelInfo={elabelInfo}
-            setElabelInfo={setElabelInfo}
+            newElabelInfo={newElabelInfo}
+            setNewElabelInfo={setNewElabelInfo}
             changeNewMode={changeNewMode}
             fetchNewElabelInfo={fetchNewElabelInfo}
+            notice={notice}
+            isError={isError}
           />
         )}
         {editMode && (
           <ElabelInfoEdit
-            elabelInfo={elabelInfo}
-            setElabelInfo={setElabelInfo}
+            editElabelInfo={editElabelInfo}
+            setEditElabelInfo={setEditElabelInfo}
             changeEditMode={changeEditMode}
             fetchEditElabelInfo={fetchEditElabelInfo}
+            notice={notice}
+            isError={isError}
           />
         )}
       </div>

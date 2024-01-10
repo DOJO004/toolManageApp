@@ -1,5 +1,6 @@
 import React, { FormEvent } from "react";
 import { CloseBtn } from "../buttons";
+import Notice from "../notice";
 interface ElabelInfoItem {
   LabelCode: string;
   eLabelSN: string;
@@ -10,17 +11,21 @@ interface ElabelInfoItem {
   };
 }
 interface ElabelInfoNewProps {
-  elabelInfo: ElabelInfoItem;
-  setElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
+  newElabelInfo: ElabelInfoItem;
+  setNewElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
   changeNewMode: () => void;
   fetchNewElabelInfo: (e: FormEvent) => void;
+  notice: boolean;
+  isError: boolean;
 }
 
 const ElabelInfoNew = ({
-  elabelInfo,
-  setElabelInfo,
+  newElabelInfo,
+  setNewElabelInfo,
   changeNewMode,
   fetchNewElabelInfo,
+  notice,
+  isError,
 }: ElabelInfoNewProps) => {
   return (
     <div className="relative ">
@@ -29,13 +34,14 @@ const ElabelInfoNew = ({
         onSubmit={(e) => fetchNewElabelInfo(e)}
       >
         <p className="text-xl text-center ">新增電子標籤</p>
+        {notice && <Notice isError={isError} />}
         <label htmlFor="LabelCode">標籤號碼</label>
         <input
           id="LabelCode"
           type="text"
-          value={elabelInfo.LabelCode}
+          value={newElabelInfo.LabelCode}
           onChange={(e) =>
-            setElabelInfo({ ...elabelInfo, LabelCode: e.target.value })
+            setNewElabelInfo({ ...newElabelInfo, LabelCode: e.target.value })
           }
           placeholder="標籤號碼"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
@@ -44,9 +50,9 @@ const ElabelInfoNew = ({
         <input
           id="eLabelSN"
           type="text"
-          value={elabelInfo.eLabelSN}
+          value={newElabelInfo.eLabelSN}
           onChange={(e) =>
-            setElabelInfo({ ...elabelInfo, eLabelSN: e.target.value })
+            setNewElabelInfo({ ...newElabelInfo, eLabelSN: e.target.value })
           }
           placeholder="標籤SN"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
@@ -55,12 +61,12 @@ const ElabelInfoNew = ({
         <input
           id="StationCode"
           type="text"
-          value={elabelInfo.eLabelSpec.StationCode}
+          value={newElabelInfo.eLabelSpec.StationCode}
           onChange={(e) =>
-            setElabelInfo({
-              ...elabelInfo,
+            setNewElabelInfo({
+              ...newElabelInfo,
               eLabelSpec: {
-                ...elabelInfo.eLabelSpec,
+                ...newElabelInfo.eLabelSpec,
                 StationCode: e.target.value,
               },
             })
@@ -72,12 +78,12 @@ const ElabelInfoNew = ({
         <input
           id="ArticleID"
           type="text"
-          value={elabelInfo.eLabelSpec.ArticleID}
+          value={newElabelInfo.eLabelSpec.ArticleID}
           onChange={(e) =>
-            setElabelInfo({
-              ...elabelInfo,
+            setNewElabelInfo({
+              ...newElabelInfo,
               eLabelSpec: {
-                ...elabelInfo.eLabelSpec,
+                ...newElabelInfo.eLabelSpec,
                 ArticleID: e.target.value,
               },
             })
@@ -89,12 +95,12 @@ const ElabelInfoNew = ({
         <input
           id="ArticleName"
           type="text"
-          value={elabelInfo.eLabelSpec.ArticleName}
+          value={newElabelInfo.eLabelSpec.ArticleName}
           onChange={(e) =>
-            setElabelInfo({
-              ...elabelInfo,
+            setNewElabelInfo({
+              ...newElabelInfo,
               eLabelSpec: {
-                ...elabelInfo.eLabelSpec,
+                ...newElabelInfo.eLabelSpec,
                 ArticleName: e.target.value,
               },
             })

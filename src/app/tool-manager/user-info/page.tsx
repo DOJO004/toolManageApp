@@ -1,11 +1,20 @@
 "use client";
 import UserInfoIndex from "@/app/ui/userInfo";
+import UserInfoEdit from "@/app/ui/userInfo/edit";
 import UserInfoNew from "@/app/ui/userInfo/new";
-import { apiGetUserAccountInfoList } from "@/scripts/api";
-import { useEffect, useState } from "react";
+import {
+  apiAddUserAccountInfo,
+  apiEditUserAccountInfo,
+  apiGetDepartmentInfoList,
+  apiGetUserAccountInfoByAccountID,
+  apiGetUserAccountInfoList,
+} from "@/scripts/api";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
   // index
+  const [notice, setNotice] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [newMode, setNewMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [userInfoList, setUserInfoList] = useState([
@@ -15,6 +24,7 @@ export default function Page() {
       UserID: "",
       EmployeeID: "",
       UserName: "",
+      Activated: "",
       CreateTime: "",
       LastModify: "",
     },
@@ -22,7 +32,8 @@ export default function Page() {
 
   const fetchGetUserInfoList = async () => {
     const res = await apiGetUserAccountInfoList();
-    console.log(res);
+    console.log("get user info list ", res);
+
     if (res?.data?.Values?.ReqInt === 0) {
       setUserInfoList(res.data.Values.AccountList);
     } else {
@@ -30,31 +41,149 @@ export default function Page() {
     }
   };
 
-  const changeNewMode = () => setNewMode(!newMode);
+  const changeNewMode = () => {
+    setNewMode(!newMode);
+    setEditMode(false);
+    setNotice(false);
+  };
+  const changeEditMode = () => {
+    setEditMode(!editMode);
+    setNewMode(false);
+    setNotice(false);
+  };
 
   useEffect(() => {
     fetchGetUserInfoList();
   }, []);
 
   // new
+  const [departmentInfoList, setDepartmentInfoList] = useState([
+    {
+      DepartmentID: "",
+      Name: "",
+    },
+  ]);
+
   const [userInfo, setUserInfo] = useState({
-    OperatorID: "",
     DepartmentID: "",
     UserAccount: "",
     EmployeeID: "",
-    UserName: " ",
+    UserName: "",
     Password: "",
     EMailAddress: "",
     Permissions: ["ToolStatus_W", "ToolStatus_R"],
   });
+
+  const fetchAddNewUser = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiAddUserAccountInfo(userInfo);
+    console.log(res);
+    setNotice(true);
+    if (res?.data?.Values?.ReqInt === 0) {
+      fetchGetUserInfoList();
+      setIsError(false);
+    } else {
+      setIsError(true);
+      console.log("add new user info false.");
+    }
+  };
+
+  const fetchGetDepartmentInfoList = async () => {
+    const res = await apiGetDepartmentInfoList();
+
+    if (res?.data?.Values?.ReqInt === 0) {
+      setDepartmentInfoList(res.data.Values.DepartmentList);
+    } else {
+      console.log("get department info list false.");
+    }
+  };
+
+  useEffect(() => {
+    fetchGetDepartmentInfoList();
+  }, []);
+
+  // edit
+  const [editUserInfo, setEditUserInfo] = useState({
+    AccountID: "",
+    Department: "",
+    UserID: "",
+    EmployeeID: "",
+    UserName: "",
+    Activated: "",
+    CreateTime: "",
+    LastModify: "",
+  });
+
+  const [editUserAccountAndPassword, setEditUserAccountAndPassword] = useState({
+    Email: "",
+    Password: "",
+  });
+
+  const fetchEditUserInfo = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiEditUserAccountInfo(
+      editUserInfo,
+      editUserAccountAndPassword
+    );
+    setNotice(true);
+    console.log("redit user info", res);
+    if (res?.data?.Values?.ReqInt === 0) {
+      setIsError(false);
+    } else {
+      setIsError(true);
+      console.log("edit user info false.");
+    }
+  };
+
+  const fetchGetUserInfoByUserAccount = async (accountID: string) => {
+    const res = await apiGetUserAccountInfoByAccountID(accountID);
+    if (!editMode) {
+      console.log("get user info by user account ", res);
+      if (res?.data?.Values?.ReqInt === 0) {
+        setEditUserInfo(res.data.Values.AccountData);
+      } else {
+        console.log("get user info by account id false.");
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(editUserInfo);
+  }, [editUserInfo]);
+
   return (
     <div className="flex flex-col md:flex-row">
       <div className="mx-2 ">
-        {newMode && <UserInfoNew changeNewMode={changeNewMode} />}
+        {newMode && (
+          <UserInfoNew
+            departmentInfoList={departmentInfoList}
+            userInfo={userInfo}
+            setUserInfo={setUserInfo}
+            changeNewMode={changeNewMode}
+            fetchAddNewUser={fetchAddNewUser}
+            notice={notice}
+            isError={isError}
+          />
+        )}
+        {editMode && (
+          <UserInfoEdit
+            departmentInfoList={departmentInfoList}
+            editUserInfo={editUserInfo}
+            setEditUserInfo={setEditUserInfo}
+            editUserAccountAndPassword={editUserAccountAndPassword}
+            setEditUserAccountAndPassword={setEditUserAccountAndPassword}
+            fetchEditUserInfo={fetchEditUserInfo}
+            changeEditMode={changeEditMode}
+            notice={notice}
+            isError={isError}
+          />
+        )}
       </div>
       <UserInfoIndex
         userInfoList={userInfoList}
         changeNewMode={changeNewMode}
+        changeEditMode={changeEditMode}
+        fetchGetUserInfoByUserAccount={fetchGetUserInfoByUserAccount}
       />
     </div>
   );

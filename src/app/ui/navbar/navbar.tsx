@@ -6,8 +6,10 @@ import ToolStatusMenu from "./toolInfoMenu/menu";
 import MachineInfoMenu from "./machineInfoMenu/menu";
 import { useState } from "react";
 import User from "./user";
-import ElabelInfoMenu from "./elabelInfoMenu/menu";
+import ELabelInfoMenu from "./eLabelInfoMenu/menu";
 import UserInfoMenu from "./userInfoMenu/menu";
+import ReturnToolMenu from "../returnTool/returnToolMenu";
+import ReceiveToolMenu from "./receiveToolMenu/receiveToolMenu";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -63,8 +65,8 @@ const Navbar = () => {
       path: "/tool-manager/machine-info",
     },
     {
-      src: "/elabelInfo.png",
-      alt: "elabelInfo",
+      src: "/eLabelInfo.png",
+      alt: "eLabelInfo",
       width: 30,
       height: 30,
       name: "電子標籤資訊",
@@ -82,7 +84,7 @@ const Navbar = () => {
 
   return (
     <div className="md:flex">
-      <div className="relative text-center bg-gray-900 rounded-xl md:max-w-28 md:h-screen">
+      <div className="relative text-center bg-gray-900 rounded-xl md:max-w-28  md:h-[800px]">
         <div className="flex justify-center mb-4 md:justify-start">
           <Image
             src={"/logo.png"}
@@ -109,6 +111,12 @@ const Navbar = () => {
           openMenu ? "block" : "hidden"
         } bg-gray-900 rounded-xl min-w-32`}
       >
+        {clickItemName === "歸還刀具" && (
+          <ReturnToolMenu setOpenMenu={setOpenMenu} />
+        )}
+        {clickItemName === "領取刀具" && (
+          <ReceiveToolMenu setOpenMenu={setOpenMenu} />
+        )}
         {clickItemName === "刀具資訊" && (
           <ToolStatusMenu setOpenMenu={setOpenMenu} />
         )}
@@ -116,7 +124,7 @@ const Navbar = () => {
           <MachineInfoMenu setOpenMenu={setOpenMenu} />
         )}
         {clickItemName === "電子標籤資訊" && (
-          <ElabelInfoMenu setOpenMenu={setOpenMenu} />
+          <ELabelInfoMenu setOpenMenu={setOpenMenu} />
         )}
         {clickItemName === "使用者資訊" && (
           <UserInfoMenu setOpenMenu={setOpenMenu} />

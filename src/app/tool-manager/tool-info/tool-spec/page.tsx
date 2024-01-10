@@ -1,4 +1,5 @@
 "use client";
+import PageController from "@/app/ui/pageController/pageController";
 import ToolSpecIndex from "@/app/ui/toolInfo/toolSpec";
 import ToolSpecEdit from "@/app/ui/toolInfo/toolSpec/edit";
 import ToolSpecNew from "@/app/ui/toolInfo/toolSpec/new";
@@ -14,18 +15,35 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 export default function Page() {
+  // pageController
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const [totalCountItem, setTotalCountItem] = useState(0);
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const exPage = () => {
+    setCurrentPage((prev) => prev - 1);
+  };
+
   // index
   const [toolSpecList, setToolSpecList] = useState([]);
   const [newMode, setNewMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editModeIndex, setEditModeIndex] = useState(-1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [newCurrentPage, setNewCurrentPage] = useState(1);
   const [notice, setNotice] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const fetchToolSpecList = async () => {
     const res = await apiGetToolSpecList();
+    console.log("tool spec list", res);
+
     if (res?.data?.Values?.ReqInt === 0) {
+      setTotalPage(res.data.Values.TotalPages);
+      setTotalCountItem(res.data.Values.ToolsSpecList.length);
       setToolSpecList(res.data.Values.ToolsSpecList);
     } else {
       console.log("get tool spec list false.");
@@ -35,12 +53,12 @@ export default function Page() {
   const changeNewMode = () => {
     setNewMode(!newMode);
     setEditMode(false);
-    setCurrentPage(1);
+    setNewCurrentPage(1);
   };
 
   const changeEditMode = (index?: number) => {
     setEditModeIndex(index);
-    setCurrentPage(1);
+    setNewCurrentPage(1);
     if (index === editModeIndex) {
       setEditMode(!editMode);
     } else {
@@ -53,16 +71,16 @@ export default function Page() {
     setNewMode(false);
   };
 
-  const nextPage = () => {
-    setCurrentPage((prev) => prev + 1);
+  const newNextPage = () => {
+    setNewCurrentPage((prev) => prev + 1);
   };
 
-  const prevPage = () => {
-    setCurrentPage((prev) => prev - 1);
+  const newPrevPage = () => {
+    setNewCurrentPage((prev) => prev - 1);
   };
 
   const resetPage = () => {
-    setCurrentPage(1);
+    setNewCurrentPage(1);
   };
 
   useEffect(() => {
@@ -176,7 +194,7 @@ export default function Page() {
     setNotice(true);
     if (res?.data?.Values?.ReqInt === 0) {
       fetchToolSpecList();
-      setCurrentPage(1);
+      setNewCurrentPage(1);
       setIsError(false);
     } else {
       console.log("edit tool spec info false.");
@@ -189,6 +207,8 @@ export default function Page() {
     const confirm = confirmDisable();
     if (confirm) {
       const res = await disabledToolInfo(editToolSpec.ToolSpecID);
+      console.log("delete", res);
+
       if (res?.data?.Values?.ReqInt === 0) {
         fetchToolSpecList();
         setEditMode(false);
@@ -208,9 +228,9 @@ export default function Page() {
             setToolSpecInfo={setToolSpecInfo}
             fetchNewToolSpecInfo={fetchNewToolSpecInfo}
             changeNewMode={changeNewMode}
-            currentPage={currentPage}
-            nextPage={nextPage}
-            prevPage={prevPage}
+            currentPage={newCurrentPage}
+            nextPage={newNextPage}
+            prevPage={newPrevPage}
             notice={notice}
             isError={isError}
           />
@@ -222,21 +242,30 @@ export default function Page() {
             setEditToolSpec={setEditToolSpec}
             fetchEditToolInfo={fetchEditToolInfo}
             fetchDisableToolSpecInfo={fetchDisableToolSpecInfo}
-            currentPage={currentPage}
-            nextPage={nextPage}
-            prevPage={prevPage}
+            currentPage={newCurrentPage}
+            nextPage={newNextPage}
+            prevPage={newPrevPage}
             notice={notice}
             isError={isError}
             changeMode={changeEditMode}
           />
         )}
       </div>
-      <ToolSpecIndex
-        toolSpecList={toolSpecList}
-        changeNewMode={changeNewMode}
-        changeEditMode={changeEditMode}
-        fetchGetToolInfoByID={fetchGetToolInfoByID}
-      />
+      <div>
+        <ToolSpecIndex
+          toolSpecList={toolSpecList}
+          changeNewMode={changeNewMode}
+          changeEditMode={changeEditMode}
+          fetchGetToolInfoByID={fetchGetToolInfoByID}
+        />
+        <PageController
+          totalCountItem={totalCountItem}
+          nextPage={nextPage}
+          exPage={exPage}
+          currentPage={currentPage}
+          totalPage={totalPage}
+        />
+      </div>
     </div>
   );
 }

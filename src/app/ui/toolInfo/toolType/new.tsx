@@ -44,7 +44,7 @@ const ToolTypeNew = ({
           value={toolTypeName}
           onChange={(e) => setToolTypeName(e.target.value)}
         />
-        <button className="p-2 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
+        <button className="p-2 mt-4 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
           新增
         </button>
       </form>
