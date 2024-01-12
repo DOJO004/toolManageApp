@@ -17,6 +17,8 @@ export default function Page() {
 
   const fetchGetToolStocks = async () => {
     const res = await apiGetToolStockList();
+    console.log("get tool stock list", res);
+
     if (res?.data?.Values?.ReqInt === 0) {
       setToolStockList(res.data.Values.ToolStockList);
     } else {

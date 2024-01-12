@@ -10,6 +10,7 @@ import {
   disabledProductLineInfo,
 } from "@/scripts/api";
 import { useEffect, useState, FormEvent } from "react";
+import { PostAddProductLineInfo } from "@/scripts/seed";
 
 export default function Page() {
   // index
@@ -22,7 +23,7 @@ export default function Page() {
 
   const fetchGetProductLineList = async (index?: number) => {
     const res = await apiGetProductLineInfoList();
-    console.log(index);
+    console.log("get product line info list", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
       if (index || index === 0) {
@@ -116,7 +117,10 @@ export default function Page() {
 
   return (
     <div className="flex flex-col justify-center md:flex-row">
-      {newMode && (
+      <div
+        className={`absolute z-10 top-60 transition-all duration-300
+          ${newMode ? " translate-y-0" : "-translate-y-[40rem]"}`}
+      >
         <ProductLineNew
           productLineID={productLineID}
           setProductLineID={setProductLineID}
@@ -127,7 +131,7 @@ export default function Page() {
           notice={notice}
           isError={isError}
         />
-      )}
+      </div>
 
       {editMode && (
         <ProductLineEdit

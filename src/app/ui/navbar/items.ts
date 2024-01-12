@@ -5,7 +5,7 @@ const navbarItem = [
         width:30,
         height:30,
         name:"領取刀具",
-        path:"/tool-manager/return-tool"
+        path:"/tool-manager/receive-tool"
     },
     {
         src:"/receiveTool.png",
@@ -13,7 +13,7 @@ const navbarItem = [
         width:30,
         height:30,
         name:"歸還刀具",
-        path:"/tool-manager/receive-tool"
+        path:"/tool-manager/return-tool"
     },
     {
         src:"/repairAndScrap.png",

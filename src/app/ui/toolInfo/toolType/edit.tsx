@@ -1,4 +1,3 @@
-import Notice from "@/app/ui/notice";
 import React, { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { DeleteBtn } from "../../buttons";
@@ -14,8 +13,6 @@ interface ToolTypeEditProps {
   fetchEditToolType: (e: FormEvent) => void;
   fetchDisableToolType: () => void;
   changeEditMode: () => void;
-  notice: boolean;
-  isError: boolean;
 }
 
 const ToolTypeEdit = ({
@@ -24,18 +21,15 @@ const ToolTypeEdit = ({
   fetchEditToolType,
   fetchDisableToolType,
   changeEditMode,
-  notice,
-  isError,
 }: ToolTypeEditProps) => {
   const router = useRouter();
   return (
     <div className="relative mb-2 md:mx-2">
       <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 rounded-xl"
+        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border-2 rounded-xl"
         onSubmit={(e) => fetchEditToolType(e)}
       >
         <p className="text-xl text-center">編輯刀具類型</p>
-        {notice && <Notice isError={isError} />}
         <label htmlFor="ToolTypeID">ID</label>
         <input
           id="ToolTypeID"
