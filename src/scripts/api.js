@@ -994,6 +994,7 @@ export const apiGetELabelBindStatusInfoList = async()=>{
     }
 }
 
+
 // bind tool to eLabel
 export const apiBindToolToELabel = async(bindToolInfo)=>{
     const body = {
@@ -1004,11 +1005,11 @@ export const apiBindToolToELabel = async(bindToolInfo)=>{
           "Tag2Tool_W"
         ],
         "eLabelToolInfo": {
-          "eLabelSN": bindToolInfo.eLabelSN,
           "LabelCode": bindToolInfo.LabelCode,
           "ToolSN": bindToolInfo.ToolSN
         }
       }
+      console.log("bing tool body", body);
     try{
         const res = await apiInstance.post("elabel_info/SelectEToolCodeInfo",body)
         return res
@@ -1019,7 +1020,89 @@ export const apiBindToolToELabel = async(bindToolInfo)=>{
     }
 }
 
-export const confirmDisable=()=>{
-    const res = window.confirm("確定刪除嗎?")
+// disabled e tool code info
+export const apiDisabledEToolCodeInfo = async(eLabelCode)=>{
+    const body = {
+        "eLToolCode": eLabelCode,
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ]
+      }
+      console.log("return tool body", body);
+    try{
+        const res = await apiInstance.post("elabel_info/DisabledEToolCodeInfo",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+// get aims aps connect info list
+export const apiGetAimsAPsConnectInfoList = async()=>{
+    const body = {
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "RecordsPerPage": 10,
+        "PageNo": 1,
+        "status": "",
+        "stationCode": ""
+      }
+      
+    try{
+        const res = await apiInstance.post("aims_info/GetAimsAPsConnectInfoList",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+// sync eLabel Data From Aims
+export const apiSyncELabelFromAims = async()=>{
+    const body = {
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ]
+      }
+    try{
+        const res = await apiInstance.post("aims_info/SyncELabelDataFromAims",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+// get aims articles list
+export const apiGetAimsArticlesList = async(stationCode)=>{
+    const body = {
+        "stationCode": stationCode
+      }
+    try{
+        const res = await apiInstance.post("aims_info/GetAimsArticlesList",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+export const confirmDisable=(text="確定刪除嗎")=>{
+    const res = window.confirm(text)
     return res
 }

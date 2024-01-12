@@ -219,7 +219,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col justify-center md:flex-row">
       <div className="md:mx-2">
         {newMode && (
           <ToolSpecNew

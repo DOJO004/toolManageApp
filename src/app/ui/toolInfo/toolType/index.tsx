@@ -24,7 +24,7 @@ const ToolTypeIndex = ({
   changeNewMode,
 }: ToolTypeIndexProps) => {
   return (
-    <div className=" relative w-full h-[500px] overflow-auto p-2 text-center bg-gray-900 rounded-xl min-w-72 md:h-fit">
+    <div className=" relative w-full h-[500px] overflow-auto p-2 text-center bg-gray-900 rounded-xl min-w-72 md:h-[1056px]">
       <Suspense fallback={<ToolTypeIndexTitleLoading />}>
         <div className="absolute top-1 right-3 ">
           <AddBtn changeNewMode={changeNewMode} />

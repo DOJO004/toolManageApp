@@ -20,9 +20,9 @@ const MachineTypeIndex = ({
   fetchGetMachineTypeList,
 }: MachineTypeIndexProps) => {
   return (
-    <div className="relative w-full p-2 mx-auto text-center bg-gray-900 min-w-fit rounded-xl">
+    <div className="relative p-2 text-center bg-gray-900 mx-2 rounded-xl max-w-[800px]">
       <p className="text-xl">設備類型</p>
-      <div className="grid grid-cols-3 gap-2 p-1 bg-gray-800 rounded-xl">
+      <div className="grid grid-cols-3 gap-2 p-1 bg-gray-800 rounded-xl ">
         <div className="truncate ">設備ID</div>
         <div className="truncate ">設備名稱</div>
         <div className="truncate ">編輯</div>

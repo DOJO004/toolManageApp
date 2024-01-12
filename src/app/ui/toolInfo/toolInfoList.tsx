@@ -23,16 +23,12 @@ interface ToolInfoListItem {
 
 interface ToolInfoListProps {
   toolStatusList: ToolInfoListItem[];
-  setSelectToolID: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ToolInfoList = ({
-  toolStatusList,
-  setSelectToolID,
-}: ToolInfoListProps) => {
+const ToolInfoList = ({ toolStatusList }: ToolInfoListProps) => {
   return (
     <>
-      <div className="p-1 my-1 overflow-auto bg-gray-900 rounded-xl max-h-[32rem]">
+      <div className="p-1 my-1 bg-gray-900 rounded-xl ">
         <div className="grid grid-cols-6 gap-2 text-center ">
           <div className="truncate">刀具序號</div>
           <div className="truncate">狀態/修整次數</div>
@@ -46,7 +42,6 @@ const ToolInfoList = ({
             <div
               key={index}
               className="grid grid-cols-6 gap-2 text-center cursor-pointer hover:bg-indigo-500"
-              onClick={() => setSelectToolID(item.ToolSpecID)}
             >
               <div className="truncate ">{item.ToolSN}</div>
               <div className="truncate ">

@@ -16,6 +16,7 @@ interface ElabelInfoEditProps {
   fetchEditElabelInfo: (e: FormEvent) => void;
   changeEditMode: () => void;
   notice: boolean;
+  setNotice: React.Dispatch<React.SetStateAction<boolean>>;
   isError: boolean;
 }
 
@@ -25,6 +26,7 @@ const ElabelInfoEdit = ({
   fetchEditElabelInfo,
   changeEditMode,
   notice,
+  setNotice,
   isError,
 }: ElabelInfoEditProps) => {
   return (
@@ -34,7 +36,7 @@ const ElabelInfoEdit = ({
         onSubmit={(e) => fetchEditElabelInfo(e)}
       >
         <p className="my-2 text-xl text-center ">編輯電子標籤</p>
-        {notice && <Notice isError={isError} />}
+        <Notice notice={notice} setNotice={setNotice} isError={isError} />
         <label htmlFor="LabelCode">標籤號碼</label>
         <input
           id="LabelCode"

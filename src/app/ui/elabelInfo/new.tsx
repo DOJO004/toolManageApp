@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import { CloseBtn } from "../buttons";
 import Notice from "../notice";
+import { options } from "prettier-plugin-tailwindcss";
 interface ElabelInfoItem {
   LabelCode: string;
   eLabelSN: string;
@@ -10,23 +11,47 @@ interface ElabelInfoItem {
     ArticleName: string;
   };
 }
+
+interface StationCodeItem {
+  APsCode: string;
+}
+
+interface ELabelListItem {
+  LabelCode: string;
+  eLabelSN: string;
+  StationCode: string;
+  ArticleID: string;
+  ArticleName: string;
+  LastModify: string;
+}
+
 interface ElabelInfoNewProps {
+  selectArticleIDIndex: number;
+  eLabelList: ELabelListItem[];
+  stationCode: StationCodeItem[];
   newElabelInfo: ElabelInfoItem;
   setNewElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
   changeNewMode: () => void;
   fetchNewElabelInfo: (e: FormEvent) => void;
   notice: boolean;
+  setNotice: React.Dispatch<React.SetStateAction<boolean>>;
   isError: boolean;
 }
 
 const ElabelInfoNew = ({
+  selectArticleIDIndex,
+  eLabelList,
+  stationCode,
   newElabelInfo,
   setNewElabelInfo,
   changeNewMode,
   fetchNewElabelInfo,
   notice,
+  setNotice,
   isError,
 }: ElabelInfoNewProps) => {
+  console.log("new aps code ", stationCode);
+
   return (
     <div className="relative ">
       <form
@@ -34,7 +59,7 @@ const ElabelInfoNew = ({
         onSubmit={(e) => fetchNewElabelInfo(e)}
       >
         <p className="text-xl text-center ">新增電子標籤</p>
-        {notice && <Notice isError={isError} />}
+        <Notice notice={notice} setNotice={setNotice} isError={isError} />
         <label htmlFor="LabelCode">標籤號碼</label>
         <input
           id="LabelCode"
@@ -58,44 +83,39 @@ const ElabelInfoNew = ({
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         />
         <label htmlFor="StationCode">站號</label>
-        <input
-          id="StationCode"
-          type="text"
-          value={newElabelInfo.eLabelSpec.StationCode}
-          onChange={(e) =>
-            setNewElabelInfo({
-              ...newElabelInfo,
-              eLabelSpec: {
-                ...newElabelInfo.eLabelSpec,
-                StationCode: e.target.value,
-              },
-            })
-          }
-          placeholder="站號"
+        <select
+          defaultValue=""
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-        />
+        >
+          <option value="" className="text-black" disabled>
+            請選擇站號
+          </option>
+          {stationCode.map((item, index) => (
+            <option value={item.APsCode} key={index} className="text-black ">
+              {item.APsCode}
+            </option>
+          ))}
+        </select>
+
         <label htmlFor="ArticleID">ID</label>
-        <input
-          id="ArticleID"
-          type="text"
-          value={newElabelInfo.eLabelSpec.ArticleID}
-          onChange={(e) =>
-            setNewElabelInfo({
-              ...newElabelInfo,
-              eLabelSpec: {
-                ...newElabelInfo.eLabelSpec,
-                ArticleID: e.target.value,
-              },
-            })
-          }
-          placeholder="ID"
+        <select
+          defaultValue=""
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-        />
+        >
+          <option value="" className="text-gray-500" disabled>
+            請選擇 ArticleID
+          </option>
+          {eLabelList.map((item, index) => (
+            <option value={item.ArticleID} key={index} className="text-black ">
+              {item.ArticleID}
+            </option>
+          ))}
+        </select>
+
         <label htmlFor="ArticleName">名稱</label>
         <input
           id="ArticleName"
           type="text"
-          value={newElabelInfo.eLabelSpec.ArticleName}
           onChange={(e) =>
             setNewElabelInfo({
               ...newElabelInfo,
@@ -107,6 +127,7 @@ const ElabelInfoNew = ({
           }
           placeholder="名稱"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+          readOnly
         />
         <button className="p-2 my-2 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
           完成

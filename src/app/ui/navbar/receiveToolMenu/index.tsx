@@ -1,48 +1,54 @@
 interface BindingToolItem {
-  LabelCode: "09C84C62B192";
-  eLabelSN: "";
-  StationCode: "AP10000";
-  BindStatus: "Unbinding";
-  eLToolCode: "00000000-0000-0000-0000-000000000000";
-  ToolSN: "";
+  LabelCode: string;
+  eLabelSN: string;
+  StationCode: string;
+  BindStatus: string;
+  eLToolCode: string;
+  ToolSN: string;
   ToolSpec: {
-    ToolSpecID: "";
-    ToolType: "";
-    ToolName: "";
+    ToolSpecID: string;
+    ToolType: string;
+    ToolName: string;
   };
-  LastModify: "2024-01-09 17:00:00";
+  LastModify: string;
 }
 interface ReceiveToolIndexProps {
-  bindingToolList: BindingToolItem;
+  bindingToolList: BindingToolItem[];
 }
-export default function ReceiveToolIndex() {
+export default function ReceiveToolIndex({
+  bindingToolList,
+}: ReceiveToolIndexProps) {
   return (
-    <form className="flex flex-col justify-center w-full max-w-sm p-4 mx-auto mb-2 bg-gray-900 rounded-xl">
-      <p className="text-xl text-center ">領取刀具</p>
-      <label htmlFor="labelCode">標籤代碼</label>
-      <input
-        id="labelCode"
-        type="text"
-        className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72 "
-        placeholder="標籤代碼"
-      />
-      <label htmlFor="readerID">讀取器ID</label>
-      <input
-        id="readerID"
-        type="text"
-        className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72 "
-        placeholder="讀取器ID"
-      />
-      <label htmlFor="AtcIndex">AtcIndex</label>
-      <input
-        id="AtcIndex"
-        type="text"
-        className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72 "
-        placeholder="AtcIndex"
-      />
-      <button className="p-2 mt-4 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
-        領取
-      </button>
-    </form>
+    <div className="flex flex-col overflow-auto bg-gray-900 rounded-xl">
+      <p className="mt-2 text-xl text-center">領取刀具</p>
+      <table className="w-full m-2">
+        <thead className="text-center ">
+          <tr className="p-1 ">
+            <td className="p-1">ToolSpecID</td>
+            <td className="p-1">ToolType</td>
+            <td className="p-1">ToolName</td>
+            <td className="p-1">LabelCode</td>
+            <td className="p-1">ELabelSN</td>
+            <td className="p-1">StationCode</td>
+            <td className="p-1">Receive</td>
+          </tr>
+        </thead>
+        <tbody className="text-center">
+          {bindingToolList.map((item, index) => (
+            <tr key={index}>
+              <td className="p-1">{item.ToolSpec.ToolSpecID}</td>
+              <td className="p-1">{item.ToolSpec.ToolType}</td>
+              <td className="p-1">{item.ToolSpec.ToolName}</td>
+              <td className="p-1">{item.LabelCode}</td>
+              <td className="p-1">{item.eLabelSN}</td>
+              <td className="p-1">{item.StationCode}</td>
+              <td className="p-1">
+                <button>領取</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

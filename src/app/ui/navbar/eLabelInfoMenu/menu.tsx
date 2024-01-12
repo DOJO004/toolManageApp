@@ -9,14 +9,7 @@ const ELabelInfoMenu = ({ setOpenMenu }: ELabelInfoMenuProps) => {
       href: "/tool-manager/elabel-info",
       src: "/barcode.png",
       alt: "overView",
-      text: "電子標籤列表",
-    },
-    {
-      id: "2",
-      href: "/tool-manager/elabel-info/bind-tool",
-      src: "/binding.png",
-      alt: "binding",
-      text: "綁定刀具",
+      text: "標籤列表",
     },
   ];
   return (

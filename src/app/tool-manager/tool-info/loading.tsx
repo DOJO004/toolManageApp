@@ -1,7 +1,5 @@
+import { ToolTypeLoading } from "@/app/ui/toolInfo/toolType/loading";
+
 export default function Loading() {
-  return (
-    <div>
-      <p className="text-center">Loading...</p>
-    </div>
-  );
+  return <ToolTypeLoading />;
 }

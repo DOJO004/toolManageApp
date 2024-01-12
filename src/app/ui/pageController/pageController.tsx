@@ -1,12 +1,12 @@
 interface PageControllerProps {
-  totalCountItem: number;
+  totalRecords: number;
   currentPage: number;
   totalPage: number;
   nextPage: () => void;
   exPage: () => void;
 }
 const PageController = ({
-  totalCountItem,
+  totalRecords,
   currentPage,
   totalPage,
   nextPage,
@@ -15,7 +15,7 @@ const PageController = ({
   return (
     <div className="flex items-center justify-between mt-1 bg-gray-900 rounded-xl ">
       <div className="mx-4 text-sm">
-        <p>總數：{totalCountItem}</p>
+        <p>總數：{totalRecords}</p>
       </div>
       <div className="flex">
         <p

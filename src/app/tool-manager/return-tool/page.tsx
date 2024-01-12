@@ -1,51 +1,97 @@
 "use client";
 
-import { apiGetElabelBindStatusInfoList } from "@/scripts/api";
+import Notice from "@/app/ui/notice";
+import {
+  apiDisabledEToolCodeInfo,
+  apiGetELabelBindStatusInfoList,
+  confirmDisable,
+} from "@/scripts/api";
 import { useEffect, useState } from "react";
 
-export default function Page() {
-  const [elabelBindStatusInfoList, setElabelBindStatusInfoList] = useState({});
+interface ELToolBindStatusItem {
+  LabelCode: string;
+  eLabelSN: string;
+  StationCode: string;
+  BindStatus: string;
+  eLToolCode: string;
+  ToolSN: string;
+  ToolSpec: {
+    ToolSpecID: string;
+    ToolType: string;
+    ToolName: string;
+  };
+  LastModify: string;
+}
 
-  const fetchGetElabelBindStatusInfoList = async () => {
-    const res = await apiGetElabelBindStatusInfoList();
+export default function Page() {
+  const [eLabelBindStatusInfoList, setELabelBindStatusInfoList] = useState<
+    ELToolBindStatusItem[]
+  >([]);
+  const [notice, setNotice] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const fetchGetELabelBindStatusInfoList = async () => {
+    const res = await apiGetELabelBindStatusInfoList();
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
-      setElabelBindStatusInfoList(res.data.Values.eLToolBingStatusList);
+      setELabelBindStatusInfoList(
+        res.data.Values.eLToolBindStatusList.filter(
+          (item: ELToolBindStatusItem) => item.BindStatus === "Standby"
+        )
+      );
     } else {
-      console.log("get elabel bind status list false.");
+      console.log("get eLabel bind status list false.");
+    }
+  };
+
+  const fetchReturnTool = async (eLabelCode: string) => {
+    const confirm = confirmDisable("確定歸還嗎?");
+    if (confirm) {
+      setNotice(true);
+      const res = await apiDisabledEToolCodeInfo(eLabelCode);
+      console.log(res);
+
+      if (res?.data?.Values?.ReqInt === 0) {
+        setIsError(false);
+        fetchGetELabelBindStatusInfoList();
+      } else {
+        setIsError(true);
+        console.log(" return tool false.");
+      }
     }
   };
 
   useEffect(() => {
-    fetchGetElabelBindStatusInfoList();
+    fetchGetELabelBindStatusInfoList();
   }, []);
   return (
-    <form className="flex flex-col justify-center w-full p-4 mb-2 bg-gray-900 rounded-xl">
-      <p className="text-xl text-center ">歸還刀具</p>
-      <label htmlFor="elabelSN">電子標籤SN</label>
-      <input
-        id="elabelSN"
-        type="text"
-        className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-        placeholder="電子標籤SN"
-      />
-      <label htmlFor="labelCode">標籤號碼</label>
-      <input
-        id="labelCode"
-        type="text"
-        className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-        placeholder="標籤號碼"
-      />
-      <label htmlFor="toolSN">刀具SN</label>
-      <input
-        id="toolSN"
-        type="text"
-        className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-        placeholder="刀具SN"
-      />
-      <button className="p-2 mt-4 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
-        歸還
-      </button>
-    </form>
+    <div className="p-2 mr-4 bg-gray-900 rounded-md md:max-w-[800px] flex  flex-col justify-center">
+      <p className="text-2xl text-center ">歸還刀具</p>
+      <table className="w-full text-center">
+        <thead>
+          <tr className="font-bold ">
+            <td>標籤號碼</td>
+            <td>刀具SN</td>
+            <td>歸還</td>
+          </tr>
+        </thead>
+        <tbody>
+          {eLabelBindStatusInfoList.map((item, index) => (
+            <tr key={index}>
+              <td>{item.LabelCode}</td>
+              <td>{item.ToolSN}</td>
+              <td>
+                <button onClick={() => fetchReturnTool(item.LabelCode)}>
+                  歸還
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div>
+        <Notice notice={notice} setNotice={setNotice} isError={isError} />
+      </div>
+    </div>
   );
 }

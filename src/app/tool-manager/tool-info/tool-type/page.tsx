@@ -157,6 +157,7 @@ export default function Page() {
           setToolTypeName={setToolTypeName}
           fetchNewToolType={fetchNewToolType}
           notice={notice}
+          setNotice={setNotice}
           isError={isError}
           changeNewMode={changeNewMode}
         />

@@ -1,21 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import LinkBtn from "./linkBtn";
+import Link from "next/link";
 import ToolStatusMenu from "./toolInfoMenu/menu";
 import MachineInfoMenu from "./machineInfoMenu/menu";
-import { useState } from "react";
-import User from "./user";
+import React, { useState } from "react";
 import ELabelInfoMenu from "./eLabelInfoMenu/menu";
 import UserInfoMenu from "./userInfoMenu/menu";
-import ReturnToolMenu from "../returnTool/returnToolMenu";
-import ReceiveToolMenu from "./receiveToolMenu/receiveToolMenu";
+import navbarItem from "./items";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [clickItemName, setClickItemName] = useState("");
 
-  const navbarToggle = (name: string) => {
+  const handleNavbarMenu = (name: string) => {
+    console.log("name", name);
+
     if (clickItemName != name) {
       setOpenMenu(true);
     } else {
@@ -23,116 +23,80 @@ const Navbar = () => {
     }
     setClickItemName(name);
   };
-  const linkItem = [
-    {
-      src: "/returnTool.png",
-      alt: "returnTool",
-      width: 30,
-      height: 30,
-      name: "歸還刀具",
-      path: "/tool-manager/return-tool",
-    },
-    {
-      src: "/receiveTool.png",
-      alt: "receiveTool",
-      width: 30,
-      height: 30,
-      name: "領取刀具",
-      path: "/tool-manager/receive-tool",
-    },
-    {
-      src: "/repairAndScrap.png",
-      alt: "repairAndScrap",
-      width: 30,
-      height: 30,
-      name: "修整/報廢",
-      path: "repair-and-scrap",
-    },
-    {
-      src: "/toolInfo.png",
-      alt: "toolInfo",
-      width: 30,
-      height: 30,
-      name: "刀具資訊",
-      path: "/tool-manager/tool-info",
-    },
-    {
-      src: "/machineInfo.png",
-      alt: "machineInfo",
-      width: 30,
-      height: 30,
-      name: "設備資訊",
-      path: "/tool-manager/machine-info",
-    },
-    {
-      src: "/eLabelInfo.png",
-      alt: "eLabelInfo",
-      width: 30,
-      height: 30,
-      name: "電子標籤資訊",
-      path: "/tool-manager/elabel-info",
-    },
-    {
-      src: "/userInfo.png",
-      alt: "userInfo",
-      width: 30,
-      height: 30,
-      name: "使用者資訊",
-      path: "/tool-manager/user-info",
-    },
-  ];
 
   return (
     <div className="md:flex">
-      <div className="relative text-center bg-gray-900 rounded-xl md:max-w-28  md:h-[800px]">
-        <div className="flex justify-center mb-4 md:justify-start">
-          <Image
-            src={"/logo.png"}
-            alt="logo"
-            width={40}
-            height={40}
-            className="mx-auto mt-2 bg-white rounded-full"
-          />
-        </div>
-        <div className="flex justify-center md:flex-col ">
-          <LinkBtn
-            linkItem={linkItem}
-            navbarToggle={navbarToggle}
-            clickItemName={clickItemName}
-            openMenu={openMenu}
-          />
-        </div>
-        <div className="hidden md:flex md:flex-col md:mt-4">
-          <User />
+      <div className="flex justify-center h-screen bg-gray-900 rounded-md">
+        <ul className="m-2">
+          <li className="flex items-center w-12 h-12 mx-auto bg-white rounded-full">
+            <Image
+              src="/logo.png"
+              alt="logo image"
+              width={30}
+              height={30}
+              className="mx-auto"
+            />
+          </li>
+          {navbarItem.map((item, index) => (
+            <li
+              className="p-1 my-2 rounded-md cursor-pointer hover:bg-indigo-500"
+              key={index}
+            >
+              {item.path ? (
+                <Link href={item.path}>
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    width={item.width}
+                    height={item.height}
+                    className="mx-auto"
+                  />
+                  <p className="text-center whitespace-nowrap">{item.name}</p>
+                </Link>
+              ) : (
+                <div
+                  className="p-1 my-2 rounded-md cursor-pointer hover:bg-indigo-500"
+                  key={index}
+                  onClick={() => handleNavbarMenu(item.name)}
+                >
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    width={item.width}
+                    height={item.height}
+                    className="mx-auto"
+                  />
+                  <p className="text-sm text-center whitespace-nowrap">
+                    {item.name}
+                  </p>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+        <div
+          className={` transition-all  ease-in-out overflow-hidden ${
+            openMenu ? "w-32" : "w-0"
+          }`}
+        >
+          {clickItemName === "刀具資訊" && openMenu && (
+            <ToolStatusMenu setOpenMenu={setOpenMenu} />
+          )}
+          {clickItemName === "設備資訊" && openMenu && (
+            <MachineInfoMenu setOpenMenu={setOpenMenu} />
+          )}
+          {clickItemName === "電子標籤資訊" && openMenu && (
+            <ELabelInfoMenu setOpenMenu={setOpenMenu} />
+          )}
+          {clickItemName === "使用者資訊" && openMenu && (
+            <UserInfoMenu setOpenMenu={setOpenMenu} />
+          )}
         </div>
       </div>
-      <div
-        className={`${
-          openMenu ? "block" : "hidden"
-        } bg-gray-900 rounded-xl min-w-32`}
-      >
-        {clickItemName === "歸還刀具" && (
-          <ReturnToolMenu setOpenMenu={setOpenMenu} />
-        )}
-        {clickItemName === "領取刀具" && (
-          <ReceiveToolMenu setOpenMenu={setOpenMenu} />
-        )}
-        {clickItemName === "刀具資訊" && (
-          <ToolStatusMenu setOpenMenu={setOpenMenu} />
-        )}
-        {clickItemName === "設備資訊" && (
-          <MachineInfoMenu setOpenMenu={setOpenMenu} />
-        )}
-        {clickItemName === "電子標籤資訊" && (
-          <ELabelInfoMenu setOpenMenu={setOpenMenu} />
-        )}
-        {clickItemName === "使用者資訊" && (
-          <UserInfoMenu setOpenMenu={setOpenMenu} />
-        )}
-      </div>
+
       {/* mask */}
       <div
-        className={` w-screen h-screen bg-black opacity-30 rounded-xl z-10 absolute top-44 md:left-64 md:top-0 ${
+        className={` w-screen h-screen bg-black opacity-30 rounded-xl z-10 absolute top-44 md:left-[16.5rem] md:top-0 ${
           openMenu ? "block" : "hidden"
         }`}
       ></div>

@@ -193,38 +193,36 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="md:mx-2">
-        {newMode && (
-          <MachineSpecNew
-            machineSpec={machineSpec}
-            setMachineSpec={setMachineSpec}
-            currentPage={currentPage}
-            nextPage={nextPage}
-            prevPage={prevPage}
-            productLineList={productLineList}
-            machineTypeList={machineTypeList}
-            fetchAddMachineSpecInfo={fetchAddMachineSpecInfo}
-            changeNewMode={changeNewMode}
-            notice={notice}
-            isError={isError}
-          />
-        )}
-        {editMode && (
-          <MachineSpecEdit
-            currentPage={currentPage}
-            nextPage={nextPage}
-            prevPage={prevPage}
-            machineSpec={machineSpec}
-            setMachineSpec={setMachineSpec}
-            fetchEditMachineSpec={fetchEditMachineSpec}
-            changeEditMode={changeEditMode}
-            fetchDeleteMachineSpec={fetchDeleteMachineSpec}
-            notice={notice}
-            isError={isError}
-          />
-        )}
-      </div>
+    <div className="flex flex-col justify-center md:flex-row">
+      {newMode && (
+        <MachineSpecNew
+          machineSpec={machineSpec}
+          setMachineSpec={setMachineSpec}
+          currentPage={currentPage}
+          nextPage={nextPage}
+          prevPage={prevPage}
+          productLineList={productLineList}
+          machineTypeList={machineTypeList}
+          fetchAddMachineSpecInfo={fetchAddMachineSpecInfo}
+          changeNewMode={changeNewMode}
+          notice={notice}
+          isError={isError}
+        />
+      )}
+      {editMode && (
+        <MachineSpecEdit
+          currentPage={currentPage}
+          nextPage={nextPage}
+          prevPage={prevPage}
+          machineSpec={machineSpec}
+          setMachineSpec={setMachineSpec}
+          fetchEditMachineSpec={fetchEditMachineSpec}
+          changeEditMode={changeEditMode}
+          fetchDeleteMachineSpec={fetchDeleteMachineSpec}
+          notice={notice}
+          isError={isError}
+        />
+      )}
       <MachineSpecIndex
         machineSpecList={machineSpecList}
         changeNewMode={changeNewMode}

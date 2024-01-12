@@ -152,7 +152,7 @@ export default function Page() {
   }, [editUserInfo]);
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col justify-center md:flex-row">
       <div className="mx-2 ">
         {newMode && (
           <UserInfoNew

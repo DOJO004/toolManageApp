@@ -37,7 +37,7 @@ const MachineSpecIndex = ({
   fetchGetMachineSpecList,
 }: MachineSpecIndexProps) => {
   return (
-    <div className="relative w-full p-2 text-center bg-gray-900 max-w-7xl rounded-xl">
+    <div className="relative w-full p-2 mx-2 text-center bg-gray-900 max-w-7xl rounded-xl">
       <p className="text-xl text-center ">設備規格</p>
       <div className="grid grid-cols-10 gap-2 bg-gray-800 1 rounded-xl">
         <div className="truncate ">生產線</div>
