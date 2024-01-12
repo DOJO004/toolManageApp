@@ -43,6 +43,11 @@ const ProductLineIndex = ({
           </React.Fragment>
         ))}
       </div>
+      {productLineList.length < 1 ? (
+        <p className="mt-6 text-xl text-center">沒有資料</p>
+      ) : (
+        ""
+      )}
       <div className="absolute top-2 right-2">
         <AddBtn changeNewMode={changeNewMode} />
       </div>

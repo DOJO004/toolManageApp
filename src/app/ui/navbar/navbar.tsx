@@ -15,6 +15,15 @@ const Navbar = () => {
 
   const handleNavbarMenu = (name: string) => {
     console.log("name", name);
+    if (
+      name === "dashboard" ||
+      name === "領取刀具" ||
+      name === "歸還刀具" ||
+      name === "修整/報廢"
+    ) {
+      setOpenMenu(false);
+      return;
+    }
 
     if (clickItemName != name) {
       setOpenMenu(true);
@@ -26,20 +35,20 @@ const Navbar = () => {
 
   return (
     <div className="md:flex">
-      <div className="flex justify-center h-screen bg-gray-900 rounded-md">
-        <ul className="m-2">
-          <li className="flex items-center w-12 h-12 mx-auto bg-white rounded-full">
-            <Image
-              src="/logo.png"
-              alt="logo image"
-              width={30}
-              height={30}
-              className="mx-auto"
-            />
+      <div className="bg-gray-900 rounded-md md:flex md:justify-center md:h-screen">
+        <ul className="flex items-center m-2 md:flex-col">
+          <li
+            className="flex items-center justify-center w-12 h-12 mx-auto bg-white rounded-full"
+            onClick={() => handleNavbarMenu("dashboard")}
+          >
+            <Link href="/tool-manager/dashboard">
+              <Image src="/logo.png" alt="logo image" width={30} height={30} />
+            </Link>
           </li>
           {navbarItem.map((item, index) => (
             <li
-              className="p-1 my-2 rounded-md cursor-pointer hover:bg-indigo-500"
+              className="w-auto p-1 my-2 rounded-md cursor-pointer hover:bg-indigo-500"
+              onClick={() => handleNavbarMenu(item.name)}
               key={index}
             >
               {item.path ? (

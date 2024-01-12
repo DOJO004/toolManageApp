@@ -15,7 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         ""
       )}
 
-      <div className="w-full h-full m-2">{children}</div>
+      <div className="flex justify-center w-full h-full m-2">{children}</div>
     </div>
   );
 };

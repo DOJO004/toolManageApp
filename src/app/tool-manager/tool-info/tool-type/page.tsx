@@ -1,7 +1,9 @@
 "use client";
+import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
 import ToolTypeIndex from "@/app/ui/toolInfo/toolType";
 import ToolTypeEdit from "@/app/ui/toolInfo/toolType/edit";
+import { ToolTypeLoading } from "@/app/ui/toolInfo/toolType/loading";
 import ToolTypeNew from "@/app/ui/toolInfo/toolType/new";
 import {
   apiGetToolTypeInFoList,
@@ -23,7 +25,7 @@ export default function Page() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(-1);
-  const [totalCountItem, setTotalCountItem] = useState(-1);
+  const [totalRecords, settotalRecords] = useState(-1);
   const prePageItem = 20;
 
   const nextPage = () => {
@@ -34,7 +36,7 @@ export default function Page() {
   };
 
   const handleToolTypeListData = (data: {}, index: number) => {
-    setTotalCountItem(data.Values.TotalRecords);
+    settotalRecords(data.Values.TotalRecords);
     setTotalPageNumberFunction(data.Values.TotalRecords);
 
     if (index || index === 0) {
@@ -127,6 +129,7 @@ export default function Page() {
     if (res?.data?.Values?.ReqInt === 0) {
       fetchGetToolTypeList();
       setIsError(false);
+      setEditMode(false);
     } else {
       setIsError(true);
     }
@@ -148,32 +151,9 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col justify-center md:flex-row">
-      {newMode && (
-        <ToolTypeNew
-          toolTypeID={toolTypeID}
-          setToolTypeID={setToolTypeID}
-          toolTypeName={toolTypeName}
-          setToolTypeName={setToolTypeName}
-          fetchNewToolType={fetchNewToolType}
-          notice={notice}
-          setNotice={setNotice}
-          isError={isError}
-          changeNewMode={changeNewMode}
-        />
-      )}
-      {editMode && (
-        <ToolTypeEdit
-          editToolType={editToolType}
-          setEditToolType={setEditToolType}
-          fetchEditToolType={fetchEditToolType}
-          fetchDisableToolType={fetchDisableToolType}
-          changeEditMode={changeEditMode}
-          notice={notice}
-          isError={isError}
-        />
-      )}
-      <div className="relative ">
+    <div className="relative flex flex-col justify-center w-full md:flex-row">
+      <div>
+        <Notice notice={notice} setNotice={setNotice} isError={isError} />
         <ToolTypeIndex
           toolTypeList={toolTypeList}
           changeEditMode={changeEditMode}
@@ -181,11 +161,39 @@ export default function Page() {
           changeNewMode={changeNewMode}
         />
         <PageController
-          totalCountItem={totalCountItem}
+          totalRecords={totalRecords}
           currentPage={currentPage}
           totalPage={totalPage}
           nextPage={nextPage}
           exPage={exPage}
+        />
+      </div>
+
+      <div
+        className={`absolute transition-all  ease-in-out duration-300 ${
+          newMode ? " translate-y-0" : " -translate-y-[26rem]"
+        }`}
+      >
+        <ToolTypeNew
+          toolTypeID={toolTypeID}
+          setToolTypeID={setToolTypeID}
+          toolTypeName={toolTypeName}
+          setToolTypeName={setToolTypeName}
+          fetchNewToolType={fetchNewToolType}
+          changeNewMode={changeNewMode}
+        />
+      </div>
+      <div
+        className={`absolute transition-all ease-in-out duration-300 ${
+          editMode ? " translate-y-0" : " -translate-y-[26rem]"
+        }`}
+      >
+        <ToolTypeEdit
+          editToolType={editToolType}
+          setEditToolType={setEditToolType}
+          fetchEditToolType={fetchEditToolType}
+          fetchDisableToolType={fetchDisableToolType}
+          changeEditMode={changeEditMode}
         />
       </div>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 import BindToolIndex from "@/app/ui/elabelInfo/bindTool/bindToolIndex";
+import Notice from "@/app/ui/notice";
 import {
   apiBindToolToELabel,
   apiGetElabelSpecInfoList,
@@ -15,15 +16,20 @@ export default function Page() {
     LabelCode: "",
     ToolSN: "",
   });
+  const [notice, setNotice] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const fetchBindToolSN = async (e: FormEvent) => {
     e.preventDefault();
     const res = await apiBindToolToELabel(bindToolInfo);
     console.log("bind tool to eLabel", res);
+    setNotice(true);
     if (res?.data?.Values?.ReqInt === 0) {
       cleanInput();
       console.log("bind tool to eLabel success.");
+      setIsError(false);
     } else {
+      setIsError(true);
       console.log("bind tool to eLabel false.");
     }
   };
@@ -38,7 +44,7 @@ export default function Page() {
     }
   };
 
-  const fetchGetElabelSpecInfoList = async () => {
+  const fetchGetELabelSpecInfoList = async () => {
     const res = await apiGetElabelSpecInfoList();
     console.log("spec info", res);
 
@@ -58,7 +64,7 @@ export default function Page() {
   };
 
   useEffect(() => {
-    fetchGetElabelSpecInfoList();
+    fetchGetELabelSpecInfoList();
     fetchGetToolSNList();
   }, []);
 
@@ -71,6 +77,7 @@ export default function Page() {
         toolSNList={toolSNList}
         fetchBindToolSN={fetchBindToolSN}
       />
+      <Notice notice={notice} setNotice={setNotice} isError={isError} />
     </div>
   );
 }

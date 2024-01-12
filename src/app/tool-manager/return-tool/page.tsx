@@ -32,7 +32,7 @@ export default function Page() {
 
   const fetchGetELabelBindStatusInfoList = async () => {
     const res = await apiGetELabelBindStatusInfoList();
-    console.log(res);
+    console.log("get bind status list", res);
     if (res?.data?.Values?.ReqInt === 0) {
       setELabelBindStatusInfoList(
         res.data.Values.eLToolBindStatusList.filter(
@@ -65,7 +65,7 @@ export default function Page() {
     fetchGetELabelBindStatusInfoList();
   }, []);
   return (
-    <div className="p-2 mr-4 bg-gray-900 rounded-md md:max-w-[800px] flex  flex-col justify-center">
+    <div className="p-2 mr-4 bg-gray-900 rounded-md md:max-w-[800px] w-full">
       <p className="text-2xl text-center ">歸還刀具</p>
       <table className="w-full text-center">
         <thead>
@@ -77,11 +77,11 @@ export default function Page() {
         </thead>
         <tbody>
           {eLabelBindStatusInfoList.map((item, index) => (
-            <tr key={index}>
+            <tr key={index} className=" hover:bg-indigo-500">
               <td>{item.LabelCode}</td>
               <td>{item.ToolSN}</td>
               <td>
-                <button onClick={() => fetchReturnTool(item.LabelCode)}>
+                <button onClick={() => fetchReturnTool(item.eLToolCode)}>
                   歸還
                 </button>
               </td>

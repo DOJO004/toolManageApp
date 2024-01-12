@@ -1,5 +1,4 @@
 import React, { FormEvent } from "react";
-import Notice from "@/app/ui/notice";
 
 interface ToolTypeNewProps {
   toolTypeID: string;
@@ -7,9 +6,6 @@ interface ToolTypeNewProps {
   toolTypeName: string;
   setToolTypeName: React.Dispatch<React.SetStateAction<string>>;
   fetchNewToolType: (e: FormEvent) => void;
-  notice: boolean;
-  setNotice: React.Dispatch<React.SetStateAction<boolean>>;
-  isError: boolean;
   changeNewMode: () => void;
 }
 
@@ -19,19 +15,15 @@ const ToolTypeNew = ({
   toolTypeName,
   setToolTypeName,
   fetchNewToolType,
-  notice,
-  setNotice,
-  isError,
   changeNewMode,
 }: ToolTypeNewProps) => {
   return (
     <div className="relative md:mx-2">
       <form
-        className="flex flex-col justify-center w-full p-4 mb-2 bg-gray-900 rounded-xl"
+        className="flex flex-col justify-center w-full p-4 mb-2 bg-gray-900 border-2 rounded-xl"
         onSubmit={(e) => fetchNewToolType(e)}
       >
         <p className="text-xl text-center">新增刀具類型</p>
-        <Notice notice={notice} setNotice={setNotice} isError={isError} />
         <input
           type="text"
           className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"

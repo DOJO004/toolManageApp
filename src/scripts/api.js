@@ -214,6 +214,7 @@ export const apiModifyToolTypeInfo = async (toolTypeID, toolName) =>{
             "Name": toolName
         }
     }
+    console.log("edit tool type body",body);
     try{
         const res = await apiInstance.post("tool_info/ModifyToolTypeInfo",body)
         return res
