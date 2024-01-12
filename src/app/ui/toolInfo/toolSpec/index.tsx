@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { AddBtn } from "../../buttons";
-import React from "react";
+import React, { Suspense } from "react";
 interface ToolSpecItem {
   ToolSpecID: string;
   Name: string;
@@ -34,47 +33,67 @@ const ToolSpecIndex = ({
   fetchGetToolInfoByID,
 }: ToolSpecIndexProps) => {
   return (
-    <div className="relative w-full p-2 text-center bg-gray-900 max-w-fit rounded-xl">
+    <div className="relative w-full p-2 overflow-auto text-center bg-gray-900 rounded-xl">
       <p className="text-xl">刀具規格</p>
-      <div className="grid grid-cols-12 gap-2 p-1 bg-gray-800 rounded-xl">
-        <div className="truncate ">ID</div>
-        <div className="truncate ">名稱</div>
-        <div className="truncate ">Φ</div>
-        <div className="truncate ">高度</div>
-        <div className="truncate ">總長度</div>
-        <div className="truncate ">手柄Φ</div>
-        <div className="truncate ">安全庫存</div>
-        <div className="truncate ">最大修整次數</div>
-        <div className="truncate ">最大加工次數</div>
-        <div className="truncate ">最大加工長度</div>
-        <div className="truncate ">最大加工時間</div>
-        <div className="truncate ">編輯</div>
-      </div>
-      <div className="grid grid-cols-12 gap-2 mt-1">
-        {toolSpecList.map((item, index) => (
-          <React.Fragment key={item.ToolSpecID}>
-            <div className="truncate ">{item.ToolSpecID}</div>
-            <div className="truncate ">{item.Name}</div>
-            <div className="truncate ">{item.Specification.BladeDiameter}</div>
-            <div className="truncate ">{item.Specification.BladeHeight}</div>
-            <div className="truncate ">{item.Specification.TotalLength}</div>
-            <div className="truncate ">{item.Specification.HandleDiameter}</div>
-            <div className="truncate ">{item.SafetyStock}</div>
-            <div className="truncate ">{item.MaxLife.ProcessCnt}</div>
-            <div className="truncate ">{item.MaxLife.ProcessTime}</div>
-            <div className="truncate ">{item.MaxLife.ProcessLength}</div>
-            <div className="truncate ">{item.MaxLife.ProcessTime}</div>
-            <button
-              className="truncate"
-              onClick={() => {
-                changeEditMode(index), fetchGetToolInfoByID(item.ToolSpecID);
-              }}
-            >
-              編輯
-            </button>
-          </React.Fragment>
-        ))}
-      </div>
+      <table>
+        <thead>
+          <tr className="bg-gray-800">
+            <td className="p-1 whitespace-nowrap">ID</td>
+            <td className="p-1 whitespace-nowrap">名稱</td>
+            <td className="p-1 whitespace-nowrap">Φ</td>
+            <td className="p-1 whitespace-nowrap">高度</td>
+            <td className="p-1 whitespace-nowrap">總長度</td>
+            <td className="p-1 whitespace-nowrap">手柄Φ</td>
+            <td className="p-1 whitespace-nowrap">安全庫存</td>
+            <td className="p-1 whitespace-nowrap">最大修整次數</td>
+            <td className="p-1 whitespace-nowrap">最大加工次數</td>
+            <td className="p-1 whitespace-nowrap">最大加工長度</td>
+            <td className="p-1 whitespace-nowrap">最大加工時間</td>
+            <td className="p-1 whitespace-nowrap">編輯</td>
+          </tr>
+        </thead>
+        <tbody>
+          {toolSpecList.map((item, index) => (
+            <tr key={item.ToolSpecID}>
+              <td className="p-1 whitespace-nowrap ">{item.ToolSpecID}</td>
+              <td className="p-1 whitespace-nowrap ">{item.Name}</td>
+              <td className="p-1 whitespace-nowrap ">
+                {item.Specification.BladeDiameter}
+              </td>
+              <td className="p-1 whitespace-nowrap ">
+                {item.Specification.BladeHeight}
+              </td>
+              <td className="p-1 whitespace-nowrap ">
+                {item.Specification.TotalLength}
+              </td>
+              <td className="p-1 whitespace-nowrap ">
+                {item.Specification.HandleDiameter}
+              </td>
+              <td className="p-1 whitespace-nowrap ">{item.SafetyStock}</td>
+              <td className="p-1 whitespace-nowrap ">
+                {item.MaxLife.ProcessCnt}
+              </td>
+              <td className="p-1 whitespace-nowrap">
+                {item.MaxLife.ProcessTime}
+              </td>
+              <td className="p-1 whitespace-nowrap">
+                {item.MaxLife.ProcessLength}
+              </td>
+              <td className="p-1 whitespace-nowrap ">
+                {item.MaxLife.ProcessTime}
+              </td>
+              <td
+                className="whitespace-nowrap"
+                onClick={() => {
+                  changeEditMode(index), fetchGetToolInfoByID(item.ToolSpecID);
+                }}
+              >
+                編輯
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <div className="absolute top-2 right-2">
         <AddBtn changeNewMode={changeNewMode} />
       </div>

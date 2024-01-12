@@ -1,5 +1,7 @@
 import React, { FormEvent } from "react";
 import { CloseBtn } from "../buttons";
+import Notice from "../notice";
+import { options } from "prettier-plugin-tailwindcss";
 interface ElabelInfoItem {
   LabelCode: string;
   eLabelSN: string;
@@ -9,19 +11,47 @@ interface ElabelInfoItem {
     ArticleName: string;
   };
 }
+
+interface StationCodeItem {
+  APsCode: string;
+}
+
+interface ELabelListItem {
+  LabelCode: string;
+  eLabelSN: string;
+  StationCode: string;
+  ArticleID: string;
+  ArticleName: string;
+  LastModify: string;
+}
+
 interface ElabelInfoNewProps {
-  elabelInfo: ElabelInfoItem;
-  setElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
+  selectArticleIDIndex: number;
+  eLabelList: ELabelListItem[];
+  stationCode: StationCodeItem[];
+  newElabelInfo: ElabelInfoItem;
+  setNewElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
   changeNewMode: () => void;
   fetchNewElabelInfo: (e: FormEvent) => void;
+  notice: boolean;
+  setNotice: React.Dispatch<React.SetStateAction<boolean>>;
+  isError: boolean;
 }
 
 const ElabelInfoNew = ({
-  elabelInfo,
-  setElabelInfo,
+  selectArticleIDIndex,
+  eLabelList,
+  stationCode,
+  newElabelInfo,
+  setNewElabelInfo,
   changeNewMode,
   fetchNewElabelInfo,
+  notice,
+  setNotice,
+  isError,
 }: ElabelInfoNewProps) => {
+  console.log("new aps code ", stationCode);
+
   return (
     <div className="relative ">
       <form
@@ -29,13 +59,14 @@ const ElabelInfoNew = ({
         onSubmit={(e) => fetchNewElabelInfo(e)}
       >
         <p className="text-xl text-center ">新增電子標籤</p>
+        <Notice notice={notice} setNotice={setNotice} isError={isError} />
         <label htmlFor="LabelCode">標籤號碼</label>
         <input
           id="LabelCode"
           type="text"
-          value={elabelInfo.LabelCode}
+          value={newElabelInfo.LabelCode}
           onChange={(e) =>
-            setElabelInfo({ ...elabelInfo, LabelCode: e.target.value })
+            setNewElabelInfo({ ...newElabelInfo, LabelCode: e.target.value })
           }
           placeholder="標籤號碼"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
@@ -44,63 +75,59 @@ const ElabelInfoNew = ({
         <input
           id="eLabelSN"
           type="text"
-          value={elabelInfo.eLabelSN}
+          value={newElabelInfo.eLabelSN}
           onChange={(e) =>
-            setElabelInfo({ ...elabelInfo, eLabelSN: e.target.value })
+            setNewElabelInfo({ ...newElabelInfo, eLabelSN: e.target.value })
           }
           placeholder="標籤SN"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
         />
         <label htmlFor="StationCode">站號</label>
-        <input
-          id="StationCode"
-          type="text"
-          value={elabelInfo.eLabelSpec.StationCode}
-          onChange={(e) =>
-            setElabelInfo({
-              ...elabelInfo,
-              eLabelSpec: {
-                ...elabelInfo.eLabelSpec,
-                StationCode: e.target.value,
-              },
-            })
-          }
-          placeholder="站號"
+        <select
+          defaultValue=""
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-        />
+        >
+          <option value="" className="text-black" disabled>
+            請選擇站號
+          </option>
+          {stationCode.map((item, index) => (
+            <option value={item.APsCode} key={index} className="text-black ">
+              {item.APsCode}
+            </option>
+          ))}
+        </select>
+
         <label htmlFor="ArticleID">ID</label>
-        <input
-          id="ArticleID"
-          type="text"
-          value={elabelInfo.eLabelSpec.ArticleID}
-          onChange={(e) =>
-            setElabelInfo({
-              ...elabelInfo,
-              eLabelSpec: {
-                ...elabelInfo.eLabelSpec,
-                ArticleID: e.target.value,
-              },
-            })
-          }
-          placeholder="ID"
+        <select
+          defaultValue=""
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-        />
+        >
+          <option value="" className="text-gray-500" disabled>
+            請選擇 ArticleID
+          </option>
+          {eLabelList.map((item, index) => (
+            <option value={item.ArticleID} key={index} className="text-black ">
+              {item.ArticleID}
+            </option>
+          ))}
+        </select>
+
         <label htmlFor="ArticleName">名稱</label>
         <input
           id="ArticleName"
           type="text"
-          value={elabelInfo.eLabelSpec.ArticleName}
           onChange={(e) =>
-            setElabelInfo({
-              ...elabelInfo,
+            setNewElabelInfo({
+              ...newElabelInfo,
               eLabelSpec: {
-                ...elabelInfo.eLabelSpec,
+                ...newElabelInfo.eLabelSpec,
                 ArticleName: e.target.value,
               },
             })
           }
           placeholder="名稱"
           className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+          readOnly
         />
         <button className="p-2 my-2 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
           完成

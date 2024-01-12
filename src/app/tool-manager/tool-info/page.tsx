@@ -12,24 +12,21 @@ import { useEffect, useState } from "react";
 
 export default function Page() {
   const [toolStatusList, setToolStatusList] = useState([]);
-  const [selectToolID, setSelectToolID] = useState("");
+  const [selectTool, setSelectTool] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(-1);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   const fetchToolInfoList = async () => {
-    const res = await apiGetToolStockStatusInfoList(currentPage);
+    const res = await apiGetToolStockStatusInfoList(40, currentPage);
+
     if (res.data?.Values?.ReqInt === 0) {
       setToolStatusList(res.data.Values.ToolStockList);
       setTotalPage(res.data.Values.TotalPages);
+      setTotalRecords(res.data.Values.TotalRecords);
     } else {
       console.log("fetch false.");
     }
-    console.log(res);
-  };
-
-  const fetchSelectToolLog = async () => {
-    const res = await apiGetToolSpecOpLogList(selectToolID);
-    console.log("log", res);
   };
 
   const nextPage = () => {
@@ -49,25 +46,21 @@ export default function Page() {
   }, [currentPage]);
 
   return (
-    <>
-      <div className="flex">
-        <div className="flex justify-center w-6/12 p-2 mx-1 my-1 bg-gray-900 rounded-xl">
-          <PieChart />
-        </div>
-        <div className="w-6/12 p-2 mx-1 my-1 bg-gray-900 rounded-xl">
-          <ToolInfoLog />
-        </div>
+    <div className="w-full h-full">
+      <div className="flex flex-col w-full md:flex-row">
+        <PieChart />
+        <ToolInfoLog />
       </div>
-      <ToolInfoList
-        toolStatusList={toolStatusList}
-        setSelectToolID={setSelectToolID}
-      />
+      <div className="overflow-auto max-h-[830px] ">
+        <ToolInfoList toolStatusList={toolStatusList} />
+      </div>
       <PageController
+        totalRecords={totalRecords}
         totalPage={totalPage}
         currentPage={currentPage}
         nextPage={nextPage}
         exPage={exPage}
       />
-    </>
+    </div>
   );
 }

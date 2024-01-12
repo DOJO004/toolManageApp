@@ -5,7 +5,7 @@ export default function Home() {
     <div className="flex flex-col items-center mt-40">
       <div>
         <p className="text-2xl">
-          WELCOME BACK
+          WELCOME BACK TO
           <span className="block text-4xl text-blue-400 md:inline md:mx-2">
             DLCTEK
           </span>

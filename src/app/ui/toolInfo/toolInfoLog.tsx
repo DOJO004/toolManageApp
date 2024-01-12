@@ -1,20 +1,19 @@
 interface ToolInfoLogProps {}
 const ToolInfoLog = ({}: ToolInfoLogProps) => {
   return (
-    <div className="text-xs text-center">
-      <div className="text-base text-left ">刀具裝卸載日誌</div>
-      <div className="grid grid-cols-4 gap2">
-        <div className="truncate">設備序號</div>
-        <div className="truncate">動作</div>
-        <div className="truncate">刀庫號</div>
-        <div className="truncate">動作時間</div>
-      </div>
-      <div className="grid grid-cols-4 gap2">
-        <div>{}</div>
-        <div>{}</div>
-        <div>{}</div>
-        <div>{}</div>
-      </div>
+    <div className="w-full h-full p-2 text-xs bg-gray-900 rounded-xl min-w-[345px] mb-2 overflow-auto">
+      <div className="mb-4 text-2xl font-bold border-b-2 ">刀具裝卸載日誌</div>
+      <table className="w-full text-center ">
+        <thead>
+          <tr>
+            <td className="p-1 whitespace-nowrap">設備序號</td>
+            <td className="p-1 whitespace-nowrap">動作</td>
+            <td className="p-1 whitespace-nowrap">刀庫號</td>
+            <td className="p-1 whitespace-nowrap">動作時間</td>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
   );
 };

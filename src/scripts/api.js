@@ -68,23 +68,20 @@ export const apiGetUserAccountInfoList = async()=>{
 }
 
 // addUserAccountInfo
-export const apiAddUserAccountInfo = async (
-                                            OperatorID,
-                                            departmentID,
-                                            userAccount,
-                                            employeeID,
-                                            userName,
-                                            password,
-                                            eMailAddress
-) => {
+export const apiAddUserAccountInfo = async (userInfo) => {
   const body = {
-    OperatorID: OperatorID,
-    DepartmentID: departmentID,
-    UserAccount: userAccount,
-    EmployeeID: employeeID,
-    UserName: userName,
-    Password: password,
-    EMailAddress: eMailAddress,
+    "UserToken": getUserToken(),
+    "LoginTime": getLoginTime(),
+    "NeedPermissions": [
+      "Tag2Tool_R",
+      "Tag2Tool_W"
+    ],
+    DepartmentID: userInfo.DepartmentID,
+    UserAccount: userInfo.UserAccount,
+    EmployeeID: userInfo.EmployeeID,
+    UserName: userInfo.UserName,
+    Password: userInfo.Password,
+    EMailAddress: userInfo.EMailAddress,
     Permissions: ["ToolStatus_W", "ToolStatus_R"],
   };
   try {
@@ -95,7 +92,48 @@ export const apiAddUserAccountInfo = async (
     return error;
   }
 };
+// Edit user account info
+export const apiEditUserAccountInfo = async(editUserInfo, editUserAccountAndPassword)=>{
+    const body={
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "UserAccount": editUserInfo.AccountID,
+        "ModifyData": {
+          "Department_ID": editUserInfo.Department,
+          "UserName": editUserInfo.UserName,
+          "EMailAddress": editUserAccountAndPassword.Email,
+          "Password": editUserAccountAndPassword.Password,
+          "Authorizations": [
+          ]
+        }
+      }
+console.log("boody", body);
+      try {
+        const res = await apiInstance.post("account_info/ModifyUserAccountInfo", body);
+        return res;
+      } catch (error) {
+        console.error("Error", error);
+        return error;
+      }
+}
 
+// get department info list
+export const apiGetDepartmentInfoList = async()=>{
+    try{
+        const res = await apiInstance.get("account_info/GetDepartmentInfoList")
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+        return error
+    }
+}
+
+// get User login log
 export const apiGetAccountLoginLogList = async(accountID)=>{
     const body={
         "UserToken": getUserToken(),
@@ -111,6 +149,15 @@ export const apiGetAccountLoginLogList = async(accountID)=>{
         "AccountID": accountID
       }
     const res = await apiInstance.post("account_info/GetAccountLoginLogList", body)
+    return res
+}
+
+// get user account info by user account id
+export const apiGetUserAccountInfoByAccountID = async(accountID)=>{
+    const body={
+        "UserAccount": accountID
+      }
+    const res = await apiInstance.post("account_info/GetUserAccountInfo", body)
     return res
 }
 
@@ -200,7 +247,7 @@ export const apiGetToolStockList = async () => {
 }
 
 // getToolStockStatusInfoList
-export const apiGetToolStockStatusInfoList = async (page) => {
+export const apiGetToolStockStatusInfoList = async (perPage = 20, page = 1) => {
     const body = {
         "UserToken": getUserToken(),
         "LoginTime": getLoginTime(),
@@ -208,7 +255,7 @@ export const apiGetToolStockStatusInfoList = async (page) => {
             "Tag2Tool_R",
             "Tag2Tool_W"
         ],
-        "RecordsPerPage": 20,
+        "RecordsPerPage": perPage,
         "PageNo": page,
     }
     try {
@@ -429,6 +476,7 @@ export const disabledToolInfo = async (id)=>{
         ],
         "ToolSpecID": id
       }
+      console.log("delete body",body);
     try{
         const res = await apiInstance.post("tool_info/DisabledToolinfo",body)
         return res
@@ -644,11 +692,12 @@ export const apiGetMachineStatusInfoList = async(id)=>{
         ],
         "RecordsPerPage": 99,
         "PageNo": 1,
-        "ProductLineID": "",
+        "ProductLineID": "ADK-PR_001",
         "MachineTypeID": "",
         "Status": 10,
         "ActivationBasic": 0
       }
+      console.log("machine info list body", body);
     try{
         const res = await apiInstance.post("machine_info/GetMachineStatusInfoList", body)
         return res
@@ -788,7 +837,6 @@ export const apiModifyMachineTypeInfo = async (id, name) =>{
 
 // editMachineInfo
 export const apiEditMachineInfo = async (machineSpec) =>{
-    console.log("brnd",machineSpec.SystemInfo.Brand.toString());
     const body = {
         "UserToken": getUserToken(),
         "LoginTime": getLoginTime(),
@@ -818,7 +866,6 @@ export const apiEditMachineInfo = async (machineSpec) =>{
           ]
         }
       }
-      console.log("body",body);
     try{
         const res = await apiInstance.post("machine_info/ModifyMachineInfo",body)
         return res
@@ -848,7 +895,7 @@ export const apiAddElabelInfo = async(elabelInfo)=>{
             }
         }
     }
-    console.log("body", body);
+    console.log("new elabel info body", body);
     try{
         const res = await apiInstance.post("elabel_info/AddELabelInfo",body)
         return res
@@ -882,7 +929,7 @@ export const apiGetElabelSpecInfoList = async()=>{
 }
 
 // editElabelInfo
-export const apiEditElabelInfo = async(elabelInfo)=>{
+export const apiEditElabelInfo = async(editElabelInfo)=>{
     const body = {
         "UserToken": getUserToken(),
         "LoginTime": getLoginTime(),
@@ -890,12 +937,13 @@ export const apiEditElabelInfo = async(elabelInfo)=>{
           "Tag2Tool_R",
           "Tag2Tool_W"
         ],
-        "LabelCode": "",
-        "eLabelSN": "",
-        "StationCode": "",
-        "ArticleID": "",
-        "ArticleName": ""
+        "LabelCode": editElabelInfo.LabelCode,
+        "eLabelSN": editElabelInfo.eLabelSN,
+        "StationCode": editElabelInfo.StationCode,
+        "ArticleID": editElabelInfo.ArticleID,
+        "ArticleName": editElabelInfo.ArticleName
       }
+      console.log("edit eLabel body",body );
     try{
         const res = await apiInstance.post("elabel_info/ModifyELabelInfo",body)
         return res
@@ -922,7 +970,139 @@ export const apiGetElabelInfoByLabelCode = async(labelCode, labelSN)=>{
     }
 }
 
-export const confirmDisable=()=>{
-    const res = window.confirm("確定刪除嗎?")
+// get elabel bind status info list
+export const apiGetELabelBindStatusInfoList = async()=>{
+    const body = {
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "RecordsPerPage": 10,
+        "PageNo": 1,
+        "BindStatus": 0
+      }
+      
+    try{
+        const res = await apiInstance.post("elabel_info/GetELabelBindStatusInfoList",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+
+// bind tool to eLabel
+export const apiBindToolToELabel = async(bindToolInfo)=>{
+    const body = {
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "eLabelToolInfo": {
+          "LabelCode": bindToolInfo.LabelCode,
+          "ToolSN": bindToolInfo.ToolSN
+        }
+      }
+      console.log("bing tool body", body);
+    try{
+        const res = await apiInstance.post("elabel_info/SelectEToolCodeInfo",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+// disabled e tool code info
+export const apiDisabledEToolCodeInfo = async(eLabelCode)=>{
+    const body = {
+        "eLToolCode": eLabelCode,
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ]
+      }
+      console.log("return tool body", body);
+    try{
+        const res = await apiInstance.post("elabel_info/DisabledEToolCodeInfo",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+// get aims aps connect info list
+export const apiGetAimsAPsConnectInfoList = async()=>{
+    const body = {
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ],
+        "RecordsPerPage": 10,
+        "PageNo": 1,
+        "status": "",
+        "stationCode": ""
+      }
+      
+    try{
+        const res = await apiInstance.post("aims_info/GetAimsAPsConnectInfoList",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+// sync eLabel Data From Aims
+export const apiSyncELabelFromAims = async()=>{
+    const body = {
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ]
+      }
+    try{
+        const res = await apiInstance.post("aims_info/SyncELabelDataFromAims",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+// get aims articles list
+export const apiGetAimsArticlesList = async(stationCode)=>{
+    const body = {
+        "stationCode": stationCode
+      }
+    try{
+        const res = await apiInstance.post("aims_info/GetAimsArticlesList",body)
+        return res
+    }
+    catch(error){
+        console.error("Error",error);
+    return error
+    }
+}
+
+export const confirmDisable=(text="確定刪除嗎")=>{
+    const res = window.confirm(text)
     return res
 }

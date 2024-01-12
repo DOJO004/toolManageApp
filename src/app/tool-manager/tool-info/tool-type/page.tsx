@@ -1,4 +1,5 @@
 "use client";
+import PageController from "@/app/ui/pageController/pageController";
 import ToolTypeIndex from "@/app/ui/toolInfo/toolType";
 import ToolTypeEdit from "@/app/ui/toolInfo/toolType/edit";
 import ToolTypeNew from "@/app/ui/toolInfo/toolType/new";
@@ -9,7 +10,7 @@ import {
   confirmDisable,
   disabledToolTypeInfo,
 } from "@/scripts/api";
-import { useEffect, useState, FormEvent } from "react";
+import { useEffect, useState, FormEvent, Suspense } from "react";
 
 export default function Page() {
   // index
@@ -20,19 +21,47 @@ export default function Page() {
   const [notice, setNotice] = useState(false);
   const [isError, setIsError] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(-1);
+  const [totalCountItem, setTotalCountItem] = useState(-1);
+  const prePageItem = 20;
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+  const exPage = () => {
+    setCurrentPage((prev) => prev - 1);
+  };
+
+  const handleToolTypeListData = (data: {}, index: number) => {
+    setTotalCountItem(data.Values.TotalRecords);
+    setTotalPageNumberFunction(data.Values.TotalRecords);
+
+    if (index || index === 0) {
+      setEditToolType(data.Values.ToolTypeList[index]);
+    } else {
+      setToolTypeList(
+        data.Values.ToolTypeList.slice(
+          prePageItem * currentPage - 20,
+          prePageItem * currentPage
+        )
+      );
+    }
+  };
+
   const fetchGetToolTypeList = async (index?: number) => {
     const res = await apiGetToolTypeInFoList();
-    if (res.data?.Values?.ReqInt === 0) {
-      if (index || index === 0) {
-        console.log(index);
+    console.log("tool type info list", res);
 
-        setEditToolType(res.data.Values.ToolTypeList[index]);
-      } else {
-        setToolTypeList(res.data.Values.ToolTypeList);
-      }
+    if (res.data?.Values?.ReqInt === 0) {
+      handleToolTypeListData(res.data, index);
     } else {
       console.log("get tool type list false.");
     }
+  };
+
+  const setTotalPageNumberFunction = (TotalRecords: number) => {
+    setTotalPage(Math.ceil(TotalRecords / prePageItem));
   };
 
   const changeNewMode = () => {
@@ -58,7 +87,7 @@ export default function Page() {
 
   useEffect(() => {
     fetchGetToolTypeList();
-  }, []);
+  }, [currentPage]);
 
   // new
   const [toolTypeID, setToolTypeID] = useState("");
@@ -128,6 +157,7 @@ export default function Page() {
           setToolTypeName={setToolTypeName}
           fetchNewToolType={fetchNewToolType}
           notice={notice}
+          setNotice={setNotice}
           isError={isError}
           changeNewMode={changeNewMode}
         />
@@ -143,18 +173,20 @@ export default function Page() {
           isError={isError}
         />
       )}
-      <div className="relative">
+      <div className="relative ">
         <ToolTypeIndex
           toolTypeList={toolTypeList}
           changeEditMode={changeEditMode}
           fetchGetToolTypeList={fetchGetToolTypeList}
+          changeNewMode={changeNewMode}
         />
-        <button
-          className="absolute p-1 bg-indigo-500 rounded-md top-1 right-3 hover:bg-indigo-600 "
-          onClick={() => changeNewMode()}
-        >
-          新增
-        </button>
+        <PageController
+          totalCountItem={totalCountItem}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          nextPage={nextPage}
+          exPage={exPage}
+        />
       </div>
     </div>
   );

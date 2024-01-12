@@ -65,7 +65,7 @@ const MachineSpecNew = ({
 }: MachineSpecNewProps) => {
   const router = useRouter();
   return (
-    <div className="relative flex flex-col justify-center w-full p-4 mb-2 text-center bg-gray-900 md:mx-auto md:w-fit rounded-xl">
+    <div className="relative flex flex-col w-full p-4 mb-2 text-center bg-gray-900 md:mx-auto md:w-fit rounded-xl">
       <p>新增設備規格</p>
       {notice && <Notice isError={isError} />}
       {currentPage === 1 && (

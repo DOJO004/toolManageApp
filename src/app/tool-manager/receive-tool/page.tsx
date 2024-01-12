@@ -1,0 +1,76 @@
+"use client";
+import BindToolIndex from "@/app/ui/elabelInfo/bindTool/bindToolIndex";
+import {
+  apiBindToolToELabel,
+  apiGetElabelSpecInfoList,
+  apiGetToolStockStatusInfoList,
+} from "@/scripts/api";
+import { FormEvent, useEffect, useState } from "react";
+
+export default function Page() {
+  const [eLabelSpecInfoList, setELabelSpecInfoList] = useState([]);
+  const [toolSNList, setToolSNList] = useState([]);
+  const [bindToolInfo, setBindToolInfo] = useState({
+    eLabelSN: "",
+    LabelCode: "",
+    ToolSN: "",
+  });
+
+  const fetchBindToolSN = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiBindToolToELabel(bindToolInfo);
+    console.log("bind tool to eLabel", res);
+    if (res?.data?.Values?.ReqInt === 0) {
+      cleanInput();
+      console.log("bind tool to eLabel success.");
+    } else {
+      console.log("bind tool to eLabel false.");
+    }
+  };
+
+  const fetchGetToolSNList = async () => {
+    const res = await apiGetToolStockStatusInfoList(999);
+    console.log("toolSN list", res);
+    if (res?.data?.Values?.ReqInt === 0) {
+      setToolSNList(res.data.Values.ToolStockList);
+    } else {
+      console.log("get tool spec list false.");
+    }
+  };
+
+  const fetchGetElabelSpecInfoList = async () => {
+    const res = await apiGetElabelSpecInfoList();
+    console.log("spec info", res);
+
+    if (res?.data?.Values?.ReqInt === 0) {
+      setELabelSpecInfoList(res.data.Values.eLabelList);
+    } else {
+      console.log("get elabel spec list false.");
+    }
+  };
+
+  const cleanInput = () => {
+    setBindToolInfo({
+      eLabelSN: "",
+      LabelCode: "",
+      ToolSN: "",
+    });
+  };
+
+  useEffect(() => {
+    fetchGetElabelSpecInfoList();
+    fetchGetToolSNList();
+  }, []);
+
+  return (
+    <div>
+      <BindToolIndex
+        bindToolInfo={bindToolInfo}
+        setBindToolInfo={setBindToolInfo}
+        eLabelSpecInfoList={eLabelSpecInfoList}
+        toolSNList={toolSNList}
+        fetchBindToolSN={fetchBindToolSN}
+      />
+    </div>
+  );
+}

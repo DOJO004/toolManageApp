@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 interface LoginProps {
   userLogin: (e: React.FormEvent) => void;
@@ -6,7 +6,6 @@ interface LoginProps {
   setUserAccount: React.Dispatch<React.SetStateAction<string>>;
   userPassword: string;
   setUserPassword: React.Dispatch<React.SetStateAction<string>>;
-  errorMessage: string;
   waitLogin: boolean;
 }
 
@@ -16,34 +15,41 @@ const Login = ({
   setUserAccount,
   userPassword,
   setUserPassword,
-  errorMessage,
   waitLogin,
 }: LoginProps) => {
   return (
-    <div className="flex items-center justify-center md:mt-48">
-      <form onSubmit={(e) => userLogin(e)}>
-        <p className="my-2 text-4xl font-bold">Login</p>
-        <p className="text-red-500">{errorMessage ? errorMessage : ""}</p>
+    <div className="flex items-center justify-center w-full md:mt-48">
+      <form
+        onSubmit={(e) => userLogin(e)}
+        className="w-full p-4 bg-gray-900 rounded-lg md:max-w-96"
+      >
+        <p className="mb-4 text-4xl font-bold text-center">Login</p>
+        <div className="relative">
+          <label htmlFor="userAccount">使用者名稱</label>
+          <input
+            id="userAccount"
+            type="text"
+            placeholder="使用者名稱"
+            className="block w-full pl-2 mb-4 text-black border border-black rounded-xl min-h-12"
+            onChange={(e) => setUserAccount(e.target.value)}
+            value={userAccount}
+          />
+        </div>
+        <label htmlFor="password">密碼</label>
         <input
-          type="text"
-          placeholder="使用者名稱"
-          className="block pl-2 my-2 text-black rounded-xl min-h-12"
-          onChange={(e) => setUserAccount(e.target.value)}
-          value={userAccount}
-        />
-        <input
+          id="password"
           type="password"
           placeholder="密碼"
-          className="block pl-2 my-2 text-black rounded-xl min-h-12"
+          className="block w-full pl-2 mb-4 text-black rounded-xl min-h-12"
           onChange={(e) => setUserPassword(e.target.value)}
           value={userPassword}
         />
         <button
-          className={`flex p-2 ml-auto bg-blue-500 rounded-xl min-w-24 ${
+          className={`flex p-2 ml-auto bg-indigo-500 rounded-xl min-w-32 h-12 items-center ${
             waitLogin ? "bg-gray-500" : ""
           }`}
         >
-          <p className="mx-auto">{waitLogin ? "登入中..." : "登入"}</p>
+          <p className="mx-auto text-xl">{waitLogin ? "登入中..." : "登入"}</p>
         </button>
       </form>
     </div>

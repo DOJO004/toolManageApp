@@ -8,6 +8,7 @@ interface ToolTypeNewProps {
   setToolTypeName: React.Dispatch<React.SetStateAction<string>>;
   fetchNewToolType: (e: FormEvent) => void;
   notice: boolean;
+  setNotice: React.Dispatch<React.SetStateAction<boolean>>;
   isError: boolean;
   changeNewMode: () => void;
 }
@@ -19,6 +20,7 @@ const ToolTypeNew = ({
   setToolTypeName,
   fetchNewToolType,
   notice,
+  setNotice,
   isError,
   changeNewMode,
 }: ToolTypeNewProps) => {
@@ -29,7 +31,7 @@ const ToolTypeNew = ({
         onSubmit={(e) => fetchNewToolType(e)}
       >
         <p className="text-xl text-center">新增刀具類型</p>
-        {notice && <Notice isError={isError} />}
+        <Notice notice={notice} setNotice={setNotice} isError={isError} />
         <input
           type="text"
           className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
@@ -44,7 +46,7 @@ const ToolTypeNew = ({
           value={toolTypeName}
           onChange={(e) => setToolTypeName(e.target.value)}
         />
-        <button className="p-2 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
+        <button className="p-2 mt-4 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
           新增
         </button>
       </form>

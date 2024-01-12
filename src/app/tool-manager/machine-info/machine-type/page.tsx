@@ -118,33 +118,31 @@ export default function Page() {
     }
   };
   return (
-    <div className="flex flex-col  md:flex-row">
-      <div className="md:mx-2">
-        {newMode && (
-          <MachineTypeNew
-            machineTypeID={machineTypeID}
-            setMachineTypeID={setMachineTypeID}
-            machineTypeName={machineTypeName}
-            setMachineTypeName={setMachineTypeName}
-            fetchAddMachineType={fetchAddMachineType}
-            changeNewMode={changeNewMode}
-            notice={notice}
-            isError={isError}
-          />
-        )}
+    <div className="flex flex-col justify-center md:flex-row">
+      {newMode && (
+        <MachineTypeNew
+          machineTypeID={machineTypeID}
+          setMachineTypeID={setMachineTypeID}
+          machineTypeName={machineTypeName}
+          setMachineTypeName={setMachineTypeName}
+          fetchAddMachineType={fetchAddMachineType}
+          changeNewMode={changeNewMode}
+          notice={notice}
+          isError={isError}
+        />
+      )}
 
-        {editMode && (
-          <MachineTypeEdit
-            machineType={machineType}
-            setMachineType={setMachineType}
-            fetchEditMachineType={fetchEditMachineType}
-            fetchDeleteMachineType={fetchDeleteMachineType}
-            changeEditMode={changeEditMode}
-            notice={notice}
-            isError={isError}
-          />
-        )}
-      </div>
+      {editMode && (
+        <MachineTypeEdit
+          machineType={machineType}
+          setMachineType={setMachineType}
+          fetchEditMachineType={fetchEditMachineType}
+          fetchDeleteMachineType={fetchDeleteMachineType}
+          changeEditMode={changeEditMode}
+          notice={notice}
+          isError={isError}
+        />
+      )}
 
       <MachineTypeIndex
         machineTypeList={machineTypeList}

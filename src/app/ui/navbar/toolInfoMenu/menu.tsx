@@ -1,39 +1,34 @@
 import React from "react";
-import MenuLinkBtn from "./menuLinkBtn";
+import menuItem from "./items";
+import Image from "next/image";
+import Link from "next/link";
 
 interface ToolStatusMenuProps {
   setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 const ToolStatusMenu = ({ setOpenMenu }: ToolStatusMenuProps) => {
-  const menuItem = [
-    {
-      src: "/types.png",
-      alt: "toolTypes",
-      name: "刀具類型",
-      path: "/tool-manager/tool-info/tool-type/",
-    },
-    {
-      src: "/spec.png",
-      alt: "toolSpec",
-      name: "刀具規格",
-      path: "/tool-manager/tool-info/tool-spec/",
-    },
-    {
-      src: "/stock.png",
-      alt: "toolStocks",
-      name: "刀具庫存",
-      path: "/tool-manager/tool-info/tool-stock/",
-    },
-    {
-      src: "/overView.png",
-      alt: "overView",
-      name: "總覽",
-      path: "/tool-manager/tool-info/",
-    },
-  ];
   return (
-    <div className="flex justify-center md:flex-col">
-      <MenuLinkBtn menuItem={menuItem} setOpenMenu={setOpenMenu} />
+    <div className="flex justify-center md:flex-col w-ful">
+      <div className="flex w-full md:block">
+        {menuItem.map((item, index) => (
+          <Link
+            key={index}
+            href={item.path}
+            className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
+            onClick={() => setOpenMenu(false)}
+          >
+            <Image
+              src={item.src}
+              alt={item.alt}
+              width={30}
+              height={30}
+              className="mr-2"
+            />
+            <p className="hidden md:block whitespace-nowrap">{item.name}</p>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

@@ -10,9 +10,14 @@ export default function Page() {
   const [productLine, setProductLine] = useState([
     { ProductLineID: "", ProductLineName: "" },
   ]);
+
   const fetchGetMachineInfoList = async () => {
-    const res = await apiGetMachineStatusInfoList(productLine[0].ProductLineID);
-    console.log(res);
+    if (productLine) {
+      const res = await apiGetMachineStatusInfoList(
+        productLine[0].ProductLineID
+      );
+      console.log("machine info list", res);
+    }
   };
 
   const fetchGetProductLineList = async () => {
@@ -24,8 +29,8 @@ export default function Page() {
   };
 
   useEffect(() => {
-    fetchGetMachineInfoList();
     fetchGetProductLineList();
+    fetchGetMachineInfoList();
   }, []);
   return (
     <div>

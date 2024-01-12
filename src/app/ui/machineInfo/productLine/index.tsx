@@ -20,7 +20,7 @@ const ProductLineIndex = ({
   fetchGetProductLineList,
 }: ProductLineIndexProps) => {
   return (
-    <div className="relative w-full p-2 text-center bg-gray-900 rounded-xl md:min-w-96">
+    <div className="relative p-2 mx-2 text-center bg-gray-900 rounded-xl md:min-w-96">
       <p className="text-xl">產線類型</p>
       <div className="grid grid-cols-3 gap-2 bg-gray-800 rounded-xl">
         <div className="truncate ">產線ID</div>
