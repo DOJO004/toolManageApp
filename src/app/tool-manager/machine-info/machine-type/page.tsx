@@ -2,6 +2,8 @@
 import MachineTypeIndex from "@/app/ui/machineInfo/machineType";
 import MachineTypeEdit from "@/app/ui/machineInfo/machineType/edit";
 import MachineTypeNew from "@/app/ui/machineInfo/machineType/new";
+import Notice from "@/app/ui/notice";
+import PageController from "@/app/ui/pageController/pageController";
 import {
   apiGetMachineTypeInfoList,
   apiAddMachineTypeInfo,
@@ -19,19 +21,32 @@ export default function Page() {
   const [editModeIndex, setEditModeIndex] = useState(-1);
   const [notice, setNotice] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(-1);
+  const [totalRecords, setTotalRecords] = useState(-1);
 
   const fetchGetMachineTypeList = async (index?: number) => {
     const res = await apiGetMachineTypeInfoList();
+    console.log("get machine type list", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
       if (index || index === 0) {
         setMachineType(res.data.Values.MachineTypeList[index]);
       } else {
         setMachineTypeList(res.data.Values.MachineTypeList);
+        setTotalRecords(res.data.Values.TotalRecords);
       }
     } else {
       console.log("get machine type list false.");
     }
+  };
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const exPage = () => {
+    setCurrentPage((prev) => prev - 1);
   };
 
   const changeNewMode = () => {
@@ -41,7 +56,7 @@ export default function Page() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const changeEditMode = (index: number) => {
+  const changeEditMode = (index?: number) => {
     setEditModeIndex(index);
     if (index === editModeIndex) {
       setEditMode(!editMode);
@@ -97,6 +112,7 @@ export default function Page() {
     );
     setNotice(true);
     if (res?.data?.Values?.ReqInt === 0) {
+      setEditMode(false);
       fetchGetMachineTypeList();
       setIsError(false);
     } else {
@@ -109,17 +125,40 @@ export default function Page() {
     const confirm = confirmDisable();
     if (confirm) {
       const res = await disableMachineTypeInfo(machineType.MachineTypeID);
+      setNotice(true);
       if (res?.data?.Values?.ReqInt === 0) {
         fetchGetMachineTypeList();
         setEditMode(false);
+        setIsError(false);
       } else {
         console.log("delete machine type false.");
+        setIsError(true);
       }
     }
   };
   return (
-    <div className="flex flex-col justify-center md:flex-row">
-      {newMode && (
+    <div className="relative flex flex-col justify-center md:flex-row">
+      <Notice notice={notice} setNotice={setNotice} isError={isError} />
+      <MachineTypeIndex
+        machineTypeList={machineTypeList}
+        changeNewMode={changeNewMode}
+        changeEditMode={changeEditMode}
+        fetchGetMachineTypeList={fetchGetMachineTypeList}
+      />
+      <div className="absolute -bottom-10">
+        <PageController
+          totalPage={totalPage}
+          totalRecords={totalRecords}
+          nextPage={nextPage}
+          exPage={exPage}
+          currentPage={currentPage}
+        />
+      </div>
+      <div
+        className={` absolute transition-all duration-300 ease-in-out ${
+          newMode ? "translate-y-0" : " -translate-y-96"
+        }`}
+      >
         <MachineTypeNew
           machineTypeID={machineTypeID}
           setMachineTypeID={setMachineTypeID}
@@ -127,29 +166,21 @@ export default function Page() {
           setMachineTypeName={setMachineTypeName}
           fetchAddMachineType={fetchAddMachineType}
           changeNewMode={changeNewMode}
-          notice={notice}
-          isError={isError}
         />
-      )}
-
-      {editMode && (
+      </div>
+      <div
+        className={` absolute transition-all duration-300 ease-in-out ${
+          editMode ? "translate-y-0" : " -translate-y-96"
+        }`}
+      >
         <MachineTypeEdit
           machineType={machineType}
           setMachineType={setMachineType}
           fetchEditMachineType={fetchEditMachineType}
           fetchDeleteMachineType={fetchDeleteMachineType}
           changeEditMode={changeEditMode}
-          notice={notice}
-          isError={isError}
         />
-      )}
-
-      <MachineTypeIndex
-        machineTypeList={machineTypeList}
-        changeNewMode={changeNewMode}
-        changeEditMode={changeEditMode}
-        fetchGetMachineTypeList={fetchGetMachineTypeList}
-      />
+      </div>
     </div>
   );
 }

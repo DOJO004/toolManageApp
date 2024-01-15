@@ -20,30 +20,37 @@ const ToolTypeIndex = ({
   changeNewMode,
 }: ToolTypeIndexProps) => {
   return (
-    <div className="relative w-full p-2 overflow-auto text-center bg-gray-900 rounded-xl min-w-72">
+    <div className="relative w-full h-full p-2 overflow-auto text-center bg-gray-900 rounded-xl min-w-72">
       <div className="absolute top-1 right-3 ">
         <AddBtn changeNewMode={changeNewMode} />
       </div>
       <p className="text-xl ">刀具類型</p>
-      <div className="grid grid-cols-3 gap-2 p-1 bg-gray-800 rounded-xl">
-        <div>ID</div>
-        <div>名稱</div>
-        <div>編輯</div>
-      </div>
-      <div className="grid grid-cols-3 gap-2 mt-2">
-        {toolTypeList.map((item, index) => (
-          <React.Fragment key={item.ToolTypeID}>
-            <div className="truncate ">{item.ToolTypeID}</div>
-            <div className="truncate ">{item.Name}</div>
-            <button
-              onClick={() => {
-                changeEditMode(index), fetchGetToolTypeList(index);
-              }}
-            >
-              編輯
-            </button>
-          </React.Fragment>
-        ))}
+      <div className="overflow-hidden shadow-md rounded-t-xl">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-indigo-300 ">
+              <th className="p-1 text-black">ID</th>
+              <th className="p-1 text-black">名稱</th>
+              <th className="p-1 text-black">編輯</th>
+            </tr>
+          </thead>
+          <tbody>
+            {toolTypeList.map((item, index) => (
+              <tr key={item.ToolTypeID} className=" even:bg-gray-700">
+                <td className="p-1">{item.ToolTypeID}</td>
+                <td className="p-1">{item.Name}</td>
+                <td
+                  className="cursor-pointer "
+                  onClick={() => {
+                    changeEditMode(index), fetchGetToolTypeList(index);
+                  }}
+                >
+                  編輯
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

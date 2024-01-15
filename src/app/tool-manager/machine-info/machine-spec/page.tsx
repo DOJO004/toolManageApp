@@ -2,6 +2,8 @@
 import MachineSpecIndex from "@/app/ui/machineInfo/machineSpec";
 import MachineSpecEdit from "@/app/ui/machineInfo/machineSpec/edit";
 import MachineSpecNew from "@/app/ui/machineInfo/machineSpec/new";
+import Notice from "@/app/ui/notice";
+import PageController from "@/app/ui/pageController/pageController";
 import {
   apiGetMachineInfoList,
   apiAddMachineSpecInfo,
@@ -12,6 +14,7 @@ import {
   disabledMachineInfo,
   confirmDisable,
 } from "@/scripts/api";
+import { PostAddMachineSpecInfo } from "@/scripts/seed";
 import { useEffect, useState } from "react";
 
 export default function Page() {
@@ -193,8 +196,20 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col justify-center md:flex-row">
-      {newMode && (
+    <div className="relative flex flex-col justify-center md:flex-row">
+      <Notice notice={notice} setNotice={setNotice} isError={isError} />
+      <MachineSpecIndex
+        machineSpecList={machineSpecList}
+        changeNewMode={changeNewMode}
+        changeEditMode={changeEditMode}
+        fetchGetMachineSpecList={fetchGetMachineSpecList}
+      />
+
+      <div
+        className={`absolute top-0 transition-all duration-300 ease-in-out ${
+          newMode ? "translate-y-0" : "-translate-y-[32rem]"
+        }`}
+      >
         <MachineSpecNew
           machineSpec={machineSpec}
           setMachineSpec={setMachineSpec}
@@ -205,11 +220,13 @@ export default function Page() {
           machineTypeList={machineTypeList}
           fetchAddMachineSpecInfo={fetchAddMachineSpecInfo}
           changeNewMode={changeNewMode}
-          notice={notice}
-          isError={isError}
         />
-      )}
-      {editMode && (
+      </div>
+      <div
+        className={`absolute top-0 transition-all duration-300 ease-in-out ${
+          editMode ? "translate-y-0" : "-translate-y-[32rem]"
+        }`}
+      >
         <MachineSpecEdit
           currentPage={currentPage}
           nextPage={nextPage}
@@ -222,13 +239,7 @@ export default function Page() {
           notice={notice}
           isError={isError}
         />
-      )}
-      <MachineSpecIndex
-        machineSpecList={machineSpecList}
-        changeNewMode={changeNewMode}
-        changeEditMode={changeEditMode}
-        fetchGetMachineSpecList={fetchGetMachineSpecList}
-      />
+      </div>
     </div>
   );
 }

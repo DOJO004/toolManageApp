@@ -37,41 +37,51 @@ const MachineSpecIndex = ({
   fetchGetMachineSpecList,
 }: MachineSpecIndexProps) => {
   return (
-    <div className="relative w-full p-2 mx-2 text-center bg-gray-900 max-w-7xl rounded-xl">
-      <p className="text-xl text-center ">設備規格</p>
-      <div className="grid grid-cols-10 gap-2 bg-gray-800 1 rounded-xl">
-        <div className="truncate ">生產線</div>
-        <div className="truncate ">設備ID</div>
-        <div className="truncate ">設備SN序號</div>
-        <div className="truncate ">設備名稱</div>
-        <div className="truncate ">品牌</div>
-        <div className="truncate ">系列</div>
-        <div className="truncate ">設備IP位址</div>
-        <div className="truncate ">讀取器ID</div>
-        <div className="truncate ">MT</div>
-        <div className="truncate ">編輯</div>
-      </div>
-      <div className="grid grid-cols-10 gap-2 ">
-        {machineSpecList.map((item, index) => (
-          <React.Fragment key={item.MachineID}>
-            <div className="truncate ">{item.ProductLineID.split(":")[1]}</div>
-            <div className="truncate ">{item.MachineID}</div>
-            <div className="truncate ">{item.MachineSN}</div>
-            <div className="truncate ">{item.MachineName}</div>
-            <div className="truncate ">{item.SystemInfo.Brand}</div>
-            <div className="truncate ">{item.SystemInfo.Series}</div>
-            <div className="truncate ">{item.MachineIP}</div>
-            <div className="truncate ">{item.ReaderID}</div>
-            <div className="truncate ">{item.SystemInfo.MT}</div>
-            <button
-              onClick={() => {
-                changeEditMode(index), fetchGetMachineSpecList(index);
-              }}
-            >
-              編輯
-            </button>
-          </React.Fragment>
-        ))}
+    <div className="relative p-1 overflow-auto text-center bg-gray-900 rounded-md">
+      <p className="text-xl">設備規格</p>
+      <div className="mt-2 overflow-hidden rounded-t-lg">
+        <table className="border-collapse ">
+          <thead className="">
+            <tr className="bg-indigo-200 ">
+              <th className="p-1 text-black ">生產線</th>
+              <th className="p-1 text-black ">設備ID</th>
+              <th className="p-1 text-black ">設備SN序號</th>
+              <th className="p-1 text-black ">設備名稱</th>
+              <th className="p-1 text-black ">品牌</th>
+              <th className="p-1 text-black ">系列</th>
+              <th className="p-1 text-black ">設備IP位址</th>
+              <th className="p-1 text-black ">讀取器ID</th>
+              <th className="p-1 text-black ">MT</th>
+              <th className="p-1 text-black ">編輯</th>
+            </tr>
+          </thead>
+          <tbody>
+            {machineSpecList.map((item, index) => (
+              <tr
+                key={item.MachineID}
+                className=" hover:bg-indigo-500 even:bg-gray-700"
+              >
+                <td className="p-1 ">{item.ProductLineID.split(":")[1]}</td>
+                <td className="p-1 ">{item.MachineID}</td>
+                <td className="p-1 ">{item.MachineSN}</td>
+                <td className="p-1 ">{item.MachineName}</td>
+                <td className="p-1 ">{item.SystemInfo.Brand}</td>
+                <td className="p-1 ">{item.SystemInfo.Series}</td>
+                <td className="p-1 ">{item.MachineIP}</td>
+                <td className="p-1 ">{item.ReaderID}</td>
+                <td className="p-1 ">{item.SystemInfo.MT}</td>
+                <td
+                  className="cursor-pointer "
+                  onClick={() => {
+                    changeEditMode(index), fetchGetMachineSpecList(index);
+                  }}
+                >
+                  編輯
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <div className="absolute top-2 right-3">
         <AddBtn changeNewMode={changeNewMode} />

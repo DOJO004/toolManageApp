@@ -1,6 +1,6 @@
 import { FormEvent } from "react";
 import { CloseBtn } from "../buttons";
-import Notice from "../notice";
+
 interface ElabelInfoItem {
   LabelCode: string;
   eLabelSN: string;
@@ -15,9 +15,6 @@ interface ElabelInfoEditProps {
   setEditElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
   fetchEditElabelInfo: (e: FormEvent) => void;
   changeEditMode: () => void;
-  notice: boolean;
-  setNotice: React.Dispatch<React.SetStateAction<boolean>>;
-  isError: boolean;
 }
 
 const ElabelInfoEdit = ({
@@ -25,18 +22,14 @@ const ElabelInfoEdit = ({
   setEditElabelInfo,
   fetchEditElabelInfo,
   changeEditMode,
-  notice,
-  setNotice,
-  isError,
 }: ElabelInfoEditProps) => {
   return (
     <div className="relative ">
       <form
-        className="w-full p-2 mx-auto mb-2 text-center bg-gray-900 md:w-fit rounded-xl"
+        className="w-full p-2 mx-auto mb-2 text-center bg-gray-900 border md:w-fit rounded-xl"
         onSubmit={(e) => fetchEditElabelInfo(e)}
       >
         <p className="my-2 text-xl text-center ">編輯電子標籤</p>
-        <Notice notice={notice} setNotice={setNotice} isError={isError} />
         <label htmlFor="LabelCode">標籤號碼</label>
         <input
           id="LabelCode"

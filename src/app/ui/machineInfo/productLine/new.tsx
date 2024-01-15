@@ -1,7 +1,6 @@
 import React, { FormEvent } from "react";
 import { BackBtn, CloseBtn } from "../../buttons";
 import { useRouter } from "next/navigation";
-import Notice from "../../notice";
 
 interface ProductLineNewProps {
   productLineID: string;
@@ -10,8 +9,6 @@ interface ProductLineNewProps {
   setProductLineName: React.Dispatch<React.SetStateAction<string>>;
   fetchAddProductLine: (e: FormEvent) => void;
   changeNewMode: () => void;
-  notice: boolean;
-  isError: boolean;
 }
 
 const ProductLineNew = ({
@@ -21,8 +18,6 @@ const ProductLineNew = ({
   setProductLineName,
   fetchAddProductLine,
   changeNewMode,
-  notice,
-  isError,
 }: ProductLineNewProps) => {
   const router = useRouter();
   return (
@@ -32,7 +27,6 @@ const ProductLineNew = ({
         onSubmit={(e) => fetchAddProductLine(e)}
       >
         <p className="text-xl text-center ">新增產線</p>
-        {notice && <Notice isError={isError} />}
         <input
           type="text"
           value={productLineID}

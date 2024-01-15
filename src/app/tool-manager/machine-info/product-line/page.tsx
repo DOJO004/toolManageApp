@@ -11,6 +11,8 @@ import {
 } from "@/scripts/api";
 import { useEffect, useState, FormEvent } from "react";
 import { PostAddProductLineInfo } from "@/scripts/seed";
+import Notice from "@/app/ui/notice";
+import PageController from "@/app/ui/pageController/pageController";
 
 export default function Page() {
   // index
@@ -20,6 +22,9 @@ export default function Page() {
   const [editIndex, setEditIndex] = useState(-1);
   const [notice, setNotice] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(-1);
+  const [totalRecords, setTotalRecords] = useState(-1);
 
   const fetchGetProductLineList = async (index?: number) => {
     const res = await apiGetProductLineInfoList();
@@ -29,11 +34,20 @@ export default function Page() {
       if (index || index === 0) {
         setProductLine(res.data.Values.ProductLineList[index]);
       } else {
+        setTotalRecords(res.data.Values.TotalRecords);
         setProductLineList(res.data.Values.ProductLineList);
       }
     } else {
       console.log("get product line list false.");
     }
+  };
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const exPage = () => {
+    setCurrentPage((prev) => prev - 1);
   };
 
   const changeNewMode = () => {
@@ -99,6 +113,7 @@ export default function Page() {
     );
     setNotice(true);
     if (res?.data?.Values?.ReqInt === 0) {
+      setEditMode(false);
       setIsError(false);
       fetchGetProductLineList();
     } else {
@@ -116,7 +131,23 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col justify-center md:flex-row">
+    <div className="relative flex flex-col justify-center md:flex-row">
+      <Notice notice={notice} setNotice={setNotice} isError={isError} />
+      <ProductLineIndex
+        productLineList={productLineList}
+        changeNewMode={changeNewMode}
+        changeEditMode={changeEditMode}
+        fetchGetProductLineList={fetchGetProductLineList}
+      />
+      <div className="absolute -bottom-10">
+        <PageController
+          nextPage={nextPage}
+          exPage={exPage}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          totalRecords={totalRecords}
+        />
+      </div>
       <div
         className={`absolute z-10 top-60 transition-all duration-300
           ${newMode ? " translate-y-0" : "-translate-y-[40rem]"}`}
@@ -128,28 +159,20 @@ export default function Page() {
           setProductLineName={setProductLineName}
           fetchAddProductLine={fetchAddProductLine}
           changeNewMode={changeNewMode}
-          notice={notice}
-          isError={isError}
         />
       </div>
-
-      {editMode && (
+      <div
+        className={`absolute z-10 top-60 transition-all duration-300
+          ${editMode ? " translate-y-0" : "-translate-y-[40rem]"}`}
+      >
         <ProductLineEdit
           fetchEditProductLine={fetchEditProductLine}
           fetchDeleteProductLine={fetchDeleteProductLine}
           productLine={productLine}
           setProductLine={setProductLine}
           changeEditMode={changeEditMode}
-          notice={notice}
-          isError={isError}
         />
-      )}
-      <ProductLineIndex
-        productLineList={productLineList}
-        changeNewMode={changeNewMode}
-        changeEditMode={changeEditMode}
-        fetchGetProductLineList={fetchGetProductLineList}
-      />
+      </div>
     </div>
   );
 }

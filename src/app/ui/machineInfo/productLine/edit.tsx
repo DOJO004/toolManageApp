@@ -1,5 +1,4 @@
 import React, { FormEvent } from "react";
-import Notice from "../../notice";
 import { useRouter } from "next/navigation";
 import { BackBtn, CloseBtn, DeleteBtn } from "../../buttons";
 
@@ -13,8 +12,6 @@ interface ProductLineEditProps {
   fetchEditProductLine: (e: FormEvent) => void;
   fetchDeleteProductLine: () => void;
   changeEditMode: () => void;
-  notice: boolean;
-  isError: boolean;
 }
 const ProductLineEdit = ({
   productLine,
@@ -22,18 +19,15 @@ const ProductLineEdit = ({
   fetchEditProductLine,
   fetchDeleteProductLine,
   changeEditMode,
-  notice,
-  isError,
 }: ProductLineEditProps) => {
   const router = useRouter();
   return (
     <div className="relative mb-2 ">
       <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 rounded-xl"
+        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border rounded-xl"
         onSubmit={(e) => fetchEditProductLine(e)}
       >
         <p className="text-xl text-center ">編輯產線</p>
-        {notice && <Notice isError={isError} />}
         <label htmlFor="ProductLineID">ID</label>
         <input
           id="ProductLineID"

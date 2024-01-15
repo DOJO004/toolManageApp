@@ -151,15 +151,15 @@ export default function Page() {
   };
 
   return (
-    <div className="relative flex flex-col justify-center w-full md:flex-row">
-      <div>
-        <Notice notice={notice} setNotice={setNotice} isError={isError} />
-        <ToolTypeIndex
-          toolTypeList={toolTypeList}
-          changeEditMode={changeEditMode}
-          fetchGetToolTypeList={fetchGetToolTypeList}
-          changeNewMode={changeNewMode}
-        />
+    <div className="relative flex flex-col justify-center l md:flex-row">
+      <Notice notice={notice} setNotice={setNotice} isError={isError} />
+      <ToolTypeIndex
+        toolTypeList={toolTypeList}
+        changeEditMode={changeEditMode}
+        fetchGetToolTypeList={fetchGetToolTypeList}
+        changeNewMode={changeNewMode}
+      />
+      <div className="absolute -bottom-10">
         <PageController
           totalRecords={totalRecords}
           currentPage={currentPage}

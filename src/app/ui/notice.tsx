@@ -39,7 +39,7 @@ const Notice = ({
 
   return (
     <div
-      className={`absolute w-40 p-2 transition-all duration-300 z-10  bg-gray-800 rounded-md top-5 right-0 ${
+      className={`absolute min-w-40 p-2 transition-all duration-300 z-10  bg-gray-800 rounded-md top-5 right-0 border  ${
         notice ? "translate-y-0 " : "-translate-y-60"
       }`}
     >

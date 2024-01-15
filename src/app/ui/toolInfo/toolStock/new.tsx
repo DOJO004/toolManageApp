@@ -47,7 +47,7 @@ const ToolStockNew = ({
   return (
     <div className="relative mb-2 md:w-fit md:mx-2">
       <form
-        className="flex flex-col justify-center w-full p-4 bg-gray-900 rounded-xl"
+        className="flex flex-col justify-center w-full p-4 bg-gray-900 border-2 rounded-xl"
         onSubmit={(e) => fetchAddToolStock(e)}
       >
         <p className="text-xl text-center">新增刀具庫存</p>
@@ -80,10 +80,10 @@ const ToolStockNew = ({
         <button className="block pl-2 mx-auto my-2 bg-indigo-500 rounded-md min-h-10 min-w-72 hover:bg-indigo-600">
           完成
         </button>
-        <div className="absolute top-3 right-3">
-          <CloseBtn changeMode={changeNewMode} />
-        </div>
       </form>
+      <div className="absolute top-3 right-3">
+        <CloseBtn changeMode={changeNewMode} />
+      </div>
     </div>
   );
 };

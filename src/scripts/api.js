@@ -1,6 +1,6 @@
 import axios from "axios";
 const apiInstance = axios.create({
-baseURL:"http://10.45.34.74:8080",
+baseURL:"http://10.45.34.77:8080",
 timeout:5000,
 headers:{
     "accept": "application/json",
@@ -408,7 +408,16 @@ export const apiModifyToolSpecInfo = async (toolInfo)=>{
 }
 
 // scrapToolStockInfo
-export const scrapToolStockInfo = async (body)=>{
+export const scrapToolStockInfo = async (toolSN)=>{
+    const body={
+        "ToolSN": toolSN,
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ]
+      }
     try{
         const res = await apiInstance.post("tool_info/ScrapToolStockInfo",body)
         return res
@@ -420,7 +429,17 @@ export const scrapToolStockInfo = async (body)=>{
 }
 
 // repairToolStockInfo
-export const repairToolStockInfo = async (body)=>{
+export const repairToolStockInfo = async (toolSN)=>{
+    const body={
+        "ToolSN": toolSN,
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ]
+    }
+    
     try{
         const res = await apiInstance.post("tool_info/RepairToolStockInfo",body)
         return res
@@ -431,8 +450,17 @@ export const repairToolStockInfo = async (body)=>{
     }
 }
 
-// restorageToolStockInfo
-export const restorageToolStockInfo = async (body)=>{
+// restoreToolStockInfo
+export const restoreToolStockInfo = async (toolSN)=>{
+    const body={
+        "ToolSN": toolSN,
+        "UserToken": getUserToken(),
+        "LoginTime": getLoginTime(),
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ]
+      }
     try{
         const res = await apiInstance.post("tool_info/RestorageToolStockInfo",body)
         return res

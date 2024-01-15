@@ -2,7 +2,6 @@ import React from "react";
 import NewStepOne from "./newStepOne";
 import NewStepTwo from "./newStepTwo";
 import NewStepThree from "./newStepThree";
-import Notice from "../../notice";
 import { CloseBtn } from "../../buttons";
 
 interface ToolTypeItem {
@@ -38,8 +37,6 @@ interface ToolSpecNewProps {
   currentPage: number;
   nextPage: () => void;
   prevPage: () => void;
-  notice: boolean;
-  isError: boolean;
 }
 
 const ToolSpecNew = ({
@@ -51,13 +48,10 @@ const ToolSpecNew = ({
   currentPage,
   nextPage,
   prevPage,
-  notice,
-  isError,
 }: ToolSpecNewProps) => {
   return (
-    <div className="relative flex flex-col justify-center w-full p-4 mb-2 text-center bg-gray-900 md:mx-auto md:w-fit rounded-xl">
+    <div className="relative flex flex-col justify-center w-full p-4 mb-2 text-center bg-gray-900 border-2 md:mx-auto md:w-fit rounded-xl">
       <p>新增刀具規格</p>
-      {notice && <Notice isError={isError} />}
       <div className="text-black">
         <div className={currentPage === 1 ? "block" : "hidden"}>
           <NewStepOne
