@@ -1,6 +1,5 @@
 import { useRouter } from "next/navigation";
 import React, { FormEvent } from "react";
-import Notice from "../../notice";
 import { BackBtn, CloseBtn } from "../../buttons";
 
 interface MachineTypeNewProps {
@@ -10,8 +9,6 @@ interface MachineTypeNewProps {
   setMachineTypeName: React.Dispatch<React.SetStateAction<string>>;
   fetchAddMachineType: (e: FormEvent) => void;
   changeNewMode: () => void;
-  notice: boolean;
-  isError: boolean;
 }
 const MachineTypeNew = ({
   machineTypeID,
@@ -20,18 +17,15 @@ const MachineTypeNew = ({
   setMachineTypeName,
   changeNewMode,
   fetchAddMachineType,
-  notice,
-  isError,
 }: MachineTypeNewProps) => {
   const router = useRouter();
   return (
     <div className="relative mb-2">
       <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 rounded-xl"
+        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border-2 rounded-xl"
         onSubmit={(e) => fetchAddMachineType(e)}
       >
         <p className="text-xl text-center ">新增設備類型</p>
-        {notice && <Notice isError={isError} />}
         <input
           type="text"
           value={machineTypeID}

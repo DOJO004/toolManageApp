@@ -25,46 +25,51 @@ const ElabelInfoIndex = ({
   fetchSyncAimsData,
 }: ElabelInfoIndexProps) => {
   return (
-    <div className="relative w-full p-2 overflow-auto text-center bg-gray-900 rounded-xl">
+    <div className="relative w-full max-h-full p-2 overflow-auto text-center bg-gray-900 rounded-xl">
       <p className="my-2 text-xl">電子標籤列表</p>
-      <table className="w-full ">
-        <thead>
-          <tr className="p-1 bg-gray-800">
-            <td className="p-1 truncate">LabelCode</td>
-            <td className="p-1 truncate">eLabelSN</td>
-            <td className="p-1 truncate">StationCode</td>
-            <td className="p-1 truncate">ArticleID</td>
-            <td className="p-1 truncate">ArticleName</td>
-            <td className="p-1 truncate">LastModify</td>
-            <td className="p-1 truncate">編輯</td>
-          </tr>
-        </thead>
-        <tbody>
-          {eLabelList.map((item, index) => (
-            <tr key={item.LabelCode}>
-              <td className="p-1 truncate">{item.LabelCode}</td>
-              <td className="p-1 truncate">{item.eLabelSN}</td>
-              <td className="p-1 truncate">{item.StationCode}</td>
-              <td className="p-1 truncate">{item.ArticleID}</td>
-              <td className="p-1 truncate">{item.ArticleName}</td>
-              <td className="p-1 truncate">{item.LastModify}</td>
-              <td className="p-1 truncate">
-                <button
-                  onClick={() => {
-                    changeEditMode(),
-                      fetchGetElabelInfoByLabelCode(
-                        item.LabelCode,
-                        item.eLabelSN
-                      );
-                  }}
-                >
-                  編輯
-                </button>
-              </td>
+      <div className="mt-2 overflow-hidden rounded-t-xl">
+        <table className="w-full ">
+          <thead>
+            <tr className="p-1 bg-indigo-300">
+              <td className="p-1 text-black">LabelCode</td>
+              <td className="p-1 text-black">eLabelSN</td>
+              <td className="p-1 text-black">StationCode</td>
+              <td className="p-1 text-black">ArticleID</td>
+              <td className="p-1 text-black">ArticleName</td>
+              <td className="p-1 text-black">LastModify</td>
+              <td className="p-1 text-black">編輯</td>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {eLabelList.map((item, index) => (
+              <tr
+                key={item.LabelCode}
+                className=" even:bg-gray-700 hover:bg-indigo-500"
+              >
+                <td className="p-1 ">{item.LabelCode}</td>
+                <td className="p-1 ">{item.eLabelSN}</td>
+                <td className="p-1 ">{item.StationCode}</td>
+                <td className="p-1 ">{item.ArticleID}</td>
+                <td className="p-1 ">{item.ArticleName}</td>
+                <td className="p-1 ">{item.LastModify}</td>
+                <td className="p-1 ">
+                  <button
+                    onClick={() => {
+                      changeEditMode(),
+                        fetchGetElabelInfoByLabelCode(
+                          item.LabelCode,
+                          item.eLabelSN
+                        );
+                    }}
+                  >
+                    編輯
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <div className="absolute top-3 right-3">
         <AddBtn changeNewMode={changeNewMode} />
       </div>

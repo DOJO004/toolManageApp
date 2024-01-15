@@ -1,4 +1,5 @@
 "use client";
+import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
 import ToolSpecIndex from "@/app/ui/toolInfo/toolSpec";
 import ToolSpecEdit from "@/app/ui/toolInfo/toolSpec/edit";
@@ -18,7 +19,7 @@ export default function Page() {
   // pageController
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
-  const [totalCountItem, setTotalCountItem] = useState(0);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   const nextPage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -43,7 +44,7 @@ export default function Page() {
 
     if (res?.data?.Values?.ReqInt === 0) {
       setTotalPage(res.data.Values.TotalPages);
-      setTotalCountItem(res.data.Values.ToolsSpecList.length);
+      setTotalRecords(res.data.Values.ToolsSpecList.length);
       setToolSpecList(res.data.Values.ToolsSpecList);
     } else {
       console.log("get tool spec list false.");
@@ -193,6 +194,7 @@ export default function Page() {
     console.log(res);
     setNotice(true);
     if (res?.data?.Values?.ReqInt === 0) {
+      setEditMode(false);
       fetchToolSpecList();
       setNewCurrentPage(1);
       setIsError(false);
@@ -220,8 +222,26 @@ export default function Page() {
 
   return (
     <div className="flex flex-col justify-center md:flex-row">
-      <div className="md:mx-2">
-        {newMode && (
+      <div className="relative md:mx-2">
+        <Notice notice={notice} setNotice={setNotice} isError={isError} />
+        <ToolSpecIndex
+          toolSpecList={toolSpecList}
+          changeNewMode={changeNewMode}
+          changeEditMode={changeEditMode}
+          fetchGetToolInfoByID={fetchGetToolInfoByID}
+        />
+        <PageController
+          totalRecords={totalRecords}
+          nextPage={nextPage}
+          exPage={exPage}
+          currentPage={currentPage}
+          totalPage={totalPage}
+        />
+        <div
+          className={`absolute top-1/4 left-2/4 transition-all duration-300 ease-in-out ${
+            newMode ? "translate-y-0" : "-translate-y-[50rem]"
+          }`}
+        >
           <ToolSpecNew
             toolTypeList={toolTypeList}
             toolSpecInfo={toolSpecInfo}
@@ -231,11 +251,13 @@ export default function Page() {
             currentPage={newCurrentPage}
             nextPage={newNextPage}
             prevPage={newPrevPage}
-            notice={notice}
-            isError={isError}
           />
-        )}
-        {editMode && (
+        </div>
+        <div
+          className={`absolute top-1/4 left-2/4 transition-all duration-300 ease-in-out ${
+            editMode ? "translate-y-0" : "-translate-y-[50rem]"
+          }`}
+        >
           <ToolSpecEdit
             toolTypeList={toolTypeList}
             editToolSpec={editToolSpec}
@@ -245,26 +267,9 @@ export default function Page() {
             currentPage={newCurrentPage}
             nextPage={newNextPage}
             prevPage={newPrevPage}
-            notice={notice}
-            isError={isError}
             changeMode={changeEditMode}
           />
-        )}
-      </div>
-      <div>
-        <ToolSpecIndex
-          toolSpecList={toolSpecList}
-          changeNewMode={changeNewMode}
-          changeEditMode={changeEditMode}
-          fetchGetToolInfoByID={fetchGetToolInfoByID}
-        />
-        <PageController
-          totalCountItem={totalCountItem}
-          nextPage={nextPage}
-          exPage={exPage}
-          currentPage={currentPage}
-          totalPage={totalPage}
-        />
+        </div>
       </div>
     </div>
   );

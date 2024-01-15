@@ -6,7 +6,7 @@ import {
   apiGetELabelBindStatusInfoList,
   confirmDisable,
 } from "@/scripts/api";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 interface ELToolBindStatusItem {
   LabelCode: string;
@@ -64,31 +64,49 @@ export default function Page() {
   useEffect(() => {
     fetchGetELabelBindStatusInfoList();
   }, []);
+  useEffect(() => {
+    console.log(eLabelBindStatusInfoList.length);
+  }, [eLabelBindStatusInfoList]);
   return (
-    <div className="p-2 mr-4 bg-gray-900 rounded-md md:max-w-[800px] w-full">
+    <div className="p-2 mr-4 bg-gray-900 rounded-md md:max-w-[800px] 二">
       <p className="text-2xl text-center ">歸還刀具</p>
-      <table className="w-full text-center">
-        <thead>
-          <tr className="font-bold ">
-            <td>標籤號碼</td>
-            <td>刀具SN</td>
-            <td>歸還</td>
-          </tr>
-        </thead>
-        <tbody>
-          {eLabelBindStatusInfoList.map((item, index) => (
-            <tr key={index} className=" hover:bg-indigo-500">
-              <td>{item.LabelCode}</td>
-              <td>{item.ToolSN}</td>
-              <td>
-                <button onClick={() => fetchReturnTool(item.eLToolCode)}>
-                  歸還
-                </button>
-              </td>
+      <div className="overflow-hidden rounded-t-xl">
+        <table className="w-full text-center">
+          <thead>
+            <tr className="font-bold bg-indigo-300 ">
+              <td className="p-2 text-black">標籤號碼</td>
+              <td className="p-2 text-black">刀具SN</td>
+              <td className="p-2 text-black">歸還</td>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {eLabelBindStatusInfoList.length >= 1 ? (
+              <>
+                {eLabelBindStatusInfoList.map((item, index) => (
+                  <tr
+                    key={index}
+                    className=" hover:bg-indigo-500 even:bg-gray-700"
+                  >
+                    <td className="p-2">{item.LabelCode}</td>
+                    <td className="p-2">{item.ToolSN}</td>
+                    <td className="p-2">
+                      <button onClick={() => fetchReturnTool(item.eLToolCode)}>
+                        歸還
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </>
+            ) : (
+              <tr>
+                <td colSpan={3} className="py-2 ">
+                  尚未綁定刀具
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
       <div>
         <Notice notice={notice} setNotice={setNotice} isError={isError} />
       </div>

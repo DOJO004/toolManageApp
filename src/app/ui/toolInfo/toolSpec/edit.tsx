@@ -1,5 +1,4 @@
 import React from "react";
-import Notice from "../../notice";
 import EditStepOne from "./editStepOne";
 import EditStepTwo from "./editStepTwo";
 import EditStepThree from "./editStepThree";
@@ -38,8 +37,6 @@ interface ToolSpecEditProps {
   fetchEditToolInfo: () => void;
   fetchDisableToolSpecInfo: () => void;
   changeMode: () => void;
-  notice: boolean;
-  isError: boolean;
   currentPage: number;
 }
 const ToolSpecEdit = ({
@@ -50,15 +47,12 @@ const ToolSpecEdit = ({
   nextPage,
   prevPage,
   fetchEditToolInfo,
-  notice,
-  isError,
   fetchDisableToolSpecInfo,
   changeMode,
 }: ToolSpecEditProps) => {
   return (
-    <div className="relative flex flex-col justify-center w-full p-4 mb-2 text-center bg-gray-900 md:mx-auto md:min-w-72 md:w-fit rounded-xl">
+    <div className="relative flex flex-col justify-center w-full p-4 mb-2 text-center bg-gray-900 border-2 md:mx-auto md:min-w-72 md:w-fit rounded-xl">
       <p>修改刀具規格</p>
-      {notice && <Notice isError={isError} />}
       <div className="text-black ">
         <div className={currentPage === 1 ? "block" : "hidden"}>
           <EditStepOne

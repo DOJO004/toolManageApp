@@ -2,8 +2,7 @@ import React from "react";
 import NewStepOne from "./newStepOne";
 import NewStepTwo from "./newStepTwo";
 import NewStepThree from "./newStepThree";
-import Notice from "../../notice";
-import { BackBtn, CloseBtn } from "../../buttons";
+import { CloseBtn } from "../../buttons";
 import { useRouter } from "next/navigation";
 
 interface MachineSpecItem {
@@ -46,8 +45,6 @@ interface MachineSpecNewProps {
   prevPage: () => void;
   fetchAddMachineSpecInfo: () => void;
   changeNewMode: () => void;
-  notice: boolean;
-  isError: boolean;
 }
 
 const MachineSpecNew = ({
@@ -60,14 +57,11 @@ const MachineSpecNew = ({
   machineTypeList,
   fetchAddMachineSpecInfo,
   changeNewMode,
-  notice,
-  isError,
 }: MachineSpecNewProps) => {
   const router = useRouter();
   return (
-    <div className="relative flex flex-col w-full p-4 mb-2 text-center bg-gray-900 md:mx-auto md:w-fit rounded-xl">
+    <div className="relative flex flex-col w-full p-4 mb-2 text-center bg-gray-900 border-2 md:mx-auto md:w-fit rounded-xl">
       <p>新增設備規格</p>
-      {notice && <Notice isError={isError} />}
       {currentPage === 1 && (
         <NewStepOne
           machineSpec={machineSpec}

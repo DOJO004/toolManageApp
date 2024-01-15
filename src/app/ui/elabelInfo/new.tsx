@@ -1,7 +1,5 @@
 import React, { FormEvent } from "react";
 import { CloseBtn } from "../buttons";
-import Notice from "../notice";
-import { options } from "prettier-plugin-tailwindcss";
 interface ElabelInfoItem {
   LabelCode: string;
   eLabelSN: string;
@@ -33,9 +31,6 @@ interface ElabelInfoNewProps {
   setNewElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
   changeNewMode: () => void;
   fetchNewElabelInfo: (e: FormEvent) => void;
-  notice: boolean;
-  setNotice: React.Dispatch<React.SetStateAction<boolean>>;
-  isError: boolean;
 }
 
 const ElabelInfoNew = ({
@@ -46,20 +41,16 @@ const ElabelInfoNew = ({
   setNewElabelInfo,
   changeNewMode,
   fetchNewElabelInfo,
-  notice,
-  setNotice,
-  isError,
 }: ElabelInfoNewProps) => {
   console.log("new aps code ", stationCode);
 
   return (
     <div className="relative ">
       <form
-        className="w-full p-2 mx-auto mb-2 text-center bg-gray-900 md:w-fit rounded-xl"
+        className="w-full p-2 mx-auto mb-2 text-center bg-gray-900 border-2 md:w-fit rounded-xl"
         onSubmit={(e) => fetchNewElabelInfo(e)}
       >
         <p className="text-xl text-center ">新增電子標籤</p>
-        <Notice notice={notice} setNotice={setNotice} isError={isError} />
         <label htmlFor="LabelCode">標籤號碼</label>
         <input
           id="LabelCode"

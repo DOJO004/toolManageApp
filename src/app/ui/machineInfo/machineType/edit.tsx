@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FormEvent } from "react";
 import { DeleteBtn, BackBtn, CloseBtn } from "../../buttons";
-import Notice from "../../notice";
 
 interface MachineTypeItem {
   MachineTypeID: string;
@@ -15,8 +13,6 @@ interface MachineTypeEditProps {
   fetchEditMachineType: (e: FormEvent) => void;
   fetchDeleteMachineType: () => void;
   changeEditMode: () => void;
-  notice: boolean;
-  isError: boolean;
 }
 const MachineTypeEdit = ({
   machineType,
@@ -24,18 +20,15 @@ const MachineTypeEdit = ({
   fetchEditMachineType,
   fetchDeleteMachineType,
   changeEditMode,
-  notice,
-  isError,
 }: MachineTypeEditProps) => {
   const router = useRouter();
   return (
     <div className="relative mb-2">
       <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 rounded-xl"
+        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border-2 rounded-xl "
         onSubmit={(e) => fetchEditMachineType(e)}
       >
         <p className="text-xl text-center">編輯設備類型</p>
-        {notice && <Notice isError={isError} />}
         <label htmlFor="MachineTypeID">ID</label>
         <input
           id="MachineTypeID"

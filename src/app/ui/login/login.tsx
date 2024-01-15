@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 
 interface LoginProps {
   userLogin: (e: React.FormEvent) => void;
@@ -18,10 +18,10 @@ const Login = ({
   waitLogin,
 }: LoginProps) => {
   return (
-    <div className="flex items-center justify-center w-full md:mt-48">
+    <div className="flex justify-center w-full">
       <form
         onSubmit={(e) => userLogin(e)}
-        className="w-full p-4 bg-gray-900 rounded-lg md:max-w-96"
+        className="w-full p-4 bg-gray-900 rounded-lg h-fit md:max-w-96"
       >
         <p className="mb-4 text-4xl font-bold text-center">Login</p>
         <div className="relative">
@@ -45,8 +45,8 @@ const Login = ({
           value={userPassword}
         />
         <button
-          className={`flex p-2 ml-auto bg-indigo-500 rounded-xl min-w-32 h-12 items-center ${
-            waitLogin ? "bg-gray-500" : ""
+          className={`flex p-2 ml-auto  rounded-xl min-w-32 h-12 items-center ${
+            waitLogin ? "bg-gray-500" : "bg-indigo-500"
           }`}
         >
           <p className="mx-auto text-xl">{waitLogin ? "登入中..." : "登入"}</p>

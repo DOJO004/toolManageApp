@@ -2,6 +2,8 @@
 import ElabelInfoIndex from "@/app/ui/elabelInfo";
 import ElabelInfoEdit from "@/app/ui/elabelInfo/edit";
 import ElabelInfoNew from "@/app/ui/elabelInfo/new";
+import Notice from "@/app/ui/notice";
+import PageController from "@/app/ui/pageController/pageController";
 import {
   apiAddElabelInfo,
   apiEditElabelInfo,
@@ -29,6 +31,17 @@ export default function Page() {
   ]);
   const [notice, setNotice] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(-1);
+  const [totalRecords, setTotalRecords] = useState(-1);
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const exPage = () => {
+    setCurrentPage((prev) => prev - 1);
+  };
 
   const fetchSyncAimsData = async () => {
     const res = await apiSyncELabelFromAims();
@@ -55,8 +68,12 @@ export default function Page() {
 
   const fetchGetElabelSpecInfoList = async () => {
     const res = await apiGetElabelSpecInfoList();
+    console.log("get eLabel spec list", res);
+
     if (res?.data?.Values?.ReqInt === 0) {
       setELabelList(res.data.Values.eLabelList);
+      setTotalPage(res.data.Values.TotalPages);
+      setTotalRecords(res.data.Values.TotalRecords);
     } else {
       console.log("get elabel spec info list false.");
     }
@@ -169,9 +186,31 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="relative flex flex-col md:flex-row">
       <div className="mx-2">
-        {newMode && (
+        <Notice notice={notice} isError={isError} setNotice={setNotice} />
+        <ElabelInfoIndex
+          eLabelList={eLabelList}
+          changeNewMode={changeNewMode}
+          changeEditMode={changeEditMode}
+          fetchGetElabelInfoByLabelCode={fetchGetElabelInfoByLabelCode}
+          fetchSyncAimsData={fetchSyncAimsData}
+        />
+        <div>
+          <PageController
+            currentPage={currentPage}
+            totalPage={totalPage}
+            totalRecords={totalRecords}
+            nextPage={nextPage}
+            exPage={exPage}
+          />
+        </div>
+
+        <div
+          className={`absolute top-0 left-1/4 transition-all duration-300 ease-in-out ${
+            newMode ? " translate-y-0" : "-translate-y-[32rem]"
+          }`}
+        >
           <ElabelInfoNew
             selectArticleIDIndex={selectArticleIDIndex}
             eLabelList={eLabelList}
@@ -180,30 +219,22 @@ export default function Page() {
             setNewElabelInfo={setNewElabelInfo}
             changeNewMode={changeNewMode}
             fetchNewElabelInfo={fetchNewElabelInfo}
-            notice={notice}
-            setNotice={setNotice}
-            isError={isError}
           />
-        )}
-        {editMode && (
+        </div>
+
+        <div
+          className={`absolute top-0 left-1/4 transition-all duration-300 ease-in-out ${
+            editMode ? " translate-y-0" : "-translate-y-[32rem]"
+          }`}
+        >
           <ElabelInfoEdit
             editElabelInfo={editElabelInfo}
             setEditElabelInfo={setEditElabelInfo}
             changeEditMode={changeEditMode}
             fetchEditElabelInfo={fetchEditElabelInfo}
-            notice={notice}
-            setNotice={setNotice}
-            isError={isError}
           />
-        )}
+        </div>
       </div>
-      <ElabelInfoIndex
-        eLabelList={eLabelList}
-        changeNewMode={changeNewMode}
-        changeEditMode={changeEditMode}
-        fetchGetElabelInfoByLabelCode={fetchGetElabelInfoByLabelCode}
-        fetchSyncAimsData={fetchSyncAimsData}
-      />
     </div>
   );
 }
