@@ -20,7 +20,7 @@ const ToolTypeNew = ({
   return (
     <div className="relative md:mx-2">
       <form
-        className="flex flex-col justify-center w-full p-4 mb-2 bg-gray-900 border-2 rounded-xl"
+        className="flex flex-col justify-center p-4 mb-2 bg-gray-900 border-2 w-fit rounded-xl"
         onSubmit={(e) => fetchNewToolType(e)}
       >
         <p className="text-xl text-center">新增刀具類型</p>

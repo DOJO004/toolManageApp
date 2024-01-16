@@ -24,27 +24,51 @@ interface ToolStockListItem {
 
 interface repairAndScrapProps {
   toolStockList: ToolStockListItem[];
-  classificationToolType: string[];
+  toolTypeClass: string[];
   fetchRepairTool: (toolSN: string) => void;
   fetchScrapTool: (toolSN: string) => void;
   fetchRestoreTool: (toolSN: string) => void;
+  handleShowSelectToolType: (toolType: string) => void;
+  handleSelectToolTypeClass: (toolType: string) => void;
+  selectToolTypeClass: string;
 }
 
 export default function RepairAndScrapIndex({
   toolStockList,
-  classificationToolType,
+  toolTypeClass,
   fetchRepairTool,
   fetchScrapTool,
   fetchRestoreTool,
+  handleShowSelectToolType,
+  handleSelectToolTypeClass,
+  selectToolTypeClass,
 }: repairAndScrapProps) {
   return (
     <div className="w-full p-2 bg-gray-900 rounded-md">
       <p className="text-xl font-bold text-center">修整/報廢</p>
       <div className="flex mx-auto my-4 cursor-pointer w-fit">
-        {classificationToolType.map((item, index) => (
-          <div key={index} className="mx-2 hover:border-b-2">
+        <button
+          className={`mx-2  ${
+            selectToolTypeClass === "ALL" ? "border-b-2" : ""
+          }`}
+          onClick={() => {
+            handleShowSelectToolType("ALL"), handleSelectToolTypeClass("ALL");
+          }}
+        >
+          ALL
+        </button>
+        {toolTypeClass.map((item, index) => (
+          <button
+            key={index}
+            className={`mx-2  ${
+              selectToolTypeClass === item ? "border-b-2" : ""
+            }`}
+            onClick={() => {
+              handleShowSelectToolType(item), handleSelectToolTypeClass(item);
+            }}
+          >
             {item}
-          </div>
+          </button>
         ))}
       </div>
       <div>
@@ -58,10 +82,11 @@ export default function RepairAndScrapIndex({
                   <table className="w-full text-center ">
                     <thead>
                       <tr className="bg-indigo-300 ">
-                        <th className="text-black">ToolSN</th>
-                        <th className="text-black">LifePercentage</th>
-                        <th className="text-black">Repair/Restore</th>
-                        <th className="text-black">Scrap</th>
+                        <th className="text-black">刀具SN</th>
+                        <th className="text-black">壽命百分比</th>
+                        <th className="text-black">壽命狀態</th>
+                        <th className="text-black">送修/重新入庫</th>
+                        <th className="text-black">報廢</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -69,26 +94,27 @@ export default function RepairAndScrapIndex({
                         <tr key={lifeIndex} className=" even:bg-gray-700">
                           <td>{lifeItem.ToolSN}</td>
                           <td>{lifeItem.LifePercentage}</td>
+                          <td>{lifeItem.LifeStatus}</td>
                           {lifeItem.LifeStatus === "Normal" ? (
                             <td
                               className="cursor-pointer "
                               onClick={() => fetchRepairTool(lifeItem.ToolSN)}
                             >
-                              Repair
+                              送修
                             </td>
                           ) : (
                             <td
                               className="cursor-pointer "
                               onClick={() => fetchRestoreTool(lifeItem.ToolSN)}
                             >
-                              Restore
+                              重新入庫
                             </td>
                           )}
                           <td
                             className="cursor-pointer"
                             onClick={() => fetchScrapTool(lifeItem.ToolSN)}
                           >
-                            Scrap
+                            報廢
                           </td>
                         </tr>
                       ))}

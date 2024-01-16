@@ -170,18 +170,22 @@ export default function Page() {
       </div>
 
       <div
-        className={`absolute transition-all  ease-in-out duration-300 ${
-          newMode ? " translate-y-0" : " -translate-y-[26rem]"
+        className={`fixed transition-all top-0 left-0  ease-in-out  duration-300 rounded-xl  drop-shadow-xl ${
+          newMode
+            ? " translate-y-0 bg-black/70 h-screen w-screen"
+            : " -translate-y-[26rem] h-fit w-fit"
         }`}
       >
-        <ToolTypeNew
-          toolTypeID={toolTypeID}
-          setToolTypeID={setToolTypeID}
-          toolTypeName={toolTypeName}
-          setToolTypeName={setToolTypeName}
-          fetchNewToolType={fetchNewToolType}
-          changeNewMode={changeNewMode}
-        />
+        <div className="flex justify-center mt-32 ">
+          <ToolTypeNew
+            toolTypeID={toolTypeID}
+            setToolTypeID={setToolTypeID}
+            toolTypeName={toolTypeName}
+            setToolTypeName={setToolTypeName}
+            fetchNewToolType={fetchNewToolType}
+            changeNewMode={changeNewMode}
+          />
+        </div>
       </div>
       <div
         className={`absolute transition-all ease-in-out duration-300 ${

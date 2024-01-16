@@ -418,6 +418,7 @@ export const scrapToolStockInfo = async (toolSN)=>{
           "Tag2Tool_W"
         ]
       }
+      console.log(body);
     try{
         const res = await apiInstance.post("tool_info/ScrapToolStockInfo",body)
         return res
@@ -461,6 +462,7 @@ export const restoreToolStockInfo = async (toolSN)=>{
           "Tag2Tool_W"
         ]
       }
+      console.log(body);
     try{
         const res = await apiInstance.post("tool_info/RestorageToolStockInfo",body)
         return res
