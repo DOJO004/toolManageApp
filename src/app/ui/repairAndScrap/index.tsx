@@ -44,7 +44,7 @@ export default function RepairAndScrapIndex({
   selectToolTypeClass,
 }: repairAndScrapProps) {
   return (
-    <div className="w-full p-2 bg-gray-900 rounded-md">
+    <div className="p-2 bg-gray-900 rounded-md ">
       <p className="text-xl font-bold text-center">修整/報廢</p>
       <div className="flex mx-auto my-4 cursor-pointer w-fit">
         <button
@@ -71,47 +71,53 @@ export default function RepairAndScrapIndex({
           </button>
         ))}
       </div>
-      <div>
+      <div className="border-t-2 ">
         {toolStockList.map(
           (tool, index) =>
             tool.ToolLifeList.length > 0 && (
-              <div key={index} className="p-2 my-2 border rounded-md">
-                <p>ToolSpecID: {tool.ToolSpecID}</p>
-                <p>toolType: {tool.ToolType}</p>
-                <div className="py-2 my-2 overflow-hidden border rounded-md">
-                  <table className="w-full text-center ">
+              <div key={index} className="p-2 my-2 border-b-2 rounded-md">
+                <p>
+                  ToolSpecID:
+                  <span className="text-xl font-bold ">{tool.ToolSpecID}</span>
+                </p>
+                <p>
+                  toolType:{" "}
+                  <span className="text-xl font-bold ">{tool.ToolType}</span>
+                </p>
+                <div className="my-2 overflow-hidden rounded-t-md">
+                  <table className="w-full text-center shadow-md ">
                     <thead>
                       <tr className="bg-indigo-300 ">
-                        <th className="text-black">刀具SN</th>
-                        <th className="text-black">壽命百分比</th>
-                        <th className="text-black">壽命狀態</th>
-                        <th className="text-black">送修/重新入庫</th>
-                        <th className="text-black">報廢</th>
+                        <th className="p-1 text-black">刀具SN</th>
+                        <th className="p-1 text-black">壽命百分比</th>
+                        <th className="p-1 text-black">壽命狀態</th>
+                        <th className="p-1 text-black">送修/重新入庫</th>
+                        <th className="p-1 text-black">報廢</th>
                       </tr>
                     </thead>
                     <tbody>
                       {tool.ToolLifeList.map((lifeItem, lifeIndex) => (
-                        <tr key={lifeIndex} className=" even:bg-gray-700">
-                          <td>{lifeItem.ToolSN}</td>
-                          <td>{lifeItem.LifePercentage}</td>
-                          <td>{lifeItem.LifeStatus}</td>
+                        <tr key={lifeIndex} className=" even:bg-gray-600">
+                          <td className="p-1">{lifeItem.ToolSN}</td>
+                          <td className="p-1">{lifeItem.LifePercentage}</td>
+                          <td className="p-1">{lifeItem.LifeStatus}</td>
                           {lifeItem.LifeStatus === "Normal" ? (
                             <td
-                              className="cursor-pointer "
+                              className="p-1 cursor-pointer"
                               onClick={() => fetchRepairTool(lifeItem.ToolSN)}
                             >
                               送修
                             </td>
                           ) : (
                             <td
-                              className="cursor-pointer "
+                              className="p-1 cursor-pointer"
                               onClick={() => fetchRestoreTool(lifeItem.ToolSN)}
                             >
                               重新入庫
                             </td>
                           )}
                           <td
-                            className="cursor-pointer"
+                            className="p-1 cursor-pointer"
                             onClick={() => fetchScrapTool(lifeItem.ToolSN)}
                           >
                             報廢

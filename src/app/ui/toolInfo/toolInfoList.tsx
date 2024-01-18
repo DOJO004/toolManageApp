@@ -23,41 +23,54 @@ interface ToolInfoListItem {
 
 interface ToolInfoListProps {
   toolStatusList: ToolInfoListItem[];
+  handleToolStatusItem: (item: object) => void;
 }
 
-const ToolInfoList = ({ toolStatusList }: ToolInfoListProps) => {
+const ToolInfoList = ({
+  toolStatusList,
+  handleToolStatusItem,
+}: ToolInfoListProps) => {
   return (
-    <>
-      <div className="p-1 my-1 bg-gray-900 rounded-xl ">
-        <div className="grid grid-cols-6 gap-2 text-center ">
-          <div className="truncate">刀具序號</div>
-          <div className="truncate">狀態/修整次數</div>
-          <div className="truncate">裝載狀態/設備</div>
-          <div className="truncate">累積加工長度</div>
-          <div className="truncate">累積加工時間</div>
-          <div className="truncate">更新時間</div>
-        </div>
-        <div>
-          {toolStatusList.map((item, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-6 gap-2 text-center cursor-pointer hover:bg-indigo-500"
-            >
-              <div className="truncate ">{item.ToolSN}</div>
-              <div className="truncate ">
-                {item.LifeStatus}/{item.LifeData.RepairCnt}
-              </div>
-              <div className="truncate ">
-                {item.LoadingStatus.IsLoading}/{item.LoadingStatus.MachineSN}
-              </div>
-              <div className="truncate ">{item.LifeData.ProcessLength}</div>
-              <div className="truncate ">{item.LifeData.ProcessTime}</div>
-              <div className="truncate ">{item.LastModify}</div>
-            </div>
-          ))}
-        </div>
+    <div className="bg-gray-900 w-fit">
+      <div className="overflow-hidden rounded-md">
+        <table>
+          <thead>
+            <tr className="bg-indigo-500 ">
+              <th className="p-1 whitespace-nowrap">刀具序號</th>
+              <th className="p-1 whitespace-nowrap">狀態/修整次數</th>
+              <th className="p-1 whitespace-nowrap">裝載狀態/設備</th>
+              <th className="p-1 whitespace-nowrap">累積加工長度</th>
+              <th className="p-1 whitespace-nowrap">累積加工時間</th>
+              <th className="p-1 whitespace-nowrap">累積加工時間</th>
+            </tr>
+          </thead>
+          <tbody>
+            {toolStatusList.map((item, index) => (
+              <tr
+                key={index}
+                className="cursor-pointer even:bg-gray-600"
+                onClick={() => handleToolStatusItem(item)}
+              >
+                <td className="p-1 whitespace-nowrap ">{item.ToolSN}</td>
+                <td className="p-1 whitespace-nowrap ">
+                  {item.LifeStatus}/{item.LifeData.RepairCnt}
+                </td>
+                <td className="p-1 whitespace-nowrap ">
+                  {item.LoadingStatus.IsLoading}/{item.LoadingStatus.MachineSN}
+                </td>
+                <td className="p-1 whitespace-nowrap ">
+                  {item.LifeData.ProcessLength}
+                </td>
+                <td className="p-1 whitespace-nowrap ">
+                  {item.LifeData.ProcessTime}
+                </td>
+                <td className="p-1 whitespace-nowrap ">{item.LastModify}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </>
+    </div>
   );
 };
 

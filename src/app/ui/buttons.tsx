@@ -50,3 +50,32 @@ export function CloseBtn({ changeMode }: closeBtnProps) {
     </button>
   );
 }
+
+interface ToggleBtnProps {
+  toggleBtn: boolean;
+  setToggleBtn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function ToggleBtn({ toggleBtn, setToggleBtn }: ToggleBtnProps) {
+  return (
+    <label
+      htmlFor="toggleBtn"
+      title="開啟後不關閉視窗"
+      className={`relative  inline-block w-12 duration-300 cursor-pointer rounded-xl h-fit shadow-inner transition-all ${
+        toggleBtn ? "bg-blue-500" : "bg-gray-500"
+      }`}
+    >
+      <input
+        type="checkbox"
+        id="toggleBtn"
+        className="opacity-0 "
+        onChange={() => setToggleBtn(!toggleBtn)}
+      />
+      <span
+        className={`absolute top-0 left-0 right-0 bottom-0 duration-300  w-6 h-6 transition-all bg-gray-200 rounded-full ${
+          toggleBtn ? " translate-x-full" : ""
+        }`}
+      ></span>
+    </label>
+  );
+}

@@ -238,37 +238,41 @@ export default function Page() {
           totalPage={totalPage}
         />
         <div
-          className={`absolute top-1/4 left-2/4 transition-all duration-300 ease-in-out ${
-            newMode ? "translate-y-0" : "-translate-y-[50rem]"
+          className={`fixed  transition-all top-0 left-0 duration-300 bg-black/70 w-screen h-screen ease-in-out ${
+            newMode ? " translate-y-0" : " -translate-y-full"
           }`}
         >
-          <ToolSpecNew
-            toolTypeList={toolTypeList}
-            toolSpecInfo={toolSpecInfo}
-            setToolSpecInfo={setToolSpecInfo}
-            fetchNewToolSpecInfo={fetchNewToolSpecInfo}
-            changeNewMode={changeNewMode}
-            currentPage={newCurrentPage}
-            nextPage={newNextPage}
-            prevPage={newPrevPage}
-          />
+          <div className="mt-48">
+            <ToolSpecNew
+              toolTypeList={toolTypeList}
+              toolSpecInfo={toolSpecInfo}
+              setToolSpecInfo={setToolSpecInfo}
+              fetchNewToolSpecInfo={fetchNewToolSpecInfo}
+              changeNewMode={changeNewMode}
+              currentPage={newCurrentPage}
+              nextPage={newNextPage}
+              prevPage={newPrevPage}
+            />
+          </div>
         </div>
         <div
-          className={`absolute top-1/4 left-2/4 transition-all duration-300 ease-in-out ${
-            editMode ? "translate-y-0" : "-translate-y-[50rem]"
+          className={`fixed  transition-all top-0 left-0 duration-300 bg-black/70 w-screen h-screen ease-in-out ${
+            editMode ? " translate-y-0" : " -translate-y-full"
           }`}
         >
-          <ToolSpecEdit
-            toolTypeList={toolTypeList}
-            editToolSpec={editToolSpec}
-            setEditToolSpec={setEditToolSpec}
-            fetchEditToolInfo={fetchEditToolInfo}
-            fetchDisableToolSpecInfo={fetchDisableToolSpecInfo}
-            currentPage={newCurrentPage}
-            nextPage={newNextPage}
-            prevPage={newPrevPage}
-            changeMode={changeEditMode}
-          />
+          <div className="mt-48">
+            <ToolSpecEdit
+              toolTypeList={toolTypeList}
+              editToolSpec={editToolSpec}
+              setEditToolSpec={setEditToolSpec}
+              fetchEditToolInfo={fetchEditToolInfo}
+              fetchDisableToolSpecInfo={fetchDisableToolSpecInfo}
+              currentPage={newCurrentPage}
+              nextPage={newNextPage}
+              prevPage={newPrevPage}
+              changeMode={changeEditMode}
+            />
+          </div>
         </div>
       </div>
     </div>

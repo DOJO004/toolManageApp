@@ -34,15 +34,21 @@ const Navbar = () => {
   };
 
   return (
-    <div className="md:flex">
-      <div className="bg-gray-900 rounded-md md:flex md:justify-center md:h-screen">
+    <div className=" md:flex">
+      <div className="overflow-auto bg-gray-900 rounded-md md:flex md:justify-center md:h-screen">
         <ul className="flex items-center m-2 md:flex-col">
           <li
-            className="flex items-center justify-center w-12 h-12 mx-auto bg-white rounded-full"
+            className="p-1 mx-2 my-2 bg-white rounded-full cursor-pointer min-w-fit "
             onClick={() => handleNavbarMenu("dashboard")}
           >
             <Link href="/tool-manager/dashboard">
-              <Image src="/logo.png" alt="logo image" width={30} height={30} />
+              <Image
+                src="/logo.png"
+                alt="logo image"
+                width={30}
+                height={30}
+                className=" min-w-fit"
+              />
             </Link>
           </li>
           {navbarItem.map((item, index) => (
@@ -84,7 +90,7 @@ const Navbar = () => {
           ))}
         </ul>
         <div
-          className={` transition-all  ease-in-out overflow-hidden ${
+          className={` transition-all  ease-in-out relative overflow-hidden ${
             openMenu ? "w-32" : "w-0"
           }`}
         >
@@ -102,13 +108,6 @@ const Navbar = () => {
           )}
         </div>
       </div>
-
-      {/* mask */}
-      <div
-        className={` w-screen h-screen bg-black opacity-30 rounded-xl z-10 absolute top-44 md:left-[16.5rem] md:top-0 ${
-          openMenu ? "block" : "hidden"
-        }`}
-      ></div>
     </div>
   );
 };

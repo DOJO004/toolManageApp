@@ -1,4 +1,5 @@
 import React, { FormEvent } from "react";
+import { ToggleBtn } from "../../buttons";
 
 interface ToolTypeNewProps {
   toolTypeID: string;
@@ -7,6 +8,8 @@ interface ToolTypeNewProps {
   setToolTypeName: React.Dispatch<React.SetStateAction<string>>;
   fetchNewToolType: (e: FormEvent) => void;
   changeNewMode: () => void;
+  toggleBtn: boolean;
+  setToggleBtn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ToolTypeNew = ({
@@ -16,9 +19,14 @@ const ToolTypeNew = ({
   setToolTypeName,
   fetchNewToolType,
   changeNewMode,
+  toggleBtn,
+  setToggleBtn,
 }: ToolTypeNewProps) => {
   return (
     <div className="relative md:mx-2">
+      <div className="absolute top-3 left-3">
+        <ToggleBtn toggleBtn={toggleBtn} setToggleBtn={setToggleBtn} />
+      </div>
       <form
         className="flex flex-col justify-center p-4 mb-2 bg-gray-900 border-2 w-fit rounded-xl"
         onSubmit={(e) => fetchNewToolType(e)}

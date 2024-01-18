@@ -1,16 +1,24 @@
+interface PieChartProps {
+  toolStatusItem: {
+    ToolSN: string;
+    ToolName: string;
+    ProcessTime: string;
+    ProcessLength: string;
+  };
+}
 import Image from "next/image";
-const PieChart = () => {
+const PieChart = ({ toolStatusItem }: PieChartProps) => {
   const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A 30%, #B9E6B5 30%, #B9E6B5)`;
   const gradientColorsInSide = `conic-gradient(#FACC15 0, #FACC15 50%, #F5ECB5 50%, #F5ECB5)`;
 
   return (
-    <div className="flex flex-col w-full p-2 bg-gray-900 rounded-xl min-w-[345px] mb-2 md:mr-4">
-      <div className="relative flex items-center justify-between mb-4 border-b-2">
-        <div>
-          <p className="text-4xl font-bold">DR-D1700002</p>
-          <p className="mb-4 text-gray-300">銑刀_p02312313</p>
+    <div className="flex flex-col w-full p-2 mb-2 bg-gray-900 rounded-xl md:mr-4">
+      <div className="flex justify-between mb-4 border-b-2 ">
+        <div className="">
+          <p className="text-2xl font-bold">{toolStatusItem.ToolSN}</p>
+          <p className="mb-4 text-gray-300">{toolStatusItem.ToolName}</p>
         </div>
-        <div className="absolute flex top-1 right-2">
+        <div className="flex items-start">
           <Image
             src={"/hammer.png"}
             alt="hammer"
@@ -21,21 +29,33 @@ const PieChart = () => {
           <p>2/7</p>
         </div>
       </div>
-      <div className="flex">
-        <div
-          className=" rounded-full w-[100px] h-[100px] relative ml-4"
-          style={{ background: gradientColorsOutSide }}
-        >
+      <div className="w-full md:flex">
+        <div className="relative w-full left-1/2 md:left-0">
           <div
-            className=" rounded-full w-[50px] h-[50px] absolute top-6 left-6"
-            style={{ background: gradientColorsInSide }}
+            className="w-24 h-24 -translate-x-1/2 rounded-full md:translate-x-0"
+            style={{ background: gradientColorsOutSide }}
           >
-            <div className="bg-gray-900 rounded-full w-[25px] h-[25px] absolute top-3 left-3"></div>
+            <div
+              className="absolute w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2"
+              style={{ background: gradientColorsInSide }}
+            >
+              <div className="absolute w-10 h-10 -translate-x-1/2 -translate-y-1/2 bg-gray-900 rounded-full top-1/2 left-1/2"></div>
+            </div>
           </div>
         </div>
-        <div className="mt-8 ml-28">
-          <p className="my-2 border-l-4 border-green-600">累積加工長度</p>
-          <p className="my-2 border-l-4 border-yellow-600">累積加工時間</p>
+        <div className="flex justify-center md:block">
+          <div className="flex items-center mx-2">
+            <p className="my-2 border-l-4 border-green-600 md:whitespace-nowrap">
+              累積加工長度：
+            </p>
+            <p>{toolStatusItem.ProcessLength}</p>
+          </div>
+          <div className="flex items-center mx-2">
+            <p className="my-2 border-l-4 border-yellow-600 md:whitespace-nowrap">
+              累積加工時間：
+            </p>
+            <p>{toolStatusItem.ProcessTime}</p>
+          </div>
         </div>
       </div>
     </div>

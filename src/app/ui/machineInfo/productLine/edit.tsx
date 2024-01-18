@@ -22,9 +22,9 @@ const ProductLineEdit = ({
 }: ProductLineEditProps) => {
   const router = useRouter();
   return (
-    <div className="relative mb-2 ">
+    <div className="relative mb-2 w-fit ">
       <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border rounded-xl"
+        className="flex flex-col justify-center p-4 text-center bg-gray-900 border rounded-xl"
         onSubmit={(e) => fetchEditProductLine(e)}
       >
         <p className="text-xl text-center ">編輯產線</p>

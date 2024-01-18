@@ -149,29 +149,33 @@ export default function Page() {
         />
       </div>
       <div
-        className={`absolute z-10 top-60 transition-all duration-300
-          ${newMode ? " translate-y-0" : "-translate-y-[40rem]"}`}
+        className={`fixed top-0 left-0 transition-all duration-300 bg-black/70 h-screen w-screen
+          ${newMode ? " translate-y-0" : "-translate-y-full"}`}
       >
-        <ProductLineNew
-          productLineID={productLineID}
-          setProductLineID={setProductLineID}
-          productLineName={productLineName}
-          setProductLineName={setProductLineName}
-          fetchAddProductLine={fetchAddProductLine}
-          changeNewMode={changeNewMode}
-        />
+        <div className="flex justify-center mt-48 ">
+          <ProductLineNew
+            productLineID={productLineID}
+            setProductLineID={setProductLineID}
+            productLineName={productLineName}
+            setProductLineName={setProductLineName}
+            fetchAddProductLine={fetchAddProductLine}
+            changeNewMode={changeNewMode}
+          />
+        </div>
       </div>
       <div
-        className={`absolute z-10 top-60 transition-all duration-300
-          ${editMode ? " translate-y-0" : "-translate-y-[40rem]"}`}
+        className={`fixed top-0 left-0 transition-all duration-300 bg-black/70 h-screen w-screen
+        ${editMode ? " translate-y-0" : "-translate-y-full"}`}
       >
-        <ProductLineEdit
-          fetchEditProductLine={fetchEditProductLine}
-          fetchDeleteProductLine={fetchDeleteProductLine}
-          productLine={productLine}
-          setProductLine={setProductLine}
-          changeEditMode={changeEditMode}
-        />
+        <div className="flex justify-center mt-48">
+          <ProductLineEdit
+            fetchEditProductLine={fetchEditProductLine}
+            fetchDeleteProductLine={fetchDeleteProductLine}
+            productLine={productLine}
+            setProductLine={setProductLine}
+            changeEditMode={changeEditMode}
+          />
+        </div>
       </div>
     </div>
   );

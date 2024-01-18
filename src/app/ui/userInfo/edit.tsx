@@ -48,9 +48,9 @@ const UserInfoEdit = ({
   isError,
 }: UserInfoEditProps) => {
   return (
-    <div className="relative ">
+    <div className="relative w-fit ">
       <form
-        className="flex flex-col justify-center w-full max-w-sm p-4 mx-auto mb-2 bg-gray-900 rounded-xl"
+        className="flex flex-col justify-center w-full max-w-sm p-4 mx-auto mb-2 bg-gray-900 border rounded-xl"
         onSubmit={(e) => fetchEditUserInfo(e)}
       >
         <p className="text-xl text-center">編輯使用者</p>
