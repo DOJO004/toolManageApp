@@ -206,39 +206,43 @@ export default function Page() {
       />
 
       <div
-        className={`absolute top-0 transition-all duration-300 ease-in-out ${
-          newMode ? "translate-y-0" : "-translate-y-[32rem]"
+        className={`fixed left-0 bg-black/70 w-screen h-screen top-0 transition-all duration-300 ease-in-out ${
+          newMode ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <MachineSpecNew
-          machineSpec={machineSpec}
-          setMachineSpec={setMachineSpec}
-          currentPage={currentPage}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          productLineList={productLineList}
-          machineTypeList={machineTypeList}
-          fetchAddMachineSpecInfo={fetchAddMachineSpecInfo}
-          changeNewMode={changeNewMode}
-        />
+        <div className="mt-48">
+          <MachineSpecNew
+            machineSpec={machineSpec}
+            setMachineSpec={setMachineSpec}
+            currentPage={currentPage}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            productLineList={productLineList}
+            machineTypeList={machineTypeList}
+            fetchAddMachineSpecInfo={fetchAddMachineSpecInfo}
+            changeNewMode={changeNewMode}
+          />
+        </div>
       </div>
       <div
-        className={`absolute top-0 transition-all duration-300 ease-in-out ${
-          editMode ? "translate-y-0" : "-translate-y-[32rem]"
+        className={`fixed left-0 bg-black/70 w-screen h-screen top-0 transition-all duration-300 ease-in-out ${
+          editMode ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <MachineSpecEdit
-          currentPage={currentPage}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          machineSpec={machineSpec}
-          setMachineSpec={setMachineSpec}
-          fetchEditMachineSpec={fetchEditMachineSpec}
-          changeEditMode={changeEditMode}
-          fetchDeleteMachineSpec={fetchDeleteMachineSpec}
-          notice={notice}
-          isError={isError}
-        />
+        <div className="mt-48">
+          <MachineSpecEdit
+            currentPage={currentPage}
+            nextPage={nextPage}
+            prevPage={prevPage}
+            machineSpec={machineSpec}
+            setMachineSpec={setMachineSpec}
+            fetchEditMachineSpec={fetchEditMachineSpec}
+            changeEditMode={changeEditMode}
+            fetchDeleteMachineSpec={fetchDeleteMachineSpec}
+            notice={notice}
+            isError={isError}
+          />
+        </div>
       </div>
     </div>
   );

@@ -95,20 +95,22 @@ export default function Page() {
         />
       </div>
       <div
-        className={` absolute top-0 transition-all duration-300 ease-in-out ${
-          newMode ? "translate-y-0" : "-translate-y-96"
+        className={` fixed left-0 top-0 bg-black/70 w-screen   h-screen transition-all duration-300 ease-in-out ${
+          newMode ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <ToolStockNew
-          toolSpecList={toolSpecList}
-          fetchAddToolStock={fetchAddToolStock}
-          setToolSpecID={setToolSpecID}
-          addQty={addQty}
-          setAddQty={setAddQty}
-          notice={notice}
-          isError={isError}
-          changeNewMode={changeNewMode}
-        />
+        <div className="flex justify-center mt-48">
+          <ToolStockNew
+            toolSpecList={toolSpecList}
+            fetchAddToolStock={fetchAddToolStock}
+            setToolSpecID={setToolSpecID}
+            addQty={addQty}
+            setAddQty={setAddQty}
+            notice={notice}
+            isError={isError}
+            changeNewMode={changeNewMode}
+          />
+        </div>
       </div>
     </div>
   );

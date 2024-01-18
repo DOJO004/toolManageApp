@@ -250,15 +250,17 @@ export const apiGetToolStockList = async () => {
 // getToolStockStatusInfoList
 export const apiGetToolStockStatusInfoList = async (perPage = 20, page = 1) => {
     const body = {
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-            "Tag2Tool_R",
-            "Tag2Tool_W"
-        ],
+        "LifeStatus": 0,
         "RecordsPerPage": perPage,
         "PageNo": page,
-    }
+        "UserToken": "smcW2T4x",
+        "LoginTime": "2023-08-23 13:31:32",
+        "NeedPermissions": [
+          "Tag2Tool_R",
+          "Tag2Tool_W"
+        ]
+      }
+      console.log(body);
     try {
         const res = await apiInstance.post("tool_info/GetToolStockStatusInfoList",body)
         return res
@@ -715,20 +717,19 @@ export const apiGetMachineTypeInfoList = async ()=>{
 // getMachineStatusInfoList
 export const apiGetMachineStatusInfoList = async(id)=>{
     const body ={
+        "ProductLineID": "",
+        "MachineTypeID": "",
+        "Status": "",
+        "ActivationBasic": 0,
+        "RecordsPerPage": 10,
+        "PageNo": 1,
         "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
+        "LoginTime":  getLoginTime(),
         "NeedPermissions": [
           "Tag2Tool_R",
           "Tag2Tool_W"
-        ],
-        "RecordsPerPage": 99,
-        "PageNo": 1,
-        "ProductLineID": "ADK-PR_001",
-        "MachineTypeID": "",
-        "Status": 10,
-        "ActivationBasic": 0
+        ]
       }
-      console.log("machine info list body", body);
     try{
         const res = await apiInstance.post("machine_info/GetMachineStatusInfoList", body)
         return res

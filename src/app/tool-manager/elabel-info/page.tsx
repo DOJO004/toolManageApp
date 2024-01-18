@@ -207,19 +207,21 @@ export default function Page() {
         </div>
 
         <div
-          className={`absolute top-0 left-1/4 transition-all duration-300 ease-in-out ${
-            newMode ? " translate-y-0" : "-translate-y-[32rem]"
+          className={`fixed left-0 top-0 bg-black/70 w-screen h-screen transition-all duration-300 ease-in-out ${
+            newMode ? " translate-y-0" : "-translate-y-full"
           }`}
         >
-          <ElabelInfoNew
-            selectArticleIDIndex={selectArticleIDIndex}
-            eLabelList={eLabelList}
-            stationCode={stationCode}
-            newElabelInfo={newElabelInfo}
-            setNewElabelInfo={setNewElabelInfo}
-            changeNewMode={changeNewMode}
-            fetchNewElabelInfo={fetchNewElabelInfo}
-          />
+          <div className="flex justify-center mt-48">
+            <ElabelInfoNew
+              selectArticleIDIndex={selectArticleIDIndex}
+              eLabelList={eLabelList}
+              stationCode={stationCode}
+              newElabelInfo={newElabelInfo}
+              setNewElabelInfo={setNewElabelInfo}
+              changeNewMode={changeNewMode}
+              fetchNewElabelInfo={fetchNewElabelInfo}
+            />
+          </div>
         </div>
 
         <div

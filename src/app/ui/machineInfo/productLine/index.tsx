@@ -33,10 +33,7 @@ const ProductLineIndex = ({
           </thead>
           <tbody>
             {productLineList.map((item, index) => (
-              <tr
-                key={item.ProductLineID}
-                className=" even:bg-gray-700 hover:bg-indigo-500"
-              >
+              <tr key={item.ProductLineID} className=" even:bg-gray-700">
                 <td className="p-1">{item.ProductLineID}</td>
                 <td className="p-1">{item.ProductLineName}</td>
                 <td

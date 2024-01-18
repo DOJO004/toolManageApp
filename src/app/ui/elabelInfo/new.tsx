@@ -45,7 +45,7 @@ const ElabelInfoNew = ({
   console.log("new aps code ", stationCode);
 
   return (
-    <div className="relative ">
+    <div className="relative w-fit">
       <form
         className="w-full p-2 mx-auto mb-2 text-center bg-gray-900 border-2 md:w-fit rounded-xl"
         onSubmit={(e) => fetchNewElabelInfo(e)}
@@ -124,7 +124,7 @@ const ElabelInfoNew = ({
           完成
         </button>
       </form>
-      <div className="absolute top-3 right-3">
+      <div className="absolute top-2 right-3 ">
         <CloseBtn changeMode={changeNewMode} />
       </div>
     </div>

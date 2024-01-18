@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Image from "next/image";
 
 interface ErrorMessage {
   errorMessage: string;
@@ -34,15 +35,32 @@ const Notice = ({
   useEffect(() => {
     setTimeout(() => {
       setNotice(false);
-    }, 2000);
+    }, 3000);
   }, [notice]);
 
   return (
     <div
-      className={`absolute min-w-40 p-2 transition-all duration-300 z-10  bg-gray-800 rounded-md top-5 right-0 border  ${
-        notice ? "translate-y-0 " : "-translate-y-60"
+      className={`absolute min-w-40 p-2 flex transition-all duration-300 items-center z-10  bg-gray-800 rounded-md top-5 right-4 border-l-4  ${
+        notice ? "translate-y-0 " : "-translate-y-96"
       }`}
     >
+      {isError ? (
+        <Image
+          src="/error.png"
+          alt="error img"
+          width={30}
+          height={30}
+          className="mr-4"
+        />
+      ) : (
+        <Image
+          src="/accept.png"
+          alt="accept img"
+          width={30}
+          height={30}
+          className="mr-4"
+        />
+      )}
       {isError ? (
         <ErrorMessage errorMessage={errorMessage} />
       ) : (

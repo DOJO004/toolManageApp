@@ -1,4 +1,5 @@
 "use client";
+import { ToggleBtn } from "@/app/ui/buttons";
 import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
 import ToolTypeIndex from "@/app/ui/toolInfo/toolType";
@@ -94,6 +95,7 @@ export default function Page() {
   // new
   const [toolTypeID, setToolTypeID] = useState("");
   const [toolTypeName, setToolTypeName] = useState("");
+  const [toggleBtn, setToggleBtn] = useState(false);
 
   const fetchNewToolType = async (e: FormEvent) => {
     e.preventDefault();
@@ -103,6 +105,7 @@ export default function Page() {
       fetchGetToolTypeList();
       cleanFormData();
       setIsError(false);
+      !toggleBtn && setNewMode(false);
     } else {
       setIsError(true);
     }
@@ -170,10 +173,8 @@ export default function Page() {
       </div>
 
       <div
-        className={`fixed transition-all top-0 left-0  ease-in-out  duration-300 rounded-xl  drop-shadow-xl ${
-          newMode
-            ? " translate-y-0 bg-black/70 h-screen w-screen"
-            : " -translate-y-[26rem] h-fit w-fit"
+        className={`fixed transition-all top-0 left-0  ease-in-out bg-black/70 h-screen w-screen  duration-300 rounded-xl  drop-shadow-xl ${
+          newMode ? " translate-y-0 " : " -translate-y-[60rem]"
         }`}
       >
         <div className="flex justify-center mt-32 ">
@@ -184,21 +185,25 @@ export default function Page() {
             setToolTypeName={setToolTypeName}
             fetchNewToolType={fetchNewToolType}
             changeNewMode={changeNewMode}
+            toggleBtn={toggleBtn}
+            setToggleBtn={setToggleBtn}
           />
         </div>
       </div>
       <div
-        className={`absolute transition-all ease-in-out duration-300 ${
-          editMode ? " translate-y-0" : " -translate-y-[26rem]"
+        className={`fixed transition-all top-0 left-0  ease-in-out bg-black/70 h-screen w-screen  duration-300 rounded-xl  drop-shadow-xl ${
+          editMode ? " translate-y-0 " : " -translate-y-[60rem]"
         }`}
       >
-        <ToolTypeEdit
-          editToolType={editToolType}
-          setEditToolType={setEditToolType}
-          fetchEditToolType={fetchEditToolType}
-          fetchDisableToolType={fetchDisableToolType}
-          changeEditMode={changeEditMode}
-        />
+        <div className="flex justify-center mt-32 ">
+          <ToolTypeEdit
+            editToolType={editToolType}
+            setEditToolType={setEditToolType}
+            fetchEditToolType={fetchEditToolType}
+            fetchDisableToolType={fetchDisableToolType}
+            changeEditMode={changeEditMode}
+          />
+        </div>
       </div>
     </div>
   );
