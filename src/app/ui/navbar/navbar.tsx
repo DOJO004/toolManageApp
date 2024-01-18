@@ -89,24 +89,24 @@ const Navbar = () => {
             </li>
           ))}
         </ul>
-        <div
-          className={` transition-all  ease-in-out relative overflow-hidden ${
-            openMenu ? "w-32" : "w-0"
-          }`}
-        >
-          {clickItemName === "刀具資訊" && openMenu && (
-            <ToolStatusMenu setOpenMenu={setOpenMenu} />
-          )}
-          {clickItemName === "設備資訊" && openMenu && (
-            <MachineInfoMenu setOpenMenu={setOpenMenu} />
-          )}
-          {clickItemName === "電子標籤資訊" && openMenu && (
-            <ELabelInfoMenu setOpenMenu={setOpenMenu} />
-          )}
-          {clickItemName === "使用者資訊" && openMenu && (
-            <UserInfoMenu setOpenMenu={setOpenMenu} />
-          )}
-        </div>
+      </div>
+      <div
+        className={` transition-all ease-in-out relative duration-300 overflow-hidden ${
+          openMenu ? "w-full md:w-32 " : "w-0"
+        }`}
+      >
+        {clickItemName === "刀具資訊" && openMenu && (
+          <ToolStatusMenu setOpenMenu={setOpenMenu} />
+        )}
+        {clickItemName === "設備資訊" && openMenu && (
+          <MachineInfoMenu setOpenMenu={setOpenMenu} />
+        )}
+        {clickItemName === "電子標籤資訊" && openMenu && (
+          <ELabelInfoMenu setOpenMenu={setOpenMenu} />
+        )}
+        {clickItemName === "使用者資訊" && openMenu && (
+          <UserInfoMenu setOpenMenu={setOpenMenu} />
+        )}
       </div>
     </div>
   );
