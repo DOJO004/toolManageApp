@@ -32,7 +32,7 @@ interface AddBtnProps {
 export function AddBtn({ changeNewMode }: AddBtnProps) {
   return (
     <button
-      className="p-1 text-sm bg-indigo-500 rounded-md hover:bg-indigo-600"
+      className="p-1 bg-indigo-500 rounded-md xl:p-2 hover:bg-indigo-600"
       onClick={() => changeNewMode()}
     >
       新增

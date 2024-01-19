@@ -79,7 +79,7 @@ export default function Page() {
     fetchGetToolSpecID();
   }, []);
   return (
-    <div className="relative flex flex-col justify-center w-full max-w-4xl md:flex-row">
+    <div className="relative flex flex-col justify-center w-full max-w-screen-2xl md:flex-row">
       <Notice notice={notice} setNotice={setNotice} isError={isError} />
       <div className="w-full bg-gray-900 rounded-md h-fit">
         <ToolStockIndex

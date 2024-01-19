@@ -3,8 +3,8 @@ import ToolChart from "./toolChart";
 
 export default function DashboardCard() {
   return (
-    <div className="w-full max-w-xl p-2 mx-auto mb-2 bg-gray-900 rounded-md">
-      <div className="flex justify-between border-b-2">
+    <div className="w-full p-2 mx-auto mb-2 bg-gray-900 rounded-md">
+      <div className="flex justify-between w-full border-b-2">
         <div>
           <p className="">生產線</p>
           <p className="text-2xl font-bold md:text-4xl ">設備SN</p>

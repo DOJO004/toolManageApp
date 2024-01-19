@@ -2,7 +2,7 @@ import DashboardIndex from "@/app/ui/dashboard";
 
 export default function Page() {
   return (
-    <div className="m-2">
+    <div className="w-full m-2 max-w-screen-2xl">
       <DashboardIndex />
     </div>
   );

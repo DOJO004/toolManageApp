@@ -84,7 +84,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="w-full max-w-2xl p-2 bg-gray-900 rounded-md h-fit">
+    <div className="w-full p-2 bg-gray-900 rounded-md max-w-screen-2xl h-fit">
       <RepairAndScrapIndex
         toolStockList={toolStockList}
         toolTypeClass={toolTypeClass}
