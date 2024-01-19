@@ -19,13 +19,13 @@ export default function MachineInfoPieChart({
       <div>
         <div className="flex justify-between border-b-2">
           <div>
-            <p>{machineInfoItem.ProductLine.split(":")[1]}</p>
-            <p>{machineInfoItem.MachineSN}</p>
-            <p>{machineInfoItem.MachineName}</p>
+            <div>{machineInfoItem.ProductLine.split(":")[1]}</div>
+            <div>{machineInfoItem.MachineSN}</div>
+            <div>{machineInfoItem.MachineName}</div>
           </div>
           <div className="flex">
-            <p>wifi</p>
-            <p>{machineInfoItem.MachineIP}</p>
+            <div>wifi</div>
+            <div>{machineInfoItem.MachineIP}</div>
           </div>
         </div>
         <div className="flex justify-between">
@@ -46,18 +46,18 @@ export default function MachineInfoPieChart({
           </div>
           <div>
             <div>
-              <p>process time</p>
-              <p>precess time value</p>
+              <div>process time</div>
+              <div>precess time value</div>
             </div>
             <div>
-              <p>tool change info</p>
-              <p>
+              <div>tool change info</div>
+              <div>
                 {machineInfoItem.AtcNo}/{machineInfoItem.ToolSN}
-              </p>
+              </div>
             </div>
-            <p className="p-2 bg-green-500 rounded-md w-fit">
+            <div className="p-2 bg-green-500 rounded-md w-fit">
               {machineInfoItem.MachineStatus}
-            </p>
+            </div>
           </div>
         </div>
       </div>

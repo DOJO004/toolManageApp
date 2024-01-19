@@ -24,7 +24,7 @@ const ToolStatusMenu = ({ setOpenMenu }: ToolStatusMenuProps) => {
             height={30}
             className="mr-2"
           />
-          <p className="hidden md:block whitespace-nowrap">{item.name}</p>
+          <div className="hidden md:block whitespace-nowrap">{item.name}</div>
         </Link>
       ))}
     </div>

@@ -12,8 +12,8 @@ export default function ToolChart() {
         <div className="w-16 h-16 bg-gray-900 rounded-full md:w-24 md:h-24"></div>
       </div>
       <div className="w-full p-2 mx-auto -translate-y-5 bg-green-500 border-2 border-gray-900 rounded-md">
-        <p className="text-center ">刀庫編號</p>
-        <p className="text-center ">刀具SN</p>
+        <div className="text-center ">刀庫編號</div>
+        <div className="text-center ">刀具SN</div>
       </div>
     </div>
   );

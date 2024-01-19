@@ -24,33 +24,34 @@ const ToolStockIndex = ({
   changeNewMode,
 }: ToolStockIndexProps) => {
   return (
-    <div className="relative w-full p-2 text-center bg-gray-900 max-w-fit rounded-xl">
-      <p className="text-xl">刀具庫存</p>
-      <div className="mt-2 overflow-hidden rounded-t-xl">
-        <table>
+    <div className="relative w-full p-2 mx-auto text-center bg-gray-900 rounded-xl">
+      <p className="">刀具庫存</p>
+      <hr className="my-2" />
+      <div className="mt-2 overflow-auto rounded-t-xl">
+        <table className="w-full">
           <thead>
             <tr className="bg-indigo-300 ">
-              <th className="p-1 text-black">刀具規格ID</th>
-              <th className="p-1 text-black">總數</th>
-              <th className="p-1 text-black">庫存安全線</th>
-              <th className="p-1 text-black">警告</th>
-              <th className="p-1 text-black">危險</th>
-              <th className="p-1 text-black">待修中</th>
-              <th className="p-1 text-black">修整中</th>
-              <th className="p-1 text-black">可使用</th>
+              <th className="p-1 text-black whitespace-nowrap">刀具規格ID</th>
+              <th className="p-1 text-black whitespace-nowrap">總數</th>
+              <th className="p-1 text-black whitespace-nowrap">庫存安全線</th>
+              <th className="p-1 text-black whitespace-nowrap">警告</th>
+              <th className="p-1 text-black whitespace-nowrap">危險</th>
+              <th className="p-1 text-black whitespace-nowrap">待修中</th>
+              <th className="p-1 text-black whitespace-nowrap">修整中</th>
+              <th className="p-1 text-black whitespace-nowrap">可使用</th>
             </tr>
           </thead>
           <tbody>
             {toolStockList?.map((item, index) => (
               <tr key={item.ToolSpecID} className=" even:bg-gray-700">
-                <td className="p-1">{item.ToolSpecID}</td>
-                <td className="p-1">{item.TotalQty}</td>
-                <td className="p-1">{item.SafetyStock}</td>
-                <td className="p-1">{item.AlarmCnt}</td>
-                <td className="p-1">{item.WarningCnt}</td>
-                <td className="p-1">{item.NeedRepairCnt}</td>
-                <td className="p-1">{item.RepairCnt}</td>
-                <td className="p-1">
+                <td className="p-1 whitespace-nowrap">{item.ToolSpecID}</td>
+                <td className="p-1 whitespace-nowrap">{item.TotalQty}</td>
+                <td className="p-1 whitespace-nowrap">{item.SafetyStock}</td>
+                <td className="p-1 whitespace-nowrap">{item.AlarmCnt}</td>
+                <td className="p-1 whitespace-nowrap">{item.WarningCnt}</td>
+                <td className="p-1 whitespace-nowrap">{item.NeedRepairCnt}</td>
+                <td className="p-1 whitespace-nowrap">{item.RepairCnt}</td>
+                <td className="p-1 whitespace-nowrap">
                   {item.TotalQty -
                     item.AlarmCnt -
                     item.WarningCnt -

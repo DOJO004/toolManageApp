@@ -1,9 +1,9 @@
-import { ToolStockSkeletons } from "@/app/ui/skeletons";
+import { ReceiveToolSkeleton } from "@/app/ui/skeletons";
 
 export default function Loading() {
   return (
     <div className="w-full max-w-4xl">
-      <ToolStockSkeletons />
+      <ReceiveToolSkeleton />
     </div>
   );
 }

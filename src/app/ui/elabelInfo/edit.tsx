@@ -30,6 +30,7 @@ const ElabelInfoEdit = ({
         onSubmit={(e) => fetchEditElabelInfo(e)}
       >
         <p className="my-2 text-xl text-center ">編輯電子標籤</p>
+        <hr className="my-2" />
         <label htmlFor="LabelCode">標籤號碼</label>
         <input
           id="LabelCode"

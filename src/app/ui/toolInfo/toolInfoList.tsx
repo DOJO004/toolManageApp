@@ -31,9 +31,9 @@ const ToolInfoList = ({
   handleToolStatusItem,
 }: ToolInfoListProps) => {
   return (
-    <div className="bg-gray-900 w-fit">
-      <div className="overflow-hidden rounded-md">
-        <table>
+    <div className="w-full">
+      <div className="overflow-auto rounded-md">
+        <table className="w-full">
           <thead>
             <tr className="bg-indigo-500 ">
               <th className="p-1 whitespace-nowrap">刀具序號</th>

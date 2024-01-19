@@ -25,19 +25,20 @@ const ElabelInfoIndex = ({
   fetchSyncAimsData,
 }: ElabelInfoIndexProps) => {
   return (
-    <div className="relative w-full max-h-full p-2 overflow-auto text-center bg-gray-900 rounded-xl">
-      <p className="my-2 text-xl">電子標籤列表</p>
-      <div className="mt-2 overflow-hidden rounded-t-xl">
+    <div className="relative w-full max-h-full p-2 overflow-auto text-center ">
+      <p className="my-2 ">電子標籤列表</p>
+      <hr className="my-4" />
+      <div className="mt-2 overflow-auto rounded-t-xl">
         <table className="w-full ">
           <thead>
-            <tr className="p-1 bg-indigo-300">
-              <td className="p-1 text-black">LabelCode</td>
-              <td className="p-1 text-black">eLabelSN</td>
-              <td className="p-1 text-black">StationCode</td>
-              <td className="p-1 text-black">ArticleID</td>
-              <td className="p-1 text-black">ArticleName</td>
-              <td className="p-1 text-black">LastModify</td>
-              <td className="p-1 text-black">編輯</td>
+            <tr className="p-1 bg-indigo-500">
+              <td className="p-1 text-black whitespace-nowrap">LabelCode</td>
+              <td className="p-1 text-black whitespace-nowrap">eLabelSN</td>
+              <td className="p-1 text-black whitespace-nowrap">StationCode</td>
+              <td className="p-1 text-black whitespace-nowrap">ArticleID</td>
+              <td className="p-1 text-black whitespace-nowrap">ArticleName</td>
+              <td className="p-1 text-black whitespace-nowrap">LastModify</td>
+              <td className="p-1 text-black whitespace-nowrap">編輯</td>
             </tr>
           </thead>
           <tbody>
@@ -46,13 +47,13 @@ const ElabelInfoIndex = ({
                 key={item.LabelCode}
                 className=" even:bg-gray-700 hover:bg-indigo-500"
               >
-                <td className="p-1 ">{item.LabelCode}</td>
-                <td className="p-1 ">{item.eLabelSN}</td>
-                <td className="p-1 ">{item.StationCode}</td>
-                <td className="p-1 ">{item.ArticleID}</td>
-                <td className="p-1 ">{item.ArticleName}</td>
-                <td className="p-1 ">{item.LastModify}</td>
-                <td className="p-1 ">
+                <td className="p-1 whitespace-nowrap">{item.LabelCode}</td>
+                <td className="p-1 whitespace-nowrap">{item.eLabelSN}</td>
+                <td className="p-1 whitespace-nowrap">{item.StationCode}</td>
+                <td className="p-1 whitespace-nowrap">{item.ArticleID}</td>
+                <td className="p-1 whitespace-nowrap">{item.ArticleName}</td>
+                <td className="p-1 whitespace-nowrap">{item.LastModify}</td>
+                <td className="p-1 whitespace-nowrap">
                   <button
                     onClick={() => {
                       changeEditMode(),

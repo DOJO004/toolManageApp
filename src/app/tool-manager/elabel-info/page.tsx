@@ -186,9 +186,9 @@ export default function Page() {
   };
 
   return (
-    <div className="relative flex flex-col md:flex-row">
-      <div className="mx-2">
-        <Notice notice={notice} isError={isError} setNotice={setNotice} />
+    <div className="relative flex flex-col justify-center w-full max-w-4xl md:flex-row">
+      <Notice notice={notice} isError={isError} setNotice={setNotice} />
+      <div className="w-full bg-gray-900 rounded-md h-fit ">
         <ElabelInfoIndex
           eLabelList={eLabelList}
           changeNewMode={changeNewMode}
@@ -196,7 +196,7 @@ export default function Page() {
           fetchGetElabelInfoByLabelCode={fetchGetElabelInfoByLabelCode}
           fetchSyncAimsData={fetchSyncAimsData}
         />
-        <div>
+        <div className="my-4">
           <PageController
             currentPage={currentPage}
             totalPage={totalPage}
@@ -205,30 +205,32 @@ export default function Page() {
             exPage={exPage}
           />
         </div>
+      </div>
 
-        <div
-          className={`fixed left-0 top-0 bg-black/70 w-screen h-screen transition-all duration-300 ease-in-out ${
-            newMode ? " translate-y-0" : "-translate-y-full"
-          }`}
-        >
-          <div className="flex justify-center mt-48">
-            <ElabelInfoNew
-              selectArticleIDIndex={selectArticleIDIndex}
-              eLabelList={eLabelList}
-              stationCode={stationCode}
-              newElabelInfo={newElabelInfo}
-              setNewElabelInfo={setNewElabelInfo}
-              changeNewMode={changeNewMode}
-              fetchNewElabelInfo={fetchNewElabelInfo}
-            />
-          </div>
+      <div
+        className={`fixed left-0 top-0 bg-black/70 w-screen h-screen transition-all duration-300 ease-in-out ${
+          newMode ? " translate-y-0" : "-translate-y-full"
+        }`}
+      >
+        <div className="flex justify-center mt-48">
+          <ElabelInfoNew
+            selectArticleIDIndex={selectArticleIDIndex}
+            eLabelList={eLabelList}
+            stationCode={stationCode}
+            newElabelInfo={newElabelInfo}
+            setNewElabelInfo={setNewElabelInfo}
+            changeNewMode={changeNewMode}
+            fetchNewElabelInfo={fetchNewElabelInfo}
+          />
         </div>
+      </div>
 
-        <div
-          className={`absolute top-0 left-1/4 transition-all duration-300 ease-in-out ${
-            editMode ? " translate-y-0" : "-translate-y-[32rem]"
-          }`}
-        >
+      <div
+        className={`fixed left-0 top-0 bg-black/70 w-screen h-screen transition-all duration-300 ease-in-out ${
+          editMode ? " translate-y-0" : "-translate-y-full"
+        }`}
+      >
+        <div className="flex justify-center mt-48">
           <ElabelInfoEdit
             editElabelInfo={editElabelInfo}
             setEditElabelInfo={setEditElabelInfo}

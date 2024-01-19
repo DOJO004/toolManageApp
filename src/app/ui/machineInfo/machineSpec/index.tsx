@@ -37,22 +37,23 @@ const MachineSpecIndex = ({
   fetchGetMachineSpecList,
 }: MachineSpecIndexProps) => {
   return (
-    <div className="relative p-1 overflow-auto text-center bg-gray-900 rounded-md">
-      <p className="text-xl">設備規格</p>
-      <div className="mt-2 overflow-hidden rounded-t-lg">
-        <table className="border-collapse ">
+    <div className="relative w-full p-1 text-center ">
+      <p className="">設備規格</p>
+      <hr className="my-4" />
+      <div className="mt-2 overflow-auto rounded-t-lg">
+        <table className="w-full ">
           <thead className="">
-            <tr className="bg-indigo-200 ">
-              <th className="p-1 text-black ">生產線</th>
-              <th className="p-1 text-black ">設備ID</th>
-              <th className="p-1 text-black ">設備SN序號</th>
-              <th className="p-1 text-black ">設備名稱</th>
-              <th className="p-1 text-black ">品牌</th>
-              <th className="p-1 text-black ">系列</th>
-              <th className="p-1 text-black ">設備IP位址</th>
-              <th className="p-1 text-black ">讀取器ID</th>
-              <th className="p-1 text-black ">MT</th>
-              <th className="p-1 text-black ">編輯</th>
+            <tr className="bg-indigo-500 ">
+              <th className="p-1 text-black whitespace-nowrap ">生產線</th>
+              <th className="p-1 text-black whitespace-nowrap ">設備ID</th>
+              <th className="p-1 text-black whitespace-nowrap ">設備SN序號</th>
+              <th className="p-1 text-black whitespace-nowrap ">設備名稱</th>
+              <th className="p-1 text-black whitespace-nowrap ">品牌</th>
+              <th className="p-1 text-black whitespace-nowrap ">系列</th>
+              <th className="p-1 text-black whitespace-nowrap ">設備IP位址</th>
+              <th className="p-1 text-black whitespace-nowrap ">讀取器ID</th>
+              <th className="p-1 text-black whitespace-nowrap ">MT</th>
+              <th className="p-1 text-black whitespace-nowrap ">編輯</th>
             </tr>
           </thead>
           <tbody>
@@ -61,17 +62,23 @@ const MachineSpecIndex = ({
                 key={item.MachineID}
                 className=" hover:bg-indigo-500 even:bg-gray-700"
               >
-                <td className="p-1 ">{item.ProductLineID.split(":")[1]}</td>
-                <td className="p-1 ">{item.MachineID}</td>
-                <td className="p-1 ">{item.MachineSN}</td>
-                <td className="p-1 ">{item.MachineName}</td>
-                <td className="p-1 ">{item.SystemInfo.Brand}</td>
-                <td className="p-1 ">{item.SystemInfo.Series}</td>
-                <td className="p-1 ">{item.MachineIP}</td>
-                <td className="p-1 ">{item.ReaderID}</td>
-                <td className="p-1 ">{item.SystemInfo.MT}</td>
+                <td className="p-1 whitespace-nowrap ">
+                  {item.ProductLineID.split(":")[1]}
+                </td>
+                <td className="p-1 whitespace-nowrap ">{item.MachineID}</td>
+                <td className="p-1 whitespace-nowrap ">{item.MachineSN}</td>
+                <td className="p-1 whitespace-nowrap ">{item.MachineName}</td>
+                <td className="p-1 whitespace-nowrap ">
+                  {item.SystemInfo.Brand}
+                </td>
+                <td className="p-1 whitespace-nowrap ">
+                  {item.SystemInfo.Series}
+                </td>
+                <td className="p-1 whitespace-nowrap ">{item.MachineIP}</td>
+                <td className="p-1 whitespace-nowrap ">{item.ReaderID}</td>
+                <td className="p-1 whitespace-nowrap ">{item.SystemInfo.MT}</td>
                 <td
-                  className="cursor-pointer "
+                  className="cursor-pointer whitespace-nowrap "
                   onClick={() => {
                     changeEditMode(index), fetchGetMachineSpecList(index);
                   }}

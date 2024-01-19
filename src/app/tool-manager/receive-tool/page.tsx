@@ -69,7 +69,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div>
+    <div className="w-full">
       <BindToolIndex
         bindToolInfo={bindToolInfo}
         setBindToolInfo={setBindToolInfo}

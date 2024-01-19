@@ -20,9 +20,9 @@ const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
             height={30}
             className="mr-2"
           />
-          <p className="hidden truncate md:block">總覽</p>
+          <div className="hidden truncate md:block">總覽</div>
         </Link>
-      </div>{" "}
+      </div>
     </div>
   );
 };

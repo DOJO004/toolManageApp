@@ -1,4 +1,5 @@
 "use client";
+import PageController from "@/app/ui/pageController/pageController";
 import UserInfoIndex from "@/app/ui/userInfo";
 import UserInfoEdit from "@/app/ui/userInfo/edit";
 import UserInfoNew from "@/app/ui/userInfo/new";
@@ -152,50 +153,53 @@ export default function Page() {
   }, [editUserInfo]);
 
   return (
-    <div className="flex flex-col justify-center md:flex-row">
-      <div className="mx-2 ">
+    <div className="flex flex-col justify-center w-full md:flex-row">
+      <div className="w-full max-w-6xl bg-gray-900 rounded-md h-fit">
         <UserInfoIndex
           userInfoList={userInfoList}
           changeNewMode={changeNewMode}
           changeEditMode={changeEditMode}
           fetchGetUserInfoByUserAccount={fetchGetUserInfoByUserAccount}
         />
-        <div
-          className={`fixed top-0 left-0 w-screen h-screen transition-all duration-300 bg-black/70 ${
-            newMode ? " translate-y-0" : " -translate-y-full"
-          }`}
-        >
-          <div className="flex justify-center mt-48 ">
-            <UserInfoNew
-              departmentInfoList={departmentInfoList}
-              userInfo={userInfo}
-              setUserInfo={setUserInfo}
-              changeNewMode={changeNewMode}
-              fetchAddNewUser={fetchAddNewUser}
-              notice={notice}
-              isError={isError}
-            />
-          </div>
+        <div className="my-4">
+          <PageController />
         </div>
+      </div>
+      <div
+        className={`fixed top-0 left-0 w-screen h-screen transition-all duration-300 bg-black/70 ${
+          newMode ? " translate-y-0" : " -translate-y-full"
+        }`}
+      >
+        <div className="flex justify-center mt-48 ">
+          <UserInfoNew
+            departmentInfoList={departmentInfoList}
+            userInfo={userInfo}
+            setUserInfo={setUserInfo}
+            changeNewMode={changeNewMode}
+            fetchAddNewUser={fetchAddNewUser}
+            notice={notice}
+            isError={isError}
+          />
+        </div>
+      </div>
 
-        <div
-          className={`fixed top-0 left-0 w-screen h-screen transition-all duration-300 bg-black/70 ${
-            editMode ? " translate-y-0" : " -translate-y-full"
-          }`}
-        >
-          <div className="flex justify-center mt-48">
-            <UserInfoEdit
-              departmentInfoList={departmentInfoList}
-              editUserInfo={editUserInfo}
-              setEditUserInfo={setEditUserInfo}
-              editUserAccountAndPassword={editUserAccountAndPassword}
-              setEditUserAccountAndPassword={setEditUserAccountAndPassword}
-              fetchEditUserInfo={fetchEditUserInfo}
-              changeEditMode={changeEditMode}
-              notice={notice}
-              isError={isError}
-            />
-          </div>
+      <div
+        className={`fixed top-0 left-0 w-screen h-screen transition-all duration-300 bg-black/70 ${
+          editMode ? " translate-y-0" : " -translate-y-full"
+        }`}
+      >
+        <div className="flex justify-center mt-48">
+          <UserInfoEdit
+            departmentInfoList={departmentInfoList}
+            editUserInfo={editUserInfo}
+            setEditUserInfo={setEditUserInfo}
+            editUserAccountAndPassword={editUserAccountAndPassword}
+            setEditUserAccountAndPassword={setEditUserAccountAndPassword}
+            fetchEditUserInfo={fetchEditUserInfo}
+            changeEditMode={changeEditMode}
+            notice={notice}
+            isError={isError}
+          />
         </div>
       </div>
     </div>

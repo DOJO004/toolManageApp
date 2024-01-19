@@ -50,7 +50,7 @@ const ToolSpecNew = ({
   prevPage,
 }: ToolSpecNewProps) => {
   return (
-    <div className="relative flex flex-col justify-center w-full p-4 mb-2 text-center bg-gray-900 border-2 md:mx-auto md:w-fit rounded-xl">
+    <div className="relative flex flex-col justify-center w-full p-4 mx-auto mb-2 text-center bg-gray-900 border-2 max-w-96 md:mx-auto rounded-xl">
       <p>新增刀具規格</p>
       <div className="text-black">
         <div className={currentPage === 1 ? "block" : "hidden"}>

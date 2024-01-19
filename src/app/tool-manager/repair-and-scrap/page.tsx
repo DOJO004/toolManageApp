@@ -9,6 +9,7 @@ import {
 } from "@/scripts/api";
 import { useEffect, useState } from "react";
 import { handleToolType } from "./action";
+import PageController from "@/app/ui/pageController/pageController";
 
 export default function Page() {
   const [toolStockList, setToolStockList] = useState([]);
@@ -83,7 +84,7 @@ export default function Page() {
   }, []);
 
   return (
-    <>
+    <div className="w-full max-w-2xl p-2 bg-gray-900 rounded-md h-fit">
       <RepairAndScrapIndex
         toolStockList={toolStockList}
         toolTypeClass={toolTypeClass}
@@ -94,6 +95,9 @@ export default function Page() {
         handleSelectToolTypeClass={handleSelectToolTypeClass}
         selectToolTypeClass={selectToolTypeClass}
       />
-    </>
+      <div>
+        <PageController />
+      </div>
+    </div>
   );
 }

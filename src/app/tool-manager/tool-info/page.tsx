@@ -13,8 +13,9 @@ export default function Page() {
     ToolName: "",
     ProcessTime: "",
     ProcessLength: "",
+    LoadingLogList: [],
   });
-  const [selectTool, setSelectTool] = useState("");
+  const [toolStatusLog, setToolStatusLog] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(-1);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -40,6 +41,7 @@ export default function Page() {
       ToolName: item.ToolName,
       ProcessTime: item.LifeData.ProcessTime,
       ProcessLength: item.LifeData.ProcessLength,
+      LoadingLogList: item.LoadingLogList,
     });
   };
 
@@ -59,25 +61,30 @@ export default function Page() {
     fetchToolInfoList();
   }, [currentPage]);
 
+  useEffect(() => {
+    console.log("666", toolStatusList);
+  }, [toolStatusList]);
   return (
-    <div className="h-full ">
+    <div className="w-full h-full max-w-6xl ">
       <div className="flex flex-col w-full md:flex-row">
         <PieChart toolStatusItem={toolStatusItem} />
-        <ToolInfoLog />
+        <ToolInfoLog toolStatusItem={toolStatusItem} />
       </div>
-      <div className="overflow-auto ">
+      <div className="w-full p-2 overflow-auto bg-gray-900 rounded-md">
         <ToolInfoList
           toolStatusList={toolStatusList}
           handleToolStatusItem={handleToolStatusItem}
         />
+        <div className="my-2">
+          <PageController
+            totalRecords={totalRecords}
+            totalPage={totalPage}
+            currentPage={currentPage}
+            nextPage={nextPage}
+            exPage={exPage}
+          />
+        </div>
       </div>
-      <PageController
-        totalRecords={totalRecords}
-        totalPage={totalPage}
-        currentPage={currentPage}
-        nextPage={nextPage}
-        exPage={exPage}
-      />
     </div>
   );
 }

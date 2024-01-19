@@ -38,7 +38,7 @@ const EditStepTwo = ({
         id="BladeDiameter"
         type="number"
         placeholder="Φ"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         value={editToolSpec?.Specification?.BladeDiameter}
         onChange={(e) =>
           setEditToolSpec({
@@ -55,7 +55,7 @@ const EditStepTwo = ({
         id="BladeHeight"
         type="number"
         placeholder="刀具高度"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         value={editToolSpec?.Specification?.BladeHeight}
         onChange={(e) =>
           setEditToolSpec({
@@ -72,7 +72,7 @@ const EditStepTwo = ({
         id="TotalLength"
         type="number"
         placeholder="總長度"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         value={editToolSpec?.Specification?.TotalLength}
         onChange={(e) =>
           setEditToolSpec({
@@ -89,7 +89,7 @@ const EditStepTwo = ({
         id="HandleDiameter"
         type="number"
         placeholder="手柄Φ"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         value={editToolSpec?.Specification?.HandleDiameter}
         onChange={(e) =>
           setEditToolSpec({

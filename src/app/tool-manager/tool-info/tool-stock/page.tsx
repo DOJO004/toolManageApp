@@ -79,20 +79,22 @@ export default function Page() {
     fetchGetToolSpecID();
   }, []);
   return (
-    <div className="relative flex flex-col justify-center md:flex-row">
+    <div className="relative flex flex-col justify-center w-full max-w-4xl md:flex-row">
       <Notice notice={notice} setNotice={setNotice} isError={isError} />
-      <ToolStockIndex
-        toolStockList={toolStockList}
-        changeNewMode={changeNewMode}
-      />
-      <div className="absolute -bottom-10">
-        <PageController
-          totalRecords={totalRecords}
-          totalPage={totalPage}
-          currentPage={currentPage}
-          nextPage={nextPage}
-          exPage={exPage}
+      <div className="w-full bg-gray-900 rounded-md h-fit">
+        <ToolStockIndex
+          toolStockList={toolStockList}
+          changeNewMode={changeNewMode}
         />
+        <div className="my-2">
+          <PageController
+            totalRecords={totalRecords}
+            totalPage={totalPage}
+            currentPage={currentPage}
+            nextPage={nextPage}
+            exPage={exPage}
+          />
+        </div>
       </div>
       <div
         className={` fixed left-0 top-0 bg-black/70 w-screen   h-screen transition-all duration-300 ease-in-out ${

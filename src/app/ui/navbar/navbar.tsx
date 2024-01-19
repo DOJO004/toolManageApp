@@ -66,7 +66,9 @@ const Navbar = () => {
                     height={item.height}
                     className="mx-auto"
                   />
-                  <p className="text-center whitespace-nowrap">{item.name}</p>
+                  <div className="text-center whitespace-nowrap">
+                    {item.name}
+                  </div>
                 </Link>
               ) : (
                 <div
@@ -81,9 +83,9 @@ const Navbar = () => {
                     height={item.height}
                     className="mx-auto"
                   />
-                  <p className="text-sm text-center whitespace-nowrap">
+                  <div className="text-sm text-center whitespace-nowrap">
                     {item.name}
-                  </p>
+                  </div>
                 </div>
               )}
             </li>

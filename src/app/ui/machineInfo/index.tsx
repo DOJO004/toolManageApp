@@ -40,17 +40,20 @@ const MachineInfoIndex = ({
 }: MachineInfoIndexProps) => {
   return (
     <div className="p-2 bg-gray-900 rounded-md">
-      <p className="text-xl text-center ">設備資訊</p>
-      <div className="overflow-hidden rounded-t-md">
-        <table>
+      <p className="text-center ">設備資訊</p>
+      <hr className="my-4" />
+      <div className="overflow-auto rounded-t-md">
+        <table className="w-full">
           <thead className="bg-indigo-500 ">
             <tr>
-              <th className="p-1 text-black">設備序號</th>
-              <th className="p-1 text-black">產線別</th>
-              <th className="p-1 text-black">運行狀態</th>
-              <th className="p-1 text-black">刀庫資訊</th>
-              <th className="p-1 text-black">轉速/進給倍率</th>
-              <th className="p-1 text-black">更新時間</th>
+              <th className="p-1 text-black whitespace-nowrap">設備序號</th>
+              <th className="p-1 text-black whitespace-nowrap">產線別</th>
+              <th className="p-1 text-black whitespace-nowrap">運行狀態</th>
+              <th className="p-1 text-black whitespace-nowrap">刀庫資訊</th>
+              <th className="p-1 text-black whitespace-nowrap">
+                轉速/進給倍率
+              </th>
+              <th className="p-1 text-black whitespace-nowrap">更新時間</th>
             </tr>
           </thead>
 
@@ -61,18 +64,20 @@ const MachineInfoIndex = ({
                 className="text-center cursor-pointer even:bg-gray-600"
                 onClick={() => handleSelectMachineInfoItem(item)}
               >
-                <td className="p-1">{item.MachineSN}</td>
-                <td className="p-1">{item.ProductLine.split(":")[1]}</td>
-                <td className="p-1">{item.MachineStatus}</td>
-                <td className="p-1">
+                <td className="p-1 whitespace-nowrap">{item.MachineSN}</td>
+                <td className="p-1 whitespace-nowrap">
+                  {item.ProductLine.split(":")[1]}
+                </td>
+                <td className="p-1 whitespace-nowrap">{item.MachineStatus}</td>
+                <td className="p-1 whitespace-nowrap">
                   {item.AtcLoadingList.map((item, index) => (
                     <div key={index}>{item.ToolSN}</div>
                   ))}
                 </td>
-                <td className="p-1">
+                <td className="p-1 whitespace-nowrap">
                   {item.Current.SpindleSpeed}/{item.Current.TotalFeedRate}
                 </td>
-                <td className="p-1">{item.LastModify}</td>
+                <td className="p-1 whitespace-nowrap">{item.LastModify}</td>
               </tr>
             ))}
             <tr></tr>

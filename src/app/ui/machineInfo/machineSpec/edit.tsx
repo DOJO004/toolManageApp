@@ -52,7 +52,7 @@ const MachineSpecEdit = ({
 }: MachineSpecEditProps) => {
   const router = useRouter();
   return (
-    <div className="relative flex flex-col w-full p-4 mb-2 text-center bg-gray-900 border-2 md:w-fit md:mx-auto rounded-xl">
+    <div className="relative flex flex-col w-full p-4 mx-auto mb-2 text-center bg-gray-900 border-2 max-w-96 rounded-xl">
       <p className="text-xl">編輯設備規格</p>
       {notice && <Notice isError={isError} />}
       {currentPage === 1 && (
