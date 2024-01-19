@@ -42,7 +42,7 @@ const EditStepOne = ({
       <select
         id="ToolType"
         value={editToolSpec?.ToolType.split("/")[0]}
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         onChange={(e) =>
           setEditToolSpec({ ...editToolSpec, ToolType: e.target.value })
         }
@@ -65,7 +65,7 @@ const EditStepOne = ({
         id="ToolSpecID"
         type="text"
         placeholder="ID"
-        className="block pl-2 mx-auto mb-2 text-gray-300 rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-gray-300 rounded-md min-h-10"
         value={editToolSpec?.ToolSpecID}
         readOnly
       />
@@ -74,14 +74,14 @@ const EditStepOne = ({
         id="Name"
         type="text"
         placeholder="名稱"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         value={editToolSpec?.Name}
         onChange={(e) =>
           setEditToolSpec({ ...editToolSpec, Name: e.target.value })
         }
       />
       <button
-        className="p-2 bg-blue-500 rounded-md min-w-72"
+        className="w-full p-2 bg-blue-500 rounded-md"
         onClick={() => nextPage()}
       >
         下一步

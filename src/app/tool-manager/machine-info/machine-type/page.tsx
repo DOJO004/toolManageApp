@@ -137,49 +137,53 @@ export default function Page() {
     }
   };
   return (
-    <div className="relative flex flex-col justify-center md:flex-row">
+    <div className="relative flex flex-col justify-center w-full max-w-4xl md:flex-row">
       <Notice notice={notice} setNotice={setNotice} isError={isError} />
-      <MachineTypeIndex
-        machineTypeList={machineTypeList}
-        changeNewMode={changeNewMode}
-        changeEditMode={changeEditMode}
-        fetchGetMachineTypeList={fetchGetMachineTypeList}
-      />
-      <div className="absolute -bottom-10">
-        <PageController
-          totalPage={totalPage}
-          totalRecords={totalRecords}
-          nextPage={nextPage}
-          exPage={exPage}
-          currentPage={currentPage}
-        />
-      </div>
-      <div
-        className={` absolute transition-all duration-300 ease-in-out ${
-          newMode ? "translate-y-0" : " -translate-y-96"
-        }`}
-      >
-        <MachineTypeNew
-          machineTypeID={machineTypeID}
-          setMachineTypeID={setMachineTypeID}
-          machineTypeName={machineTypeName}
-          setMachineTypeName={setMachineTypeName}
-          fetchAddMachineType={fetchAddMachineType}
+      <div className="w-full bg-gray-900 rounded-md h-fit">
+        <MachineTypeIndex
+          machineTypeList={machineTypeList}
           changeNewMode={changeNewMode}
+          changeEditMode={changeEditMode}
+          fetchGetMachineTypeList={fetchGetMachineTypeList}
         />
+        <div className="my-4">
+          <PageController
+            totalPage={totalPage}
+            totalRecords={totalRecords}
+            nextPage={nextPage}
+            exPage={exPage}
+            currentPage={currentPage}
+          />
+        </div>
       </div>
       <div
-        className={` absolute transition-all duration-300 ease-in-out ${
-          editMode ? "translate-y-0" : " -translate-y-96"
-        }`}
+        className={`fixed top-0 left-0 transition-all duration-300 bg-black/70 h-screen w-screen
+          ${newMode ? " translate-y-0" : "-translate-y-full"}`}
       >
-        <MachineTypeEdit
-          machineType={machineType}
-          setMachineType={setMachineType}
-          fetchEditMachineType={fetchEditMachineType}
-          fetchDeleteMachineType={fetchDeleteMachineType}
-          changeEditMode={changeEditMode}
-        />
+        <div className="flex justify-center mt-48 ">
+          <MachineTypeNew
+            machineTypeID={machineTypeID}
+            setMachineTypeID={setMachineTypeID}
+            machineTypeName={machineTypeName}
+            setMachineTypeName={setMachineTypeName}
+            fetchAddMachineType={fetchAddMachineType}
+            changeNewMode={changeNewMode}
+          />
+        </div>
+      </div>
+      <div
+        className={`fixed top-0 left-0 transition-all duration-300 bg-black/70 h-screen w-screen
+          ${editMode ? " translate-y-0" : "-translate-y-full"}`}
+      >
+        <div className="flex justify-center mt-48 ">
+          <MachineTypeEdit
+            machineType={machineType}
+            setMachineType={setMachineType}
+            fetchEditMachineType={fetchEditMachineType}
+            fetchDeleteMachineType={fetchDeleteMachineType}
+            changeEditMode={changeEditMode}
+          />
+        </div>
       </div>
     </div>
   );

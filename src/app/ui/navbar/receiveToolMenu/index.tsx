@@ -20,7 +20,7 @@ export default function ReceiveToolIndex({
 }: ReceiveToolIndexProps) {
   return (
     <div className="flex flex-col overflow-auto bg-gray-900 rounded-xl">
-      <p className="mt-2 text-xl text-center">領取刀具</p>
+      <p className="mt-2 text-center">領取刀具</p>
       <table className="w-full m-2">
         <thead className="text-center ">
           <tr className="p-1 ">

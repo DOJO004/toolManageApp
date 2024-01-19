@@ -29,7 +29,7 @@ const MenuItem = ({ eLabelLinkItems, setOpenMenu }: MenuItemProps) => {
             height={30}
             className="mr-2"
           />
-          <p className="hidden truncate md:block">{item.text}</p>
+          <div className="hidden truncate md:block">{item.text}</div>
         </Link>
       ))}
     </>

@@ -4,7 +4,6 @@ import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
 import ToolTypeIndex from "@/app/ui/toolInfo/toolType";
 import ToolTypeEdit from "@/app/ui/toolInfo/toolType/edit";
-import { ToolTypeLoading } from "@/app/ui/toolInfo/toolType/loading";
 import ToolTypeNew from "@/app/ui/toolInfo/toolType/new";
 import {
   apiGetToolTypeInFoList,
@@ -154,15 +153,15 @@ export default function Page() {
   };
 
   return (
-    <div className="relative flex flex-col justify-center l md:flex-row">
+    <div className="relative flex flex-col justify-center w-full max-w-4xl h-fit md:flex-row">
       <Notice notice={notice} setNotice={setNotice} isError={isError} />
-      <ToolTypeIndex
-        toolTypeList={toolTypeList}
-        changeEditMode={changeEditMode}
-        fetchGetToolTypeList={fetchGetToolTypeList}
-        changeNewMode={changeNewMode}
-      />
-      <div className="absolute -bottom-10">
+      <div className="w-full bg-gray-900 rounded-md h-fit">
+        <ToolTypeIndex
+          toolTypeList={toolTypeList}
+          changeEditMode={changeEditMode}
+          fetchGetToolTypeList={fetchGetToolTypeList}
+          changeNewMode={changeNewMode}
+        />
         <PageController
           totalRecords={totalRecords}
           currentPage={currentPage}
@@ -174,10 +173,10 @@ export default function Page() {
 
       <div
         className={`fixed transition-all top-0 left-0  ease-in-out bg-black/70 h-screen w-screen  duration-300 rounded-xl  drop-shadow-xl ${
-          newMode ? " translate-y-0 " : " -translate-y-[60rem]"
+          newMode ? " translate-y-0 " : " -translate-y-full"
         }`}
       >
-        <div className="flex justify-center mt-32 ">
+        <div className="flex justify-center mt-52 ">
           <ToolTypeNew
             toolTypeID={toolTypeID}
             setToolTypeID={setToolTypeID}
@@ -192,10 +191,10 @@ export default function Page() {
       </div>
       <div
         className={`fixed transition-all top-0 left-0  ease-in-out bg-black/70 h-screen w-screen  duration-300 rounded-xl  drop-shadow-xl ${
-          editMode ? " translate-y-0 " : " -translate-y-[60rem]"
+          editMode ? " translate-y-0 " : " -translate-y-full"
         }`}
       >
-        <div className="flex justify-center mt-32 ">
+        <div className="flex justify-center mt-52 ">
           <ToolTypeEdit
             editToolType={editToolType}
             setEditToolType={setEditToolType}

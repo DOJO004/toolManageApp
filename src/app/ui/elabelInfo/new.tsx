@@ -51,6 +51,7 @@ const ElabelInfoNew = ({
         onSubmit={(e) => fetchNewElabelInfo(e)}
       >
         <p className="text-xl text-center ">新增電子標籤</p>
+        <hr className="my-2" />
         <label htmlFor="LabelCode">標籤號碼</label>
         <input
           id="LabelCode"

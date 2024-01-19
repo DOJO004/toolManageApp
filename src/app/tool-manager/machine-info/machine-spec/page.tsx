@@ -196,21 +196,26 @@ export default function Page() {
   };
 
   return (
-    <div className="relative flex flex-col justify-center md:flex-row">
+    <div className="relative flex flex-col justify-center w-full max-w-6xl md:flex-row">
       <Notice notice={notice} setNotice={setNotice} isError={isError} />
-      <MachineSpecIndex
-        machineSpecList={machineSpecList}
-        changeNewMode={changeNewMode}
-        changeEditMode={changeEditMode}
-        fetchGetMachineSpecList={fetchGetMachineSpecList}
-      />
+      <div className="w-full bg-gray-900 rounded-md h-fit">
+        <MachineSpecIndex
+          machineSpecList={machineSpecList}
+          changeNewMode={changeNewMode}
+          changeEditMode={changeEditMode}
+          fetchGetMachineSpecList={fetchGetMachineSpecList}
+        />
+        <div className="my-4">
+          <PageController />
+        </div>
+      </div>
 
       <div
-        className={`fixed left-0 bg-black/70 w-screen h-screen top-0 transition-all duration-300 ease-in-out ${
+        className={`fixed left-0 bg-black/70 w-screen h-screen top-0  transition-all duration-300 ease-in-out ${
           newMode ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="mt-48">
+        <div className="m-4 mt-44">
           <MachineSpecNew
             machineSpec={machineSpec}
             setMachineSpec={setMachineSpec}
@@ -229,7 +234,7 @@ export default function Page() {
           editMode ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="mt-48">
+        <div className="m-4 mt-44">
           <MachineSpecEdit
             currentPage={currentPage}
             nextPage={nextPage}

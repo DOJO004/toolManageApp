@@ -2,7 +2,7 @@ import DashboardCard from "./card";
 
 export default function DashboardIndex() {
   return (
-    <div className="md:grid md:grid-cols-2 md:gap-2 lg:grid-cols-3">
+    <div className="w-full lg:grid-cols-2 lg:grid lg:gap-2 xl:grid-cols-3">
       <DashboardCard />
       <DashboardCard />
       <DashboardCard />

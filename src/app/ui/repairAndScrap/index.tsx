@@ -44,8 +44,8 @@ export default function RepairAndScrapIndex({
   selectToolTypeClass,
 }: repairAndScrapProps) {
   return (
-    <div className="p-2 bg-gray-900 rounded-md ">
-      <p className="text-xl font-bold text-center">修整/報廢</p>
+    <div>
+      <p className="text-center ">修整/報廢</p>
       <div className="flex mx-auto my-4 cursor-pointer w-fit">
         <button
           className={`mx-2  ${
@@ -76,48 +76,64 @@ export default function RepairAndScrapIndex({
           (tool, index) =>
             tool.ToolLifeList.length > 0 && (
               <div key={index} className="p-2 my-2 border-b-2 rounded-md">
-                <p>
+                <div>
                   ToolSpecID:
                   <span className="text-xl font-bold ">{tool.ToolSpecID}</span>
-                </p>
-                <p>
+                </div>
+                <div>
                   toolType:{" "}
                   <span className="text-xl font-bold ">{tool.ToolType}</span>
-                </p>
-                <div className="my-2 overflow-hidden rounded-t-md">
+                </div>
+                <div className="my-2 overflow-auto rounded-t-md">
                   <table className="w-full text-center shadow-md ">
                     <thead>
                       <tr className="bg-indigo-300 ">
-                        <th className="p-1 text-black">刀具SN</th>
-                        <th className="p-1 text-black">壽命百分比</th>
-                        <th className="p-1 text-black">壽命狀態</th>
-                        <th className="p-1 text-black">送修/重新入庫</th>
-                        <th className="p-1 text-black">報廢</th>
+                        <th className="p-1 text-black whitespace-nowrap">
+                          刀具SN
+                        </th>
+                        <th className="p-1 text-black whitespace-nowrap">
+                          壽命百分比
+                        </th>
+                        <th className="p-1 text-black whitespace-nowrap">
+                          壽命狀態
+                        </th>
+                        <th className="p-1 text-black whitespace-nowrap">
+                          送修/重新入庫
+                        </th>
+                        <th className="p-1 text-black whitespace-nowrap">
+                          報廢
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {tool.ToolLifeList.map((lifeItem, lifeIndex) => (
                         <tr key={lifeIndex} className=" even:bg-gray-600">
-                          <td className="p-1">{lifeItem.ToolSN}</td>
-                          <td className="p-1">{lifeItem.LifePercentage}</td>
-                          <td className="p-1">{lifeItem.LifeStatus}</td>
+                          <td className="p-1 whitespace-nowrap">
+                            {lifeItem.ToolSN}
+                          </td>
+                          <td className="p-1 whitespace-nowrap">
+                            {lifeItem.LifePercentage}
+                          </td>
+                          <td className="p-1 whitespace-nowrap">
+                            {lifeItem.LifeStatus}
+                          </td>
                           {lifeItem.LifeStatus === "Normal" ? (
                             <td
-                              className="p-1 cursor-pointer"
+                              className="p-1 cursor-pointer whitespace-nowrap"
                               onClick={() => fetchRepairTool(lifeItem.ToolSN)}
                             >
                               送修
                             </td>
                           ) : (
                             <td
-                              className="p-1 cursor-pointer"
+                              className="p-1 cursor-pointer whitespace-nowrap"
                               onClick={() => fetchRestoreTool(lifeItem.ToolSN)}
                             >
                               重新入庫
                             </td>
                           )}
                           <td
-                            className="p-1 cursor-pointer"
+                            className="p-1 cursor-pointer whitespace-nowrap"
                             onClick={() => fetchScrapTool(lifeItem.ToolSN)}
                           >
                             報廢

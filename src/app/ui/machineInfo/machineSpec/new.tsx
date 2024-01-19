@@ -60,8 +60,8 @@ const MachineSpecNew = ({
 }: MachineSpecNewProps) => {
   const router = useRouter();
   return (
-    <div className="relative flex flex-col w-full p-4 mb-2 text-center bg-gray-900 border-2 md:mx-auto md:w-fit rounded-xl">
-      <p>新增設備規格</p>
+    <div className="relative flex flex-col w-full p-4 mx-auto text-center bg-gray-900 border-2 max-w-96 rounded-xl">
+      <p className="text-xl font-bold ">新增設備規格</p>
       {currentPage === 1 && (
         <NewStepOne
           machineSpec={machineSpec}

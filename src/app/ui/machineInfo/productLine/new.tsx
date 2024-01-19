@@ -21,27 +21,36 @@ const ProductLineNew = ({
 }: ProductLineNewProps) => {
   const router = useRouter();
   return (
-    <div className="relative mb-2">
+    <div className="relative w-full m-4 max-w-96">
       <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border-2 md:max-w-96 rounded-xl"
+        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border-2 rounded-xl"
         onSubmit={(e) => fetchAddProductLine(e)}
       >
-        <p className="text-xl text-center ">新增產線</p>
-        <input
-          type="text"
-          value={productLineID}
-          placeholder="生產線ID"
-          className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-          onChange={(e) => setProductLineID(e.target.value)}
-        />
-        <input
-          type="text"
-          value={productLineName}
-          placeholder="生產線名稱"
-          className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-          onChange={(e) => setProductLineName(e.target.value)}
-        />
-        <button className="block pl-2 mx-auto my-2 bg-blue-500 rounded-md min-h-10 min-w-72">
+        <p className="text-xl font-bold text-center">新增產線</p>
+        <hr className="my-2" />
+        <div>
+          <label htmlFor="product-line-id">生產線ID</label>
+          <input
+            id="product-line-id"
+            type="text"
+            value={productLineID}
+            placeholder="生產線ID"
+            className="block w-full pl-2 mx-auto my-2 text-black rounded-md min-h-10"
+            onChange={(e) => setProductLineID(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="product-line-name">生產線名稱</label>
+          <input
+            id="product-line-name"
+            type="text"
+            value={productLineName}
+            placeholder="生產線名稱"
+            className="block w-full pl-2 mx-auto my-2 text-black rounded-md min-h-10"
+            onChange={(e) => setProductLineName(e.target.value)}
+          />
+        </div>
+        <button className="block w-full pl-2 mx-auto mt-6 bg-blue-500 rounded-md min-h-10">
           完成
         </button>
       </form>

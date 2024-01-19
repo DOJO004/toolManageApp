@@ -37,7 +37,7 @@ const EditStepThree = ({
         id="SafetyStock"
         type="number"
         placeholder="安全庫存"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         value={editToolSpec?.SafetyStock}
         onChange={(e) =>
           setEditToolSpec({
@@ -51,7 +51,7 @@ const EditStepThree = ({
         id="RepairCnt"
         type="number"
         placeholder="最大修整次數"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         value={editToolSpec?.MaxLife?.RepairCnt}
         onChange={(e) =>
           setEditToolSpec({
@@ -68,7 +68,7 @@ const EditStepThree = ({
         id="ProcessCnt"
         type="number"
         placeholder="最大加工次數"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         value={editToolSpec?.MaxLife?.ProcessCnt}
         onChange={(e) =>
           setEditToolSpec({
@@ -85,7 +85,7 @@ const EditStepThree = ({
         id="ProcessLength"
         type="number"
         placeholder="最大加工長度"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         value={editToolSpec?.MaxLife?.ProcessLength}
         onChange={(e) =>
           setEditToolSpec({
@@ -102,7 +102,7 @@ const EditStepThree = ({
         id="ProcessTime"
         type="number"
         placeholder="最大加工時間"
-        className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
+        className="block w-full pl-2 mx-auto mb-2 text-black rounded-md min-h-10"
         value={editToolSpec?.MaxLife?.ProcessTime}
         onChange={(e) =>
           setEditToolSpec({

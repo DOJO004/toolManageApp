@@ -1,6 +1,7 @@
 "use client";
 
 import Notice from "@/app/ui/notice";
+import PageController from "@/app/ui/pageController/pageController";
 import {
   apiDisabledEToolCodeInfo,
   apiGetELabelBindStatusInfoList,
@@ -68,47 +69,57 @@ export default function Page() {
     console.log(eLabelBindStatusInfoList.length);
   }, [eLabelBindStatusInfoList]);
   return (
-    <div className="p-2 mr-4 bg-gray-900 rounded-md md:max-w-[800px] 二">
-      <p className="text-2xl text-center ">歸還刀具</p>
-      <div className="overflow-hidden rounded-t-xl">
-        <table className="w-full text-center">
-          <thead>
-            <tr className="font-bold bg-indigo-300 ">
-              <td className="p-2 text-black">標籤號碼</td>
-              <td className="p-2 text-black">刀具SN</td>
-              <td className="p-2 text-black">歸還</td>
-            </tr>
-          </thead>
-          <tbody>
-            {eLabelBindStatusInfoList.length >= 1 ? (
-              <>
-                {eLabelBindStatusInfoList.map((item, index) => (
-                  <tr
-                    key={index}
-                    className=" hover:bg-indigo-500 even:bg-gray-700"
-                  >
-                    <td className="p-2">{item.LabelCode}</td>
-                    <td className="p-2">{item.ToolSN}</td>
-                    <td className="p-2">
-                      <button onClick={() => fetchReturnTool(item.eLToolCode)}>
-                        歸還
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </>
-            ) : (
-              <tr>
-                <td colSpan={3} className="py-2 ">
-                  尚未綁定刀具
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+    <div className="w-full max-w-4xl p-2 mr-4 bg-gray-900 rounded-md h-fit">
       <div>
-        <Notice notice={notice} setNotice={setNotice} isError={isError} />
+        <p className="text-center ">歸還刀具</p>
+        <hr className="my-2 " />
+        <div className="overflow-auto rounded-t-xl">
+          <table className="w-full text-center md:min-w-96">
+            <thead>
+              <tr className="font-bold bg-indigo-300 ">
+                <td className="p-2 text-black whitespace-nowrap">標籤號碼</td>
+                <td className="p-2 text-black whitespace-nowrap">刀具SN</td>
+                <td className="p-2 text-black whitespace-nowrap">歸還</td>
+              </tr>
+            </thead>
+            <tbody>
+              {eLabelBindStatusInfoList.length >= 1 ? (
+                <>
+                  {eLabelBindStatusInfoList.map((item, index) => (
+                    <tr
+                      key={index}
+                      className=" hover:bg-indigo-500 even:bg-gray-700"
+                    >
+                      <td className="p-2 whitespace-nowrap">
+                        {item.LabelCode}
+                      </td>
+                      <td className="p-2 whitespace-nowrap">{item.ToolSN}</td>
+                      <td className="p-2 whitespace-nowrap">
+                        <button
+                          onClick={() => fetchReturnTool(item.eLToolCode)}
+                        >
+                          歸還
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              ) : (
+                <tr>
+                  <td colSpan={3} className="py-2 ">
+                    尚未綁定刀具
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <Notice notice={notice} setNotice={setNotice} isError={isError} />
+        </div>
+        <div className="my-2">
+          <PageController />
+        </div>
       </div>
     </div>
   );

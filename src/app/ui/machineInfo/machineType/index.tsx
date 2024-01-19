@@ -20,15 +20,16 @@ const MachineTypeIndex = ({
   fetchGetMachineTypeList,
 }: MachineTypeIndexProps) => {
   return (
-    <div className="relative p-2 text-center bg-gray-900 mx-2 rounded-xl max-w-[800px] overflow-auto">
-      <p className="text-xl">設備類型</p>
-      <div className="mt-2 overflow-hidden rounded-t-xl">
-        <table>
+    <div className="relative p-2 mx-2 text-center ">
+      <p className="">設備類型</p>
+      <hr className="my-4 " />
+      <div className="mt-2 overflow-auto rounded-t-xl">
+        <table className="w-full">
           <thead>
-            <tr className="bg-indigo-300 ">
-              <th className="p-1 text-black">設備ID</th>
-              <th className="p-1 text-black">設備名稱</th>
-              <th className="p-1 text-black">編輯</th>
+            <tr className="bg-indigo-500 ">
+              <th className="p-1 text-black whitespace-nowrap">設備ID</th>
+              <th className="p-1 text-black whitespace-nowrap">設備名稱</th>
+              <th className="p-1 text-black whitespace-nowrap">編輯</th>
             </tr>
           </thead>
           <tbody>
@@ -37,10 +38,12 @@ const MachineTypeIndex = ({
                 key={item.MachineTypeID}
                 className="hover:bg-indigo-500 even:bg-gray-700"
               >
-                <td className="p-1 ">{item.MachineTypeID}</td>
-                <td className="p-1 ">{item.MachineTypeName}</td>
+                <td className="p-1 whitespace-nowrap ">{item.MachineTypeID}</td>
+                <td className="p-1 whitespace-nowrap ">
+                  {item.MachineTypeName}
+                </td>
                 <td
-                  className="p-1 px-2 cursor-pointer"
+                  className="p-1 px-2 cursor-pointer whitespace-nowrap"
                   onClick={() => {
                     changeEditMode(index), fetchGetMachineTypeList(index);
                   }}

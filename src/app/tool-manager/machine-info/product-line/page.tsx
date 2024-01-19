@@ -10,7 +10,6 @@ import {
   disabledProductLineInfo,
 } from "@/scripts/api";
 import { useEffect, useState, FormEvent } from "react";
-import { PostAddProductLineInfo } from "@/scripts/seed";
 import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
 
@@ -131,22 +130,24 @@ export default function Page() {
   };
 
   return (
-    <div className="relative flex flex-col justify-center md:flex-row">
+    <div className="relative flex flex-col justify-center w-full max-w-4xl md:flex-row">
       <Notice notice={notice} setNotice={setNotice} isError={isError} />
-      <ProductLineIndex
-        productLineList={productLineList}
-        changeNewMode={changeNewMode}
-        changeEditMode={changeEditMode}
-        fetchGetProductLineList={fetchGetProductLineList}
-      />
-      <div className="absolute -bottom-10">
-        <PageController
-          nextPage={nextPage}
-          exPage={exPage}
-          currentPage={currentPage}
-          totalPage={totalPage}
-          totalRecords={totalRecords}
+      <div className="w-full bg-gray-900 rounded-md h-fit">
+        <ProductLineIndex
+          productLineList={productLineList}
+          changeNewMode={changeNewMode}
+          changeEditMode={changeEditMode}
+          fetchGetProductLineList={fetchGetProductLineList}
         />
+        <div className="my-4">
+          <PageController
+            nextPage={nextPage}
+            exPage={exPage}
+            currentPage={currentPage}
+            totalPage={totalPage}
+            totalRecords={totalRecords}
+          />
+        </div>
       </div>
       <div
         className={`fixed top-0 left-0 transition-all duration-300 bg-black/70 h-screen w-screen

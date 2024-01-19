@@ -15,8 +15,8 @@ const PieChart = ({ toolStatusItem }: PieChartProps) => {
     <div className="flex flex-col w-full p-2 mb-2 bg-gray-900 rounded-xl md:mr-4">
       <div className="flex justify-between mb-4 border-b-2 ">
         <div className="">
-          <p className="text-2xl font-bold">{toolStatusItem.ToolSN}</p>
-          <p className="mb-4 text-gray-300">{toolStatusItem.ToolName}</p>
+          <div className="text-2xl font-bold">{toolStatusItem.ToolSN}</div>
+          <div className="mb-4 text-gray-300">{toolStatusItem.ToolName}</div>
         </div>
         <div className="flex items-start">
           <Image
@@ -26,7 +26,7 @@ const PieChart = ({ toolStatusItem }: PieChartProps) => {
             height={20}
             className="mx-2"
           />
-          <p>2/7</p>
+          <div>2/7</div>
         </div>
       </div>
       <div className="w-full md:flex">
@@ -45,16 +45,16 @@ const PieChart = ({ toolStatusItem }: PieChartProps) => {
         </div>
         <div className="flex justify-center md:block">
           <div className="flex items-center mx-2">
-            <p className="my-2 border-l-4 border-green-600 md:whitespace-nowrap">
+            <div className="my-2 border-l-4 border-green-600 md:whitespace-nowrap">
               累積加工長度：
-            </p>
-            <p>{toolStatusItem.ProcessLength}</p>
+            </div>
+            <div>{toolStatusItem.ProcessLength}</div>
           </div>
           <div className="flex items-center mx-2">
-            <p className="my-2 border-l-4 border-yellow-600 md:whitespace-nowrap">
+            <div className="my-2 border-l-4 border-yellow-600 md:whitespace-nowrap">
               累積加工時間：
-            </p>
-            <p>{toolStatusItem.ProcessTime}</p>
+            </div>
+            <div>{toolStatusItem.ProcessTime}</div>
           </div>
         </div>
       </div>

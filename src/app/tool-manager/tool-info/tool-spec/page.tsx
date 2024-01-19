@@ -221,58 +221,62 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col justify-center md:flex-row">
-      <div className="relative md:mx-2">
-        <Notice notice={notice} setNotice={setNotice} isError={isError} />
+    <div className="flex flex-col justify-center w-full max-w-6xl md:flex-row">
+      <Notice notice={notice} setNotice={setNotice} isError={isError} />
+
+      <div className="relative w-full bg-gray-900 rounded-md md:mx-2 h-fit">
         <ToolSpecIndex
           toolSpecList={toolSpecList}
           changeNewMode={changeNewMode}
           changeEditMode={changeEditMode}
           fetchGetToolInfoByID={fetchGetToolInfoByID}
         />
-        <PageController
-          totalRecords={totalRecords}
-          nextPage={nextPage}
-          exPage={exPage}
-          currentPage={currentPage}
-          totalPage={totalPage}
-        />
-        <div
-          className={`fixed  transition-all top-0 left-0 duration-300 bg-black/70 w-screen h-screen ease-in-out ${
-            newMode ? " translate-y-0" : " -translate-y-full"
-          }`}
-        >
-          <div className="mt-48">
-            <ToolSpecNew
-              toolTypeList={toolTypeList}
-              toolSpecInfo={toolSpecInfo}
-              setToolSpecInfo={setToolSpecInfo}
-              fetchNewToolSpecInfo={fetchNewToolSpecInfo}
-              changeNewMode={changeNewMode}
-              currentPage={newCurrentPage}
-              nextPage={newNextPage}
-              prevPage={newPrevPage}
-            />
-          </div>
+        <div className="my-2">
+          <PageController
+            totalRecords={totalRecords}
+            nextPage={nextPage}
+            exPage={exPage}
+            currentPage={currentPage}
+            totalPage={totalPage}
+          />
         </div>
-        <div
-          className={`fixed  transition-all top-0 left-0 duration-300 bg-black/70 w-screen h-screen ease-in-out ${
-            editMode ? " translate-y-0" : " -translate-y-full"
-          }`}
-        >
-          <div className="mt-48">
-            <ToolSpecEdit
-              toolTypeList={toolTypeList}
-              editToolSpec={editToolSpec}
-              setEditToolSpec={setEditToolSpec}
-              fetchEditToolInfo={fetchEditToolInfo}
-              fetchDisableToolSpecInfo={fetchDisableToolSpecInfo}
-              currentPage={newCurrentPage}
-              nextPage={newNextPage}
-              prevPage={newPrevPage}
-              changeMode={changeEditMode}
-            />
-          </div>
+      </div>
+
+      <div
+        className={`fixed  transition-all top-0 left-0 duration-300 bg-black/70 w-screen h-screen ease-in-out ${
+          newMode ? " translate-y-0" : " -translate-y-full"
+        }`}
+      >
+        <div className="mt-48">
+          <ToolSpecNew
+            toolTypeList={toolTypeList}
+            toolSpecInfo={toolSpecInfo}
+            setToolSpecInfo={setToolSpecInfo}
+            fetchNewToolSpecInfo={fetchNewToolSpecInfo}
+            changeNewMode={changeNewMode}
+            currentPage={newCurrentPage}
+            nextPage={newNextPage}
+            prevPage={newPrevPage}
+          />
+        </div>
+      </div>
+      <div
+        className={`fixed  transition-all top-0 left-0 duration-300 bg-black/70 w-screen h-screen ease-in-out ${
+          editMode ? " translate-y-0" : " -translate-y-full"
+        }`}
+      >
+        <div className="mt-48">
+          <ToolSpecEdit
+            toolTypeList={toolTypeList}
+            editToolSpec={editToolSpec}
+            setEditToolSpec={setEditToolSpec}
+            fetchEditToolInfo={fetchEditToolInfo}
+            fetchDisableToolSpecInfo={fetchDisableToolSpecInfo}
+            currentPage={newCurrentPage}
+            nextPage={newNextPage}
+            prevPage={newPrevPage}
+            changeMode={changeEditMode}
+          />
         </div>
       </div>
     </div>

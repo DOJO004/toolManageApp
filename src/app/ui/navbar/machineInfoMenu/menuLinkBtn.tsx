@@ -31,7 +31,7 @@ const MenuLinkBtn = ({ menuItem, setOpenMenu }: MenuItemProps) => {
               height={30}
               className="mr-2"
             />
-            <p className="hidden truncate md:block">{item.name}</p>
+            <div className="hidden truncate md:block">{item.name}</div>
           </Link>
         ))}
       </div>

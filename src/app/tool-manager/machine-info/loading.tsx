@@ -1,7 +1,9 @@
+import { MachineInfoSkeletons } from "@/app/ui/skeletons";
+
 export default function Loading() {
   return (
-    <div>
-      <p className="text-center">Loading...</p>
+    <div className="w-full  max-w-7xl">
+      <MachineInfoSkeletons />
     </div>
   );
 }
