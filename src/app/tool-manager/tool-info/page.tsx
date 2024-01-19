@@ -65,7 +65,7 @@ export default function Page() {
     console.log("666", toolStatusList);
   }, [toolStatusList]);
   return (
-    <div className="w-full h-full max-w-6xl ">
+    <div className="w-full h-full max-w-screen-2xl ">
       <div className="flex flex-col w-full md:flex-row">
         <PieChart toolStatusItem={toolStatusItem} />
         <ToolInfoLog toolStatusItem={toolStatusItem} />

@@ -46,7 +46,7 @@ export default function RepairAndScrapIndex({
   return (
     <div>
       <p className="text-center ">修整/報廢</p>
-      <div className="flex mx-auto my-4 cursor-pointer w-fit">
+      <div className="flex mx-auto my-4 cursor-pointer w-fit lg:text-xl">
         <button
           className={`mx-2  ${
             selectToolTypeClass === "ALL" ? "border-b-2" : ""

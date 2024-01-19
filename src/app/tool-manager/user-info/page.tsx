@@ -154,7 +154,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-col justify-center w-full md:flex-row">
-      <div className="w-full max-w-6xl bg-gray-900 rounded-md h-fit">
+      <div className="w-full bg-gray-900 rounded-md max-w-screen-2xl h-fit">
         <UserInfoIndex
           userInfoList={userInfoList}
           changeNewMode={changeNewMode}

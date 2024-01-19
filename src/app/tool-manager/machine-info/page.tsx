@@ -54,7 +54,7 @@ export default function Page() {
     fetchGetMachineInfoList();
   }, []);
   return (
-    <div className="w-full max-w-7xl">
+    <div className="w-full max-w-screen-2xl">
       <div className="md:flex">
         <Suspense fallback={<MachineInfoPieChartSkeletons />}>
           <MachineInfoPieChart machineInfoItem={machineInfoItem} />
