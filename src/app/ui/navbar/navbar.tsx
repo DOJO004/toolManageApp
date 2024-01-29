@@ -5,7 +5,6 @@ import Link from "next/link";
 import ToolStatusMenu from "./toolInfoMenu/menu";
 import MachineInfoMenu from "./machineInfoMenu/menu";
 import React, { useState } from "react";
-import ELabelInfoMenu from "./eLabelInfoMenu/menu";
 import UserInfoMenu from "./userInfoMenu/menu";
 import navbarItem from "./items";
 
@@ -102,9 +101,6 @@ const Navbar = () => {
         )}
         {clickItemName === "設備資訊" && openMenu && (
           <MachineInfoMenu setOpenMenu={setOpenMenu} />
-        )}
-        {clickItemName === "電子標籤資訊" && openMenu && (
-          <ELabelInfoMenu setOpenMenu={setOpenMenu} />
         )}
         {clickItemName === "使用者資訊" && openMenu && (
           <UserInfoMenu setOpenMenu={setOpenMenu} />
