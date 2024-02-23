@@ -10,18 +10,6 @@ body{
   @apply bg-gray-700
 }
 
-p{
-  @apply md:text-xl xl:text-2xl font-bold
-}
-
-table tr th{
-  @apply lg:text-xl
-}
-
-table tr td{
-  @apply lg:text-xl
-}
-
-button {
-  @apply lg:text-xl
+.input{
+  @apply w-full p-1 mx-2 text-black rounded-md
 }

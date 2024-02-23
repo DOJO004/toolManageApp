@@ -1,70 +1,139 @@
-import React, { FormEvent } from "react";
-import { useRouter } from "next/navigation";
-import { DeleteBtn } from "../../buttons";
+"use client";
 
-interface EditToolTypeItem {
-  ToolTypeID: string;
+import { confirmDisable } from "@/scripts/apis/base";
+import {
+  apiDisabledToolTypeInfo,
+  apiModifyToolTypeInfo,
+} from "@/scripts/apis/tool-info";
+import { useState } from "react";
+
+interface ToolTypeItem {
+  Id: string;
   Name: string;
 }
 
-interface ToolTypeEditProps {
-  editToolType: EditToolTypeItem;
-  setEditToolType: React.Dispatch<React.SetStateAction<EditToolTypeItem>>;
-  fetchEditToolType: (e: FormEvent) => void;
-  fetchDisableToolType: () => void;
-  changeEditMode: () => void;
+interface ToolTypeDataProps {
+  fetchGetToolTypeList: () => void;
+  toolTypeList: ToolTypeItem[];
 }
 
-const ToolTypeEdit = ({
-  editToolType,
-  setEditToolType,
-  fetchEditToolType,
-  fetchDisableToolType,
-  changeEditMode,
-}: ToolTypeEditProps) => {
-  const router = useRouter();
+const ToolTypeData = ({
+  fetchGetToolTypeList,
+  toolTypeList,
+}: ToolTypeDataProps) => {
+  const [editToolTypeInfo, setEditToolTypeInfo] = useState({
+    id: "",
+    name: "",
+  });
+  const [editToolTypeToggle, setEditToolTypeToggle] = useState(false);
+  const [editToolTypeIndex, setEditToolTypeIndex] = useState(-1);
+
+  const handleEditToolType = (
+    status: string,
+    index?: number,
+    id?: string,
+    name?: string
+  ) => {
+    if (status === "edit") {
+      setEditToolTypeIndex(index!);
+      setEditToolTypeToggle(true);
+      setEditToolTypeInfo({
+        id: id!,
+        name: name!,
+      });
+    } else if (status === "submit") {
+      fetchEditToolType();
+    } else if (status === "delete") {
+      fetch;
+    }
+  };
+
+  const fetchEditToolType = async () => {
+    const res = await apiModifyToolTypeInfo(
+      editToolTypeInfo.id,
+      editToolTypeInfo.name
+    );
+    if (res?.data?.Values.ReqInt === 0) {
+      fetchGetToolTypeList();
+      setEditToolTypeToggle(false);
+    } else {
+      console.log("edit tool type false...");
+    }
+  };
+
+  const fetchDisableToolType = async (id: string) => {
+    const confirm = confirmDisable();
+    if (confirm) {
+      await apiDisabledToolTypeInfo(id);
+      setEditToolTypeToggle(false);
+      fetchGetToolTypeList();
+    }
+  };
+
+  const handleEditToolTypeInput = (value: string) => {
+    setEditToolTypeInfo((prev) => ({
+      ...prev,
+      name: value,
+    }));
+  };
+
   return (
-    <div className="relative mb-2 md:mx-2">
-      <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border-2 rounded-xl"
-        onSubmit={(e) => fetchEditToolType(e)}
-      >
-        <p className="text-xl text-center">編輯刀具類型</p>
-        <label htmlFor="ToolTypeID">ID</label>
-        <input
-          id="ToolTypeID"
-          type="text"
-          className="block pl-2 mb-2 text-gray-300 rounded-md min-h-10 min-w-72"
-          placeholder="刀具ID"
-          value={editToolType.ToolTypeID}
-          readOnly
-        />
-        <label htmlFor="Name">名稱</label>
-        <input
-          id="Name"
-          type="text"
-          className="block pl-2 mb-2 text-black rounded-md min-h-10 min-w-72"
-          placeholder="刀具類型名稱"
-          value={editToolType.Name}
-          onChange={(e) =>
-            setEditToolType({ ...editToolType, Name: e.target.value })
-          }
-        />
-        <button className="p-2 bg-indigo-500 rounded-md hover:bg-indigo-600 ">
-          完成
-        </button>
-      </form>
-      <button
-        className="absolute text-xl top-2 right-4"
-        onClick={() => changeEditMode()}
-      >
-        X
-      </button>
-      <div className="absolute top-2 left-4">
-        <DeleteBtn deleteFunction={fetchDisableToolType} />
-      </div>
+    <div>
+      {toolTypeList?.map((item, index) =>
+        editToolTypeToggle && editToolTypeIndex === index ? (
+          <div key={item.Id} className="grid items-center grid-cols-3 gap-2">
+            <div>
+              <input
+                type="text"
+                value={editToolTypeInfo.id}
+                className="text-center input"
+                readOnly
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                value={editToolTypeInfo.name}
+                className="text-center input "
+                onChange={(e) => handleEditToolTypeInput(e.target.value)}
+              />
+            </div>
+            <div>
+              <button
+                className="mx-2"
+                onClick={() => handleEditToolType("submit")}
+              >
+                完成
+              </button>
+              <button
+                className="mx-2"
+                onClick={() => fetchDisableToolType(editToolTypeInfo.id)}
+              >
+                刪除
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div
+            key={item.Id}
+            className="grid items-center grid-cols-3 gap-2 even:bg-gray-700"
+          >
+            <div className="p-1 whitespace-nowrap">{item.Id}</div>
+            <div className="p-1 whitespace-nowrap">{item.Name}</div>
+            <div className="cursor-pointer whitespace-nowrap">
+              <button
+                onClick={() =>
+                  handleEditToolType("edit", index, item.Id, item.Name)
+                }
+              >
+                編輯
+              </button>
+            </div>
+          </div>
+        )
+      )}
     </div>
   );
 };
 
-export default ToolTypeEdit;
+export default ToolTypeData;

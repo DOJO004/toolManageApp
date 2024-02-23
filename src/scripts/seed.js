@@ -1,5 +1,4 @@
-import { apiAddToolTypeInfo, apiAddProductLineInfo, apiAddToolSpecInfo, apiAddMachineTypeInfo, apiAddMachineSpecInfo } from "@/scripts/api"
-
+import { apiAddToolTypeInfo } from "./apis/tool-info";
 // add tool type
 const addToolTypeItem = [
   {
@@ -24,8 +23,8 @@ const addToolTypeItem = [
   },
 ];
 
-export function PostAddToolTypeInfo() {
-  for (let i = 0; i <= addToolTypeItem.length; i++) {
+export function fakeAddToolTypeInfo() {
+  for (let i = 0; i < addToolTypeItem.length; i++) {
     apiAddToolTypeInfo(addToolTypeItem[i].ToolTypeID, addToolTypeItem[i].Name)
     console.log("add tool type info ", i);
   }
@@ -54,13 +53,6 @@ const addProductLine = [
     "ProductLineName": "生產線E"
   },
 ]
-
-export async function PostAddProductLineInfo() {
-  for (let i = 0; i <= addProductLine.length; i++) {
-    await apiAddProductLineInfo(addProductLine[i].ProductLineID, addProductLine[i].ProductLineName)
-    console.log("add product line info ", i);
-  }
-}
 
 // add tool spec 
 
@@ -157,13 +149,6 @@ const addToolSpecItems=[
   }
 ]
 
-export async function PostAddToolSpecInfo() {
-  for (let i = 0; i <= addToolSpecItems.length; i++) {
-    await apiAddToolSpecInfo(addToolSpecItems[i])
-    console.log("add tool spec info ", i);
-  }
-}
-
 // add machine type
 
 const addMachineTypeItem=[
@@ -188,13 +173,6 @@ const addMachineTypeItem=[
     "MachineTypeName": "MachineTypeName-005"
   },
 ]
-
-export async function PostAddMachineTypeInfo() {
-  for (let i = 0; i <= addMachineTypeItem.length; i++) {
-    await apiAddMachineTypeInfo(addMachineTypeItem[i].MachineTypeID, addMachineTypeItem[i].MachineTypeName)
-    console.log("add machine type info ", i);
-  }
-}
 
 // add machine spec 
 
@@ -300,10 +278,3 @@ const addMachineSpecItem=[
     ]
   },
 ]
-
-export async function PostAddMachineSpecInfo() {
-  for (let i = 0; i <= addMachineSpecItem.length; i++) {
-    await apiAddMachineSpecInfo(addMachineSpecItem[i])
-    console.log("add machine spec info ", i);
-  }
-}
