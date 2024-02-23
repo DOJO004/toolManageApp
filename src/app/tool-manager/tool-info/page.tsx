@@ -3,7 +3,7 @@ import PageController from "@/app/ui/pageController/pageController";
 import PieChart from "@/app/ui/toolInfo/piechart";
 import ToolInfoList from "@/app/ui/toolInfo/toolInfoList";
 import ToolInfoLog from "@/app/ui/toolInfo/toolInfoLog";
-import { apiGetToolStockStatusInfoList, apiGetToolInfo } from "@/scripts/api";
+import { apiGetToolStockStatusInfoList } from "@/scripts/api";
 import { useEffect, useState } from "react";
 
 export default function Page() {
@@ -55,6 +55,22 @@ export default function Page() {
     if (currentPage !== 1) {
       setCurrentPage((prev: number) => prev - 1);
     }
+  };
+
+  const handleSearchToolStatusList = (parameter: string) => {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    const newTimerId = setTimeout(async () => {
+      await fetchToolInfoList();
+      setToolStatusList((prev) =>
+        prev.filter((item) => {
+          return item.ToolSN.toLowerCase().includes(parameter.toLowerCase());
+        })
+      );
+    }, 500);
+
+    setTimerId(newTimerId);
   };
 
   useEffect(() => {

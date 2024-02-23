@@ -39,7 +39,7 @@ const ToolSpecIndex = ({
       <div className="mt-2 overflow-auto rounded-t-xl">
         <table className="w-full">
           <thead>
-            <tr className="bg-indigo-300">
+            <tr className="bg-indigo-500">
               <td className="p-1 text-black whitespace-nowrap">ID</td>
               <td className="p-1 text-black whitespace-nowrap">名稱</td>
               <td className="p-1 text-black whitespace-nowrap">Φ</td>

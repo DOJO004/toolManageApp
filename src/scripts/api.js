@@ -1,24 +1,12 @@
 import axios from "axios";
 const apiInstance = axios.create({
-baseURL:"http://10.45.34.77:8080",
+baseURL:"http://10.45.34.81:8082",
 timeout:5000,
 headers:{
     "accept": "application/json",
     "Content-Type": "application/json",
 }
 })
-
-// check retry count
-export const reTryAPI = (fetchFunction, retryCount, maxRetry = 3, delay = 5000)=>{
-    if (retryCount < maxRetry){
-        alert("API request failed... Reload in 5 seconds")
-        setTimeout(() => {
-            fetchFunction()
-        }, delay);
-    }else{
-        alert("Net work error...")
-    }
-}
 
 // get user info
 export const getUserToken = ()=>{

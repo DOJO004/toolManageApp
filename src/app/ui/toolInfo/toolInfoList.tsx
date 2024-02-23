@@ -36,12 +36,16 @@ const ToolInfoList = ({
         <table className="w-full">
           <thead>
             <tr className="bg-indigo-500 ">
-              <th className="p-1 whitespace-nowrap">刀具序號</th>
-              <th className="p-1 whitespace-nowrap">狀態/修整次數</th>
-              <th className="p-1 whitespace-nowrap">裝載狀態/設備</th>
-              <th className="p-1 whitespace-nowrap">累積加工長度</th>
-              <th className="p-1 whitespace-nowrap">累積加工時間</th>
-              <th className="p-1 whitespace-nowrap">累積加工時間</th>
+              <th className="p-1 text-black whitespace-nowrap">刀具序號</th>
+              <th className="p-1 text-black whitespace-nowrap">
+                狀態/修整次數
+              </th>
+              <th className="p-1 text-black whitespace-nowrap">
+                裝載狀態/設備
+              </th>
+              <th className="p-1 text-black whitespace-nowrap">累積加工長度</th>
+              <th className="p-1 text-black whitespace-nowrap">累積加工時間</th>
+              <th className="p-1 text-black whitespace-nowrap">累積加工時間</th>
             </tr>
           </thead>
           <tbody>

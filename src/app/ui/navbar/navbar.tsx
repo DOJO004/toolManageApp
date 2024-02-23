@@ -13,7 +13,6 @@ const Navbar = () => {
   const [clickItemName, setClickItemName] = useState("");
 
   const handleNavbarMenu = (name: string) => {
-    console.log("name", name);
     if (
       name === "dashboard" ||
       name === "領取刀具" ||

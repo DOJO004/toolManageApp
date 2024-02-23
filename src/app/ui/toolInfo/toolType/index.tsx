@@ -29,7 +29,7 @@ const ToolTypeIndex = ({
       <div className="overflow-auto shadow-md rounded-t-xl">
         <table className="w-full">
           <thead>
-            <tr className="bg-indigo-300 ">
+            <tr className="bg-indigo-500 ">
               <th className="p-1 text-black whitespace-nowrap">ID</th>
               <th className="p-1 text-black whitespace-nowrap">名稱</th>
               <th className="p-1 text-black whitespace-nowrap">編輯</th>
