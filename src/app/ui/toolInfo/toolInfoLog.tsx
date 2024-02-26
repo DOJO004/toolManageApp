@@ -18,10 +18,16 @@ const ToolInfoLog = ({ toolStatusItem }: ToolInfoLogProps) => {
         <table className="w-full text-center ">
           <thead>
             <tr className="bg-indigo-500">
-              <th className="p-1 text-xl whitespace-nowrap">設備序號</th>
-              <th className="p-1 text-xl whitespace-nowrap">動作</th>
-              <th className="p-1 text-xl whitespace-nowrap">刀庫號</th>
-              <th className="p-1 text-xl whitespace-nowrap">動作時間</th>
+              <th className="p-1 text-xl text-black whitespace-nowrap">
+                設備序號
+              </th>
+              <th className="p-1 text-xl text-black whitespace-nowrap">動作</th>
+              <th className="p-1 text-xl text-black whitespace-nowrap">
+                刀庫號
+              </th>
+              <th className="p-1 text-xl text-black whitespace-nowrap">
+                動作時間
+              </th>
             </tr>
           </thead>
           <tbody>

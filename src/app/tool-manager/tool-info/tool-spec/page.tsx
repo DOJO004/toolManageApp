@@ -1,282 +1,417 @@
 "use client";
-import Notice from "@/app/ui/notice";
-import PageController from "@/app/ui/pageController/pageController";
-import ToolSpecIndex from "@/app/ui/toolInfo/toolSpec";
-import ToolSpecEdit from "@/app/ui/toolInfo/toolSpec/edit";
+
 import ToolSpecNew from "@/app/ui/toolInfo/toolSpec/new";
+import { confirmDisable } from "@/scripts/apis/base";
+import { apiGetToolTypeInFoList } from "@/scripts/apis/tool-info";
 import {
+  apiDisableToolSpecInfo,
+  apiEditToolSpecInfo,
   apiGetToolSpecList,
-  apiGetToolTypeInFoList,
-  apiAddToolSpecInfo,
-  apiGetToolInfo,
-  apiModifyToolSpecInfo,
-  disabledToolInfo,
-  confirmDisable,
-} from "@/scripts/api";
-import { useEffect, useRef, useState } from "react";
+} from "@/scripts/apis/tool-spec";
+
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  // pageController
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(0);
-  const [totalRecords, setTotalRecords] = useState(0);
-
-  const nextPage = () => {
-    setCurrentPage((prev) => prev + 1);
-  };
-
-  const exPage = () => {
-    setCurrentPage((prev) => prev - 1);
-  };
-
-  // index
-  const [toolSpecList, setToolSpecList] = useState([]);
-  const [newMode, setNewMode] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [editModeIndex, setEditModeIndex] = useState(-1);
-  const [newCurrentPage, setNewCurrentPage] = useState(1);
-  const [notice, setNotice] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  const fetchToolSpecList = async () => {
-    const res = await apiGetToolSpecList();
-    console.log("tool spec list", res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      setTotalPage(res.data.Values.TotalPages);
-      setTotalRecords(res.data.Values.ToolsSpecList.length);
-      setToolSpecList(res.data.Values.ToolsSpecList);
-    } else {
-      console.log("get tool spec list false.");
-    }
-  };
-
-  const changeNewMode = () => {
-    setNewMode(!newMode);
-    setEditMode(false);
-    setNewCurrentPage(1);
-  };
-
-  const changeEditMode = (index?: number) => {
-    setEditModeIndex(index);
-    setNewCurrentPage(1);
-    if (index === editModeIndex) {
-      setEditMode(!editMode);
-    } else {
-      setEditMode(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    if (index === undefined) {
-      setEditMode(false);
-    }
-    setNewMode(false);
-  };
-
-  const newNextPage = () => {
-    setNewCurrentPage((prev) => prev + 1);
-  };
-
-  const newPrevPage = () => {
-    setNewCurrentPage((prev) => prev - 1);
-  };
-
-  const resetPage = () => {
-    setNewCurrentPage(1);
-  };
-
-  useEffect(() => {
-    fetchToolSpecList();
-  }, []);
-
-  // new
-  const [toolTypeList, setToolTypeList] = useState([]);
-  const [toolSpecInfo, setToolSpecInfo] = useState({
-    ToolSpecID: "",
-    Name: "",
-    ToolType: "",
-    Specification: {
-      BladeDiameter: "",
-      BladeHeight: "",
-      TotalLength: "",
-      HandleDiameter: "",
-    },
-    SafetyStock: "",
-    MaxLife: {
-      ProcessCnt: "",
-      ProcessTime: "",
-      ProcessLength: "",
-      RepairCnt: "",
-    },
-  });
-
-  const fetchToolTypeList = async () => {
-    const res = await apiGetToolTypeInFoList();
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolTypeList(res.data.Values.ToolTypeList);
-    } else {
-      console.log("get tool type list false.");
-    }
-  };
-
-  const fetchNewToolSpecInfo = async () => {
-    const res = await apiAddToolSpecInfo(toolSpecInfo);
-    setNotice(true);
-    if (res?.data?.Values?.ReqInt === 0) {
-      fetchToolSpecList();
-      cleanFormData();
-      resetPage();
-      setIsError(false);
-    } else {
-      console.log(" add tool spec info false.");
-      setIsError(true);
-      resetPage();
-    }
-  };
-
-  const cleanFormData = () => {
-    setToolSpecInfo({
-      ToolSpecID: "",
+  const [toolSpecList, setToolSpecList] = useState([
+    {
+      ToolSpecId: "",
       Name: "",
-      ToolType: "",
-      Specification: {
-        BladeDiameter: "",
-        BladeHeight: "",
-        TotalLength: "",
-        HandleDiameter: "",
+      ToolTypeData: {
+        Id: "",
+        Name: "",
       },
-      SafetyStock: "",
+      SafetyStock: 1,
+      SpecData: {
+        BladeDiameter: 1,
+        BladeHeight: 1,
+        TotalLength: 1,
+        HandleDiameter: 1,
+      },
       MaxLife: {
-        ProcessCnt: "",
-        ProcessTime: "",
-        ProcessLength: "",
-        RepairCnt: "",
+        ProcessCnt: 1,
+        ProcessTime: 1,
+        ProcessLength: 1,
+        RepairCnt: 1,
       },
-    });
-  };
-
-  useEffect(() => {
-    fetchToolTypeList();
-  }, []);
-
-  // edit
-  const [editToolSpec, setEditToolSpec] = useState({
-    ToolSpecID: "",
+    },
+  ]);
+  const [editToolSpecInfo, setEditToolSpecInfo] = useState({
+    ToolSpecId: "",
     Name: "",
-    ToolType: "",
-    Specification: {
-      BladeDiameter: "",
-      BladeHeight: "",
-      TotalLength: "",
-      HandleDiameter: "",
-    },
-    SafetyStock: "",
-    MaxLife: {
-      ProcessCnt: "",
-      ProcessTime: "",
-      ProcessLength: "",
-      RepairCnt: "",
-    },
+    ToolTypeId: "",
+    SafetyStock: 0,
+    BladeDiameter: 0,
+    BladeHeight: 0,
+    TotalLength: 0,
+    HandleDiameter: 0,
+    ProcessCnt: 0,
+    ProcessTime: 0,
+    ProcessLength: 0,
+    RepairCnt: 0,
   });
 
-  const fetchGetToolInfoByID = async (id: string) => {
-    const res = await apiGetToolInfo(id);
-    console.log(res);
+  const [toolTypeList, setToolTypeList] = useState([]);
 
-    if (res?.data?.Values?.ReqInt === 0) {
-      setEditToolSpec(res.data.Values.ToolSpecData);
-    } else {
-      console.log("get tool info by id false.");
+  const [addToolSpecToggle, setAddToolSpecToggle] = useState(false);
+  const [editToolSpecToggle, setEditToolSpecToggle] = useState(false);
+  const [editToolSpecIndex, setEditToolSpecIndex] = useState(-1);
+
+  const fetchGetToolSpecList = async () => {
+    const res = await apiGetToolSpecList();
+    const reqInt = res?.data?.Values?.ReqInt;
+
+    if (reqInt === 0) {
+      setToolSpecList(res.data.Values.ToolSpecList);
     }
   };
 
-  const fetchEditToolInfo = async () => {
-    const res = await apiModifyToolSpecInfo(editToolSpec);
-    console.log(res);
-    setNotice(true);
-    if (res?.data?.Values?.ReqInt === 0) {
-      setEditMode(false);
-      fetchToolSpecList();
-      setNewCurrentPage(1);
-      setIsError(false);
-    } else {
-      console.log("edit tool spec info false.");
-      resetPage();
-      setIsError(true);
+  const fetchGetToolTypeList = async () => {
+    const res = await apiGetToolTypeInFoList();
+    const reqInt = res?.data?.Values?.ReqInt;
+
+    if (reqInt === 0) {
+      setToolTypeList(res.data.Values.ToolTypeMenus);
     }
   };
 
-  const fetchDisableToolSpecInfo = async () => {
+  const fetchEditToolSpecInfo = async () => {
+    const res = await apiEditToolSpecInfo(editToolSpecInfo);
+    const reqInt = res?.data?.Values?.ReqInt;
+    if (reqInt === 0) {
+      fetchGetToolSpecList();
+      setEditToolSpecToggle(false);
+    }
+  };
+
+  const fetchDisabledToolSpecInfo = async (id: string) => {
     const confirm = confirmDisable();
     if (confirm) {
-      const res = await disabledToolInfo(editToolSpec.ToolSpecID);
-      console.log("delete", res);
+      const res = await apiDisableToolSpecInfo(id);
+      const reqInt = res?.data?.Values?.ReqInt;
 
-      if (res?.data?.Values?.ReqInt === 0) {
-        fetchToolSpecList();
-        setEditMode(false);
-      } else {
-        console.log("disable tool spec info false.");
+      if (reqInt === 0) {
+        setEditToolSpecToggle(false);
+        await fetchGetToolSpecList();
       }
     }
   };
+  const handleEditToolSpecInfo = (name: string, value: string | number) => {
+    setEditToolSpecInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleEditToolSpecToggle = (
+    index: number,
+    state: boolean,
+    item?: {
+      ToolSpecId: string;
+      Name: string;
+      ToolTypeData: {
+        Id: string;
+      };
+      SafetyStock: number;
+      SpecData: {
+        BladeDiameter: number;
+        BladeHeight: number;
+        TotalLength: number;
+        HandleDiameter: number;
+      };
+      MaxLife: {
+        ProcessCnt: number;
+        ProcessTime: number;
+        ProcessLength: number;
+        RepairCnt: number;
+      };
+    }
+  ) => {
+    setEditToolSpecIndex(index);
+    setEditToolSpecToggle(state);
+
+    if (item) {
+      setEditToolSpecInfo({
+        ToolSpecId: item.ToolSpecId,
+        Name: item.Name,
+        ToolTypeId: item.ToolTypeData.Id,
+        SafetyStock: item.SafetyStock,
+        BladeDiameter: item.SpecData.BladeDiameter,
+        BladeHeight: item.SpecData.BladeHeight,
+        TotalLength: item.SpecData.TotalLength,
+        HandleDiameter: item.SpecData.HandleDiameter,
+        ProcessCnt: item.MaxLife.ProcessCnt,
+        ProcessTime: item.MaxLife.ProcessTime,
+        ProcessLength: item.MaxLife.ProcessLength,
+        RepairCnt: item.MaxLife.RepairCnt,
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchGetToolSpecList();
+    fetchGetToolTypeList();
+  }, []);
 
   return (
-    <div className="flex flex-col justify-center w-full max-w-screen-2xl md:flex-row">
-      <Notice notice={notice} setNotice={setNotice} isError={isError} />
-
-      <div className="relative w-full bg-gray-900 rounded-md md:mx-2 h-fit">
-        <ToolSpecIndex
-          toolSpecList={toolSpecList}
-          changeNewMode={changeNewMode}
-          changeEditMode={changeEditMode}
-          fetchGetToolInfoByID={fetchGetToolInfoByID}
-        />
-        <div className="my-2">
-          <PageController
-            totalRecords={totalRecords}
-            nextPage={nextPage}
-            exPage={exPage}
-            currentPage={currentPage}
-            totalPage={totalPage}
-          />
-        </div>
+    <div className="w-full p-2 mx-2 bg-gray-900 rounded-md">
+      <div className="grid items-center grid-cols-3 mb-4 border-b-2">
+        <p className="col-start-2 col-end-2 mx-auto text-2xl ">刀具規格</p>
+        <button
+          className="p-1 my-2 border rounded-md w-fit hover:bg-gray-300"
+          onClick={() => setAddToolSpecToggle(!addToolSpecToggle)}
+        >
+          新增
+        </button>
       </div>
 
-      <div
-        className={`fixed  transition-all top-0 left-0 duration-300 bg-black/70 w-screen h-screen ease-in-out ${
-          newMode ? " translate-y-0" : " -translate-y-full"
-        }`}
-      >
-        <div className="mt-48">
-          <ToolSpecNew
-            toolTypeList={toolTypeList}
-            toolSpecInfo={toolSpecInfo}
-            setToolSpecInfo={setToolSpecInfo}
-            fetchNewToolSpecInfo={fetchNewToolSpecInfo}
-            changeNewMode={changeNewMode}
-            currentPage={newCurrentPage}
-            nextPage={newNextPage}
-            prevPage={newPrevPage}
-          />
+      <div className="w-full">
+        <div className={`${addToolSpecToggle ? " block" : "hidden"}`}>
+          <ToolSpecNew fetchGetToolSpecList={fetchGetToolSpecList} />
         </div>
-      </div>
-      <div
-        className={`fixed  transition-all top-0 left-0 duration-300 bg-black/70 w-screen h-screen ease-in-out ${
-          editMode ? " translate-y-0" : " -translate-y-full"
-        }`}
-      >
-        <div className="mt-48">
-          <ToolSpecEdit
-            toolTypeList={toolTypeList}
-            editToolSpec={editToolSpec}
-            setEditToolSpec={setEditToolSpec}
-            fetchEditToolInfo={fetchEditToolInfo}
-            fetchDisableToolSpecInfo={fetchDisableToolSpecInfo}
-            currentPage={newCurrentPage}
-            nextPage={newNextPage}
-            prevPage={newPrevPage}
-            changeMode={changeEditMode}
-          />
+
+        <div className="overflow-auto rounded-t-md ">
+          <table>
+            <thead>
+              <tr className="bg-indigo-500">
+                <th className="p-1 text-black whitespace-nowrap ">Id</th>
+                <th className="p-1 text-black whitespace-nowrap ">Name</th>
+                <th className="p-1 text-black whitespace-nowrap ">ToolType</th>
+                <th className="p-1 text-black whitespace-nowrap ">
+                  Safety Stock
+                </th>
+                <th className="p-1 text-black whitespace-nowrap ">
+                  Blade Diameter
+                </th>
+                <th className="p-1 text-black whitespace-nowrap ">
+                  Blade Height
+                </th>
+                <th className="p-1 text-black whitespace-nowrap ">
+                  Total Length
+                </th>
+                <th className="p-1 text-black whitespace-nowrap ">
+                  HandleDiameter
+                </th>
+                <th className="p-1 text-black whitespace-nowrap ">
+                  Process Cnt
+                </th>
+                <th className="p-1 text-black whitespace-nowrap ">
+                  Process Time
+                </th>
+                <th className="p-1 text-black whitespace-nowrap ">
+                  Process Length
+                </th>
+                <th className="p-1 text-black whitespace-nowrap ">
+                  Repair Cnt
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {toolSpecList.map((item, index) =>
+                editToolSpecToggle && editToolSpecIndex === index ? (
+                  <tr key={item.ToolSpecId} className="even:bg-gray-700">
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.ToolSpecId}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <input
+                        type="text"
+                        value={editToolSpecInfo.Name}
+                        className="text-center text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo("Name", e.target.value)
+                        }
+                      />
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <select
+                        value={editToolSpecInfo.ToolTypeId}
+                        className="text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo("ToolTypeId", e.target.value)
+                        }
+                      >
+                        <option value="">請選擇</option>
+                        {toolTypeList.map((item) => (
+                          <option
+                            key={item.Id}
+                            value={item.Id}
+                            className="text-black "
+                          >
+                            {item.Name}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <input
+                        type="number"
+                        value={editToolSpecInfo.SafetyStock}
+                        className="text-center text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo("SafetyStock", e.target.value)
+                        }
+                      />
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <input
+                        type="number"
+                        value={editToolSpecInfo.BladeDiameter}
+                        className="text-center text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo(
+                            "BladeDiameter",
+                            e.target.value
+                          )
+                        }
+                      />
+                    </td>
+                    <td className="p-1 text-center white space-nowrap">
+                      <input
+                        type="number"
+                        value={editToolSpecInfo.BladeHeight}
+                        className="text-center text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo("BladeHeight", e.target.value)
+                        }
+                      />
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <input
+                        type="number"
+                        value={editToolSpecInfo.TotalLength}
+                        className="text-center text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo("TotalLength", e.target.value)
+                        }
+                      />
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <input
+                        type="number"
+                        value={editToolSpecInfo.HandleDiameter}
+                        className="text-center text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo(
+                            "HandleDiameter",
+                            e.target.value
+                          )
+                        }
+                      />
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <input
+                        type="number"
+                        value={editToolSpecInfo.ProcessCnt}
+                        className="text-center text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo("ProcessCnt", e.target.value)
+                        }
+                      />
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <input
+                        type="number"
+                        value={editToolSpecInfo.ProcessTime}
+                        className="text-center text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo("ProcessTime", e.target.value)
+                        }
+                      />
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <input
+                        type="number"
+                        value={editToolSpecInfo.ProcessLength}
+                        className="text-center text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo(
+                            "ProcessLength",
+                            e.target.value
+                          )
+                        }
+                      />
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <input
+                        type="number"
+                        value={editToolSpecInfo.RepairCnt}
+                        className="text-center text-black"
+                        onChange={(e) =>
+                          handleEditToolSpecInfo("RepairCnt", e.target.value)
+                        }
+                      />
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <button
+                        className="mx-2"
+                        onClick={() => fetchEditToolSpecInfo()}
+                      >
+                        完成
+                      </button>
+                      <button
+                        className="mx-2"
+                        onClick={() =>
+                          fetchDisabledToolSpecInfo(item.ToolSpecId)
+                        }
+                      >
+                        刪除
+                      </button>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr key={item.ToolSpecId} className="even:bg-gray-700">
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.ToolSpecId}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.Name}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.ToolTypeData.Name}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.SafetyStock}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.SpecData.BladeDiameter}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.SpecData.BladeHeight}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.SpecData.TotalLength}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.SpecData.HandleDiameter}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.MaxLife.ProcessCnt}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.MaxLife.ProcessTime}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.MaxLife.ProcessLength}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      {item.MaxLife.RepairCnt}
+                    </td>
+                    <td className="p-1 text-center whitespace-nowrap">
+                      <button
+                        className="mx-2"
+                        onClick={() =>
+                          handleEditToolSpecToggle(index, true, item)
+                        }
+                      >
+                        編輯
+                      </button>
+                    </td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

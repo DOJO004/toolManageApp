@@ -30,7 +30,7 @@ const ToolStockIndex = ({
       <div className="mt-2 overflow-auto rounded-t-xl">
         <table className="w-full">
           <thead>
-            <tr className="bg-indigo-300 ">
+            <tr className="bg-indigo-500 ">
               <th className="p-1 text-black whitespace-nowrap">刀具規格ID</th>
               <th className="p-1 text-black whitespace-nowrap">總數</th>
               <th className="p-1 text-black whitespace-nowrap">庫存安全線</th>

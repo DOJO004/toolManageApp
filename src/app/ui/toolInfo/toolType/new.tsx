@@ -1,61 +1,81 @@
-import React, { FormEvent } from "react";
-import { ToggleBtn } from "../../buttons";
+"use client";
+
+import { apiAddToolTypeInfo } from "@/scripts/apis/tool-info";
+import { FormEvent, useState } from "react";
 
 interface ToolTypeNewProps {
-  toolTypeID: string;
-  setToolTypeID: React.Dispatch<React.SetStateAction<string>>;
-  toolTypeName: string;
-  setToolTypeName: React.Dispatch<React.SetStateAction<string>>;
-  fetchNewToolType: (e: FormEvent) => void;
-  changeNewMode: () => void;
-  toggleBtn: boolean;
-  setToggleBtn: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchGetToolTypeList: () => void;
+  addToolTypeToggle: boolean;
 }
 
 const ToolTypeNew = ({
-  toolTypeID,
-  setToolTypeID,
-  toolTypeName,
-  setToolTypeName,
-  fetchNewToolType,
-  changeNewMode,
-  toggleBtn,
-  setToggleBtn,
+  fetchGetToolTypeList,
+  addToolTypeToggle,
 }: ToolTypeNewProps) => {
+  const [newToolTypeInfo, setNewToolTypeInfo] = useState({
+    id: "",
+    name: "",
+  });
+
+  const fetchAddToolType = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiAddToolTypeInfo(
+      newToolTypeInfo.id,
+      newToolTypeInfo.name
+    );
+
+    const reqInt = res?.data?.Values?.ReqInt;
+
+    if (res?.status === 200 && reqInt === 0) {
+      console.log("add tool type success!");
+      setNewToolTypeInfo({
+        id: "",
+        name: "",
+      });
+      fetchGetToolTypeList();
+    } else {
+      console.log("add tool type false...", res);
+    }
+  };
+
+  const handleNewToolTypeInput = (inputName: string, value: string) => {
+    if (inputName === "Id") {
+      setNewToolTypeInfo((prev) => ({
+        ...prev,
+        id: value,
+      }));
+    } else if (inputName === "Name") {
+      setNewToolTypeInfo((prev) => ({
+        ...prev,
+        name: value,
+      }));
+    }
+  };
+
   return (
-    <div className="relative md:mx-2">
-      <div className="absolute top-3 left-3">
-        <ToggleBtn toggleBtn={toggleBtn} setToggleBtn={setToggleBtn} />
-      </div>
+    <div className={`${addToolTypeToggle === true ? "block" : "hidden"}`}>
       <form
-        className="flex flex-col justify-center p-4 mb-2 bg-gray-900 border-2 w-fit rounded-xl"
-        onSubmit={(e) => fetchNewToolType(e)}
+        className="grid items-center grid-cols-3 gap-2 my-4 justify-items-center"
+        onSubmit={(e) => fetchAddToolType(e)}
       >
-        <p className="text-xl text-center">新增刀具類型</p>
         <input
           type="text"
-          className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-          placeholder="刀具ID"
-          value={toolTypeID}
-          onChange={(e) => setToolTypeID(e.target.value)}
+          className="input"
+          placeholder="刀具類型 ID"
+          value={newToolTypeInfo.id}
+          onChange={(e) => handleNewToolTypeInput("Id", e.target.value)}
         />
         <input
           type="text"
-          className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
+          className="input"
           placeholder="刀具類型名稱"
-          value={toolTypeName}
-          onChange={(e) => setToolTypeName(e.target.value)}
+          value={newToolTypeInfo.name}
+          onChange={(e) => handleNewToolTypeInput("Name", e.target.value)}
         />
-        <button className="p-2 mt-4 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
-          新增
+        <button className="p-1 my-2 border rounded-md hover:bg-gray-300">
+          送出
         </button>
       </form>
-      <button
-        className="absolute text-xl top-2 right-4"
-        onClick={() => changeNewMode()}
-      >
-        X
-      </button>
     </div>
   );
 };
