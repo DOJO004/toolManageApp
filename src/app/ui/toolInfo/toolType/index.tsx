@@ -17,7 +17,7 @@ interface ToolTypeDataProps {
   toolTypeList: ToolTypeItem[];
 }
 
-const ToolTypeData = ({
+const ToolTypeIndex = ({
   fetchGetToolTypeList,
   toolTypeList,
 }: ToolTypeDataProps) => {
@@ -96,6 +96,7 @@ const ToolTypeData = ({
                 value={editToolTypeInfo.name}
                 className="text-center input "
                 onChange={(e) => handleEditToolTypeInput(e.target.value)}
+                autoFocus
               />
             </div>
             <div>
@@ -136,4 +137,4 @@ const ToolTypeData = ({
   );
 };
 
-export default ToolTypeData;
+export default ToolTypeIndex;

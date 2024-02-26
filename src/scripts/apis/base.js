@@ -240,27 +240,6 @@ export const apiAddToolStock = async (toolSpecID, qty) => {
         return error
     }
 }
-  
-// getToolSpecList
-export const apiGetToolSpecList = async ()=>{
-    const body = {
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-            "Tag2Tool_R",
-            "Tag2Tool_W"
-        ],
-        "RecordsPerPage": 99
-    }
-    try{
-        const res =  await apiInstance.post("tool_info/GetToolInfoList",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
 
 // getToolInfoByID
 export const apiGetToolInfo = async(id)=>{
@@ -277,81 +256,6 @@ export const apiGetToolInfo = async(id)=>{
     }
 }
 
-// addToolSpecInfo
-export const apiAddToolSpecInfo = async (toolSpecInfo)=>{
-    const body = {
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-            "Tag2Tool_R",
-            "Tag2Tool_W"
-        ],
-        "ToolsData": {
-            "ToolSpecID": toolSpecInfo.ToolSpecID,
-            "Name": toolSpecInfo.Name,
-            "ToolType": toolSpecInfo.ToolType,
-            "Specification": {
-                "BladeDiameter": toolSpecInfo.Specification.BladeDiameter,
-                "BladeHeight": toolSpecInfo.Specification.BladeHeight,
-                "TotalLength": toolSpecInfo.Specification.TotalLength,
-                "HandleDiameter": toolSpecInfo.Specification.HandleDiameter
-            },
-            "SafetyStock": toolSpecInfo.SafetyStock,
-            "MaxLife": {
-                "ProcessCnt": toolSpecInfo.MaxLife.ProcessCnt,
-                "ProcessTime": toolSpecInfo.MaxLife.ProcessTime,
-                "ProcessLength": toolSpecInfo.MaxLife.ProcessLength,
-                "RepairCnt": toolSpecInfo.MaxLife.RepairCnt
-            }
-        }
-    }
-    try{
-        const res =  await apiInstance.post("tool_info/AddToolInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
-
-// modifyToolSpecInfo
-export const apiModifyToolSpecInfo = async (toolInfo)=>{
-    const body = {
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-            "Tag2Tool_R",
-            "Tag2Tool_W"
-        ],
-        "ModifyDatas": {
-            "ToolSpecID": toolInfo.ToolSpecID,
-            "Name": toolInfo.Name,
-            "ToolType": toolInfo.ToolType.split("/")[0],
-            "Specification": {
-              "BladeDiameter": toolInfo.Specification.BladeDiameter,
-              "BladeHeight": toolInfo.Specification.BladeHeight,
-              "TotalLength": toolInfo.Specification.TotalLength,
-              "HandleDiameter": toolInfo.Specification.HandleDiameter
-            },
-            "SafetyStock": toolInfo.SafetyStock,
-            "MaxLife": {
-              "ProcessCnt": toolInfo.MaxLife.ProcessCnt,
-              "ProcessTime": toolInfo.MaxLife.ProcessTime,
-              "ProcessLength": toolInfo.MaxLife.ProcessLength,
-              "RepairCnt": toolInfo.MaxLife.RepairCnt
-            }
-          }
-    }
-    try{
-        const res =  await apiInstance.post("tool_info/ModifyToolInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
 
 // scrapToolStockInfo
 export const scrapToolStockInfo = async (toolSN)=>{
@@ -411,30 +315,6 @@ export const restoreToolStockInfo = async (toolSN)=>{
       console.log(body);
     try{
         const res = await apiInstance.post("tool_info/RestorageToolStockInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
-
-
-
-// disabledToolInfo
-export const disabledToolInfo = async (id)=>{
-    const body={
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-          "Tag2Tool_R",
-          "Tag2Tool_W"
-        ],
-        "ToolSpecID": id
-      }
-      console.log("delete body",body);
-    try{
-        const res = await apiInstance.post("tool_info/DisabledToolinfo",body)
         return res
     }
     catch(error){

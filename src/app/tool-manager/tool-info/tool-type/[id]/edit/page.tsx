@@ -1,5 +1,5 @@
 "use client";
-import ToolTypeEdit from "@/app/ui/toolInfo/toolType/edit";
+import ToolTypeEdit from "@/app/ui/toolInfo/toolType";
 import {
   apiGetToolTypeInFoList,
   apiModifyToolTypeInfo,
@@ -7,7 +7,7 @@ import {
   disabledToolTypeInfo,
 } from "@/scripts/api";
 import { useRouter } from "next/navigation";
-import { useState, FormEvent, useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [toolTypeID, setToolTypeID] = useState("");

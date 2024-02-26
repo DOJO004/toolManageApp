@@ -11,5 +11,5 @@ body{
 }
 
 .input{
-  @apply w-full p-1 mx-2 text-black rounded-md
+  @apply w-full p-1 text-black rounded-md
 }

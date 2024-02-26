@@ -1,5 +1,5 @@
 "use client";
-import ToolTypeData from "@/app/ui/toolInfo/toolType/edit";
+import ToolTypeIndex from "@/app/ui/toolInfo/toolType/index";
 import ToolTypeNew from "@/app/ui/toolInfo/toolType/new";
 import { apiGetToolTypeInFoList } from "@/scripts/apis/tool-info";
 import { AxiosResponse } from "axios";
@@ -52,7 +52,7 @@ export default function Page() {
             addToolTypeToggle={addToolTypeToggle}
             fetchGetToolTypeList={fetchGetToolTypeList}
           />
-          <ToolTypeData
+          <ToolTypeIndex
             toolTypeList={toolTypeList}
             fetchGetToolTypeList={fetchGetToolTypeList}
           />
