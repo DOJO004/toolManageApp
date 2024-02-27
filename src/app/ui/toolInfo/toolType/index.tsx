@@ -5,7 +5,7 @@ import {
   apiDisabledToolTypeInfo,
   apiModifyToolTypeInfo,
 } from "@/scripts/apis/tool-info";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface ToolTypeItem {
   Id: string;
@@ -78,10 +78,10 @@ const ToolTypeIndex = ({
   };
 
   return (
-    <div>
+    <div className="grid items-center grid-cols-3 gap-2">
       {toolTypeList?.map((item, index) =>
         editToolTypeToggle && editToolTypeIndex === index ? (
-          <div key={item.Id} className="grid items-center grid-cols-3 gap-2">
+          <React.Fragment key={item.Id}>
             <div>
               <input
                 type="text"
@@ -113,7 +113,7 @@ const ToolTypeIndex = ({
                 刪除
               </button>
             </div>
-          </div>
+          </React.Fragment>
         ) : (
           <div
             key={item.Id}

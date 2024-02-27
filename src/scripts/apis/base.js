@@ -8,6 +8,16 @@ headers:{
 }
 })
 
+export const apiInstance2 = axios.create({
+baseURL:"http://10.45.34.81:8083",
+timeout:5000,
+headers:{
+    "accept": "application/json",
+    "Content-Type": "application/json",
+}
+})
+
+
 // get user info
 export const getUserToken = ()=>{
     const cookies = document.cookie.split(";")
@@ -161,86 +171,6 @@ export const apiGetUserAccountInfoByAccountID = async(accountID)=>{
     return res
 }
 
-
-
-
-
-
-
-
-
-// getToolStock
-export const apiGetToolStockList = async () => {
-    const body = {
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-            "Tag2Tool_R",
-            "Tag2Tool_W"
-        ],
-        "RecordsPerPage": 999,
-        "PageNo": 1,
-    }
-    try {
-        const res = await apiInstance.post("tool_info/GetToolStockInfoList",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
-
-// getToolStockStatusInfoList
-export const apiGetToolStockStatusInfoList = async (perPage = 20, page = 1) => {
-    const body = {
-        "LifeStatus": 0,
-        "RecordsPerPage": perPage,
-        "PageNo": page,
-        "UserToken": "smcW2T4x",
-        "LoginTime": "2023-08-23 13:31:32",
-        "NeedPermissions": [
-          "Tag2Tool_R",
-          "Tag2Tool_W"
-        ]
-      }
-      console.log(body);
-    try {
-        const res = await apiInstance.post("tool_info/GetToolStockStatusInfoList",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
-
-// addToolStock
-export const apiAddToolStock = async (toolSpecID, qty) => {
-    const body = {
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-            "Tag2Tool_R",
-            "Tag2Tool_W"
-        ],
-        "ToolStockInfos": [
-            {
-                "ToolSpecID": toolSpecID,
-                "Qty": qty
-            }
-        ]
-    }
-    try{
-        const res = await apiInstance.post("tool_info/AddToolStockInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
-
 // getToolInfoByID
 export const apiGetToolInfo = async(id)=>{
     const body={
@@ -256,84 +186,6 @@ export const apiGetToolInfo = async(id)=>{
     }
 }
 
-
-// scrapToolStockInfo
-export const scrapToolStockInfo = async (toolSN)=>{
-    const body={
-        "ToolSN": toolSN,
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-          "Tag2Tool_R",
-          "Tag2Tool_W"
-        ]
-      }
-      console.log(body);
-    try{
-        const res = await apiInstance.post("tool_info/ScrapToolStockInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
-
-// repairToolStockInfo
-export const repairToolStockInfo = async (toolSN)=>{
-    const body={
-        "ToolSN": toolSN,
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-          "Tag2Tool_R",
-          "Tag2Tool_W"
-        ]
-    }
-    
-    try{
-        const res = await apiInstance.post("tool_info/RepairToolStockInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
-
-// restoreToolStockInfo
-export const restoreToolStockInfo = async (toolSN)=>{
-    const body={
-        "ToolSN": toolSN,
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-          "Tag2Tool_R",
-          "Tag2Tool_W"
-        ]
-      }
-      console.log(body);
-    try{
-        const res = await apiInstance.post("tool_info/RestorageToolStockInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
-
-// disabledToolStockInfo
-export const disabledToolStockInfo = async (body)=>{
-    try{
-        const res = await apiInstance.post("tool_info/DisabledToolStockInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
 
 // getToolSpecOpLogList
 export const apiGetToolSpecOpLogList = async (toolSpecID)=>{
@@ -374,90 +226,7 @@ export const apiGetDashboardInfoList = async (body) =>{
 }
 
 
-// getProductLineInfoList
-export const apiGetProductLineInfoList = async ()=>{
-    try{
-        const res = await apiInstance.get("machine_info/GetProductLineInfoList")
-        return res
-    }
-    catch(error){
-        console.error(("Error",error));
-        return
-    }
-}
 
-// addProductLineInfoList
-export const apiAddProductLineInfo = async (id,name)=>{
-    const body={
-            "UserToken": getUserToken(),
-            "LoginTime": getLoginTime(),
-            "NeedPermissions": [
-              "Tag2Tool_R",
-              "Tag2Tool_W"
-            ],
-            "ProductLineInfos": [
-              {
-                "ProductLineID": id,
-                "ProductLineName": name
-              }
-            ]
-    }
-    try{
-        const res = await apiInstance.post("machine_info/AddProductLineInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
-
-// modifyProductLineInfo
-export const apiModifyProductLineInfo = async (id,name)=>{
-    const body={
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-          "Tag2Tool_R",
-          "Tag2Tool_W"
-        ],
-        "ModifyData": {
-          "ProductLineID": id,
-          "ProductLineName":name,
-        }
-      }
-    try {
-        const res = await apiInstance.post("machine_info/ModifyProductLineInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
-
-// disabledProductLineInfo
-export const disabledProductLineInfo = async (id) =>{
-    const body={
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-          "Tag2Tool_R",
-          "Tag2Tool_W"
-        ],
-        "DisabledProductLineIDs": [
-          id
-        ]
-      }
-    try{
-        const res = await apiInstance.post("machine_info/DisabledProductLineInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
 
 // disableMachineTypeInfo
 export const disableMachineTypeInfo = async (id) =>{

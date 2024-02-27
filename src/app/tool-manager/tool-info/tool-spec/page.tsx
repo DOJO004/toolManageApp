@@ -170,7 +170,7 @@ export default function Page() {
         </div>
 
         <div className="overflow-auto rounded-t-md ">
-          <table>
+          <table className="w-full ">
             <thead>
               <tr className="bg-indigo-500">
                 <th className="p-1 text-black whitespace-nowrap ">Id</th>
