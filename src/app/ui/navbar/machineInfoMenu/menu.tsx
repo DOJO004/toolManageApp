@@ -1,4 +1,6 @@
-import MenuLinkBtn from "./menuLinkBtn";
+import Image from "next/image";
+import Link from "next/link";
+
 interface MachineInfoMenuProps {
   setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -30,8 +32,24 @@ const MachineInfoMenu = ({ setOpenMenu }: MachineInfoMenuProps) => {
     },
   ];
   return (
-    <div className="flex justify-center md:flex-col">
-      <MenuLinkBtn menuItem={menuItem} setOpenMenu={setOpenMenu} />
+    <div className="grid items-center grid-cols-4 gap-2 md:block">
+      {menuItem.map((item, index) => (
+        <Link
+          key={index}
+          href={item.path}
+          className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
+          onClick={() => setOpenMenu(false)}
+        >
+          <Image
+            src={item.src}
+            alt={item.alt}
+            width={30}
+            height={30}
+            className="mx-auto md:mx-2"
+          />
+          <p className="mt-1 text-xs text-center">{item.name}</p>
+        </Link>
+      ))}
     </div>
   );
 };

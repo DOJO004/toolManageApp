@@ -6,23 +6,21 @@ interface UserInfoMenuProps {
 }
 const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
   return (
-    <div className="flex justify-center md:flex-col">
-      <div className="flex md:block">
-        <Link
-          href={"/tool-manager/user-info"}
-          className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
-          onClick={() => setOpenMenu(false)}
-        >
-          <Image
-            src="/overView.png"
-            alt="user info overview"
-            width={30}
-            height={30}
-            className="mr-2"
-          />
-          <div className="hidden truncate md:block">總覽</div>
-        </Link>
-      </div>
+    <div className="flex justify-center">
+      <Link
+        href={"/tool-manager/user-info"}
+        className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
+        onClick={() => setOpenMenu(false)}
+      >
+        <Image
+          src="/overView.png"
+          alt="user info overview"
+          width={30}
+          height={30}
+          className="mx-auto md:mx-2"
+        />
+        <p className="my-auto text-xs text-center ">總覽</p>
+      </Link>
     </div>
   );
 };
