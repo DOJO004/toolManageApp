@@ -1,189 +1,135 @@
 "use client";
-import MachineTypeIndex from "@/app/ui/machineInfo/machineType";
-import MachineTypeEdit from "@/app/ui/machineInfo/machineType/edit";
+
 import MachineTypeNew from "@/app/ui/machineInfo/machineType/new";
-import Notice from "@/app/ui/notice";
-import PageController from "@/app/ui/pageController/pageController";
+import { confirmDisable } from "@/scripts/apis/base";
 import {
-  apiGetMachineTypeInfoList,
-  apiAddMachineTypeInfo,
-  apiModifyMachineTypeInfo,
-  disableMachineTypeInfo,
-  confirmDisable,
-} from "@/scripts/api";
-import { useEffect, useState, FormEvent } from "react";
+  apiDisabledMachineType,
+  apiEditMachineType,
+  apiGetMachineTypeList,
+} from "@/scripts/apis/machine-type";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
-  // index
   const [machineTypeList, setMachineTypeList] = useState([]);
-  const [newMode, setNewMode] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [editModeIndex, setEditModeIndex] = useState(-1);
-  const [notice, setNotice] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(-1);
-  const [totalRecords, setTotalRecords] = useState(-1);
+  const [editMachineType, setEditMachineType] = useState({
+    Id: "",
+    Name: "",
+  });
 
-  const fetchGetMachineTypeList = async (index?: number) => {
-    const res = await apiGetMachineTypeInfoList();
-    console.log("get machine type list", res);
+  const [newMachineTypeToggle, setNewMachineTypeToggle] = useState(false);
+  const [editMachineTypeToggle, setEditMachineTypeToggle] = useState(false);
+  const [editMachineTypeIndex, setEditMachineTypeIndex] = useState(-1);
 
-    if (res?.data?.Values?.ReqInt === 0) {
-      if (index || index === 0) {
-        setMachineType(res.data.Values.MachineTypeList[index]);
-      } else {
-        setMachineTypeList(res.data.Values.MachineTypeList);
-        setTotalRecords(res.data.Values.TotalRecords);
+  const fetchGetMachineTypeList = async () => {
+    const res = await apiGetMachineTypeList();
+    const reqInt = res?.data?.Values?.ReqInt;
+
+    if (reqInt === 0) {
+      setMachineTypeList(res.data.Values.MachineTypeList);
+    }
+  };
+
+  const fetchEditMachineType = async () => {
+    const res = await apiEditMachineType(editMachineType);
+    const reqInt = res?.data?.Values?.ReqInt;
+    console.log(res);
+
+    if (reqInt === 0) {
+      fetchGetMachineTypeList();
+      setEditMachineTypeToggle(false);
+    }
+  };
+
+  const fetchDisabledMachineType = async () => {
+    const confirm = confirmDisable();
+    if (confirm) {
+      const res = await apiDisabledMachineType(editMachineType.Id);
+      const reqInt = res?.data?.Values?.ReqInt;
+      console.log(res);
+
+      if (reqInt === 0) {
+        fetchGetMachineTypeList();
+        setEditMachineTypeToggle(false);
       }
-    } else {
-      console.log("get machine type list false.");
     }
   };
 
-  const nextPage = () => {
-    setCurrentPage((prev) => prev + 1);
+  const handleEditInput = (value: string) => {
+    setEditMachineType((prev) => ({
+      ...prev,
+      Name: value,
+    }));
   };
 
-  const exPage = () => {
-    setCurrentPage((prev) => prev - 1);
-  };
-
-  const changeNewMode = () => {
-    setNewMode(!newMode);
-    setEditMode(false);
-    setNotice(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const changeEditMode = (index?: number) => {
-    setEditModeIndex(index);
-    if (index === editModeIndex) {
-      setEditMode(!editMode);
-    } else {
-      setEditMode(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    if (index === undefined) {
-      setEditMode(false);
-    }
-    setNewMode(false);
-    setNotice(false);
+  const handleEditToggle = (id: string, name: string, index: number) => {
+    setEditMachineTypeToggle(true);
+    setEditMachineTypeIndex(index);
+    setEditMachineType({
+      Id: id,
+      Name: name,
+    });
   };
 
   useEffect(() => {
     fetchGetMachineTypeList();
   }, []);
-
-  // new
-  const [machineTypeID, setMachineTypeID] = useState("");
-  const [machineTypeName, setMachineTypeName] = useState("");
-
-  const fetchAddMachineType = async (e: FormEvent) => {
-    e.preventDefault();
-    const res = await apiAddMachineTypeInfo(machineTypeID, machineTypeName);
-    setNotice(true);
-    if (res?.data?.Values?.ReqInt === 0) {
-      cleanNewMachineTypeInput();
-      fetchGetMachineTypeList();
-      setIsError(false);
-    } else {
-      console.log("add machine type false.");
-      setIsError(true);
-    }
-  };
-
-  const cleanNewMachineTypeInput = () => {
-    setMachineTypeID("");
-    setMachineTypeName("");
-  };
-
-  // edit
-  const [machineType, setMachineType] = useState({
-    MachineTypeID: "",
-    MachineTypeName: "",
-  });
-
-  const fetchEditMachineType = async (e: FormEvent) => {
-    e.preventDefault();
-    const res = await apiModifyMachineTypeInfo(
-      machineType.MachineTypeID,
-      machineType.MachineTypeName
-    );
-    setNotice(true);
-    if (res?.data?.Values?.ReqInt === 0) {
-      setEditMode(false);
-      fetchGetMachineTypeList();
-      setIsError(false);
-    } else {
-      setIsError(true);
-      console.log("edit machine type false.");
-    }
-  };
-
-  const fetchDeleteMachineType = async () => {
-    const confirm = confirmDisable();
-    if (confirm) {
-      const res = await disableMachineTypeInfo(machineType.MachineTypeID);
-      setNotice(true);
-      if (res?.data?.Values?.ReqInt === 0) {
-        fetchGetMachineTypeList();
-        setEditMode(false);
-        setIsError(false);
-      } else {
-        console.log("delete machine type false.");
-        setIsError(true);
-      }
-    }
-  };
   return (
-    <div className="relative flex flex-col justify-center w-full max-w-screen-2xl md:flex-row">
-      <Notice notice={notice} setNotice={setNotice} isError={isError} />
-      <div className="w-full bg-gray-900 rounded-md h-fit">
-        <MachineTypeIndex
-          machineTypeList={machineTypeList}
-          changeNewMode={changeNewMode}
-          changeEditMode={changeEditMode}
-          fetchGetMachineTypeList={fetchGetMachineTypeList}
-        />
-        <div className="my-4">
-          <PageController
-            totalPage={totalPage}
-            totalRecords={totalRecords}
-            nextPage={nextPage}
-            exPage={exPage}
-            currentPage={currentPage}
-          />
-        </div>
+    <div className="w-full p-2 mx-2 bg-gray-900 rounded-md ">
+      <div className="grid items-center justify-center grid-cols-3 gap-2 pb-2 border-b-2 ">
+        <p className="col-start-2 col-end-3 text-xl">machine type</p>
+        <button
+          className="p-1 border rounded-md hover:bg-gray-700 w-fit "
+          onClick={() => setNewMachineTypeToggle(!newMachineTypeToggle)}
+        >
+          新增
+        </button>
       </div>
-      <div
-        className={`fixed top-0 left-0 transition-all duration-300 bg-black/70 h-screen w-screen
-          ${newMode ? " translate-y-0" : "-translate-y-full"}`}
-      >
-        <div className="flex justify-center mt-48 ">
-          <MachineTypeNew
-            machineTypeID={machineTypeID}
-            setMachineTypeID={setMachineTypeID}
-            machineTypeName={machineTypeName}
-            setMachineTypeName={setMachineTypeName}
-            fetchAddMachineType={fetchAddMachineType}
-            changeNewMode={changeNewMode}
-          />
-        </div>
+      {newMachineTypeToggle && (
+        <MachineTypeNew fetchGetMachineTypeList={fetchGetMachineTypeList} />
+      )}
+
+      <div className="grid grid-cols-3 gap-2 my-4 text-center bg-indigo-500 rounded-t-md">
+        <p>ID</p>
+        <p>Name</p>
+        <p>編輯</p>
       </div>
-      <div
-        className={`fixed top-0 left-0 transition-all duration-300 bg-black/70 h-screen w-screen
-          ${editMode ? " translate-y-0" : "-translate-y-full"}`}
-      >
-        <div className="flex justify-center mt-48 ">
-          <MachineTypeEdit
-            machineType={machineType}
-            setMachineType={setMachineType}
-            fetchEditMachineType={fetchEditMachineType}
-            fetchDeleteMachineType={fetchDeleteMachineType}
-            changeEditMode={changeEditMode}
-          />
-        </div>
+      <div className="grid grid-cols-3 gap-2 my-4 text-center">
+        {machineTypeList.map((item, index) =>
+          editMachineTypeToggle && editMachineTypeIndex === index ? (
+            <React.Fragment key={item.Id}>
+              <div>{editMachineType.Id}</div>
+              <div>
+                <input
+                  type="text"
+                  className="text-center input"
+                  value={editMachineType.Name}
+                  onChange={(e) => handleEditInput(e.target.value)}
+                />
+              </div>
+              <div>
+                <button className="mx-1" onClick={() => fetchEditMachineType()}>
+                  完成
+                </button>
+                <button
+                  className="mx-1"
+                  onClick={() => fetchDisabledMachineType()}
+                >
+                  刪除
+                </button>
+              </div>
+            </React.Fragment>
+          ) : (
+            <React.Fragment key={item.Id}>
+              <div>{item.Id}</div>
+              <div>{item.Name}</div>
+              <button
+                onClick={() => handleEditToggle(item.Id, item.Name, index)}
+              >
+                編輯
+              </button>
+            </React.Fragment>
+          )
+        )}
       </div>
     </div>
   );

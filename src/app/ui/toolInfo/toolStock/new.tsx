@@ -1,98 +1,76 @@
-import React, { FormEvent } from "react";
-import Notice from "../../notice";
-import { BackBtn, CloseBtn } from "../../buttons";
-import { useRouter } from "next/navigation";
+"use client";
+
+import { apiAddToolStock } from "@/scripts/apis/tool-stock";
+import { FormEvent, useState } from "react";
 
 interface ToolSpecItem {
-  ToolSpecID: "22";
-  Name: "22";
-  ToolType: "DRILL/鑽頭 001";
-  Specification: {
-    BladeDiameter: number;
-    BladeHeight: number;
-    TotalLength: number;
-    HandleDiameter: number;
-  };
-  SafetyStock: number;
-  MaxLife: {
-    ProcessCnt: number;
-    ProcessTime: number;
-    ProcessLength: number;
-    RepairCnt: number;
-  };
+  ToolSpecId: string;
+  Name: string;
 }
-
 interface ToolStockNewProps {
   toolSpecList: ToolSpecItem[];
-  fetchAddToolStock: (e: FormEvent) => void;
-  notice: boolean;
-  isError: boolean;
-  setToolSpecID: React.Dispatch<React.SetStateAction<string>>;
-  addQty: string;
-  setAddQty: React.Dispatch<React.SetStateAction<string>>;
-  changeNewMode: () => void;
+  fetchGetToolStockList: () => void;
 }
 
-const ToolStockNew = ({
+export default function ToolStockNew({
   toolSpecList,
-  fetchAddToolStock,
-  notice,
-  isError,
-  setToolSpecID,
-  addQty,
-  setAddQty,
-  changeNewMode,
-}: ToolStockNewProps) => {
-  const router = useRouter();
+  fetchGetToolStockList,
+}: ToolStockNewProps) {
+  const [newToolStock, setNewToolStock] = useState({
+    ToolSpecId: "",
+    Qty: 0,
+  });
+
+  const fetchAddToolStock = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiAddToolStock(newToolStock);
+    const reqInt = res?.data?.Values?.ReqInt;
+
+    console.log(res);
+    if (reqInt === 0) {
+      fetchGetToolStockList();
+    }
+  };
+
+  const handleInput = (name: string, value: string | number) => {
+    setNewToolStock((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
   return (
-    <div className="relative mb-2 md:w-fit md:mx-2">
+    <div className="mb-4 border-b-2 ">
       <form
-        className="flex flex-col justify-center w-full p-4 bg-gray-900 border-2 rounded-md"
         onSubmit={(e) => fetchAddToolStock(e)}
+        className="grid items-center grid-cols-3 gap-2 my-4"
       >
-        <p className="text-xl text-center">新增刀具庫存</p>
-        <hr className="my-2" />
-        <div>
-          <label htmlFor="tool-spec-id">刀具規格ID</label>
-          <select
-            defaultValue={""}
-            className="block pl-2 mx-auto my-2 text-gray-500 rounded-md min-h-10 min-w-72"
-            onChange={(e) => setToolSpecID(e.target.value)}
-          >
-            <option value="" className="text-gray-500 " disabled>
-              請選擇刀具規格ID
+        <select
+          value={newToolStock.ToolSpecId}
+          className=" input"
+          onChange={(e) => handleInput("ToolSpecId", e.target.value)}
+        >
+          <option value="">請選擇</option>
+          {toolSpecList.map((item) => (
+            <option
+              key={item.ToolSpecId}
+              value={item.ToolSpecId}
+              className="text-black"
+            >
+              {item.Name}
             </option>
-            {toolSpecList?.map((item, index) => (
-              <option
-                key={item.ToolSpecID}
-                value={item.ToolSpecID}
-                className="text-gray-500 "
-              >
-                {item.Name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="count">數量</label>
-          <input
-            id="count"
-            type="number"
-            placeholder="數量"
-            className="block pl-2 mx-auto my-2 text-black rounded-md min-h-10 min-w-72"
-            value={addQty}
-            onChange={(e) => setAddQty(e.target.value)}
-          />
-        </div>
-        <button className="block pl-2 mx-auto my-2 bg-indigo-500 rounded-md min-h-10 min-w-72 hover:bg-indigo-600">
-          完成
+          ))}
+        </select>
+        <input
+          type="number"
+          placeholder="請輸入數量"
+          className="input"
+          value={newToolStock.Qty}
+          onChange={(e) => handleInput("Qty", e.target.value)}
+        />
+        <button className="w-full p-1 my-4 bg-indigo-500 rounded-md">
+          送出
         </button>
       </form>
-      <div className="absolute top-3 right-3">
-        <CloseBtn changeMode={changeNewMode} />
-      </div>
     </div>
   );
-};
-
-export default ToolStockNew;
+}

@@ -1,118 +1,81 @@
 "use client";
-import Notice from "@/app/ui/notice";
-import PageController from "@/app/ui/pageController/pageController";
-import ToolStockIndex from "@/app/ui/toolInfo/toolStock";
+
 import ToolStockNew from "@/app/ui/toolInfo/toolStock/new";
-import {
-  apiGetToolStockList,
-  apiGetToolSpecList,
-  apiAddToolStock,
-} from "@/scripts/api";
-import { useEffect, useState, FormEvent } from "react";
+import { apiGetToolSpecList } from "@/scripts/apis/tool-spec";
+import { apiGetToolStockList } from "@/scripts/apis/tool-stock";
+import React, { useEffect, useState } from "react";
+
 export default function Page() {
-  // index
-  const [toolStockList, setToolStockList] = useState([]);
-  const [newMode, setNewMode] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(-1);
-  const [totalRecords, setTotalRecords] = useState(-1);
-  const [notice, setNotice] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  const fetchGetToolStocks = async () => {
-    const res = await apiGetToolStockList();
-    console.log("get tool stock list", res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolStockList(res.data.Values.ToolStockList);
-      setTotalPage(res.data.Values.TotalPages);
-      setTotalRecords(res.data.Values.TotalRecords);
-    } else {
-      console.log("get tool stock list false.");
-    }
-  };
-
-  const nextPage = () => {
-    setCurrentPage((prev) => prev + 1);
-  };
-  const exPage = () => {
-    setCurrentPage((prev) => prev - 1);
-  };
-
-  const changeNewMode = () => {
-    setNewMode(!newMode);
-  };
-  useEffect(() => {
-    fetchGetToolStocks();
-  }, []);
-
-  // new
   const [toolSpecList, setToolSpecList] = useState([]);
-  const [toolSpecID, setToolSpecID] = useState("");
-  const [addQty, setAddQty] = useState("");
+  const [toolStockList, setToolStockList] = useState([]);
+  const [page, setPage] = useState(1);
 
-  const fetchGetToolSpecID = async () => {
+  const fetchGetToolStockList = async () => {
+    const res = await apiGetToolStockList(page);
+    const reqInt = res?.data?.Values?.ReqInt;
+
+    if (reqInt === 0) {
+      setToolStockList(res.data.Values.ToolStockList);
+    }
+    console.log(res);
+  };
+
+  const fetchGetToolSpecList = async () => {
     const res = await apiGetToolSpecList();
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolSpecList(res.data.Values.ToolsSpecList);
-    } else {
-      console.log("get tool spec list false.");
+    const reqInt = res?.data?.Values?.ReqInt;
+
+    if (reqInt === 0) {
+      setToolSpecList(res.data.Values.ToolSpecList);
     }
   };
 
-  const fetchAddToolStock = async (e: FormEvent) => {
-    e.preventDefault();
-    const res = await apiAddToolStock(toolSpecID, addQty);
-    setNotice(true);
-    if (res?.data?.Values?.ReqInt === 0) {
-      setNewMode(false);
-      setIsError(false);
-      fetchGetToolStocks();
-      setAddQty("");
-    } else {
-      console.log("add tool stock false.");
-      setIsError(true);
-    }
+  const handleChangePage = (value: number) => {
+    setPage((prev) => prev + value);
   };
 
   useEffect(() => {
-    fetchGetToolSpecID();
+    fetchGetToolSpecList();
+    fetchGetToolStockList();
   }, []);
+
+  useEffect(() => {
+    fetchGetToolStockList();
+  }, [page]);
+
   return (
-    <div className="relative flex flex-col justify-center w-full max-w-screen-2xl md:flex-row">
-      <Notice notice={notice} setNotice={setNotice} isError={isError} />
-      <div className="w-full bg-gray-900 rounded-md h-fit">
-        <ToolStockIndex
-          toolStockList={toolStockList}
-          changeNewMode={changeNewMode}
-        />
-        <div className="my-2">
-          <PageController
-            totalRecords={totalRecords}
-            totalPage={totalPage}
-            currentPage={currentPage}
-            nextPage={nextPage}
-            exPage={exPage}
-          />
-        </div>
+    <div className="w-full p-2 mx-2 bg-gray-900 rounded-md">
+      <div className="grid items-center grid-cols-3 mb-4 border-b-2">
+        <p className="col-start-2 col-end-2 text-2xl ">刀具庫存</p>
+        <button className="p-1 my-2 border rounded-md w-fit hover:bg-gray-300">
+          新增
+        </button>
       </div>
-      <div
-        className={` fixed left-0 top-0 bg-black/70 w-screen   h-screen transition-all duration-300 ease-in-out ${
-          newMode ? "translate-y-0" : "-translate-y-full"
-        }`}
-      >
-        <div className="flex justify-center mt-48">
-          <ToolStockNew
-            toolSpecList={toolSpecList}
-            fetchAddToolStock={fetchAddToolStock}
-            setToolSpecID={setToolSpecID}
-            addQty={addQty}
-            setAddQty={setAddQty}
-            notice={notice}
-            isError={isError}
-            changeNewMode={changeNewMode}
-          />
-        </div>
+      <ToolStockNew
+        toolSpecList={toolSpecList}
+        fetchGetToolStockList={fetchGetToolStockList}
+      />
+      <div className="grid items-center grid-cols-2 gap-2 text-center ">
+        <div>ToolSpecName</div>
+        <div>ToolSN</div>
+        {toolStockList.map((item) => (
+          <React.Fragment key={item.ToolSn}>
+            <div>{item.ToolSpecName}</div>
+            <div>{item.ToolSn}</div>
+          </React.Fragment>
+        ))}
+      </div>
+      <div className="flex items-center justify-center my-4">
+        <button
+          className={`mx-2 ${page === 1 ? "disabled" : ""}`}
+          onClick={() => handleChangePage(-1)}
+          disabled={page === 1}
+        >
+          上一頁
+        </button>
+        <p>{page} / 總頁數 </p>
+        <button className="mx-2" onClick={() => handleChangePage(1)}>
+          下一頁
+        </button>
       </div>
     </div>
   );
