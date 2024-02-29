@@ -230,74 +230,9 @@ export const apiGetDashboardInfoList = async (body) =>{
 
 
 
-// getMachineStatusInfoList
-export const apiGetMachineStatusInfoList = async(id)=>{
-    const body ={
-        "ProductLineID": "",
-        "MachineTypeID": "",
-        "Status": "",
-        "ActivationBasic": 0,
-        "RecordsPerPage": 10,
-        "PageNo": 1,
-        "UserToken": getUserToken(),
-        "LoginTime":  getLoginTime(),
-        "NeedPermissions": [
-          "Tag2Tool_R",
-          "Tag2Tool_W"
-        ]
-      }
-    try{
-        const res = await apiInstance.post("machine_info/GetMachineStatusInfoList", body)
-        return res
-    }
-    catch(error){
-        console.error("Error", error);
-        return error
-    }
-}
 
 
 
-// editMachineInfo
-export const apiEditMachineInfo = async (machineSpec) =>{
-    const body = {
-        "UserToken": getUserToken(),
-        "LoginTime": getLoginTime(),
-        "NeedPermissions": [
-          "Tag2Tool_R",
-          "Tag2Tool_W"
-        ],
-        "MachineID": machineSpec.MachineID,
-        "ModifyDatas": {
-          "ProductLineID": machineSpec.ProductLineID.split(":")[0],
-          "MachineTypeID": machineSpec.MachineTypeID.split(":")[0],
-          "MachineSN": machineSpec.MachineSN,
-          "MachineName": machineSpec.MachineName,
-          "MachineIP": machineSpec.MachineIP,
-          "ReaderID": machineSpec.ReaderID,
-          "SystemInfo": {
-            "Brand": machineSpec.SystemInfo.Brand.toString(),
-            "Series": machineSpec.SystemInfo.Series,
-            "MT":machineSpec.SystemInfo.MT
-          },
-          "AxisInfos": [
-            {
-              "AxisIndex": machineSpec.AxisInfos[0].AxisIndex,
-              "AxisName": machineSpec.AxisInfos[0].AxisName,
-              "IsSpindle": machineSpec.AxisInfos[0].IsSpindle
-            }
-          ]
-        }
-      }
-    try{
-        const res = await apiInstance.post("machine_info/ModifyMachineInfo",body)
-        return res
-    }
-    catch(error){
-        console.error("Error",error);
-        return error
-    }
-}
 
 // addElabelInfo
 export const apiAddElabelInfo = async(elabelInfo)=>{
