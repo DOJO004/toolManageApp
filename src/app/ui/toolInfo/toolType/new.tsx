@@ -1,63 +1,71 @@
-import React, { FormEvent } from "react";
-import { ToggleBtn } from "../../buttons";
+"use client";
 
-interface ToolTypeNewProps {
-  toolTypeID: string;
-  setToolTypeID: React.Dispatch<React.SetStateAction<string>>;
-  toolTypeName: string;
-  setToolTypeName: React.Dispatch<React.SetStateAction<string>>;
-  fetchNewToolType: (e: FormEvent) => void;
-  changeNewMode: () => void;
-  toggleBtn: boolean;
-  setToggleBtn: React.Dispatch<React.SetStateAction<boolean>>;
+import { apiNewToolType } from "@/scripts/toolType/toolTypeApi";
+import { FormEvent, useState } from "react";
+
+interface NewToolTypeProps {
+  getToolTypeList: () => void;
 }
+export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
+  const [newToolType, setNewToolType] = useState({
+    Id: "",
+    Name: "",
+  });
 
-const ToolTypeNew = ({
-  toolTypeID,
-  setToolTypeID,
-  toolTypeName,
-  setToolTypeName,
-  fetchNewToolType,
-  changeNewMode,
-  toggleBtn,
-  setToggleBtn,
-}: ToolTypeNewProps) => {
+  const doAddToolType = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiNewToolType(newToolType);
+    const inputToolTypeId = document.querySelector("#id");
+
+    if (res?.data?.Values?.ReqInt === 0) {
+      setNewToolType({
+        Id: "",
+        Name: "",
+      });
+      getToolTypeList();
+      if (inputToolTypeId) {
+        inputToolTypeId.focus();
+      }
+    }
+  };
   return (
-    <div className="relative md:mx-2">
-      <div className="absolute top-3 left-3">
-        <ToggleBtn toggleBtn={toggleBtn} setToggleBtn={setToggleBtn} />
-      </div>
-      <form
-        className="flex flex-col justify-center p-4 mb-2 bg-gray-900 border-2 w-fit rounded-xl"
-        onSubmit={(e) => fetchNewToolType(e)}
-      >
-        <p className="text-xl text-center">新增刀具類型</p>
-        <input
-          type="text"
-          className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-          placeholder="刀具ID"
-          value={toolTypeID}
-          onChange={(e) => setToolTypeID(e.target.value)}
-        />
-        <input
-          type="text"
-          className="block pl-2 my-2 text-black rounded-md min-h-10 min-w-72"
-          placeholder="刀具類型名稱"
-          value={toolTypeName}
-          onChange={(e) => setToolTypeName(e.target.value)}
-        />
-        <button className="p-2 mt-4 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
-          新增
-        </button>
+    <div className="p-4 mx-auto my-4 bg-gray-600 rounded-md w-fit">
+      <h3 id="scrollTarget" className="my-4">
+        新增刀具類型
+      </h3>
+      <form onSubmit={(e) => doAddToolType(e)}>
+        <div className="my-4 text-left">
+          <label htmlFor="id">刀具類型 ID</label>
+          <input
+            type="text"
+            id="id"
+            className="block p-2 mx-auto text-black border rounded-md w-60"
+            value={newToolType.Id}
+            onChange={(e) =>
+              setNewToolType({
+                ...newToolType,
+                Id: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div className="my-4 text-left">
+          <label htmlFor="name">刀具類型名稱</label>
+          <input
+            type="text"
+            id="name"
+            className="block p-2 mx-auto text-black border rounded-md w-60"
+            value={newToolType.Name}
+            onChange={(e) =>
+              setNewToolType({
+                ...newToolType,
+                Name: e.target.value,
+              })
+            }
+          />
+        </div>
+        <button className="w-full bg-gray-900">新增</button>
       </form>
-      <button
-        className="absolute text-xl top-2 right-4"
-        onClick={() => changeNewMode()}
-      >
-        X
-      </button>
     </div>
   );
-};
-
-export default ToolTypeNew;
+}

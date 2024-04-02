@@ -1,70 +1,73 @@
+"user client";
+
+import { apiDeleteToolType } from "@/scripts/toolType/toolTypeApi";
 import React, { FormEvent } from "react";
-import { useRouter } from "next/navigation";
-import { DeleteBtn } from "../../buttons";
 
-interface EditToolTypeItem {
-  ToolTypeID: string;
-  Name: string;
+interface EditToolTypeProps {
+  editToolType: {
+    Id: string;
+    Name: string;
+  };
+  setEditToolType: React.Dispatch<
+    React.SetStateAction<{
+      Id: string;
+      Name: string;
+    }>
+  >;
+  doEditToolType: (e: FormEvent) => void;
+  getToolTypeList: () => void;
+  setEditToolTypeMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface ToolTypeEditProps {
-  editToolType: EditToolTypeItem;
-  setEditToolType: React.Dispatch<React.SetStateAction<EditToolTypeItem>>;
-  fetchEditToolType: (e: FormEvent) => void;
-  fetchDisableToolType: () => void;
-  changeEditMode: () => void;
-}
-
-const ToolTypeEdit = ({
+export function EditToolType({
   editToolType,
   setEditToolType,
-  fetchEditToolType,
-  fetchDisableToolType,
-  changeEditMode,
-}: ToolTypeEditProps) => {
-  const router = useRouter();
+  doEditToolType,
+  getToolTypeList,
+  setEditToolTypeMode,
+}: EditToolTypeProps) {
+  const doDeleteToolType = async (id: string) => {
+    const confirm = window.confirm("確定刪除嗎?");
+    if (confirm) {
+      await apiDeleteToolType(id);
+      setEditToolTypeMode(false);
+      getToolTypeList();
+    }
+  };
   return (
-    <div className="relative mb-2 md:mx-2">
-      <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border-2 rounded-xl"
-        onSubmit={(e) => fetchEditToolType(e)}
-      >
-        <p className="text-xl text-center">編輯刀具類型</p>
-        <label htmlFor="ToolTypeID">ID</label>
-        <input
-          id="ToolTypeID"
-          type="text"
-          className="block pl-2 mb-2 text-gray-300 rounded-md min-h-10 min-w-72"
-          placeholder="刀具ID"
-          value={editToolType.ToolTypeID}
-          readOnly
-        />
-        <label htmlFor="Name">名稱</label>
-        <input
-          id="Name"
-          type="text"
-          className="block pl-2 mb-2 text-black rounded-md min-h-10 min-w-72"
-          placeholder="刀具類型名稱"
-          value={editToolType.Name}
-          onChange={(e) =>
-            setEditToolType({ ...editToolType, Name: e.target.value })
-          }
-        />
-        <button className="p-2 bg-indigo-500 rounded-md hover:bg-indigo-600 ">
-          完成
-        </button>
+    <div className="p-4 mx-auto my-4 bg-gray-600 rounded-md ">
+      <h3 className="my-4">編輯刀具類型</h3>
+
+      <form onSubmit={(e) => doEditToolType(e)}>
+        <div className="my-4 text-left">
+          <label htmlFor="id">刀具類型 ID</label>
+          <p className="block text-center text-white rounded-md">
+            {editToolType.Id}
+          </p>
+        </div>
+        <div className="my-4 text-left">
+          <label htmlFor="name">刀具類型名稱</label>
+          <input
+            type="text"
+            id="name"
+            className="block p-2 mx-auto text-black border rounded-md w-60"
+            value={editToolType.Name}
+            onChange={(e) =>
+              setEditToolType({
+                ...editToolType,
+                Name: e.target.value,
+              })
+            }
+          />
+        </div>
+        <button className="w-full bg-gray-900">編輯</button>
       </form>
       <button
-        className="absolute text-xl top-2 right-4"
-        onClick={() => changeEditMode()}
+        className="w-full my-2 bg-gray-700"
+        onClick={() => doDeleteToolType(editToolType.Id)}
       >
-        X
+        刪除
       </button>
-      <div className="absolute top-2 left-4">
-        <DeleteBtn deleteFunction={fetchDisableToolType} />
-      </div>
     </div>
   );
-};
-
-export default ToolTypeEdit;
+}
