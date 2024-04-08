@@ -1,3 +1,4 @@
+import { apiInstance } from "@/scripts/toolInfoApi";
 import { getLoginTime, getUserToken } from "../mainApi";
 
 export async function apiGetToolStockList() {
@@ -12,6 +13,12 @@ export async function apiGetToolStockList() {
 
 export async function apiNewToolStock(toolStock) {
   const body = {
+    ToolStockInfos: [
+      {
+        ToolSpecId: toolStock.ToolSpecId,
+        Qty: toolStock.Qty,
+      },
+    ],
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
