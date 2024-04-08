@@ -1,74 +1,85 @@
-import { useRouter } from "next/navigation";
-import React, { FormEvent } from "react";
-import { DeleteBtn, BackBtn, CloseBtn } from "../../buttons";
+"use client";
 
-interface MachineTypeItem {
-  MachineTypeID: string;
-  MachineTypeName: string;
+import {
+  apiDeleteMachineType,
+  apiEditMachineType,
+} from "@/scripts/Apis/machineType/machineType";
+import { FormEvent } from "react";
+
+interface editMachineTypeItem {
+  Id: string;
+  Name: string;
 }
 
-interface MachineTypeEditProps {
-  machineType: MachineTypeItem;
-  setMachineType: React.Dispatch<React.SetStateAction<MachineTypeItem>>;
-  fetchEditMachineType: (e: FormEvent) => void;
-  fetchDeleteMachineType: () => void;
-  changeEditMode: () => void;
+interface EditMachineTypeProps {
+  editMachineType: editMachineTypeItem;
+  setEditMachineType: React.Dispatch<React.SetStateAction<editMachineTypeItem>>;
+  setEditMachineTypeMode: React.Dispatch<React.SetStateAction<boolean>>;
+  getMachineTypeList: () => void;
 }
-const MachineTypeEdit = ({
-  machineType,
-  setMachineType,
-  fetchEditMachineType,
-  fetchDeleteMachineType,
-  changeEditMode,
-}: MachineTypeEditProps) => {
-  const router = useRouter();
+export default function EditMachineType({
+  editMachineType,
+  setEditMachineType,
+  setEditMachineTypeMode,
+  getMachineTypeList,
+}: EditMachineTypeProps) {
+  const handleEditMachineType = (key: string, value: string) => {
+    setEditMachineType((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const patchMachineType = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiEditMachineType(editMachineType);
+    if (res?.data?.Values?.ReqInt === 0) {
+      setEditMachineTypeMode(false);
+      getMachineTypeList();
+    }
+  };
+
+  const deleteMachineType = async () => {
+    const confirm = window.confirm("確定刪除嗎?");
+    if (confirm) {
+      const res = await apiDeleteMachineType(editMachineType);
+      console.log(res);
+
+      if (res?.data?.Values?.ReqInt === 0) {
+        setEditMachineTypeMode(false);
+        getMachineTypeList();
+      }
+    }
+  };
   return (
-    <div className="relative w-full m-4 mb-2 max-w-96">
-      <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border-2 rounded-xl "
-        onSubmit={(e) => fetchEditMachineType(e)}
-      >
-        <p className="text-xl text-center">編輯設備類型</p>
-        <hr className="my-4" />
-        <div>
-          <label htmlFor="MachineTypeID">ID</label>
+    <div className="my-4">
+      <h3>編輯設備類型</h3>
+      <form className="max-w-lg mx-auto" onSubmit={(e) => patchMachineType(e)}>
+        <div className="my-4">
+          <label htmlFor="Id" className="block text-left">
+            設備 ID
+          </label>
+          <p>{editMachineType.Id}</p>
+        </div>
+        <div className="my-4">
+          <label htmlFor="Name" className="block text-left">
+            設備名稱
+          </label>
           <input
-            id="MachineTypeID"
             type="text"
-            value={machineType.MachineTypeID}
-            placeholder="設備ID"
-            className="block w-full pl-2 mx-auto my-2 text-gray-300 rounded-md min-h-10"
-            readOnly
+            id="Name"
+            className="w-full p-1 text-black rounded-md "
+            value={editMachineType.Name}
+            onChange={(e) => handleEditMachineType("Name", e.target.value)}
           />
         </div>
-        <div>
-          <label htmlFor="MachineTypeName">名稱</label>
-          <input
-            id="MachineTypeName"
-            type="text"
-            value={machineType.MachineTypeName}
-            placeholder="設備名稱"
-            className="block w-full pl-2 mx-auto my-2 text-black rounded-md min-h-10"
-            onChange={(e) =>
-              setMachineType({
-                ...machineType,
-                MachineTypeName: e.target.value,
-              })
-            }
-          />
-        </div>
-        <button className="block w-full p-2 mx-auto mt-4 bg-blue-500 rounded-md">
-          完成
+        <button className="w-full my-4 bg-gray-500 rounded-md hover:bg-gray-400">
+          更新
         </button>
       </form>
-      <div className="absolute top-2 left-5">
-        <DeleteBtn deleteFunction={fetchDeleteMachineType} />
-      </div>
-      <div className="absolute top-3 right-5">
-        <CloseBtn changeMode={changeEditMode} />
-      </div>
+      <button
+        className="w-full max-w-lg mx-auto my-4 bg-gray-700 rounded-md hover:bg-gray-500"
+        onClick={() => deleteMachineType()}
+      >
+        刪除
+      </button>
     </div>
   );
-};
-
-export default MachineTypeEdit;
+}

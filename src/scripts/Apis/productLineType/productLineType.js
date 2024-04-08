@@ -1,8 +1,8 @@
-import { getLoginTime, getUserToken } from "../mainApi";
+import { apiInstance } from "@/scripts/machineInfoApi.js";
 
 export async function apiGetProductLineTypeList() {
   try {
-    const res = await apiInstance.get("tool_get/GetProductLineTypeInfoList");
+    const res = await apiInstance.get("/machine_get/GetProductLineInfoList");
     return res;
   } catch (error) {
     console.error("Error", error);
@@ -12,13 +12,16 @@ export async function apiGetProductLineTypeList() {
 
 export async function apiNewProductLineType(productLineType) {
   const body = {
-    UserToken: getUserToken(),
-    LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    ProductLineList: [
+      {
+        Id: productLineType.Id,
+        Name: productLineType.Name,
+      },
+    ],
   };
   try {
     const res = await apiInstance.post(
-      "user_operate/AddProductLineTypeInfo",
+      "/sync_operate/SyncAddProductLineInfo",
       body
     );
     return res;
@@ -30,13 +33,14 @@ export async function apiNewProductLineType(productLineType) {
 
 export async function apiEditProductLineType(productLineType) {
   const body = {
-    UserToken: getUserToken(),
-    LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    Id: productLineType.Id,
+    ModifyData: {
+      Name: productLineType.Name,
+    },
   };
   try {
     const res = await apiInstance.post(
-      "user_operate/UpdateProductLineTypeInfo",
+      "/sync_operate/SyncModifyProductLineInfo",
       body
     );
     return res;
@@ -48,14 +52,11 @@ export async function apiEditProductLineType(productLineType) {
 
 export async function apiDeleteProductLineType(productLineType) {
   const body = {
-    ProductLineTypeId: productLineType.Id,
-    UserToken: getUserToken(),
-    LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    DisabledProductLineIds: [productLineType.Id],
   };
   try {
     const res = await apiInstance.post(
-      "user_operate/DisabledProductLineTypeInfo",
+      "/sync_operate/SyncDisabledProductLineInfo",
       body
     );
     return res;
