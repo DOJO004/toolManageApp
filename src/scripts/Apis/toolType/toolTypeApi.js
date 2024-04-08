@@ -1,5 +1,5 @@
 import { apiInstance } from "@/scripts/toolInfoApi";
-import { getLoginTime, getUserToken } from "../api";
+import { getLoginTime, getUserToken } from "../mainApi";
 
 export async function apiGetToolTypeList() {
   try {

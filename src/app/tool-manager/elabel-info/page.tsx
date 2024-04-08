@@ -4,16 +4,7 @@ import ElabelInfoEdit from "@/app/ui/elabelInfo/edit";
 import ElabelInfoNew from "@/app/ui/elabelInfo/new";
 import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
-import {
-  apiAddElabelInfo,
-  apiEditElabelInfo,
-  apiGetAimsAPsConnectInfoList,
-  apiGetAimsArticlesList,
-  apiGetElabelInfoByLabelCode,
-  apiGetElabelSpecInfoList,
-  apiSyncELabelFromAims,
-} from "@/scripts/api";
-import { FormEvent, use, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
   // index

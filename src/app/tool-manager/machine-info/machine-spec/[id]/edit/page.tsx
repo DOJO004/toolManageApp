@@ -1,8 +1,8 @@
 "use client";
 import MachineSpecEdit from "@/app/ui/machineInfo/machineSpec/edit";
-import { apiEditMachineInfo, apiGetMachineInfoByID } from "@/scripts/api";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { apiEditMachineInfo, apiGetMachineInfoByID } from ;
 
 export default function Page() {
   const machineID = useParams().id;

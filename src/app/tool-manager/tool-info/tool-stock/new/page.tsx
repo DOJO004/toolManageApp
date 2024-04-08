@@ -1,6 +1,5 @@
 "use client";
 import ToolStockNew from "@/app/ui/toolInfo/toolStock/new";
-import { apiAddToolStock, apiGetToolSpecList } from "@/scripts/api";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {

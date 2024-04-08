@@ -2,7 +2,7 @@
 import {
   apiEditToolType,
   apiGetToolTypeList,
-} from "@/scripts/toolType/toolTypeApi";
+} from "@/scripts/Apis/toolType/toolTypeApi";
 import { FormEvent, useEffect, useState } from "react";
 import { EditToolType } from "./edit";
 import { NewToolType } from "./new";
@@ -106,9 +106,9 @@ export function ToolTypeIndex() {
           />
         </div>
         {/* index */}
-        <div className="w-full max-w-6xl mx-auto overflow-auto shadow-md rounded-t-xl">
-          <table className="w-full bg-gray-700 ">
-            <thead className="border-b-2">
+        <div className="w-full h-full max-w-6xl mx-auto overflow-auto bg-gray-700 shadow-md rounded-t-xl">
+          <table className="w-full h-full ">
+            <thead className="bg-indigo-500 border-b-2">
               <tr>
                 <th className="p-1 whitespace-nowrap">ID</th>
                 <th className="p-1 whitespace-nowrap">名稱</th>
@@ -119,7 +119,7 @@ export function ToolTypeIndex() {
                 toolTypeList.map((item) => (
                   <tr
                     key={item.Id}
-                    className=" hover:bg-gray-600"
+                    className="cursor-pointer  hover:bg-gray-600"
                     onClick={() => handleClickEditToolType(item)}
                   >
                     <td className="p-1">{item.Id}</td>

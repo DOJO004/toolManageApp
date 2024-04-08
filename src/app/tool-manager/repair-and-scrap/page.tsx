@@ -1,15 +1,8 @@
 "use client";
+import PageController from "@/app/ui/pageController/pageController";
 import RepairAndScrapIndex from "@/app/ui/repairAndScrap";
-import {
-  apiGetToolStockList,
-  confirmDisable,
-  repairToolStockInfo,
-  restoreToolStockInfo,
-  scrapToolStockInfo,
-} from "@/scripts/api";
 import { useEffect, useState } from "react";
 import { handleToolType } from "./action";
-import PageController from "@/app/ui/pageController/pageController";
 
 export default function Page() {
   const [toolStockList, setToolStockList] = useState([]);

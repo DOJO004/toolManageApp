@@ -3,7 +3,6 @@ import PageController from "@/app/ui/pageController/pageController";
 import PieChart from "@/app/ui/toolInfo/piechart";
 import ToolInfoList from "@/app/ui/toolInfo/toolInfoList";
 import ToolInfoLog from "@/app/ui/toolInfo/toolInfoLog";
-import { apiGetToolStockStatusInfoList, apiGetToolInfo } from "@/scripts/api";
 import { useEffect, useState } from "react";
 
 export default function Page() {

@@ -4,17 +4,7 @@ import MachineSpecEdit from "@/app/ui/machineInfo/machineSpec/edit";
 import MachineSpecNew from "@/app/ui/machineInfo/machineSpec/new";
 import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
-import {
-  apiGetMachineInfoList,
-  apiAddMachineSpecInfo,
-  apiGetProductLineInfoList,
-  apiGetMachineTypeInfoList,
-  apiGetMachineInfoByID,
-  apiEditMachineInfo,
-  disabledMachineInfo,
-  confirmDisable,
-} from "@/scripts/api";
-import { PostAddMachineSpecInfo } from "@/scripts/seed";
+
 import { useEffect, useState } from "react";
 
 export default function Page() {

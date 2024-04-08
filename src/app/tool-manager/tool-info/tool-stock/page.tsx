@@ -3,12 +3,8 @@ import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
 import ToolStockIndex from "@/app/ui/toolInfo/toolStock";
 import ToolStockNew from "@/app/ui/toolInfo/toolStock/new";
-import {
-  apiGetToolStockList,
-  apiGetToolSpecList,
-  apiAddToolStock,
-} from "@/scripts/api";
-import { useEffect, useState, FormEvent } from "react";
+
+import { FormEvent, useEffect, useState } from "react";
 export default function Page() {
   // index
   const [toolStockList, setToolStockList] = useState([]);

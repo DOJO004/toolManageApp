@@ -4,14 +4,8 @@ import MachineTypeEdit from "@/app/ui/machineInfo/machineType/edit";
 import MachineTypeNew from "@/app/ui/machineInfo/machineType/new";
 import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
-import {
-  apiGetMachineTypeInfoList,
-  apiAddMachineTypeInfo,
-  apiModifyMachineTypeInfo,
-  disableMachineTypeInfo,
-  confirmDisable,
-} from "@/scripts/api";
-import { useEffect, useState, FormEvent } from "react";
+
+import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
   // index

@@ -1,13 +1,8 @@
 "use client";
 import MachineSpecNew from "@/app/ui/machineInfo/machineSpec/new";
-import {
-  apiAddMachineSpecInfo,
-  apiGetMachineInfoList,
-  apiGetMachineTypeInfoList,
-  apiGetProductLineInfoList,
-} from "@/scripts/api";
+
 import { useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
   const [currentPage, setCurrentPage] = useState(1);

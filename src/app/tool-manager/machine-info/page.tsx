@@ -7,7 +7,6 @@ import {
   MachineInfoTableSkeletons,
   MachineLogInfoSkeletons,
 } from "@/app/ui/skeletons";
-import { apiGetMachineStatusInfoList } from "@/scripts/api";
 import { Suspense, useEffect, useState } from "react";
 
 export default function Page() {

@@ -3,15 +3,9 @@
 import ProductLineIndex from "@/app/ui/machineInfo/productLine";
 import ProductLineEdit from "@/app/ui/machineInfo/productLine/edit";
 import ProductLineNew from "@/app/ui/machineInfo/productLine/new";
-import {
-  apiGetProductLineInfoList,
-  apiAddProductLineInfo,
-  apiModifyProductLineInfo,
-  disabledProductLineInfo,
-} from "@/scripts/api";
-import { useEffect, useState, FormEvent } from "react";
 import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
   // index

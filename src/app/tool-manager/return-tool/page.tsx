@@ -2,12 +2,8 @@
 
 import Notice from "@/app/ui/notice";
 import PageController from "@/app/ui/pageController/pageController";
-import {
-  apiDisabledEToolCodeInfo,
-  apiGetELabelBindStatusInfoList,
-  confirmDisable,
-} from "@/scripts/api";
-import { use, useEffect, useState } from "react";
+
+import { useEffect, useState } from "react";
 
 interface ELToolBindStatusItem {
   LabelCode: string;

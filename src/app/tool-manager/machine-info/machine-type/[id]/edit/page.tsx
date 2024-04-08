@@ -1,11 +1,5 @@
 "use client";
 import MachineTypeEdit from "@/app/ui/machineInfo/machineType/edit";
-import {
-  apiGetMachineTypeInfoList,
-  apiModifyMachineTypeInfo,
-  confirmDisable,
-  disableMachineTypeInfo,
-} from "@/scripts/api";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 

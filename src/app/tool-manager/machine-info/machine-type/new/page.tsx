@@ -1,8 +1,8 @@
 "use client";
 import MachineTypeNew from "@/app/ui/machineInfo/machineType/new";
-import { apiAddMachineTypeInfo } from "@/scripts/api";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { apiAddMachineTypeInfo } from ;
 
 export default function Page() {
   const router = useRouter();

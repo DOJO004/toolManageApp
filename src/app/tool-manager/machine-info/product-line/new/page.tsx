@@ -1,6 +1,5 @@
 "use client";
 import ProductLineNew from "@/app/ui/machineInfo/productLine/new";
-import { apiAddProductLineInfo } from "@/scripts/api";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 

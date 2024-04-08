@@ -1,11 +1,6 @@
 "use client";
 import BindToolIndex from "@/app/ui/elabelInfo/bindTool/bindToolIndex";
 import Notice from "@/app/ui/notice";
-import {
-  apiBindToolToELabel,
-  apiGetElabelSpecInfoList,
-  apiGetToolStockStatusInfoList,
-} from "@/scripts/api";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
