@@ -1,135 +1,148 @@
-import React, { FormEvent } from "react";
-import { CloseBtn } from "../buttons";
-interface ElabelInfoItem {
-  LabelCode: string;
-  eLabelSN: string;
-  eLabelSpec: {
-    StationCode: string;
-    ArticleID: string;
-    ArticleName: string;
+"use client";
+
+import { apiNewELabel } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
+import { FormEvent, useState } from "react";
+
+interface NewELabelInfoProps {
+  getELabelList: () => void;
+}
+
+export default function NewELabelInfo({ getELabelList }: NewELabelInfoProps) {
+  const [newLabelInfo, setNewLabelInfo] = useState({
+    LabelBrandId: "",
+    LabelSn: "",
+    LabelCode: "",
+    NfcRecord: "",
+    StationCode: "",
+    ArticleID: "",
+    ArticleName: "",
+  });
+
+  const postNewLabelInfo = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiNewELabel(newLabelInfo);
+    console.log(res);
+    if (res?.data?.Values?.ReqInt === 0) {
+      getELabelList();
+      cleanNewLabelInfo();
+    }
   };
-}
 
-interface StationCodeItem {
-  APsCode: string;
-}
+  const cleanNewLabelInfo = () => {
+    setNewLabelInfo({
+      LabelBrandId: "",
+      LabelSn: "",
+      LabelCode: "",
+      NfcRecord: "",
+      StationCode: "",
+      ArticleID: "",
+      ArticleName: "",
+    });
+  };
 
-interface ELabelListItem {
-  LabelCode: string;
-  eLabelSN: string;
-  StationCode: string;
-  ArticleID: string;
-  ArticleName: string;
-  LastModify: string;
-}
-
-interface ElabelInfoNewProps {
-  selectArticleIDIndex: number;
-  eLabelList: ELabelListItem[];
-  stationCode: StationCodeItem[];
-  newElabelInfo: ElabelInfoItem;
-  setNewElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
-  changeNewMode: () => void;
-  fetchNewElabelInfo: (e: FormEvent) => void;
-}
-
-const ElabelInfoNew = ({
-  selectArticleIDIndex,
-  eLabelList,
-  stationCode,
-  newElabelInfo,
-  setNewElabelInfo,
-  changeNewMode,
-  fetchNewElabelInfo,
-}: ElabelInfoNewProps) => {
-  console.log("new aps code ", stationCode);
+  const handleNewLabelInfo = (key: string, value: string) => {
+    setNewLabelInfo((prev) => ({ ...prev, [key]: value }));
+  };
 
   return (
-    <div className="relative w-fit">
+    <div>
+      <h3>新增電子標籤</h3>
       <form
-        className="w-full p-2 mx-auto mb-2 text-center bg-gray-900 border-2 md:w-fit rounded-xl"
-        onSubmit={(e) => fetchNewElabelInfo(e)}
+        action=""
+        className="max-w-md p-2 mx-auto"
+        onSubmit={(e) => postNewLabelInfo(e)}
       >
-        <p className="text-xl text-center ">新增電子標籤</p>
-        <hr className="my-2" />
-        <label htmlFor="LabelCode">標籤號碼</label>
-        <input
-          id="LabelCode"
-          type="text"
-          value={newElabelInfo.LabelCode}
-          onChange={(e) =>
-            setNewElabelInfo({ ...newElabelInfo, LabelCode: e.target.value })
-          }
-          placeholder="標籤號碼"
-          className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-        />
-        <label htmlFor="eLabelSN">標籤SN</label>
-        <input
-          id="eLabelSN"
-          type="text"
-          value={newElabelInfo.eLabelSN}
-          onChange={(e) =>
-            setNewElabelInfo({ ...newElabelInfo, eLabelSN: e.target.value })
-          }
-          placeholder="標籤SN"
-          className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-        />
-        <label htmlFor="StationCode">站號</label>
-        <select
-          defaultValue=""
-          className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-        >
-          <option value="" className="text-black" disabled>
-            請選擇站號
-          </option>
-          {stationCode.map((item, index) => (
-            <option value={item.APsCode} key={index} className="text-black ">
-              {item.APsCode}
-            </option>
-          ))}
-        </select>
+        <div className="my-4">
+          <label htmlFor="LabelBrandID" className="block text-left">
+            LabelBrandID
+          </label>
+          <input
+            type="text"
+            id="LabelBrandID"
+            className="w-full p-2 text-black rounded-md "
+            value={newLabelInfo.LabelBrandId}
+            onChange={(e) => handleNewLabelInfo("LabelBrandId", e.target.value)}
+          />
+        </div>
+        <div className="my-4">
+          <label htmlFor="LabelSn" className="block text-left">
+            LabelSN
+          </label>
+          <input
+            type="text"
+            id="LabelSn"
+            className="w-full p-2 text-black rounded-md "
+            value={newLabelInfo.LabelSn}
+            onChange={(e) => handleNewLabelInfo("LabelSn", e.target.value)}
+          />
+        </div>
+        <div className="my-4">
+          <label htmlFor="LabelCode" className="block text-left">
+            LabelCode
+          </label>
+          <input
+            type="text"
+            id="LabelCode"
+            className="w-full p-2 text-black rounded-md "
+            value={newLabelInfo.LabelCode}
+            onChange={(e) => handleNewLabelInfo("LabelCode", e.target.value)}
+          />
+        </div>
+        <div className="my-4">
+          <label htmlFor="NfcRecord" className="block text-left">
+            NfcRecord
+          </label>
+          <input
+            type="text"
+            id="NfcRecord"
+            className="w-full p-2 text-black rounded-md "
+            value={newLabelInfo.NfcRecord}
+            onChange={(e) => handleNewLabelInfo("NfcRecord", e.target.value)}
+          />
+        </div>
 
-        <label htmlFor="ArticleID">ID</label>
-        <select
-          defaultValue=""
-          className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-        >
-          <option value="" className="text-gray-500" disabled>
-            請選擇 ArticleID
-          </option>
-          {eLabelList.map((item, index) => (
-            <option value={item.ArticleID} key={index} className="text-black ">
-              {item.ArticleID}
-            </option>
-          ))}
-        </select>
+        <div className="my-4">
+          <label htmlFor="StationCode" className="block text-left">
+            StationCode
+          </label>
+          <input
+            type="text"
+            id="StationCode"
+            className="w-full p-2 text-black rounded-md "
+            value={newLabelInfo.StationCode}
+            onChange={(e) => handleNewLabelInfo("StationCode", e.target.value)}
+          />
+        </div>
 
-        <label htmlFor="ArticleName">名稱</label>
-        <input
-          id="ArticleName"
-          type="text"
-          onChange={(e) =>
-            setNewElabelInfo({
-              ...newElabelInfo,
-              eLabelSpec: {
-                ...newElabelInfo.eLabelSpec,
-                ArticleName: e.target.value,
-              },
-            })
-          }
-          placeholder="名稱"
-          className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-          readOnly
-        />
-        <button className="p-2 my-2 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
-          完成
+        <div className="my-4">
+          <label htmlFor="ArticleID" className="block text-left">
+            ArticleID
+          </label>
+          <input
+            type="text"
+            id="ArticleID"
+            className="w-full p-2 text-black rounded-md "
+            value={newLabelInfo.ArticleID}
+            onChange={(e) => handleNewLabelInfo("ArticleID", e.target.value)}
+          />
+        </div>
+
+        <div className="my-4">
+          <label htmlFor="ArticleName" className="block text-left">
+            ArticleName
+          </label>
+          <input
+            type="text"
+            id="ArticleName"
+            className="w-full p-2 text-black rounded-md "
+            value={newLabelInfo.ArticleName}
+            onChange={(e) => handleNewLabelInfo("ArticleName", e.target.value)}
+          />
+        </div>
+        <button className="w-full p-2 bg-gray-600 rounded-md hover:bg-gray-500">
+          新增
         </button>
       </form>
-      <div className="absolute top-2 right-3 ">
-        <CloseBtn changeMode={changeNewMode} />
-      </div>
     </div>
   );
-};
-
-export default ElabelInfoNew;
+}
