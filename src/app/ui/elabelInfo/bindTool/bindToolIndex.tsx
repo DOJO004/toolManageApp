@@ -71,12 +71,12 @@ export default function BindToolIndex() {
   }, []);
 
   return (
-    <div>
+    <div className="h-full p-2 overflow-auto bg-gray-900 rounded-xl">
       <form
-        className="flex flex-col justify-center w-full max-w-4xl p-4 mx-auto mb-2 bg-gray-900 rounded-xl"
+        className="flex flex-col justify-center w-full max-w-4xl p-4 mx-auto my-4 bg-gray-700 rounded-md "
         onSubmit={(e) => postBindTool(e)}
       >
-        <p className="text-center ">領取刀具</p>
+        <h3 className="text-center ">領取刀具</h3>
         <div className="relative ">
           <label htmlFor="labelCode">標籤號碼</label>
           <input
@@ -131,12 +131,12 @@ export default function BindToolIndex() {
         </button>
       </form>
       {/* data area */}
-      <div className="flex gap-2 ">
-        <div className="w-full h-full p-2 text-center bg-gray-900 rounded-md">
+      <div className="flex gap-4 ">
+        <div className="w-full h-full p-2 text-center bg-gray-700 rounded-md">
           <h3 className="my-4">未綁定標籤</h3>
           <table className="w-full">
             <thead>
-              <tr>
+              <tr className="bg-indigo-500">
                 <th className="p-1 whitespace-nowrap">標籤號碼</th>
                 <th className="p-1 whitespace-nowrap">標籤SN</th>
               </tr>
@@ -155,11 +155,11 @@ export default function BindToolIndex() {
             </tbody>
           </table>
         </div>
-        <div className="w-full p-2 text-center bg-gray-900 rounded-md">
+        <div className="w-full p-2 text-center bg-gray-700 rounded-md">
           <h3 className="my-4">未綁定刀具</h3>
           <table className="w-full">
             <thead>
-              <tr>
+              <tr className="bg-indigo-500">
                 <th className="p-1 whitespace-nowrap">刀具SN</th>
               </tr>
             </thead>

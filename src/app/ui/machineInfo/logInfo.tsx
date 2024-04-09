@@ -1,51 +1,36 @@
-interface LoadingLogItem {
-  TooSN: string;
-  Action: string;
-  AtcNo: number;
-  LogTime: string;
+interface selectMachineInfoItem {
+  AtcLoadingList: [
+    {
+      AtcNo: number;
+      ToolSn: string;
+    },
+  ];
 }
-
-interface MahcineinfoItem {
-  LoadingLogList: LoadingLogItem[];
-}
-
 interface MachineLogInfoProps {
-  machineInfoItem: MahcineinfoItem;
+  selectMachineInfo: selectMachineInfoItem;
 }
 export default function MachineLogInfo({
-  machineInfoItem,
+  selectMachineInfo,
 }: MachineLogInfoProps) {
   return (
-    <div className="w-full p-2 my-2 ml-2 bg-gray-900 rounded-md">
-      <p className="text-xl">刀具裝卸載日誌</p>
+    <div className="w-full p-2 bg-gray-700 rounded-md">
+      <h3 className="text-center ">裝載刀具</h3>
       <hr className="w-full my-4" />
-      <div className="overflow-auto rounded-md ">
+      <div className="overflow-auto text-center rounded-md ">
         <table className="w-full ">
           <thead>
             <tr className="bg-indigo-500">
-              <th className="p-1 text-black whitespace-nowrap">刀具序號</th>
-              <th className="p-1 text-black whitespace-nowrap">動作</th>
-              <th className="p-1 text-black whitespace-nowrap">刀庫號</th>
-              <th className="p-1 text-black whitespace-nowrap">動作時間</th>
+              <th className="p-1 whitespace-nowrap">Atc No</th>
+              <th className="p-1 whitespace-nowrap">刀具序號</th>
             </tr>
           </thead>
           <tbody>
-            {machineInfoItem.LoadingLogList.length >= 1 ? (
-              machineInfoItem.LoadingLogList.map((item, index) => (
-                <tr className=" even:bg-gray-700" key={index}>
-                  <td className="p-1 whitespace-nowrap">{item.TooSN}</td>
-                  <td className="p-1 whitespace-nowrap">{item.Action}</td>
-                  <td className="p-1 whitespace-nowrap">{item.AtcNo}</td>
-                  <td className="p-1 whitespace-nowrap">{item.LogTime}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={4} className="text-xl text-center">
-                  no data...
-                </td>
+            {selectMachineInfo.AtcLoadingList.map((item) => (
+              <tr key={item.ToolSn}>
+                <td>{item.AtcNo}</td>
+                <td>{item.ToolSn}</td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>

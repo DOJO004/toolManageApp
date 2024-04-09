@@ -72,7 +72,7 @@ const ProductLineIndex = () => {
         />
       </div>
 
-      <div className="w-full mt-2 overflow-auto rounded-t-md">
+      <div className="w-full mt-2 overflow-auto bg-gray-700 rounded-t-md">
         <table className="w-full ">
           <thead>
             <tr className="bg-indigo-500 ">

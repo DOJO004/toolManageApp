@@ -16,7 +16,7 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
 
   const getToolSpecList = async () => {
     const res = await apiGetToolSpecList();
-    console.log(res);
+    console.log("tool spec list ", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
       setToolSpecList(res.data.Values.ToolSpecList);
@@ -58,7 +58,7 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
       >
         <div className="my-4">
           <label htmlFor="ToolSpecId" className="block text-left">
-            刀具規格 ID
+            刀具規格名稱
           </label>
           <select
             id="ToolSpecId"
@@ -75,7 +75,7 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
                 value={item.ToolSpecId}
                 className="text-black"
               >
-                {item.ToolSpecId}
+                {item.Name}
               </option>
             ))}
           </select>

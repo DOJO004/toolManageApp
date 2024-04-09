@@ -95,7 +95,7 @@ const MachineSpecIndex = () => {
           setEditMachineSpecMode={setEditMachineSpecMode}
         />
       </div>
-      <div className="mt-2 overflow-auto rounded-t-lg">
+      <div className="mt-2 overflow-auto bg-gray-700 rounded-t-lg">
         <table className="w-full ">
           <thead className="">
             <tr className="bg-indigo-500 ">

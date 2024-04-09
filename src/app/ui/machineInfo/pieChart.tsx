@@ -1,31 +1,67 @@
 import Image from "next/image";
-interface MachineInfoPieChartProps {
-  machineInfoItem: {
-    ProductLine: string;
-    MachineSN: string;
-    MachineName: string;
-    MachineStatus: string;
-    MachineIP: string;
-    TotalFeedRate: string;
-    AtcNo: string;
-    ToolSN: string;
+
+interface selectMachineInfoItem {
+  MachineId: string;
+  ProductLineData: {
+    Id: string;
+    Name: string;
   };
+  MacTypeData: {
+    Id: string;
+    Name: string;
+  };
+  SerialNumber: string;
+  MachineIP: string;
+  SystemData: {
+    Brand: string;
+    Series: string;
+    MT: string;
+  };
+  Status: string;
+  Activation: number;
+  CurrentParameter: {
+    CurrentGcd: number;
+    TotalFeedRate: number;
+    SpindleRPM: number;
+    SpindleLoading: number;
+    SpindleSpeed: number;
+    CurrentProgram: string;
+  };
+  AtcLoadingList: [
+    {
+      AtcNo: number;
+      ToolSn: string;
+    },
+    {
+      AtcNo: number;
+      ToolSn: string;
+    },
+  ];
+  LoadingLogList: [];
+  LastModify: string;
+}
+interface MachineInfoPieChartProps {
+  selectMachineInfo: selectMachineInfoItem;
 }
 export default function MachineInfoPieChart({
-  machineInfoItem,
+  selectMachineInfo,
 }: MachineInfoPieChartProps) {
   return (
-    <div className="w-full p-2 my-2 mr-2 bg-gray-900 rounded-md">
+    <div className="w-full p-2 bg-gray-700 rounded-md">
       <div>
         <div className="flex justify-between border-b-2">
           <div>
-            <div>{machineInfoItem.ProductLine.split(":")[1]}</div>
-            <div>{machineInfoItem.MachineSN}</div>
-            <div>{machineInfoItem.MachineName}</div>
+            <p className="text-gray-300">
+              {selectMachineInfo.ProductLineData.Name}
+            </p>
+            <h3>{selectMachineInfo.SerialNumber}</h3>
+            <p className="text-gray-300">
+              {selectMachineInfo.MacTypeData.Name}
+            </p>
           </div>
-          <div className="flex">
-            <div>wifi</div>
-            <div>{machineInfoItem.MachineIP}</div>
+          <div>
+            <p>wifi</p>
+            <p>{selectMachineInfo.MachineIP}</p>
           </div>
         </div>
         <div className="flex justify-between">
@@ -51,12 +87,10 @@ export default function MachineInfoPieChart({
             </div>
             <div>
               <div>tool change info</div>
-              <div>
-                {machineInfoItem.AtcNo}/{machineInfoItem.ToolSN}
-              </div>
+              <div>AtcNo / ToolSN</div>
             </div>
             <div className="p-2 bg-green-500 rounded-md w-fit">
-              {machineInfoItem.MachineStatus}
+              {selectMachineInfo.Status}
             </div>
           </div>
         </div>

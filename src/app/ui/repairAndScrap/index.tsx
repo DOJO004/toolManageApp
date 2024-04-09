@@ -1,152 +1,122 @@
-interface ToolLifeItem {
-  ToolSN: string;
-  LifeStatus: string;
-  LifePercentage: number;
-  LifeData: {
-    ProcessCnt: number;
-    ProcessTime: number;
-    ProcessLength: number;
-    RepairCnt: number;
+"use client";
+
+import {
+  apiRepairTool,
+  apiRestockTool,
+  apiScrapTool,
+} from "@/scripts/Apis/repairAndScrap/repairAndScrap";
+import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
+import { useEffect, useState } from "react";
+
+export default function RepairAndScrapIndex() {
+  const [toolStockList, setToolStockList] = useState([]);
+
+  const getToolStockList = async () => {
+    const res = await apiGetToolStockList();
+    console.log(res);
+    if (res?.data?.Values?.ReqInt === 0) {
+      setToolStockList(res.data.Values.ToolStockList);
+    }
   };
-}
 
-interface ToolStockListItem {
-  ToolSpecID: string;
-  ToolType: string;
-  SafetyStock: number;
-  TotalQty: number;
-  WarningCnt: number;
-  AlarmCnt: number;
-  NeedRepairCnt: number;
-  RepairCnt: number;
-  ToolLifeList: ToolLifeItem[];
-}
+  const postRepairTool = async (data: any) => {
+    const confirm = window.confirm(`確定要送修 ${data.ToolSn}嗎?`);
+    if (confirm) {
+      const res = await apiRepairTool(data);
+      console.log("repair tool ", res);
+      getToolStockList();
+    }
+  };
+  const postScrapTool = async (data: any) => {
+    const confirm = window.confirm(`確定要報廢 ${data.ToolSn}嗎?`);
+    if (confirm) {
+      const res = await apiScrapTool(data);
+      console.log("scrap tool", res);
+      getToolStockList();
+    }
+  };
 
-interface repairAndScrapProps {
-  toolStockList: ToolStockListItem[];
-  toolTypeClass: string[];
-  fetchRepairTool: (toolSN: string) => void;
-  fetchScrapTool: (toolSN: string) => void;
-  fetchRestoreTool: (toolSN: string) => void;
-  handleShowSelectToolType: (toolType: string) => void;
-  handleSelectToolTypeClass: (toolType: string) => void;
-  selectToolTypeClass: string;
-}
+  const postRestockTool = async (data: any) => {
+    const res = await apiRestockTool(data);
+    console.log("reStock", res);
+    getToolStockList();
+  };
 
-export default function RepairAndScrapIndex({
-  toolStockList,
-  toolTypeClass,
-  fetchRepairTool,
-  fetchScrapTool,
-  fetchRestoreTool,
-  handleShowSelectToolType,
-  handleSelectToolTypeClass,
-  selectToolTypeClass,
-}: repairAndScrapProps) {
+  useEffect(() => {
+    getToolStockList();
+  }, []);
   return (
-    <div>
-      <p className="text-center ">修整/報廢</p>
-      <div className="flex mx-auto my-4 cursor-pointer w-fit lg:text-xl">
-        <button
-          className={`mx-2  ${
-            selectToolTypeClass === "ALL" ? "border-b-2" : ""
-          }`}
-          onClick={() => {
-            handleShowSelectToolType("ALL"), handleSelectToolTypeClass("ALL");
-          }}
-        >
-          ALL
-        </button>
-        {toolTypeClass.map((item, index) => (
-          <button
-            key={index}
-            className={`mx-2  ${
-              selectToolTypeClass === item ? "border-b-2" : ""
-            }`}
-            onClick={() => {
-              handleShowSelectToolType(item), handleSelectToolTypeClass(item);
-            }}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
-      <div className="border-t-2 ">
-        {toolStockList.map(
-          (tool, index) =>
-            tool.ToolLifeList.length > 0 && (
-              <div key={index} className="p-2 my-2 border-b-2 rounded-md">
-                <div>
-                  ToolSpecID:
-                  <span className="text-xl font-bold ">{tool.ToolSpecID}</span>
-                </div>
-                <div>
-                  toolType:{" "}
-                  <span className="text-xl font-bold ">{tool.ToolType}</span>
-                </div>
-                <div className="my-2 overflow-auto rounded-t-md">
-                  <table className="w-full text-center shadow-md ">
-                    <thead>
-                      <tr className="bg-indigo-300 ">
-                        <th className="p-1 text-black whitespace-nowrap">
-                          刀具SN
-                        </th>
-                        <th className="p-1 text-black whitespace-nowrap">
-                          壽命百分比
-                        </th>
-                        <th className="p-1 text-black whitespace-nowrap">
-                          壽命狀態
-                        </th>
-                        <th className="p-1 text-black whitespace-nowrap">
-                          送修/重新入庫
-                        </th>
-                        <th className="p-1 text-black whitespace-nowrap">
-                          報廢
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {tool.ToolLifeList.map((lifeItem, lifeIndex) => (
-                        <tr key={lifeIndex} className=" even:bg-gray-600">
-                          <td className="p-1 whitespace-nowrap">
-                            {lifeItem.ToolSN}
-                          </td>
-                          <td className="p-1 whitespace-nowrap">
-                            {lifeItem.LifePercentage}
-                          </td>
-                          <td className="p-1 whitespace-nowrap">
-                            {lifeItem.LifeStatus}
-                          </td>
-                          {lifeItem.LifeStatus === "Normal" ? (
-                            <td
-                              className="p-1 cursor-pointer whitespace-nowrap"
-                              onClick={() => fetchRepairTool(lifeItem.ToolSN)}
-                            >
-                              送修
-                            </td>
-                          ) : (
-                            <td
-                              className="p-1 cursor-pointer whitespace-nowrap"
-                              onClick={() => fetchRestoreTool(lifeItem.ToolSN)}
-                            >
-                              重新入庫
-                            </td>
-                          )}
-                          <td
-                            className="p-1 cursor-pointer whitespace-nowrap"
-                            onClick={() => fetchScrapTool(lifeItem.ToolSN)}
-                          >
-                            報廢
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )
-        )}
-      </div>
+    <div className="text-center ">
+      <h3 className="my-4">修整 / 報廢</h3>
+      <table className="w-full">
+        <thead>
+          <tr className="bg-indigo-500">
+            <th className="p-1 whitespace-nowrap">刀具序號</th>
+            <th className="p-1 whitespace-nowrap">刀具名稱</th>
+            <th className="p-1 whitespace-nowrap">生命指數</th>
+            <th className="p-1 whitespace-nowrap">目前狀態</th>
+            <th className="p-1 whitespace-nowrap">已加工次數</th>
+            <th className="p-1 whitespace-nowrap">已加工時間</th>
+            <th className="p-1 whitespace-nowrap">已加工長度</th>
+            <th className="p-1 whitespace-nowrap">修整次數</th>
+            <th className="p-1 whitespace-nowrap">送修 / 重新入庫</th>
+            <th className="p-1 whitespace-nowrap">報廢</th>
+          </tr>
+        </thead>
+        <tbody>
+          {toolStockList
+            ? toolStockList.map((item) => (
+                <tr key={item.ToolSn} className="hover:bg-gray-600">
+                  <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
+                  <td className="p-1 whitespace-nowrap">{item.ToolSpecName}</td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.LifePercentage}
+                  </td>
+                  <td className="p-1 whitespace-nowrap">{item.LifeStatus}</td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.LifeData.ProcessCnt}
+                  </td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.LifeData.ProcessTime}
+                  </td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.LifeData.ProcessLength}
+                  </td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.LifeData.RepairCnt}
+                  </td>
+                  {item.LifeStatus === "Normal" ? (
+                    <td
+                      className="p-1 cursor-pointer whitespace-nowrap"
+                      onClick={() => postRepairTool(item)}
+                    >
+                      送修
+                    </td>
+                  ) : null}
+                  {item.LifeStatus === "Repairing" ? (
+                    <td
+                      className="p-1 cursor-pointer whitespace-nowrap"
+                      onClick={() => postRestockTool(item)}
+                    >
+                      重新入庫
+                    </td>
+                  ) : null}
+                  {item.LifeStatus === "Scrap" ? <td> - </td> : null}
+                  {item.LifeStatus !== "Scrap" ? (
+                    <td
+                      className="p-1 cursor-pointer whitespace-nowrap"
+                      onClick={() => postScrapTool(item)}
+                    >
+                      報廢
+                    </td>
+                  ) : (
+                    " - "
+                  )}
+                </tr>
+              ))
+            : null}
+        </tbody>
+      </table>
     </div>
   );
 }

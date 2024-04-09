@@ -100,7 +100,7 @@ export default function ELabelInfoIndex() {
           setEditLabelMode={setEditLabelMode}
         />
       </div>
-      <div className="mt-2 overflow-auto rounded-t-xl">
+      <div className="mt-2 overflow-auto bg-gray-700 rounded-t-xl">
         <table className="w-full ">
           <thead>
             <tr className="p-1 bg-indigo-500">

@@ -50,3 +50,13 @@ export async function apiDeleteToolStock(toolStock) {
     return error;
   }
 }
+
+export async function apiGetToolStockCountList() {
+  try {
+    const res = await apiInstance.get("/tool_get/GetToolStockCountList");
+    return res;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}

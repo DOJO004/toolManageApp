@@ -32,38 +32,44 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="w-full max-w-4xl p-2 mr-4 bg-gray-900 rounded-md h-fit">
+    <div className="w-full h-full p-2 mr-4 bg-gray-900 rounded-md">
       <div>
-        <p className="text-center ">歸還刀具</p>
+        <h3 className="text-center ">歸還刀具</h3>
         <hr className="my-2 " />
-        <div className="overflow-auto rounded-t-xl">
+        <div className="overflow-auto bg-gray-700 rounded-t-xl">
           <table className="w-full text-center md:min-w-96">
             <thead>
-              <tr className="font-bold bg-indigo-300">
-                <td className="p-2 text-black whitespace-nowrap">標籤號碼</td>
-                <td className="p-2 text-black whitespace-nowrap">刀具SN</td>
-                <td className="p-2 text-black whitespace-nowrap">歸還</td>
+              <tr className="font-bold bg-indigo-500">
+                <td className="p-2 whitespace-nowrap">標籤號碼</td>
+                <td className="p-2 whitespace-nowrap">刀具SN</td>
+                <td className="p-2 whitespace-nowrap">歸還</td>
               </tr>
             </thead>
             <tbody>
-              {bindLabelList
-                ? bindLabelList.map((item, index) => (
-                    <tr key={index} className="bg-indigo-200">
-                      <td className="p-2 text-black whitespace-nowrap">
-                        {item.LabelSpec?.LabelID}
-                      </td>
-                      <td className="p-2 text-black whitespace-nowrap">
-                        {item.LabelSpec?.ToolSN}
-                      </td>
-                      <td
-                        className="p-2 text-black cursor-pointer whitespace-nowrap"
-                        onClick={() => deleteBindLabel(item)}
-                      >
-                        歸還
-                      </td>
-                    </tr>
-                  ))
-                : null}
+              {bindLabelList.length > 0 ? (
+                bindLabelList.map((item, index) => (
+                  <tr key={index} className="bg-indigo-200">
+                    <td className="p-2 text-black whitespace-nowrap">
+                      {item.LabelSpec?.LabelID}
+                    </td>
+                    <td className="p-2 text-black whitespace-nowrap">
+                      {item.LabelSpec?.ToolSN}
+                    </td>
+                    <td
+                      className="p-2 text-black cursor-pointer whitespace-nowrap"
+                      onClick={() => deleteBindLabel(item)}
+                    >
+                      歸還
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td className="p-2" colSpan={3}>
+                    no data...
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

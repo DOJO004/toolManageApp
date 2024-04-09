@@ -69,7 +69,7 @@ const MachineTypeIndex = () => {
           getMachineTypeList={getMachineTypeList}
         />
       </div>
-      <div className="mt-2 overflow-auto rounded-t-xl">
+      <div className="mt-2 overflow-auto bg-gray-700 rounded-t-xl">
         <table className="w-full">
           <thead>
             <tr className="bg-indigo-500 ">
