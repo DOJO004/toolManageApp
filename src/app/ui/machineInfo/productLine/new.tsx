@@ -1,64 +1,71 @@
-import React, { FormEvent } from "react";
-import { BackBtn, CloseBtn } from "../../buttons";
-import { useRouter } from "next/navigation";
+"use client";
 
-interface ProductLineNewProps {
-  productLineID: string;
-  setProductLineID: React.Dispatch<React.SetStateAction<string>>;
-  productLineName: string;
-  setProductLineName: React.Dispatch<React.SetStateAction<string>>;
-  fetchAddProductLine: (e: FormEvent) => void;
-  changeNewMode: () => void;
+import { apiNewProductLineType } from "@/scripts/Apis/productLineType/productLineType";
+import { FormEvent, useState } from "react";
+
+interface NewProductLineProps {
+  getProductLineList: () => void;
 }
 
-const ProductLineNew = ({
-  productLineID,
-  setProductLineID,
-  productLineName,
-  setProductLineName,
-  fetchAddProductLine,
-  changeNewMode,
-}: ProductLineNewProps) => {
-  const router = useRouter();
+export default function NewProductLine({
+  getProductLineList,
+}: NewProductLineProps) {
+  const [newProductLine, setNewProductLine] = useState({
+    Id: "",
+    Name: "",
+  });
+
+  const postProductLine = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiNewProductLineType(newProductLine);
+    console.log(res);
+    if (res?.data?.Values?.ReqInt === 0) {
+      getProductLineList();
+      cleanProductLine();
+    }
+  };
+
+  const cleanProductLine = () => {
+    setNewProductLine({
+      Id: "",
+      Name: "",
+    });
+  };
+
+  const handleNewProductLine = (key: string, value: string) => {
+    setNewProductLine((prev) => ({ ...prev, [key]: value }));
+  };
   return (
-    <div className="relative w-full m-4 max-w-96">
+    <div className="w-full my-4">
+      <h3>新增產線類型</h3>
       <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border-2 rounded-xl"
-        onSubmit={(e) => fetchAddProductLine(e)}
+        className="max-w-lg mx-auto my-4"
+        onSubmit={(e) => postProductLine(e)}
       >
-        <p className="text-xl font-bold text-center">新增產線</p>
-        <hr className="my-2" />
-        <div>
-          <label htmlFor="product-line-id">生產線ID</label>
+        <div className="my-4">
+          <label htmlFor="Id">產線 ID</label>
           <input
-            id="product-line-id"
             type="text"
-            value={productLineID}
-            placeholder="生產線ID"
-            className="block w-full pl-2 mx-auto my-2 text-black rounded-md min-h-10"
-            onChange={(e) => setProductLineID(e.target.value)}
+            id="Id"
+            className="w-full p-2 text-black rounded-md "
+            value={newProductLine.Id}
+            onChange={(e) => handleNewProductLine("Id", e.target.value)}
           />
         </div>
-        <div>
-          <label htmlFor="product-line-name">生產線名稱</label>
+        <div className="my-4">
+          <label htmlFor="Name">產線名稱</label>
           <input
-            id="product-line-name"
             type="text"
-            value={productLineName}
-            placeholder="生產線名稱"
-            className="block w-full pl-2 mx-auto my-2 text-black rounded-md min-h-10"
-            onChange={(e) => setProductLineName(e.target.value)}
+            id="Name"
+            className="w-full p-2 text-black rounded-md "
+            value={newProductLine.Name}
+            onChange={(e) => handleNewProductLine("Name", e.target.value)}
           />
         </div>
-        <button className="block w-full pl-2 mx-auto mt-6 bg-blue-500 rounded-md min-h-10">
-          完成
+        <button className="w-full bg-gray-600 rounded-md hover:bg-gray-500">
+          新增
         </button>
       </form>
-      <div className="absolute top-3 right-5">
-        <CloseBtn changeMode={changeNewMode} />
-      </div>
     </div>
   );
-};
-
-export default ProductLineNew;
+}

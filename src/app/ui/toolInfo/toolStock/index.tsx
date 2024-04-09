@@ -1,70 +1,87 @@
-import React from "react";
-import { AddBtn } from "../../buttons";
-import PageController from "../../pageController/pageController";
+"use client";
 
-interface ToolStockItem {
-  ToolSpecID: string;
-  ToolType: string;
-  SafetyStock: number;
-  TotalQty: number;
-  WarningCnt: number;
-  AlarmCnt: number;
-  NeedRepairCnt: number;
-  RepairCnt: number;
-  ToolLifeList: [];
-}
+import { apiGetToolStockCountList } from "@/scripts/Apis/toolStock/toolStock";
+import { useEffect, useState } from "react";
+import NewToolStock from "./new";
 
-interface ToolStockIndexProps {
-  toolStockList: ToolStockItem[];
-  changeNewMode: () => void;
-}
+const ToolStockIndex = () => {
+  const [toolStockList, setToolStockList] = useState([]);
+  const [newToolStockMode, setNewToolStockMode] = useState(false);
 
-const ToolStockIndex = ({
-  toolStockList,
-  changeNewMode,
-}: ToolStockIndexProps) => {
+  const getToolStockList = async () => {
+    const res = await apiGetToolStockCountList();
+    console.log(res);
+
+    if (res?.data?.Values?.ReqInt === 0) {
+      setToolStockList(res.data.Values.StockToolCountList);
+    }
+  };
+
+  useEffect(() => {
+    getToolStockList();
+  }, []);
   return (
-    <div className="relative w-full p-2 mx-auto text-center bg-gray-900 rounded-xl">
-      <p className="">刀具庫存</p>
-      <hr className="my-2" />
-      <div className="mt-2 overflow-auto rounded-t-xl">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-indigo-300 ">
-              <th className="p-1 text-black whitespace-nowrap">刀具規格ID</th>
-              <th className="p-1 text-black whitespace-nowrap">總數</th>
-              <th className="p-1 text-black whitespace-nowrap">庫存安全線</th>
-              <th className="p-1 text-black whitespace-nowrap">警告</th>
-              <th className="p-1 text-black whitespace-nowrap">危險</th>
-              <th className="p-1 text-black whitespace-nowrap">待修中</th>
-              <th className="p-1 text-black whitespace-nowrap">修整中</th>
-              <th className="p-1 text-black whitespace-nowrap">可使用</th>
-            </tr>
-          </thead>
-          <tbody>
-            {toolStockList?.map((item, index) => (
-              <tr key={item.ToolSpecID} className=" even:bg-gray-700">
-                <td className="p-1 whitespace-nowrap">{item.ToolSpecID}</td>
-                <td className="p-1 whitespace-nowrap">{item.TotalQty}</td>
-                <td className="p-1 whitespace-nowrap">{item.SafetyStock}</td>
-                <td className="p-1 whitespace-nowrap">{item.AlarmCnt}</td>
-                <td className="p-1 whitespace-nowrap">{item.WarningCnt}</td>
-                <td className="p-1 whitespace-nowrap">{item.NeedRepairCnt}</td>
-                <td className="p-1 whitespace-nowrap">{item.RepairCnt}</td>
-                <td className="p-1 whitespace-nowrap">
-                  {item.TotalQty -
-                    item.AlarmCnt -
-                    item.WarningCnt -
-                    item.NeedRepairCnt -
-                    item.RepairCnt}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="relative w-full h-screen p-2 mx-auto overflow-auto text-center rounded-xl">
+      <div className="relative ">
+        <button
+          className="absolute translate-x-[150%] bg-gray-600"
+          onClick={() => setNewToolStockMode(!newToolStockMode)}
+        >
+          新增
+        </button>
+        <h2 className="my-4">刀具庫存</h2>
       </div>
-      <div className="absolute top-2 right-5">
-        <AddBtn changeNewMode={changeNewMode} />
+      {/* new */}
+      <div
+        className={` overflow-hidden transition-all duration-300 easy-in-out ${
+          newToolStockMode ? "h-96" : "h-0"
+        }`}
+      >
+        <NewToolStock getToolStockList={getToolStockList} />
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        {toolStockList
+          ? toolStockList.map((item) => (
+              <div
+                key={item.ToolSpecId}
+                className="p-2 my-4 overflow-auto h-[50rem] bg-gray-700 rounded-md"
+              >
+                <h3 className="my-2">{item.ToolSpecName}</h3>
+                <div className="flex justify-center gap-2 my-2">
+                  <p>安全庫存 : {item.SafetyStock}</p>
+                  <p>現有庫存 : {item.CurrentStock}</p>
+                  <p>危險 : {item.WarningCount}</p>
+                  <p>警告 : {item.AlarmCount}</p>
+                </div>
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-indigo-500">
+                      <th className="p-1 whitespace-nowrap">ToolSN</th>
+                      <th className="p-1 whitespace-nowrap">狀態</th>
+                      <th className="p-1 whitespace-nowrap">生命百分比</th>
+                      <th className="p-1 whitespace-nowrap">最後修改時間</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {item.ToolStatusList.map((tool) => (
+                      <tr key={tool.ToolSn}>
+                        <td className="p-1 whitespace-nowrap">{tool.ToolSn}</td>
+                        <td className="p-1 whitespace-nowrap">
+                          {tool.LifeStatus}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          {tool.LifePercentage}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          {tool.LastModify}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))
+          : null}
       </div>
     </div>
   );

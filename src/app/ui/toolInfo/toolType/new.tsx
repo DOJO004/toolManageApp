@@ -1,6 +1,6 @@
 "use client";
 
-import { apiNewToolType } from "@/scripts/toolType/toolTypeApi";
+import { apiNewToolType } from "@/scripts/Apis/toolType/toolTypeApi";
 import { FormEvent, useState } from "react";
 
 interface NewToolTypeProps {

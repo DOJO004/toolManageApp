@@ -1,6 +1,6 @@
 "user client";
 
-import { apiDeleteToolType } from "@/scripts/toolType/toolTypeApi";
+import { apiDeleteToolType } from "@/scripts/Apis/toolType/toolTypeApi";
 import React, { FormEvent } from "react";
 
 interface EditToolTypeProps {
@@ -60,7 +60,7 @@ export function EditToolType({
             }
           />
         </div>
-        <button className="w-full bg-gray-900">編輯</button>
+        <button className="w-full bg-gray-900">更新</button>
       </form>
       <button
         className="w-full my-2 bg-gray-700"

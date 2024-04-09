@@ -1,9 +1,8 @@
 "use client";
 import Login from "@/app/ui/login/login";
 import Notice from "@/app/ui/notice";
-import { apiUserLogin } from "@/scripts/api";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 export default function Page() {
   const [userAccount, setUserAccount] = useState("");

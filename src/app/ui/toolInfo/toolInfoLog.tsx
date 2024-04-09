@@ -1,18 +1,62 @@
-interface LoadingLogItem {
-  MachineSN: string;
-  Action: string;
-  AtcNo: number;
-  LogTime: string;
+"use client";
+
+import { apiGetToolLoadingLogList } from "@/scripts/Apis/toolInfo/toolInfo";
+import { useEffect, useState } from "react";
+interface toolInfoDataItem {
+  ToolSn: string;
+  ToolSpecId: string;
+  ToolSpecName: string;
+  ToolTypeData: {
+    Id: string;
+    Name: string;
+  };
+  LifeStatus: string;
+  LifePercentage: number;
+  SpecData: {
+    BladeDiameter: number;
+    BladeHeight: number;
+    TotalLength: number;
+    HandleDiameter: number;
+  };
+  LifeData: {
+    ProcessCnt: number;
+    ProcessTime: number;
+    ProcessLength: number;
+    RepairCnt: number;
+  };
+  LoadingData: {
+    IsLoading: false;
+    MachineId: string;
+    AtcNo: number;
+  };
+  LastModify: string;
 }
 
 interface ToolInfoLogProps {
-  toolStatusItem: {
-    LoadingLogList: LoadingLogItem[];
-  };
+  toolInfoData: toolInfoDataItem;
 }
-const ToolInfoLog = ({ toolStatusItem }: ToolInfoLogProps) => {
+const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
+  const [toolLogData, setToolLogData] = useState([]);
+
+  const getToolLogData = async () => {
+    cleanToolLogData();
+    const res = await apiGetToolLoadingLogList(toolInfoData.ToolSn);
+    console.log(res);
+
+    if (res?.data?.Values?.ReqInt === 0) {
+      setToolLogData(res.data.Values.ToolMacLoadingOpsList);
+    }
+  };
+
+  const cleanToolLogData = () => {
+    setToolLogData([]);
+  };
+
+  useEffect(() => {
+    getToolLogData();
+  }, [toolInfoData]);
   return (
-    <div className="w-full h-full p-2 mb-2 overflow-auto text-xs bg-gray-900 rounded-xl">
+    <div className="w-full p-2 mb-2 overflow-auto text-xs bg-gray-700 h-60 rounded-xl">
       <p className="mb-4 text-2xl font-bold border-b-2 ">刀具裝卸載日誌</p>
       <div className="overflow-auto rounded-md ">
         <table className="w-full text-center ">
@@ -25,20 +69,18 @@ const ToolInfoLog = ({ toolStatusItem }: ToolInfoLogProps) => {
             </tr>
           </thead>
           <tbody>
-            {toolStatusItem.LoadingLogList.length >= 1 ? (
-              toolStatusItem.LoadingLogList.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.MachineSN}</td>
-                  <td>{item.Action}</td>
+            {toolLogData?.length > 0 ? (
+              toolLogData.map((item) => (
+                <tr key={item.LogTime}>
+                  <td>{item.MachineId}</td>
+                  <td>{item.OpActions}</td>
                   <td>{item.AtcNo}</td>
                   <td>{item.LogTime}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={4} className="p-2 text-xl">
-                  no data...
-                </td>
+                <td colSpan={4}>no data...</td>
               </tr>
             )}
           </tbody>

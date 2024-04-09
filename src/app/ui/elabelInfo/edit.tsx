@@ -1,113 +1,167 @@
-import { FormEvent } from "react";
-import { CloseBtn } from "../buttons";
+"use client";
 
-interface ElabelInfoItem {
+import {
+  apiDeleteELabel,
+  apiEditELabel,
+} from "@/scripts/Apis/eLabelInfo/eLabelInfo";
+import { FormEvent } from "react";
+
+interface editLabelDataItem {
+  BindStatus: string;
+  LToolCode: number;
+  ToolSn: string;
+  LastModify: string;
+  LabelId: string;
+  LabelSn: string;
+  Brand: string;
   LabelCode: string;
-  eLabelSN: string;
+  NfcRecord: string;
   StationCode: string;
   ArticleID: string;
   ArticleName: string;
-  LastModify: string;
+}
+interface EditELabelInfoProps {
+  editLabelData: editLabelDataItem;
+  setEditLabelData: React.Dispatch<React.SetStateAction<editLabelDataItem>>;
+  getELabelList: () => void;
+  setEditLabelMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface ElabelInfoEditProps {
-  editElabelInfo: ElabelInfoItem;
-  setEditElabelInfo: React.Dispatch<React.SetStateAction<ElabelInfoItem>>;
-  fetchEditElabelInfo: (e: FormEvent) => void;
-  changeEditMode: () => void;
-}
+export default function EditELabelInfo({
+  editLabelData,
+  setEditLabelData,
+  getELabelList,
+  setEditLabelMode,
+}: EditELabelInfoProps) {
+  const handleEditLabelInfo = (key: string, value: string) => {
+    setEditLabelData((prev) => ({ ...prev, [key]: value }));
+  };
+  const patchELabelInfo = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiEditELabel(editLabelData);
+  };
 
-const ElabelInfoEdit = ({
-  editElabelInfo,
-  setEditElabelInfo,
-  fetchEditElabelInfo,
-  changeEditMode,
-}: ElabelInfoEditProps) => {
+  const deleteELabelInfo = async () => {
+    const confirm = window.confirm("確定刪除嗎?");
+    if (confirm) {
+      const res = await apiDeleteELabel(editLabelData);
+      console.log(res);
+      if (res?.data?.Values?.ReqInt === 0) {
+        getELabelList();
+        setEditLabelMode(false);
+      }
+    }
+  };
   return (
-    <div className="relative ">
+    <div>
+      <div className="relative">
+        <button
+          className="absolute top-0 left-[75%] md:left-[65%] lg:left-[60%] p-2 border rounded-md hover:bg-gray-600 "
+          onClick={() => deleteELabelInfo()}
+        >
+          刪除
+        </button>
+        <h3>編輯電子標籤</h3>
+      </div>
+
       <form
-        className="w-full p-2 mx-auto mb-2 text-center bg-gray-900 border md:w-fit rounded-xl"
-        onSubmit={(e) => fetchEditElabelInfo(e)}
+        action=""
+        className="max-w-md p-2 mx-auto"
+        onSubmit={(e) => patchELabelInfo(e)}
       >
-        <p className="my-2 text-xl text-center ">編輯電子標籤</p>
-        <hr className="my-2" />
-        <label htmlFor="LabelCode">標籤號碼</label>
-        <input
-          id="LabelCode"
-          type="text"
-          value={editElabelInfo.LabelCode}
-          onChange={(e) =>
-            setEditElabelInfo({ ...editElabelInfo, LabelCode: e.target.value })
-          }
-          placeholder="標籤號碼"
-          className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-          disabled
-        />
-        <label htmlFor="eLabelSN">標籤SN</label>
-        <input
-          id="eLabelSN"
-          type="text"
-          value={editElabelInfo.eLabelSN}
-          onChange={(e) =>
-            setEditElabelInfo({ ...editElabelInfo, eLabelSN: e.target.value })
-          }
-          placeholder="標籤SN"
-          className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-        />
-        <label htmlFor="StationCode">站號</label>
-        <input
-          id="StationCode"
-          type="text"
-          value={editElabelInfo.StationCode}
-          onChange={(e) =>
-            setEditElabelInfo({
-              ...editElabelInfo,
-              StationCode: e.target.value,
-            })
-          }
-          placeholder="站號"
-          className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-          disabled
-        />
-        <label htmlFor="ArticleID">ID</label>
-        <input
-          id="ArticleID"
-          type="text"
-          value={editElabelInfo.ArticleID}
-          onChange={(e) =>
-            setEditElabelInfo({
-              ...editElabelInfo,
-              ArticleID: e.target.value,
-            })
-          }
-          placeholder="ID"
-          className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-          disabled
-        />
-        <label htmlFor="ArticleName">名稱</label>
-        <input
-          id="ArticleName"
-          type="text"
-          value={editElabelInfo.ArticleName}
-          onChange={(e) =>
-            setEditElabelInfo({
-              ...editElabelInfo,
-              ArticleName: e.target.value,
-            })
-          }
-          placeholder="名稱"
-          className="block pl-2 mx-auto mb-2 text-black rounded-md min-h-10 min-w-72"
-          disabled
-        />
-        <button className="p-2 my-2 bg-indigo-500 rounded-md min-w-72 hover:bg-indigo-600">
-          完成
+        <div className="my-4">
+          <label htmlFor="LabelBrandID" className="block text-left">
+            LabelBrandID
+          </label>
+          <input
+            type="text"
+            id="LabelBrandID"
+            className="w-full p-2 text-black rounded-md "
+            value={editLabelData.LabelBrandId}
+            onChange={(e) =>
+              handleEditLabelInfo("LabelBrandId", e.target.value)
+            }
+          />
+        </div>
+        <div className="my-4">
+          <label htmlFor="LabelSn" className="block text-left">
+            LabelSN
+          </label>
+          <input
+            type="text"
+            id="LabelSn"
+            className="w-full p-2 text-black rounded-md "
+            value={editLabelData.LabelSn}
+            onChange={(e) => handleEditLabelInfo("LabelSn", e.target.value)}
+          />
+        </div>
+        <div className="my-4">
+          <label htmlFor="LabelCode" className="block text-left">
+            LabelCode
+          </label>
+          <input
+            type="text"
+            id="LabelCode"
+            className="w-full p-2 text-black rounded-md "
+            value={editLabelData.LabelCode}
+            onChange={(e) => handleEditLabelInfo("LabelCode", e.target.value)}
+          />
+        </div>
+        <div className="my-4">
+          <label htmlFor="NfcRecord" className="block text-left">
+            NfcRecord
+          </label>
+          <input
+            type="text"
+            id="NfcRecord"
+            className="w-full p-2 text-black rounded-md "
+            value={editLabelData.NfcRecord}
+            onChange={(e) => handleEditLabelInfo("NfcRecord", e.target.value)}
+          />
+        </div>
+
+        <div className="my-4">
+          <label htmlFor="StationCode" className="block text-left">
+            StationCode
+          </label>
+          <input
+            type="text"
+            id="StationCode"
+            className="w-full p-2 text-black rounded-md "
+            value={editLabelData.StationCode}
+            onChange={(e) => handleEditLabelInfo("StationCode", e.target.value)}
+          />
+        </div>
+
+        <div className="my-4">
+          <label htmlFor="ArticleID" className="block text-left">
+            ArticleID
+          </label>
+          <input
+            type="text"
+            id="ArticleID"
+            className="w-full p-2 text-black rounded-md "
+            value={editLabelData.ArticleID}
+            onChange={(e) => handleEditLabelInfo("ArticleID", e.target.value)}
+          />
+        </div>
+
+        <div className="my-4">
+          <label htmlFor="ArticleName" className="block text-left">
+            ArticleName
+          </label>
+          <input
+            type="text"
+            id="ArticleName"
+            className="w-full p-2 text-black rounded-md "
+            value={editLabelData.ArticleName}
+            onChange={(e) => handleEditLabelInfo("ArticleName", e.target.value)}
+          />
+        </div>
+        <button className="w-full p-2 bg-gray-600 rounded-md hover:bg-gray-500">
+          編輯
         </button>
       </form>
-      <div className="absolute top-3 right-3">
-        <CloseBtn changeMode={changeEditMode} />
-      </div>
     </div>
   );
-};
-
-export default ElabelInfoEdit;
+}

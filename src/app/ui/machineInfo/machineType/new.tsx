@@ -1,64 +1,69 @@
-import { useRouter } from "next/navigation";
-import React, { FormEvent } from "react";
-import { BackBtn, CloseBtn } from "../../buttons";
+"use client";
 
-interface MachineTypeNewProps {
-  machineTypeID: string;
-  setMachineTypeID: React.Dispatch<React.SetStateAction<string>>;
-  machineTypeName: string;
-  setMachineTypeName: React.Dispatch<React.SetStateAction<string>>;
-  fetchAddMachineType: (e: FormEvent) => void;
-  changeNewMode: () => void;
+import { apiNewMachineType } from "@/scripts/Apis/machineType/machineType";
+import { FormEvent, useState } from "react";
+
+interface NewMachineTypeProps {
+  getMachineTypeList: () => void;
 }
-const MachineTypeNew = ({
-  machineTypeID,
-  machineTypeName,
-  setMachineTypeID,
-  setMachineTypeName,
-  changeNewMode,
-  fetchAddMachineType,
-}: MachineTypeNewProps) => {
-  const router = useRouter();
-  return (
-    <div className="relative w-full m-4 mb-2 max-w-96">
-      <form
-        className="flex flex-col justify-center w-full p-4 text-center bg-gray-900 border-2 rounded-xl"
-        onSubmit={(e) => fetchAddMachineType(e)}
-      >
-        <p className="text-xl text-center ">新增設備類型</p>
-        <hr className="my-4" />
-        <div>
-          <label htmlFor="machine-type-id">設備ID</label>
-          <input
-            id="machine-type-id"
-            type="text"
-            value={machineTypeID}
-            placeholder="設備ID"
-            className="block w-full pl-2 mx-auto my-2 text-black rounded-md min-h-10"
-            onChange={(e) => setMachineTypeID(e.target.value)}
-          />
-        </div>
 
-        <div>
-          <label htmlFor="machine-type-name">設備名稱</label>
+export default function NewMachineType({
+  getMachineTypeList,
+}: NewMachineTypeProps) {
+  const [newMachineType, setNewMachineType] = useState({
+    Id: "",
+    Name: "",
+  });
+
+  const postMachineType = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await apiNewMachineType(newMachineType);
+    console.log(res);
+    if (res?.data?.Values?.ReqInt === 0) {
+      cleanNewMachineType();
+      getMachineTypeList();
+    }
+  };
+
+  const cleanNewMachineType = () => {
+    setNewMachineType({
+      Id: "",
+      Name: "",
+    });
+  };
+
+  const handleNewMachineType = (key: string, value: string) => {
+    setNewMachineType((prev) => ({ ...prev, [key]: value }));
+  };
+  return (
+    <div className="my-4">
+      <h3>新增設備類型</h3>
+
+      <form className="max-w-lg mx-auto" onSubmit={(e) => postMachineType(e)}>
+        <div className="my-4">
+          <label htmlFor="Id">設備 ID</label>
           <input
-            id="machine-type-name"
             type="text"
-            value={machineTypeName}
-            placeholder="設備名稱"
-            className="block w-full pl-2 mx-auto my-2 text-black rounded-md min-h-10"
-            onChange={(e) => setMachineTypeName(e.target.value)}
+            id="Id"
+            className="w-full p-1 text-black rounded-md "
+            value={newMachineType.Id}
+            onChange={(e) => handleNewMachineType("Id", e.target.value)}
           />
         </div>
-        <button className="block w-full p-2 mx-auto mt-6 bg-blue-500 rounded-md">
-          完成
+        <div className="my-4">
+          <label htmlFor="Name">設備名稱</label>
+          <input
+            type="text"
+            id="Name"
+            className="w-full p-1 text-black rounded-md "
+            value={newMachineType.Name}
+            onChange={(e) => handleNewMachineType("Name", e.target.value)}
+          />
+        </div>
+        <button className="w-full my-4 bg-gray-500 rounded-md hover:bg-gray-400">
+          新增
         </button>
       </form>
-      <div className="absolute top-3 right-5">
-        <CloseBtn changeMode={changeNewMode} />
-      </div>
     </div>
   );
-};
-
-export default MachineTypeNew;
+}

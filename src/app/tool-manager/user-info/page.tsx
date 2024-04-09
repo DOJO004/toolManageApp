@@ -3,13 +3,6 @@ import PageController from "@/app/ui/pageController/pageController";
 import UserInfoIndex from "@/app/ui/userInfo";
 import UserInfoEdit from "@/app/ui/userInfo/edit";
 import UserInfoNew from "@/app/ui/userInfo/new";
-import {
-  apiAddUserAccountInfo,
-  apiEditUserAccountInfo,
-  apiGetDepartmentInfoList,
-  apiGetUserAccountInfoByAccountID,
-  apiGetUserAccountInfoList,
-} from "@/scripts/api";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
