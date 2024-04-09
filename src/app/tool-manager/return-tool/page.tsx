@@ -1,69 +1,36 @@
 "use client";
 
-import Notice from "@/app/ui/notice";
-import PageController from "@/app/ui/pageController/pageController";
-
 import { useEffect, useState } from "react";
 
-interface ELToolBindStatusItem {
-  LabelCode: string;
-  eLabelSN: string;
-  StationCode: string;
-  BindStatus: string;
-  eLToolCode: string;
-  ToolSN: string;
-  ToolSpec: {
-    ToolSpecID: string;
-    ToolType: string;
-    ToolName: string;
-  };
-  LastModify: string;
-}
-
+import {
+  apiDeleteBindLabel,
+  apiGetBindLabelList,
+} from "@/scripts/Apis/receiveTool/receiveTool";
 export default function Page() {
-  const [eLabelBindStatusInfoList, setELabelBindStatusInfoList] = useState<
-    ELToolBindStatusItem[]
-  >([]);
-  const [notice, setNotice] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [bindLabelList, setBindLabelList] = useState([]);
 
-  const fetchGetELabelBindStatusInfoList = async () => {
-    const res = await apiGetELabelBindStatusInfoList();
-    console.log("get bind status list", res);
+  const getBindLabelList = async () => {
+    const res = await apiGetBindLabelList();
     if (res?.data?.Values?.ReqInt === 0) {
-      setELabelBindStatusInfoList(
-        res.data.Values.eLToolBindStatusList.filter(
-          (item: ELToolBindStatusItem) => item.BindStatus === "Standby"
-        )
-      );
-    } else {
-      console.log("get eLabel bind status list false.");
+      setBindLabelList(res.data.Values.LabelBindList);
     }
   };
 
-  const fetchReturnTool = async (eLabelCode: string) => {
-    const confirm = confirmDisable("確定歸還嗎?");
+  const deleteBindLabel = async (data: any) => {
+    const confirm = window.confirm(`確定要歸還${data.LToolCode}嗎?`);
     if (confirm) {
-      setNotice(true);
-      const res = await apiDisabledEToolCodeInfo(eLabelCode);
+      const res = await apiDeleteBindLabel(data);
       console.log(res);
-
       if (res?.data?.Values?.ReqInt === 0) {
-        setIsError(false);
-        fetchGetELabelBindStatusInfoList();
-      } else {
-        setIsError(true);
-        console.log(" return tool false.");
+        getBindLabelList();
       }
     }
   };
 
   useEffect(() => {
-    fetchGetELabelBindStatusInfoList();
+    getBindLabelList();
   }, []);
-  useEffect(() => {
-    console.log(eLabelBindStatusInfoList.length);
-  }, [eLabelBindStatusInfoList]);
+
   return (
     <div className="w-full max-w-4xl p-2 mr-4 bg-gray-900 rounded-md h-fit">
       <div>
@@ -72,49 +39,33 @@ export default function Page() {
         <div className="overflow-auto rounded-t-xl">
           <table className="w-full text-center md:min-w-96">
             <thead>
-              <tr className="font-bold bg-indigo-300 ">
+              <tr className="font-bold bg-indigo-300">
                 <td className="p-2 text-black whitespace-nowrap">標籤號碼</td>
                 <td className="p-2 text-black whitespace-nowrap">刀具SN</td>
                 <td className="p-2 text-black whitespace-nowrap">歸還</td>
               </tr>
             </thead>
             <tbody>
-              {eLabelBindStatusInfoList.length >= 1 ? (
-                <>
-                  {eLabelBindStatusInfoList.map((item, index) => (
-                    <tr
-                      key={index}
-                      className=" hover:bg-indigo-500 even:bg-gray-700"
-                    >
-                      <td className="p-2 whitespace-nowrap">
-                        {item.LabelCode}
+              {bindLabelList
+                ? bindLabelList.map((item, index) => (
+                    <tr key={index} className="bg-indigo-200">
+                      <td className="p-2 text-black whitespace-nowrap">
+                        {item.LabelSpec?.LabelID}
                       </td>
-                      <td className="p-2 whitespace-nowrap">{item.ToolSN}</td>
-                      <td className="p-2 whitespace-nowrap">
-                        <button
-                          onClick={() => fetchReturnTool(item.eLToolCode)}
-                        >
-                          歸還
-                        </button>
+                      <td className="p-2 text-black whitespace-nowrap">
+                        {item.LabelSpec?.ToolSN}
+                      </td>
+                      <td
+                        className="p-2 text-black cursor-pointer whitespace-nowrap"
+                        onClick={() => deleteBindLabel(item)}
+                      >
+                        歸還
                       </td>
                     </tr>
-                  ))}
-                </>
-              ) : (
-                <tr>
-                  <td colSpan={3} className="py-2 ">
-                    尚未綁定刀具
-                  </td>
-                </tr>
-              )}
+                  ))
+                : null}
             </tbody>
           </table>
-        </div>
-        <div>
-          <Notice notice={notice} setNotice={setNotice} isError={isError} />
-        </div>
-        <div className="my-2">
-          <PageController />
         </div>
       </div>
     </div>
