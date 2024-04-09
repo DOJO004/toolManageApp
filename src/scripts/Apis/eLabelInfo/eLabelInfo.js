@@ -84,11 +84,11 @@ export async function apiDeleteELabel(eLabel) {
   }
 }
 // 綁定刀具
-export async function apiBindELabelInfo(label, tool) {
+export async function apiBindELabelInfo(data) {
   const body = {
-    LabelId: label.LabelId,
-    LabelSn: label.LabelSn,
-    ToolSn: tool.ToolSn,
+    LabelId: data.LabelId,
+    LabelSn: data.LabelSn,
+    ToolSn: data.ToolSn,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
