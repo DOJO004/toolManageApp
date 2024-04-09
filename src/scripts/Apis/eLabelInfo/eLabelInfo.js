@@ -83,7 +83,69 @@ export async function apiDeleteELabel(eLabel) {
     return error;
   }
 }
+// 綁定刀具
+export async function apiBindELabelInfo(label, tool) {
+  const body = {
+    LabelId: label.LabelId,
+    LabelSn: label.LabelSn,
+    ToolSn: tool.ToolSn,
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+  };
+  try {
+    const res = await apiInstance.post(
+      "/user_operate/SelectLabelBindInfo",
+      body
+    );
+    return res;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
 
+// 解除綁定
+export async function apiDeleteLableBindInfo(label) {
+  const body = {
+    LToolCode: label.LToolCode,
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+  };
+  try {
+    const res = await apiInstance.post(
+      "/user_operate/DisableLabelBindInfo",
+      body
+    );
+    return res;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+// 停用標籤綁定指定庫存刀具
+export async function apiDeleteLabelBindByTool(tool) {
+  const body = {
+    ToolSn: tool.ToolSn,
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+  };
+  try {
+    const res = await apiInstance.post(
+      "/user_operate/DisableLabelBindInfoByToolSn",
+      body
+    );
+    return res;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+// 手動同步 AIMS 電子標籤
 export async function syncELabelDataFromAims() {
   const body = {
     UserToken: getUserToken(),
