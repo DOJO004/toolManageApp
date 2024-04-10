@@ -62,10 +62,10 @@ const ToolSpecIndex = () => {
     getToolSpecList();
   }, []);
   return (
-    <div className="relative p-2 ">
+    <div className="relative h-screen p-2 overflow-auto">
       <h2 className="my-4 text-center">刀具規格</h2>
       <button
-        className="absolute p-2 bg-gray-600 rounded-md top-5 left-[70%] lg:left-[60%] 2xl:left-[55%]"
+        className="absolute p-2 bg-gray-600 rounded-md top-5 left-[70%] lg:left-[60%] 2xl:left-[57%]"
         onClick={() => handleNewToolSpecMode()}
       >
         新增
@@ -73,7 +73,7 @@ const ToolSpecIndex = () => {
       {/* new */}
       <div
         className={` transition-all duration-300 ease-in-out overflow-hidden ${
-          newToolSpecMode ? "h-[38rem]" : "h-0"
+          newToolSpecMode ? "h-[40rem]" : "h-0"
         }`}
       >
         <NewToolSpec getToolSpecList={getToolSpecList} />
@@ -81,7 +81,7 @@ const ToolSpecIndex = () => {
       {/* edit */}
       <div
         className={` transition-all duration-300 ease-in-out overflow-hidden relative ${
-          editToolSpecMode ? "h-[38rem]" : "h-0"
+          editToolSpecMode ? "h-[40rem]" : "h-0"
         }`}
       >
         <EditToolSpec
@@ -98,8 +98,8 @@ const ToolSpecIndex = () => {
         </button>
       </div>
       {/* index */}
-      <div className="w-full h-full mx-auto overflow-auto text-center bg-gray-700 shadow-md rounded-t-xl">
-        <table className="w-full h-full ">
+      <div className="w-full mx-auto overflow-auto text-center bg-gray-700 shadow-md rounded-t-xl">
+        <table className="w-full ">
           <thead className="bg-indigo-500 border-b-2">
             <tr>
               <td className="p-2 whitespace-nowrap">ID</td>

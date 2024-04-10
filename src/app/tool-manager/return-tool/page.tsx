@@ -32,7 +32,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="w-full h-full p-2 mr-4 bg-gray-900 rounded-md">
+    <div className="w-full h-screen p-2 mr-4 overflow-auto bg-gray-900 rounded-md">
       <div>
         <h3 className="text-center ">歸還刀具</h3>
         <hr className="my-2 " />

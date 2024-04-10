@@ -136,6 +136,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
       </div>
       {/* part two */}
       <div className={`${currentPage === 2 ? "block" : "hidden"}`}>
+        <p className="my-2 text-sm text-center md:text-base lg:text-lg">○●○</p>
         <div className="my-4">
           <label htmlFor="Φ">Φ</label>
           <input
@@ -235,6 +236,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
       </div>
       {/* part three */}
       <div className={`${currentPage === 3 ? "block" : "hidden"}`}>
+        <p className="my-2 text-sm text-center md:text-base lg:text-lg">○○●</p>
         <div className="my-4">
           <label htmlFor="RepairCnt">最大修整次數</label>
           <input

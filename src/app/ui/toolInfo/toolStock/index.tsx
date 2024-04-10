@@ -17,6 +17,19 @@ const ToolStockIndex = () => {
     }
   };
 
+  const getLifeStatusClassName = (lifeStatus: string) => {
+    switch (lifeStatus) {
+      case "Normal":
+        return "text-green-500";
+      case "Repairing":
+        return "text-amber-500";
+      case "Scrap":
+        return "text-gray-500";
+      default:
+        return "";
+    }
+  };
+
   useEffect(() => {
     getToolStockList();
   }, []);
@@ -48,10 +61,21 @@ const ToolStockIndex = () => {
               >
                 <h3 className="my-2">{item.ToolSpecName}</h3>
                 <div className="flex justify-center gap-2 my-2">
-                  <p>安全庫存 : {item.SafetyStock}</p>
-                  <p>現有庫存 : {item.CurrentStock}</p>
-                  <p>危險 : {item.WarningCount}</p>
-                  <p>警告 : {item.AlarmCount}</p>
+                  <p>
+                    安全庫存 : <span className="text-">{item.SafetyStock}</span>
+                  </p>
+                  <p>
+                    現有庫存 :{" "}
+                    <span className="text-green-500">{item.CurrentStock}</span>
+                  </p>
+                  <p>
+                    危險 :{" "}
+                    <span className="text-amber-500">{item.WarningCount}</span>
+                  </p>
+                  <p>
+                    警告 :{" "}
+                    <span className="text-red-500">{item.AlarmCount}</span>
+                  </p>
                 </div>
                 <table className="w-full">
                   <thead>
@@ -66,7 +90,11 @@ const ToolStockIndex = () => {
                     {item.ToolStatusList.map((tool) => (
                       <tr key={tool.ToolSn}>
                         <td className="p-1 whitespace-nowrap">{tool.ToolSn}</td>
-                        <td className="p-1 whitespace-nowrap">
+                        <td
+                          className={`p-1 whitespace-nowrap ${getLifeStatusClassName(
+                            tool.LifeStatus
+                          )}`}
+                        >
                           {tool.LifeStatus}
                         </td>
                         <td className="p-1 whitespace-nowrap">

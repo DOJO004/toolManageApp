@@ -11,12 +11,17 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/joy": "^5.0.0-beta.32",
     "axios": "^1.6.3",
+    "chart.js": "^4.4.2",
     "next": "14.0.4",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.10",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "use-count-up": "^3.0.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.2.0",

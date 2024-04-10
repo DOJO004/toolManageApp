@@ -132,7 +132,7 @@ export default function BindToolIndex() {
       </form>
       {/* data area */}
       <div className="flex gap-4 ">
-        <div className="w-full h-full p-2 text-center bg-gray-700 rounded-md">
+        <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md h-[28rem]">
           <h3 className="my-4">未綁定標籤</h3>
           <table className="w-full">
             <thead>
@@ -155,12 +155,14 @@ export default function BindToolIndex() {
             </tbody>
           </table>
         </div>
-        <div className="w-full p-2 text-center bg-gray-700 rounded-md">
+        <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md h-[28rem]">
           <h3 className="my-4">未綁定刀具</h3>
           <table className="w-full">
             <thead>
               <tr className="bg-indigo-500">
-                <th className="p-1 whitespace-nowrap">刀具SN</th>
+                <th className="p-1 whitespace-nowrap">刀具 SN</th>
+                <th className="p-1 whitespace-nowrap">刀具規格 ID</th>
+                <th className="p-1 whitespace-nowrap">刀具規格名稱</th>
               </tr>
             </thead>
             <tbody>
@@ -171,6 +173,8 @@ export default function BindToolIndex() {
                   onClick={() => handleClickBindData("tool", item)}
                 >
                   <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
+                  <td className="p-1 whitespace-nowrap">{item.ToolSpecId}</td>
+                  <td className="p-1 whitespace-nowrap">{item.ToolSpecName}</td>
                 </tr>
               ))}
             </tbody>

@@ -55,21 +55,21 @@ const PieChart = ({ toolInfoData }: PieChartProps) => {
           <div>2/7</div>
         </div>
       </div>
-      <div className="w-full md:flex">
-        <div className="relative w-full left-1/2 md:left-0">
+      <div className="w-full h-full md:flex">
+        <div className="relative w-full h-24 md:h-32 lg:h-48">
           <div
-            className="w-24 h-24 -translate-x-1/2 rounded-full md:translate-x-0"
+            className="w-24 h-24 mx-auto rounded-full md:absolute md:-translate-x-1/2 md:-translate-y-1/2 lg:w-40 lg:h-40 md:w-32 md:h-32 md:left-1/2 md:top-1/2"
             style={{ background: gradientColorsOutSide }}
           >
             <div
-              className="absolute w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2"
+              className="absolute w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-full lg:w-32 lg:h-32 md:w-24 md:h-24 left-1/2 top-1/2"
               style={{ background: gradientColorsInSide }}
             >
-              <div className="absolute w-10 h-10 -translate-x-1/2 -translate-y-1/2 bg-gray-900 rounded-full top-1/2 left-1/2"></div>
+              <div className="absolute w-10 h-10 -translate-x-1/2 -translate-y-1/2 bg-gray-900 rounded-full lg:w-20 lg:h-20 md:w-12 md:h-12 top-1/2 left-1/2"></div>
             </div>
           </div>
         </div>
-        <div className="flex justify-center md:block">
+        <div className="flex justify-center md:mt-4 lg:mt-12 xl:mt-16 md:block">
           <div className="flex items-center mx-2">
             <div className="my-2 border-l-4 border-green-600 md:whitespace-nowrap">
               累積加工長度：

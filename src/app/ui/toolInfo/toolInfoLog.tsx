@@ -56,7 +56,7 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
     getToolLogData();
   }, [toolInfoData]);
   return (
-    <div className="w-full p-2 mb-2 overflow-auto text-xs bg-gray-700 h-60 rounded-xl">
+    <div className="w-full p-2 mb-2 overflow-auto text-xs bg-gray-700 max-h-80 rounded-xl">
       <p className="mb-4 text-2xl font-bold border-b-2 ">刀具裝卸載日誌</p>
       <div className="overflow-auto rounded-md ">
         <table className="w-full text-center ">

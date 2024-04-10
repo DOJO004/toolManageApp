@@ -15,7 +15,7 @@ export default function Page() {
       Id: "",
       Name: "",
     },
-    Serial0: "",
+    SerialNumber: "",
     MachineIP: "",
     SystemData: {
       Brand: "",
@@ -88,7 +88,7 @@ export default function Page() {
                     <tr
                       key={item.MachineId}
                       onClick={() => handleSelectMachineInfo(item)}
-                      className="cursor-pointer hover:bg-gray-700"
+                      className="cursor-pointer hover:bg-gray-600"
                     >
                       <td className="p-1 whitespace-nowrap">
                         {item.MachineId}
@@ -98,7 +98,7 @@ export default function Page() {
                       </td>
                       <td className="p-1 whitespace-nowrap">{item.Status}</td>
                       <td className="p-1 whitespace-nowrap">
-                        {item.CurrentParameter.SpindleRPM} /{" "}
+                        {item.CurrentParameter.SpindleRPM} /
                         {item.CurrentParameter.TotalFeedRate}
                       </td>
                       <td className="p-1 whitespace-nowrap">

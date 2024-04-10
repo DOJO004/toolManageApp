@@ -2,12 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import ToolStatusMenu from "./toolInfoMenu/menu";
-import MachineInfoMenu from "./machineInfoMenu/menu";
-import React, { useState } from "react";
+import { useState } from "react";
 import ELabelInfoMenu from "./eLabelInfoMenu/menu";
-import UserInfoMenu from "./userInfoMenu/menu";
 import navbarItem from "./items";
+import MachineInfoMenu from "./machineInfoMenu/menu";
+import ToolStatusMenu from "./toolInfoMenu/menu";
+import UserInfoMenu from "./userInfoMenu/menu";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);

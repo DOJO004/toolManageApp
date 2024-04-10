@@ -48,6 +48,19 @@ export default function Page() {
     setToolInfoData(data);
   };
 
+  const getLifeStatusClassName = (lifeStatus: string) => {
+    switch (lifeStatus) {
+      case "Normal":
+        return "text-green-500";
+      case "Repairing":
+        return "text-amber-500";
+      case "Scrap":
+        return "text-gray-500";
+      default:
+        return "";
+    }
+  };
+
   useEffect(() => {
     getToolInfoList();
   }, []);
@@ -79,7 +92,11 @@ export default function Page() {
                     onClick={() => handleGetToolInfoData(item)}
                   >
                     <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
-                    <td className="p-1 whitespace-nowrap">
+                    <td
+                      className={`p-1 whitespace-nowrap ${getLifeStatusClassName(
+                        item.LifeStatus
+                      )}`}
+                    >
                       {item.LifeStatus} / {item.LifeData.RepairCnt}
                     </td>
                     <td className="p-1 whitespace-nowrap">
