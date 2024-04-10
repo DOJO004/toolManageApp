@@ -14,8 +14,8 @@ export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
 
   const doAddToolType = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiNewToolType(newToolType);
-    const inputToolTypeId = document.querySelector("#id");
+    const res: any = await apiNewToolType(newToolType);
+    const inputToolTypeId = document.querySelector<HTMLInputElement>("#id");
 
     if (res?.data?.Values?.ReqInt === 0) {
       setNewToolType({
@@ -29,8 +29,8 @@ export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
     }
   };
   return (
-    <div className="p-4 mx-auto my-4 bg-gray-600 rounded-md w-fit">
-      <h3 id="scrollTarget" className="my-4">
+    <div className="w-full p-4 mx-auto my-4 bg-gray-600 rounded-md">
+      <h3 id="scrollTarget" className="my-4 text-center">
         新增刀具類型
       </h3>
       <form onSubmit={(e) => doAddToolType(e)}>
@@ -39,7 +39,7 @@ export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
           <input
             type="text"
             id="id"
-            className="block p-2 mx-auto text-black border rounded-md w-60"
+            className="w-full p-2 mx-auto text-black border rounded-md "
             value={newToolType.Id}
             onChange={(e) =>
               setNewToolType({
@@ -54,7 +54,7 @@ export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
           <input
             type="text"
             id="name"
-            className="block p-2 mx-auto text-black border rounded-md w-60"
+            className="w-full p-2 mx-auto text-black border rounded-md "
             value={newToolType.Name}
             onChange={(e) =>
               setNewToolType({

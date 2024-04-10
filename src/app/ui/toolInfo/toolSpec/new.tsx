@@ -6,9 +6,13 @@ import { FormEvent, useEffect, useState } from "react";
 
 interface NewToolSpecProps {
   getToolSpecList: () => void;
+  setNewToolSpecMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
+export function NewToolSpec({
+  getToolSpecList,
+  setNewToolSpecMode,
+}: NewToolSpecProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [toolTypeList, setToolTypeList] = useState([]);
   const [toolSpec, setToolSpec] = useState({
@@ -41,7 +45,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
 
   const postNewToolSpec = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiNewToolSpec(toolSpec);
+    const res: any = await apiNewToolSpec(toolSpec);
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       getToolSpecList();
@@ -84,12 +88,20 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
 
   return (
     <form
-      className="w-full max-w-md p-4 mx-auto my-4 bg-gray-600 rounded-md"
+      className="w-full p-4 mx-auto my-4 bg-gray-600 rounded-md min-w-96"
       onSubmit={(e) => postNewToolSpec(e)}
     >
-      <h3 className="text-center ">新增刀具規格</h3>
+      <div className="relative ">
+        <h3 className="text-center ">新增刀具規格</h3>
+        <button
+          className="absolute top-0 right-0 "
+          onClick={() => setNewToolSpecMode(false)}
+        >
+          X
+        </button>
+      </div>
       {/* part one */}
-      <div className={`${currentPage === 1 ? "block" : "hidden"}`}>
+      <div className={`${currentPage === 1 ? "block" : "hidden"} w-full`}>
         <p className="my-2 text-sm text-center md:text-base lg:text-lg">●○○</p>
         <div className="my-4">
           <label htmlFor="ID">刀具類型</label>
@@ -100,7 +112,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
             onChange={(e) => handelSetToolSpec("ToolTypeId", e.target.value)}
           >
             <option value="">請選擇</option>
-            {toolTypeList.map((item) => (
+            {toolTypeList.map((item: any) => (
               <option key={item.Id} value={item.Id} className="text-black ">
                 {item.Name}
               </option>
@@ -136,6 +148,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
       </div>
       {/* part two */}
       <div className={`${currentPage === 2 ? "block" : "hidden"}`}>
+        <p className="my-2 text-sm text-center md:text-base lg:text-lg">○●○</p>
         <div className="my-4">
           <label htmlFor="Φ">Φ</label>
           <input
@@ -144,7 +157,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.SpecData.BladeDiameter}
             onChange={(e) =>
-              setToolSpec((prev) => ({
+              setToolSpec((prev: any) => ({
                 ...prev,
                 SpecData: {
                   ...prev.SpecData,
@@ -162,7 +175,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.SpecData.BladeHeight}
             onChange={(e) =>
-              setToolSpec((prev) => ({
+              setToolSpec((prev: any) => ({
                 ...prev,
                 SpecData: {
                   ...prev.SpecData,
@@ -180,7 +193,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.SpecData.TotalLength}
             onChange={(e) =>
-              setToolSpec((prev) => ({
+              setToolSpec((prev: any) => ({
                 ...prev,
                 SpecData: {
                   ...prev.SpecData,
@@ -198,7 +211,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.SpecData.HandleDiameter}
             onChange={(e) =>
-              setToolSpec((prev) => ({
+              setToolSpec((prev: any) => ({
                 ...prev,
                 SpecData: {
                   ...prev.SpecData,
@@ -235,6 +248,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
       </div>
       {/* part three */}
       <div className={`${currentPage === 3 ? "block" : "hidden"}`}>
+        <p className="my-2 text-sm text-center md:text-base lg:text-lg">○○●</p>
         <div className="my-4">
           <label htmlFor="RepairCnt">最大修整次數</label>
           <input
@@ -243,7 +257,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.MaxLife.RepairCnt}
             onChange={(e) =>
-              setToolSpec((prev) => ({
+              setToolSpec((prev: any) => ({
                 ...prev,
                 MaxLife: {
                   ...prev.MaxLife,
@@ -261,7 +275,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.MaxLife.ProcessCnt}
             onChange={(e) =>
-              setToolSpec((prev) => ({
+              setToolSpec((prev: any) => ({
                 ...prev,
                 MaxLife: {
                   ...prev.MaxLife,
@@ -279,7 +293,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.MaxLife.ProcessLength}
             onChange={(e) =>
-              setToolSpec((prev) => ({
+              setToolSpec((prev: any) => ({
                 ...prev,
                 MaxLife: {
                   ...prev.MaxLife,
@@ -297,7 +311,7 @@ export function NewToolSpec({ getToolSpecList }: NewToolSpecProps) {
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.MaxLife.ProcessTime}
             onChange={(e) =>
-              setToolSpec((prev) => ({
+              setToolSpec((prev: any) => ({
                 ...prev,
                 MaxLife: {
                   ...prev.MaxLife,

@@ -25,7 +25,7 @@ interface toolInfoDataItem {
     RepairCnt: number;
   };
   LoadingData: {
-    IsLoading: false;
+    IsLoading: boolean;
     MachineId: string;
     AtcNo: number;
   };
@@ -40,7 +40,7 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
 
   const getToolLogData = async () => {
     cleanToolLogData();
-    const res = await apiGetToolLoadingLogList(toolInfoData.ToolSn);
+    const res: any = await apiGetToolLoadingLogList(toolInfoData.ToolSn);
     console.log(res);
 
     if (res?.data?.Values?.ReqInt === 0) {
@@ -56,8 +56,8 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
     getToolLogData();
   }, [toolInfoData]);
   return (
-    <div className="w-full p-2 mb-2 overflow-auto text-xs bg-gray-700 h-60 rounded-xl">
-      <p className="mb-4 text-2xl font-bold border-b-2 ">刀具裝卸載日誌</p>
+    <div className="w-full p-2 mb-2 overflow-auto text-xs bg-gray-700 max-h-80 rounded-xl">
+      <h3 className="mb-4 font-bold border-b-2 ">刀具裝卸載日誌</h3>
       <div className="overflow-auto rounded-md ">
         <table className="w-full text-center ">
           <thead>
@@ -70,7 +70,7 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
           </thead>
           <tbody>
             {toolLogData?.length > 0 ? (
-              toolLogData.map((item) => (
+              toolLogData.map((item: any) => (
                 <tr key={item.LogTime}>
                   <td>{item.MachineId}</td>
                   <td>{item.OpActions}</td>

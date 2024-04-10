@@ -21,6 +21,9 @@ h2 {
 h3 {
   @apply text-2xl md:text-3xl lg:text-4xl
 }
+h4 {
+  @apply text-xl md:text-2xl lg:text-3xl
+}
 
 p{
   @apply text-base md:text-lg lg:text-xl
@@ -47,3 +50,4 @@ table tr td{
 button {
   @apply lg:text-xl
 }
+

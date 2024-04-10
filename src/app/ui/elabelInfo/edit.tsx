@@ -7,6 +7,7 @@ import {
 import { FormEvent } from "react";
 
 interface editLabelDataItem {
+  LabelBrandId: string;
   BindStatus: string;
   LToolCode: number;
   ToolSn: string;
@@ -38,13 +39,13 @@ export default function EditELabelInfo({
   };
   const patchELabelInfo = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiEditELabel(editLabelData);
+    const res: any = await apiEditELabel(editLabelData);
   };
 
   const deleteELabelInfo = async () => {
     const confirm = window.confirm("確定刪除嗎?");
     if (confirm) {
-      const res = await apiDeleteELabel(editLabelData);
+      const res: any = await apiDeleteELabel(editLabelData);
       console.log(res);
       if (res?.data?.Values?.ReqInt === 0) {
         getELabelList();
@@ -53,13 +54,19 @@ export default function EditELabelInfo({
     }
   };
   return (
-    <div>
+    <div className="p-4 bg-gray-700 rounded-xl">
       <div className="relative">
         <button
-          className="absolute top-0 left-[75%] md:left-[65%] lg:left-[60%] p-2 border rounded-md hover:bg-gray-600 "
+          className="absolute top-0 left-0 p-2 border rounded-md hover:bg-gray-500 "
           onClick={() => deleteELabelInfo()}
         >
           刪除
+        </button>{" "}
+        <button
+          className="absolute top-0 right-0 "
+          onClick={() => setEditLabelMode(false)}
+        >
+          X
         </button>
         <h3>編輯電子標籤</h3>
       </div>

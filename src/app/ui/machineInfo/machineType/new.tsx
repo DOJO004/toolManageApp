@@ -5,10 +5,12 @@ import { FormEvent, useState } from "react";
 
 interface NewMachineTypeProps {
   getMachineTypeList: () => void;
+  setNewMachineTypeMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function NewMachineType({
   getMachineTypeList,
+  setNewMachineTypeMode,
 }: NewMachineTypeProps) {
   const [newMachineType, setNewMachineType] = useState({
     Id: "",
@@ -17,7 +19,7 @@ export default function NewMachineType({
 
   const postMachineType = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiNewMachineType(newMachineType);
+    const res: any = await apiNewMachineType(newMachineType);
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       cleanNewMachineType();
@@ -36,9 +38,16 @@ export default function NewMachineType({
     setNewMachineType((prev) => ({ ...prev, [key]: value }));
   };
   return (
-    <div className="my-4">
-      <h3>新增設備類型</h3>
-
+    <div className="p-4 my-4 bg-gray-700 rounded-md">
+      <div className="relative ">
+        <h3>新增設備類型</h3>
+        <button
+          className="absolute top-0 right-0 "
+          onClick={() => setNewMachineTypeMode(false)}
+        >
+          X
+        </button>
+      </div>
       <form className="max-w-lg mx-auto" onSubmit={(e) => postMachineType(e)}>
         <div className="my-4">
           <label htmlFor="Id">設備 ID</label>

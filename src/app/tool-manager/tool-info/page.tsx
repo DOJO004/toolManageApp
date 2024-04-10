@@ -37,7 +37,7 @@ export default function Page() {
   });
 
   const getToolInfoList = async () => {
-    const res = await apiGetToolStockList();
+    const res: any = await apiGetToolStockList();
     if (res?.data?.Values?.ReqInt === 0) {
       setToolInfoList(res.data.Values.ToolStockList);
       setToolInfoData(res.data.Values.ToolStockList[0]);
@@ -46,6 +46,19 @@ export default function Page() {
 
   const handleGetToolInfoData = (data: any) => {
     setToolInfoData(data);
+  };
+
+  const getLifeStatusClassName = (lifeStatus: string) => {
+    switch (lifeStatus) {
+      case "Normal":
+        return "text-green-500";
+      case "Repairing":
+        return "text-amber-500";
+      case "Scrap":
+        return "text-gray-500";
+      default:
+        return "";
+    }
   };
 
   useEffect(() => {
@@ -72,14 +85,18 @@ export default function Page() {
           </thead>
           <tbody>
             {toolInfoList
-              ? toolInfoList.map((item, index) => (
+              ? toolInfoList.map((item: any) => (
                   <tr
                     key={item.ToolSn}
                     className="cursor-pointer hover:bg-gray-600"
                     onClick={() => handleGetToolInfoData(item)}
                   >
                     <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
-                    <td className="p-1 whitespace-nowrap">
+                    <td
+                      className={`p-1 whitespace-nowrap ${getLifeStatusClassName(
+                        item.LifeStatus
+                      )}`}
+                    >
                       {item.LifeStatus} / {item.LifeData.RepairCnt}
                     </td>
                     <td className="p-1 whitespace-nowrap">

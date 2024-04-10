@@ -47,7 +47,7 @@ export function EditToolSpec({
   };
   const patchToolSpec = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiEditToolSpec(editToolSpec);
+    const res: any = await apiEditToolSpec(editToolSpec);
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       setEditToolSpecMode(false);
@@ -65,7 +65,7 @@ export function EditToolSpec({
     const confirm = window.confirm("確定要刪除嗎?");
 
     if (confirm) {
-      const res = await apiDeleteToolSpec(editToolSpec.ToolSpecId);
+      const res: any = await apiDeleteToolSpec(editToolSpec.ToolSpecId);
       if (res?.data?.Values?.ReqInt === 0) {
         setEditToolSpecMode(false);
         getToolSpecList();
@@ -79,16 +79,25 @@ export function EditToolSpec({
   }, []);
   return (
     <form
-      className="relative w-full max-w-md p-4 mx-auto my-4 bg-gray-600 rounded-md "
+      className="relative w-full p-4 mx-auto my-4 bg-gray-600 rounded-md "
       onSubmit={(e) => patchToolSpec(e)}
     >
-      <button
-        className="absolute left-[5%] p-2 text-2xl bg-gray-800 rounded-md top-5"
-        onClick={(e) => deleteToolSpec(e)}
-      >
-        刪除
-      </button>
-      <h3 className="text-center ">編輯刀具規格</h3>
+      <div className="relative ">
+        <button
+          className="absolute top-0 left-0 p-2 border rounded-md hover:bg-gray-700"
+          onClick={(e) => deleteToolSpec(e)}
+        >
+          刪除
+        </button>
+        <button
+          className="absolute top-0 right-0 "
+          onClick={() => setEditToolSpecMode(false)}
+        >
+          X
+        </button>
+        <h3 className="text-center ">編輯刀具規格</h3>
+      </div>
+
       {/* part one */}
       <div className={`${currentPage === 1 ? "block" : "hidden"}`}>
         <p className="my-2 text-sm text-center md:text-base lg:text-lg">●○○</p>
@@ -101,7 +110,7 @@ export function EditToolSpec({
             onChange={(e) => handelEditToolSpec("ToolTypeId", e.target.value)}
           >
             <option value="">請選擇</option>
-            {toolTypeList.map((item) => (
+            {toolTypeList.map((item: any) => (
               <option key={item.Id} value={item.Id} className="text-black ">
                 {item.Name}
               </option>

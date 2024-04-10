@@ -15,7 +15,7 @@ export default function Page() {
       Id: "",
       Name: "",
     },
-    Serial0: "",
+    SerialNumber: "",
     MachineIP: "",
     SystemData: {
       Brand: "",
@@ -24,6 +24,7 @@ export default function Page() {
     },
     Status: "",
     Activation: 0,
+    ProcessTime: 0,
     CurrentParameter: {
       CurrentGcd: 0,
       TotalFeedRate: 0,
@@ -32,25 +33,16 @@ export default function Page() {
       SpindleSpeed: 0,
       CurrentProgram: "",
     },
-    AtcLoadingList: [
-      {
-        AtcNo: 0,
-        ToolSn: "",
-      },
-      {
-        AtcNo: 0,
-        ToolSn: "",
-      },
-    ],
+    AtcLoadingList: [],
     LoadingLogList: [],
     LastModify: "",
   });
 
   const getMachineInfoList = async () => {
-    const res = await apiGetMachineStatusList();
+    const res: any = await apiGetMachineStatusList();
     console.log(res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
+    if (res.data?.Values?.ReqInt === 0) {
       setMachineInfoList(res.data.Values.MachineStatusList);
       setSelectMachineInfo(res.data.Values.MachineStatusList[0]);
     }
@@ -84,11 +76,11 @@ export default function Page() {
             </thead>
             <tbody>
               {machineInfoList
-                ? machineInfoList.map((item) => (
+                ? machineInfoList.map((item: any) => (
                     <tr
                       key={item.MachineId}
                       onClick={() => handleSelectMachineInfo(item)}
-                      className="cursor-pointer hover:bg-gray-700"
+                      className="cursor-pointer hover:bg-gray-600"
                     >
                       <td className="p-1 whitespace-nowrap">
                         {item.MachineId}
@@ -98,7 +90,7 @@ export default function Page() {
                       </td>
                       <td className="p-1 whitespace-nowrap">{item.Status}</td>
                       <td className="p-1 whitespace-nowrap">
-                        {item.CurrentParameter.SpindleRPM} /{" "}
+                        {item.CurrentParameter.SpindleRPM} /
                         {item.CurrentParameter.TotalFeedRate}
                       </td>
                       <td className="p-1 whitespace-nowrap">

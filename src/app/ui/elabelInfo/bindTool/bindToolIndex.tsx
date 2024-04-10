@@ -15,7 +15,7 @@ export default function BindToolIndex() {
   const [toolList, setToolList] = useState([]);
 
   const getELabelList = async () => {
-    const res = await apiGetELabelList();
+    const res: any = await apiGetELabelList();
 
     if (res?.data?.Values?.ReqInt === 0) {
       setELabelList(filterUnbindLabel(res.data.Values.LabelList));
@@ -23,7 +23,7 @@ export default function BindToolIndex() {
   };
 
   const getToolList = async () => {
-    const res = await apiGetToolStockList();
+    const res: any = await apiGetToolStockList();
     console.log("toollist", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
@@ -37,15 +37,15 @@ export default function BindToolIndex() {
     console.log(res);
   };
 
-  const filterUnbindLabel = (data) => {
-    const filterData = data.filter((item) => {
+  const filterUnbindLabel = (data: any) => {
+    const filterData = data.filter((item: any) => {
       return item.BindStatus === "Unbinding";
     });
     return filterData;
   };
 
-  const filterToolStatus = (data) => {
-    const filterData = data.filter((item) => {
+  const filterToolStatus = (data: any) => {
+    const filterData = data.filter((item: any) => {
       return item.LifeStatus === "Normal" && !item.LoadingData.IsLoading;
     });
     return filterData;
@@ -132,7 +132,7 @@ export default function BindToolIndex() {
       </form>
       {/* data area */}
       <div className="flex gap-4 ">
-        <div className="w-full h-full p-2 text-center bg-gray-700 rounded-md">
+        <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md h-[28rem]">
           <h3 className="my-4">未綁定標籤</h3>
           <table className="w-full">
             <thead>
@@ -142,7 +142,7 @@ export default function BindToolIndex() {
               </tr>
             </thead>
             <tbody>
-              {eLabeList.map((item, index) => (
+              {eLabeList.map((item: any) => (
                 <tr
                   key={item.LabelId}
                   className="cursor-pointer hover:bg-gray-600"
@@ -155,22 +155,26 @@ export default function BindToolIndex() {
             </tbody>
           </table>
         </div>
-        <div className="w-full p-2 text-center bg-gray-700 rounded-md">
+        <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md h-[28rem]">
           <h3 className="my-4">未綁定刀具</h3>
           <table className="w-full">
             <thead>
               <tr className="bg-indigo-500">
-                <th className="p-1 whitespace-nowrap">刀具SN</th>
+                <th className="p-1 whitespace-nowrap">刀具 SN</th>
+                <th className="p-1 whitespace-nowrap">刀具規格 ID</th>
+                <th className="p-1 whitespace-nowrap">刀具規格名稱</th>
               </tr>
             </thead>
             <tbody>
-              {toolList.map((item) => (
+              {toolList.map((item: any) => (
                 <tr
                   key={item.ToolSn}
                   className="cursor-pointer hover:bg-gray-600"
                   onClick={() => handleClickBindData("tool", item)}
                 >
                   <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
+                  <td className="p-1 whitespace-nowrap">{item.ToolSpecId}</td>
+                  <td className="p-1 whitespace-nowrap">{item.ToolSpecName}</td>
                 </tr>
               ))}
             </tbody>

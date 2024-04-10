@@ -30,7 +30,7 @@ export default function EditProductLine({
 
   const patchProductLine = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiEditProductLineType(editProductLine);
+    const res: any = await apiEditProductLineType(editProductLine);
     console.log(res);
 
     if (res?.data?.Values?.ReqInt === 0) {
@@ -42,7 +42,7 @@ export default function EditProductLine({
   const deleteProductLine = async () => {
     const confirm = window.confirm("確定刪除嗎?");
     if (confirm) {
-      const res = await apiDeleteProductLineType(editProductLine);
+      const res: any = await apiDeleteProductLineType(editProductLine);
       if (res?.data?.Values?.ReqInt === 0) {
         getProductLineList();
         setEditProductLineMode(false);
@@ -50,8 +50,22 @@ export default function EditProductLine({
     }
   };
   return (
-    <div className="w-full my-4">
-      <h3>編輯產線類型</h3>
+    <div className="w-full p-4 my-4 bg-gray-700">
+      <div className="relative ">
+        <button
+          className="absolute top-0 right-0"
+          onClick={() => setEditProductLineMode(false)}
+        >
+          X
+        </button>
+        <button
+          className="absolute top-0 left-0 border rounded-md hover:bg-gray-600"
+          onClick={() => deleteProductLine()}
+        >
+          刪除
+        </button>
+        <h3>編輯產線類型</h3>
+      </div>
       <form
         className="max-w-lg mx-auto my-4"
         onSubmit={(e) => patchProductLine(e)}
@@ -74,12 +88,6 @@ export default function EditProductLine({
           編輯
         </button>
       </form>
-      <button
-        className="w-full max-w-lg mx-auto bg-gray-700 rounded-md hover:bg-gray-600"
-        onClick={() => deleteProductLine()}
-      >
-        刪除
-      </button>
     </div>
   );
 }

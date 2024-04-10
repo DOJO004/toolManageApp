@@ -25,7 +25,7 @@ const ToolSpecIndex = () => {
   });
 
   const getToolSpecList = async () => {
-    const res = await apiGetToolSpecList();
+    const res: any = await apiGetToolSpecList();
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       setToolSpecList(res.data.Values.ToolSpecList);
@@ -62,26 +62,82 @@ const ToolSpecIndex = () => {
     getToolSpecList();
   }, []);
   return (
-    <div className="relative p-2 ">
-      <h2 className="my-4 text-center">刀具規格</h2>
-      <button
-        className="absolute p-2 bg-gray-600 rounded-md top-5 left-[70%] lg:left-[60%] 2xl:left-[55%]"
-        onClick={() => handleNewToolSpecMode()}
-      >
-        新增
-      </button>
+    <div className="relative flex w-full h-screen p-2 overflow-auto">
+      {/* index */}
+      <div className="w-full mx-4 ">
+        <div className="relative">
+          <h2 className="my-4 text-center">刀具規格</h2>
+          <button
+            className="absolute top-0 right-0 p-2 border rounded-md hover:bg-gray-600"
+            onClick={() => handleNewToolSpecMode()}
+          >
+            新增
+          </button>
+        </div>
+        <div className="overflow-auto text-center bg-gray-700 rounded-md">
+          <table className="w-full ">
+            <thead className="bg-indigo-500 border-b-2">
+              <tr>
+                <td className="p-1 ">ID</td>
+                <td className="p-1 ">名稱</td>
+                <td className="p-1 ">Φ</td>
+                <td className="p-1 ">高度</td>
+                <td className="p-1 ">總長度</td>
+                <td className="p-1 ">手柄Φ</td>
+                <td className="p-1 ">安全庫存</td>
+                <td className="p-1 ">最大修整次數</td>
+                <td className="p-1 ">最大加工次數</td>
+                <td className="p-1 ">最大加工長度</td>
+                <td className="p-1 ">最大加工時間</td>
+              </tr>
+            </thead>
+            <tbody>
+              {toolSpecList?.length >= 1 ? (
+                toolSpecList.map((item: any) => (
+                  <tr
+                    key={item.ToolSpecId}
+                    className="cursor-pointer hover:bg-gray-500"
+                    onClick={() => {
+                      handleSetEditSpec(item), handleEditToolSpecMode();
+                    }}
+                  >
+                    <td className="p-1 ">{item.ToolSpecId}</td>
+                    <td className="p-1 ">{item.Name}</td>
+                    <td className="p-1 ">{item.SpecData.BladeDiameter}</td>
+                    <td className="p-1 ">{item.SpecData.BladeHeight}</td>
+                    <td className="p-1 ">{item.SpecData.TotalLength}</td>
+                    <td className="p-1 ">{item.SpecData.HandleDiameter}</td>
+                    <td className="p-1 ">{item.SafetyStock}</td>
+                    <td className="p-1 ">{item.MaxLife.RepairCnt}</td>
+                    <td className="p-1 ">{item.MaxLife.ProcessCnt}</td>
+                    <td className="p-1 ">{item.MaxLife.ProcessLength}</td>
+                    <td className="p-1 ">{item.MaxLife.ProcessTime}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={11}>Don&apos;t have any data...</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
       {/* new */}
       <div
-        className={` transition-all duration-300 ease-in-out overflow-hidden ${
-          newToolSpecMode ? "h-[38rem]" : "h-0"
+        className={` transition-all duration-300 ease-in-out overflow-hidden  ${
+          newToolSpecMode ? "w-full xl:w-1/2" : "w-0 "
         }`}
       >
-        <NewToolSpec getToolSpecList={getToolSpecList} />
+        <NewToolSpec
+          getToolSpecList={getToolSpecList}
+          setNewToolSpecMode={setNewToolSpecMode}
+        />
       </div>
       {/* edit */}
       <div
-        className={` transition-all duration-300 ease-in-out overflow-hidden relative ${
-          editToolSpecMode ? "h-[38rem]" : "h-0"
+        className={` transition-all duration-300 ease-in-out overflow-hidden  ${
+          editToolSpecMode ? "w-full xl:w-1/2" : "w-0 "
         }`}
       >
         <EditToolSpec
@@ -90,77 +146,6 @@ const ToolSpecIndex = () => {
           setEditToolSpecMode={setEditToolSpecMode}
           getToolSpecList={getToolSpecList}
         />
-        <button
-          className="absolute p-2 text-2xl rounded-md top-5 left-[75%] md:left-[65%] lg:left-[62%] 2xl:left-[55%]"
-          onClick={() => setEditToolSpecMode(false)}
-        >
-          x
-        </button>
-      </div>
-      {/* index */}
-      <div className="w-full h-full mx-auto overflow-auto text-center bg-gray-700 shadow-md rounded-t-xl">
-        <table className="w-full h-full ">
-          <thead className="bg-indigo-500 border-b-2">
-            <tr>
-              <td className="p-2 whitespace-nowrap">ID</td>
-              <td className="p-2 whitespace-nowrap">名稱</td>
-              <td className="p-2 whitespace-nowrap">Φ</td>
-              <td className="p-2 whitespace-nowrap">高度</td>
-              <td className="p-2 whitespace-nowrap">總長度</td>
-              <td className="p-2 whitespace-nowrap">手柄Φ</td>
-              <td className="p-2 whitespace-nowrap">安全庫存</td>
-              <td className="p-2 whitespace-nowrap">最大修整次數</td>
-              <td className="p-2 whitespace-nowrap">最大加工次數</td>
-              <td className="p-2 whitespace-nowrap">最大加工長度</td>
-              <td className="p-2 whitespace-nowrap">最大加工時間</td>
-            </tr>
-          </thead>
-          <tbody>
-            {toolSpecList?.length >= 1 ? (
-              toolSpecList.map((item) => (
-                <tr
-                  key={item.ToolSpecId}
-                  className="cursor-pointer hover:bg-gray-500"
-                  onClick={() => {
-                    handleSetEditSpec(item), handleEditToolSpecMode();
-                  }}
-                >
-                  <td className="p-2 whitespace-nowrap">{item.ToolSpecId}</td>
-                  <td className="p-2 whitespace-nowrap">{item.Name}</td>
-                  <td className="p-2 whitespace-nowrap">
-                    {item.SpecData.BladeDiameter}
-                  </td>
-                  <td className="p-2 whitespace-nowrap">
-                    {item.SpecData.BladeHeight}
-                  </td>
-                  <td className="p-2 whitespace-nowrap">
-                    {item.SpecData.TotalLength}
-                  </td>
-                  <td className="p-2 whitespace-nowrap">
-                    {item.SpecData.HandleDiameter}
-                  </td>
-                  <td className="p-2 whitespace-nowrap">{item.SafetyStock}</td>
-                  <td className="p-2 whitespace-nowrap">
-                    {item.MaxLife.RepairCnt}
-                  </td>
-                  <td className="p-2 whitespace-nowrap">
-                    {item.MaxLife.ProcessCnt}
-                  </td>
-                  <td className="p-2 whitespace-nowrap">
-                    {item.MaxLife.ProcessLength}
-                  </td>
-                  <td className="p-2 whitespace-nowrap">
-                    {item.MaxLife.ProcessTime}
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={11}>Don't have any data...</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
       </div>
     </div>
   );

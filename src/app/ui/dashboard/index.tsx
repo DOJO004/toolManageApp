@@ -9,7 +9,7 @@ export default function DashboardIndex() {
     "conic-gradient(from 0deg at 50% 50%, #2bfc4e 0deg 50deg, gray 50deg 360deg)";
 
   const getMachineInfoList = async () => {
-    const res = await apiGetMachineStatusList();
+    const res: any = await apiGetMachineStatusList();
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineInfoList(res.data.Values.MachineStatusList);
@@ -22,7 +22,7 @@ export default function DashboardIndex() {
   return (
     <div className="w-full lg:grid-cols-2 lg:grid lg:gap-2 xl:grid-cols-3">
       {machineInfoList
-        ? machineInfoList.map((item) => (
+        ? machineInfoList.map((item: any) => (
             <div
               className="w-full p-2 mx-auto mb-2 bg-gray-900 rounded-md"
               key={item.MachineId}
@@ -47,15 +47,16 @@ export default function DashboardIndex() {
                       className="mx-auto scale-75"
                     />
                     <p>{item.MachineIP}</p>
-                    <p>{item.Status} / ? %</p>
+                    <p>
+                      {item.Status} / {item.Activation} %
+                    </p>
                   </div>
-                  <p className="text-center">站號</p>
                 </div>
               </div>
-              <div className="flex gap-2 mx-4 mt-10">
-                {item.AtcLoadingList.map((tool) => (
+              <div className="flex justify-center gap-2 mx-4 mt-10">
+                {item.AtcLoadingList.map((tool: any) => (
                   <div
-                    className="flex flex-col justify-center md:w-[120px] overflow-auto"
+                    className="flex flex-col justify-center "
                     key={tool.ToolSn}
                   >
                     <div
@@ -66,11 +67,11 @@ export default function DashboardIndex() {
                     >
                       <div className="w-16 h-16 bg-gray-900 rounded-full md:w-24 md:h-24"></div>
                     </div>
-                    <div className="w-full p-2 mx-auto -translate-y-5 bg-green-500 border-2 border-gray-900 rounded-md">
+                    <div className="p-2 mx-auto bg-green-500 border-2 border-gray-900 rounded-md w-fit">
                       <div className="text-center xl:text-xl ">
                         {tool.AtcNo}
                       </div>
-                      <div className="overflow-auto text-center xl:text-xl ">
+                      <div className="text-center xl:text-xl">
                         {tool.ToolSn ? tool.ToolSn : "no data"}
                       </div>
                     </div>

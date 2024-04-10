@@ -5,10 +5,12 @@ import { FormEvent, useState } from "react";
 
 interface NewProductLineProps {
   getProductLineList: () => void;
+  setNewProductLineMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function NewProductLine({
   getProductLineList,
+  setNewProductLineMode,
 }: NewProductLineProps) {
   const [newProductLine, setNewProductLine] = useState({
     Id: "",
@@ -17,7 +19,7 @@ export default function NewProductLine({
 
   const postProductLine = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiNewProductLineType(newProductLine);
+    const res: any = await apiNewProductLineType(newProductLine);
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       getProductLineList();
@@ -36,8 +38,16 @@ export default function NewProductLine({
     setNewProductLine((prev) => ({ ...prev, [key]: value }));
   };
   return (
-    <div className="w-full my-4">
-      <h3>新增產線類型</h3>
+    <div className="w-full p-4 my-4 bg-gray-700 rounded-xl">
+      <div className="relative ">
+        <h3>新增產線類型</h3>
+        <button
+          className="absolute top-0 right-0"
+          onClick={() => setNewProductLineMode(false)}
+        >
+          X
+        </button>
+      </div>
       <form
         className="max-w-lg mx-auto my-4"
         onSubmit={(e) => postProductLine(e)}
