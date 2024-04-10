@@ -15,7 +15,7 @@ export default function BindToolIndex() {
   const [toolList, setToolList] = useState([]);
 
   const getELabelList = async () => {
-    const res = await apiGetELabelList();
+    const res: any = await apiGetELabelList();
 
     if (res?.data?.Values?.ReqInt === 0) {
       setELabelList(filterUnbindLabel(res.data.Values.LabelList));
@@ -23,7 +23,7 @@ export default function BindToolIndex() {
   };
 
   const getToolList = async () => {
-    const res = await apiGetToolStockList();
+    const res: any = await apiGetToolStockList();
     console.log("toollist", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
@@ -37,15 +37,15 @@ export default function BindToolIndex() {
     console.log(res);
   };
 
-  const filterUnbindLabel = (data) => {
-    const filterData = data.filter((item) => {
+  const filterUnbindLabel = (data: any) => {
+    const filterData = data.filter((item: any) => {
       return item.BindStatus === "Unbinding";
     });
     return filterData;
   };
 
-  const filterToolStatus = (data) => {
-    const filterData = data.filter((item) => {
+  const filterToolStatus = (data: any) => {
+    const filterData = data.filter((item: any) => {
       return item.LifeStatus === "Normal" && !item.LoadingData.IsLoading;
     });
     return filterData;
@@ -142,7 +142,7 @@ export default function BindToolIndex() {
               </tr>
             </thead>
             <tbody>
-              {eLabeList.map((item, index) => (
+              {eLabeList.map((item: any) => (
                 <tr
                   key={item.LabelId}
                   className="cursor-pointer hover:bg-gray-600"
@@ -166,7 +166,7 @@ export default function BindToolIndex() {
               </tr>
             </thead>
             <tbody>
-              {toolList.map((item) => (
+              {toolList.map((item: any) => (
                 <tr
                   key={item.ToolSn}
                   className="cursor-pointer hover:bg-gray-600"

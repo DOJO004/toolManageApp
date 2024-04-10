@@ -29,7 +29,7 @@ export default function EditMachineType({
 
   const patchMachineType = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiEditMachineType(editMachineType);
+    const res: any = await apiEditMachineType(editMachineType);
     if (res?.data?.Values?.ReqInt === 0) {
       setEditMachineTypeMode(false);
       getMachineTypeList();
@@ -39,7 +39,7 @@ export default function EditMachineType({
   const deleteMachineType = async () => {
     const confirm = window.confirm("確定刪除嗎?");
     if (confirm) {
-      const res = await apiDeleteMachineType(editMachineType);
+      const res: any = await apiDeleteMachineType(editMachineType);
       console.log(res);
 
       if (res?.data?.Values?.ReqInt === 0) {
@@ -49,8 +49,22 @@ export default function EditMachineType({
     }
   };
   return (
-    <div className="my-4">
-      <h3>編輯設備類型</h3>
+    <div className="p-4 my-4 bg-gray-700 rounded-md">
+      <div className="relative ">
+        <h3>編輯設備類型</h3>
+        <button
+          className="absolute top-0 right-0 "
+          onClick={() => setEditMachineTypeMode(false)}
+        >
+          X
+        </button>
+        <button
+          className="absolute top-0 left-0 p-2 border rounded-md"
+          onClick={() => deleteMachineType()}
+        >
+          刪除
+        </button>
+      </div>
       <form className="max-w-lg mx-auto" onSubmit={(e) => patchMachineType(e)}>
         <div className="my-4">
           <label htmlFor="Id" className="block text-left">
@@ -74,12 +88,6 @@ export default function EditMachineType({
           更新
         </button>
       </form>
-      <button
-        className="w-full max-w-lg mx-auto my-4 bg-gray-700 rounded-md hover:bg-gray-500"
-        onClick={() => deleteMachineType()}
-      >
-        刪除
-      </button>
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import React, { FormEvent } from "react";
 import { CloseBtn } from "../buttons";
-import Notice from "../notice";
 interface EditUserInfoItem {
   AccountID: string;
   Department: string;
@@ -54,7 +53,6 @@ const UserInfoEdit = ({
         onSubmit={(e) => fetchEditUserInfo(e)}
       >
         <p className="text-xl text-center">編輯使用者</p>
-        {notice && <Notice isError={isError} />}
         <label htmlFor="DepartmentID">部門</label>
         <select
           defaultValue={editUserInfo.Department}

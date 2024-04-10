@@ -19,6 +19,7 @@ interface selectMachineInfoItem {
   };
   Status: string;
   Activation: number;
+  ProcessTime: number;
   CurrentParameter: {
     CurrentGcd: number;
     TotalFeedRate: number;
@@ -27,17 +28,8 @@ interface selectMachineInfoItem {
     SpindleSpeed: number;
     CurrentProgram: string;
   };
-  AtcLoadingList: [
-    {
-      AtcNo: number;
-      ToolSn: string;
-    },
-    {
-      AtcNo: number;
-      ToolSn: string;
-    },
-  ];
-  LoadingLogList: [];
+  AtcLoadingList: { AtcNo: number; ToolSn: string }[];
+  LoadingLogList: never[];
   LastModify: string;
 }
 interface MachineInfoPieChartProps {
@@ -74,7 +66,7 @@ export default function MachineInfoPieChart({
               style={{ background: gradientColorsOutSide }}
             >
               <div className="absolute w-16 h-16 -translate-x-1/2 -translate-y-1/2 bg-gray-700 rounded-full lg:w-32 lg:h-32 md:w-24 md:h-24 left-1/2 top-1/2">
-                <p className="absolute -translate-x-1/2 -translate-y-1/2  top-1/2 left-1/2">
+                <p className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                   {selectMachineInfo.ProcessTime}%
                 </p>
               </div>

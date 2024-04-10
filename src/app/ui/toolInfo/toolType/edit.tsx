@@ -36,7 +36,7 @@ export function EditToolType({
   };
   return (
     <div className="p-4 mx-auto my-4 bg-gray-600 rounded-md ">
-      <h3 className="my-4">編輯刀具類型</h3>
+      <h3 className="my-4 text-center">編輯刀具類型</h3>
 
       <form onSubmit={(e) => doEditToolType(e)}>
         <div className="my-4 text-left">
@@ -50,7 +50,7 @@ export function EditToolType({
           <input
             type="text"
             id="name"
-            className="block p-2 mx-auto text-black border rounded-md w-60"
+            className="w-full p-2 mx-auto text-black border rounded-md w-60"
             value={editToolType.Name}
             onChange={(e) =>
               setEditToolType({

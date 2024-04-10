@@ -37,7 +37,7 @@ export default function Page() {
   });
 
   const getToolInfoList = async () => {
-    const res = await apiGetToolStockList();
+    const res: any = await apiGetToolStockList();
     if (res?.data?.Values?.ReqInt === 0) {
       setToolInfoList(res.data.Values.ToolStockList);
       setToolInfoData(res.data.Values.ToolStockList[0]);
@@ -85,7 +85,7 @@ export default function Page() {
           </thead>
           <tbody>
             {toolInfoList
-              ? toolInfoList.map((item, index) => (
+              ? toolInfoList.map((item: any) => (
                   <tr
                     key={item.ToolSn}
                     className="cursor-pointer hover:bg-gray-600"

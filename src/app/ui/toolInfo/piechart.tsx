@@ -23,7 +23,7 @@ interface toolInfoDataItem {
     RepairCnt: number;
   };
   LoadingData: {
-    IsLoading: false;
+    IsLoading: boolean;
     MachineId: string;
     AtcNo: number;
   };
@@ -41,8 +41,8 @@ const PieChart = ({ toolInfoData }: PieChartProps) => {
     <div className="flex flex-col w-full p-2 mb-2 bg-gray-700 rounded-xl md:mr-4">
       <div className="flex justify-between mb-4 border-b-2 ">
         <div className="">
-          <div className="text-2xl font-bold">{toolInfoData?.ToolSn} </div>
-          <div className="mb-4 text-gray-300">{toolInfoData?.ToolSpecName}</div>
+          <h3 className="font-bold ">{toolInfoData?.ToolSn} </h3>
+          <h4 className="mb-4 text-gray-300">{toolInfoData?.ToolSpecName}</h4>
         </div>
         <div className="flex items-start">
           <Image
@@ -71,16 +71,16 @@ const PieChart = ({ toolInfoData }: PieChartProps) => {
         </div>
         <div className="flex justify-center md:mt-4 lg:mt-12 xl:mt-16 md:block">
           <div className="flex items-center mx-2">
-            <div className="my-2 border-l-4 border-green-600 md:whitespace-nowrap">
+            <h4 className="my-2 border-l-4 border-green-600 md:whitespace-nowrap">
               累積加工長度：
-            </div>
-            <div>{toolInfoData?.LifeData?.ProcessLength}</div>
+            </h4>
+            <h4>{toolInfoData?.LifeData?.ProcessLength}</h4>
           </div>
           <div className="flex items-center mx-2">
-            <div className="my-2 border-l-4 border-yellow-600 md:whitespace-nowrap">
+            <h4 className="my-2 border-l-4 border-yellow-600 md:whitespace-nowrap">
               累積加工時間：
-            </div>
-            <div>{toolInfoData?.LifeData?.ProcessTime}</div>
+            </h4>
+            <h4>{toolInfoData?.LifeData?.ProcessTime}</h4>
           </div>
         </div>
       </div>

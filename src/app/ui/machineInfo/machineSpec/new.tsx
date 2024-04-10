@@ -3,14 +3,16 @@
 import { apiNewMachineSpec } from "@/scripts/Apis/machineSpec/machineSpec";
 import { apiGetMachineTypeList } from "@/scripts/Apis/machineType/machineType";
 import { apiGetProductLineTypeList } from "@/scripts/Apis/productLineType/productLineType";
-import { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 interface NewMachineSpecProps {
   getMachineSpecList: () => void;
+  setNewMachineSpecMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function NewMachineSpec({
   getMachineSpecList,
+  setNewMachineSpecMode,
 }: NewMachineSpecProps) {
   const [newMachineSpec, setNewMachineSpec] = useState({
     ProductLineId: "",
@@ -30,7 +32,7 @@ export default function NewMachineSpec({
   const [machineTypeList, setMachineTypeList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const getProductLineList = async () => {
-    const res = await apiGetProductLineTypeList();
+    const res: any = await apiGetProductLineTypeList();
 
     if (res?.data?.Values?.ReqInt === 0) {
       setProductLineList(res.data.Values.ProductLineList);
@@ -38,7 +40,7 @@ export default function NewMachineSpec({
   };
 
   const getMachineTypeList = async () => {
-    const res = await apiGetMachineTypeList();
+    const res: any = await apiGetMachineTypeList();
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineTypeList(res.data.Values.MachineTypeList);
     }
@@ -46,7 +48,7 @@ export default function NewMachineSpec({
 
   const postMachineSpec = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiNewMachineSpec(newMachineSpec);
+    const res: any = await apiNewMachineSpec(newMachineSpec);
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       setCurrentPage(1);
@@ -86,8 +88,16 @@ export default function NewMachineSpec({
     getMachineTypeList();
   }, []);
   return (
-    <div>
-      <h3>新增設備規格</h3>
+    <div className="p-4 bg-gray-700 rounded-xl">
+      <div className="relative ">
+        <h3>新增設備規格</h3>
+        <button
+          className="absolute top-0 right-0 "
+          onClick={() => setNewMachineSpecMode(false)}
+        >
+          X
+        </button>
+      </div>
       <form className="max-w-md mx-auto" onSubmit={(e) => postMachineSpec(e)}>
         {/* part one */}
         <div className={currentPage === 1 ? "block" : "hidden"}>
@@ -103,7 +113,7 @@ export default function NewMachineSpec({
               }
             >
               <option value="">請選擇</option>
-              {productLineList.map((item) => (
+              {productLineList.map((item: any) => (
                 <option key={item.Id} value={item.Id} className="text-black">
                   {item.Name}
                 </option>
@@ -123,7 +133,7 @@ export default function NewMachineSpec({
               <option value="" className="text-black">
                 請選擇
               </option>
-              {machineTypeList.map((item) => (
+              {machineTypeList.map((item: any) => (
                 <option key={item.Id} value={item.Id} className="text-black">
                   {item.Name}
                 </option>
@@ -151,7 +161,7 @@ export default function NewMachineSpec({
             />
           </div>
           <button
-            className="w-full bg-gray-700 rounded-md hover:bg-gray-500"
+            className="w-full bg-gray-600 rounded-md hover:bg-gray-500"
             onClick={(e) => handleChangePage(e, 1)}
           >
             下一步
@@ -201,13 +211,13 @@ export default function NewMachineSpec({
           </div>
           <div className="flex gap-2">
             <button
-              className="w-full bg-gray-800 rounded-md hover:bg-gray-700"
+              className="w-full bg-gray-800 rounded-md hover:bg-gray-600"
               onClick={(e) => handleChangePage(e, -1)}
             >
               上一步
             </button>
             <button
-              className="w-full bg-gray-700 rounded-md hover:bg-gray-500"
+              className="w-full bg-gray-600 rounded-md hover:bg-gray-500"
               onClick={(e) => handleChangePage(e, 1)}
             >
               下一步
@@ -254,12 +264,12 @@ export default function NewMachineSpec({
           </div>
           <div className="flex gap-2">
             <button
-              className="w-full bg-gray-800 rounded-md hover:bg-gray-700"
+              className="w-full bg-gray-800 rounded-md hover:bg-gray-600"
               onClick={(e) => handleChangePage(e, -1)}
             >
               上一步
             </button>
-            <button className="w-full bg-gray-700 rounded-md hover:bg-gray-500">
+            <button className="w-full bg-gray-500 rounded-md hover:bg-gray-400">
               新增
             </button>
           </div>

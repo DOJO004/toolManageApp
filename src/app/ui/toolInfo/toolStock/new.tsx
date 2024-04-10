@@ -15,7 +15,7 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
   });
 
   const getToolSpecList = async () => {
-    const res = await apiGetToolSpecList();
+    const res: any = await apiGetToolSpecList();
     console.log("tool spec list ", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
@@ -25,7 +25,7 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
 
   const postToolStock = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiNewToolStock(toolStock);
+    const res: any = await apiNewToolStock(toolStock);
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       getToolStockList();
@@ -51,9 +51,10 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
   }, []);
 
   return (
-    <div className="w-full my-4 ">
+    <div className="w-full p-4 my-4 overflow-hidden bg-gray-600 max-h-96 mt-28 rounded-xl">
+      <h3 className="text-center ">新增刀具庫存</h3>
       <form
-        className="p-2 mx-auto bg-gray-600 rounded-xl w-fit"
+        className="p-2 mx-auto rounded-md "
         onSubmit={(e) => postToolStock(e)}
       >
         <div className="my-4">
@@ -62,14 +63,14 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
           </label>
           <select
             id="ToolSpecId"
-            className="block p-2 mx-auto text-black border rounded-md w-60"
+            className="w-full p-2 mx-auto text-black border rounded-md w-60"
             value={toolStock.ToolSpecId}
             onChange={(e) => handleToolStock("ToolSpecId", e.target.value)}
           >
             <option value="" className="text-black ">
               請選擇
             </option>
-            {toolSpecList.map((item) => (
+            {toolSpecList.map((item: any) => (
               <option
                 key={item.ToolSpecId}
                 value={item.ToolSpecId}
@@ -88,7 +89,7 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
             type="number"
             id="Qty"
             value={toolStock.Qty}
-            className="block p-2 mx-auto text-black border rounded-md w-60"
+            className="w-full p-2 mx-auto text-black border rounded-md w-60"
             onChange={(e) => handleToolStock("Qty", e.target.value)}
           />
         </div>

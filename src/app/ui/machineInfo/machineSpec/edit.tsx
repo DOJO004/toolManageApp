@@ -42,7 +42,7 @@ export default function EditMachineSpec({
   const [machineTypeList, setMachineTypeList] = useState([]);
 
   const getProductLineList = async () => {
-    const res = await apiGetProductLineTypeList();
+    const res: any = await apiGetProductLineTypeList();
 
     if (res?.data?.Values?.ReqInt === 0) {
       setProductLineList(res.data.Values.ProductLineList);
@@ -50,14 +50,14 @@ export default function EditMachineSpec({
   };
 
   const getMachineTypeList = async () => {
-    const res = await apiGetMachineTypeList();
+    const res: any = await apiGetMachineTypeList();
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineTypeList(res.data.Values.MachineTypeList);
     }
   };
   const patchMachineSpec = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiEditMachineSpec(editMachineSpec);
+    const res: any = await apiEditMachineSpec(editMachineSpec);
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       setCurrentPage(1);
@@ -78,7 +78,7 @@ export default function EditMachineSpec({
   const deleteMachineSpec = async () => {
     const confirm = window.confirm("確定要刪除嗎?");
     if (confirm) {
-      const res = await apiDeleteMachineSpec(editMachineSpec);
+      const res: any = await apiDeleteMachineSpec(editMachineSpec);
       console.log(res);
       if (res?.data?.Values?.ReqInt === 0) {
         setCurrentPage(1);
@@ -92,13 +92,19 @@ export default function EditMachineSpec({
     getMachineTypeList();
   }, []);
   return (
-    <div>
+    <div className="p-4 bg-gray-700 rounded-xl">
       <div className="relative">
         <button
-          className="absolute top-0 left-[70%] md:left-[65%] xl:left-[60%] p-1 border rounded-md hover:bg-gray-600"
+          className="absolute top-0 left-0 p-2 border rounded-md hover:bg-gray-600"
           onClick={() => deleteMachineSpec()}
         >
           刪除
+        </button>
+        <button
+          className="absolute top-0 right-0 p-2 "
+          onClick={() => setEditMachineSpecMode(false)}
+        >
+          X
         </button>
         <h3>編輯設備規格</h3>
       </div>
@@ -117,7 +123,7 @@ export default function EditMachineSpec({
               }
             >
               <option value="">請選擇</option>
-              {productLineList.map((item) => (
+              {productLineList.map((item: any) => (
                 <option key={item.Id} value={item.Id} className="text-black">
                   {item.Name}
                 </option>
@@ -137,7 +143,7 @@ export default function EditMachineSpec({
               <option value="" className="text-black">
                 請選擇
               </option>
-              {machineTypeList.map((item) => (
+              {machineTypeList.map((item: any) => (
                 <option key={item.Id} value={item.Id} className="text-black">
                   {item.Name}
                 </option>
@@ -165,7 +171,7 @@ export default function EditMachineSpec({
             />
           </div>
           <button
-            className="w-full bg-gray-700 rounded-md hover:bg-gray-500"
+            className="w-full bg-gray-600 rounded-md hover:bg-gray-500"
             onClick={(e) => handleChangePage(e, 1)}
           >
             下一步
@@ -223,7 +229,7 @@ export default function EditMachineSpec({
               上一步
             </button>
             <button
-              className="w-full bg-gray-700 rounded-md hover:bg-gray-500"
+              className="w-full bg-gray-600 rounded-md hover:bg-gray-500"
               onClick={(e) => handleChangePage(e, 1)}
             >
               下一步
@@ -272,12 +278,12 @@ export default function EditMachineSpec({
           </div>
           <div className="flex gap-2">
             <button
-              className="w-full bg-gray-800 rounded-md hover:bg-gray-700"
+              className="w-full bg-gray-800 rounded-md hover:bg-gray-600"
               onClick={(e) => handleChangePage(e, -1)}
             >
               上一步
             </button>
-            <button className="w-full bg-gray-700 rounded-md hover:bg-gray-500">
+            <button className="w-full bg-gray-600 rounded-md hover:bg-gray-500">
               編輯
             </button>
           </div>

@@ -1,7 +1,5 @@
 import React, { FormEvent } from "react";
 import { CloseBtn } from "../buttons";
-import { userInfo } from "os";
-import Notice from "../notice";
 interface UserInfoItem {
   DepartmentID: string;
   UserAccount: string;
@@ -42,7 +40,6 @@ const UserInfoNew = ({
         onSubmit={(e) => fetchAddNewUser(e)}
       >
         <p className="text-xl text-center">新增使用者</p>
-        {notice && <Notice isError={isError} />}
         <label htmlFor="DepartmentID">部門</label>
         <select
           defaultValue={""}

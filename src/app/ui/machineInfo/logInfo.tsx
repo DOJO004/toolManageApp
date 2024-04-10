@@ -1,10 +1,5 @@
 interface selectMachineInfoItem {
-  AtcLoadingList: [
-    {
-      AtcNo: number;
-      ToolSn: string;
-    },
-  ];
+  AtcLoadingList: { AtcNo: number; ToolSn: string }[];
 }
 interface MachineLogInfoProps {
   selectMachineInfo: selectMachineInfoItem;

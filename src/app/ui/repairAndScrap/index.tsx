@@ -12,7 +12,7 @@ export default function RepairAndScrapIndex() {
   const [toolStockList, setToolStockList] = useState([]);
 
   const getToolStockList = async () => {
-    const res = await apiGetToolStockList();
+    const res: any = await apiGetToolStockList();
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       setToolStockList(res.data.Values.ToolStockList);
@@ -61,7 +61,7 @@ export default function RepairAndScrapIndex() {
   return (
     <div className="h-screen overflow-auto text-center">
       <h3 className="my-4">修整 / 報廢</h3>
-      <div className="overflow-hidden bg-gray-700  rounded-t-md">
+      <div className="overflow-hidden bg-gray-700 rounded-t-md">
         <table className="w-full ">
           <thead>
             <tr className="bg-indigo-500">
@@ -79,7 +79,7 @@ export default function RepairAndScrapIndex() {
           </thead>
           <tbody>
             {toolStockList
-              ? toolStockList.map((item) => (
+              ? toolStockList.map((item: any) => (
                   <tr key={item.ToolSn} className="hover:bg-gray-600 ">
                     <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
                     <td className="p-1 whitespace-nowrap">

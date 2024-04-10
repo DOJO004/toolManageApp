@@ -10,7 +10,7 @@ export default function Page() {
   const [bindLabelList, setBindLabelList] = useState([]);
 
   const getBindLabelList = async () => {
-    const res = await apiGetBindLabelList();
+    const res: any = await apiGetBindLabelList();
     if (res?.data?.Values?.ReqInt === 0) {
       setBindLabelList(res.data.Values.LabelBindList);
     }
@@ -19,7 +19,7 @@ export default function Page() {
   const deleteBindLabel = async (data: any) => {
     const confirm = window.confirm(`確定要歸還${data.LToolCode}嗎?`);
     if (confirm) {
-      const res = await apiDeleteBindLabel(data);
+      const res: any = await apiDeleteBindLabel(data);
       console.log(res);
       if (res?.data?.Values?.ReqInt === 0) {
         getBindLabelList();
@@ -47,7 +47,7 @@ export default function Page() {
             </thead>
             <tbody>
               {bindLabelList.length > 0 ? (
-                bindLabelList.map((item, index) => (
+                bindLabelList.map((item: any, index: number) => (
                   <tr key={index} className="bg-indigo-200">
                     <td className="p-2 text-black whitespace-nowrap">
                       {item.LabelSpec?.LabelID}

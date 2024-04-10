@@ -5,9 +5,13 @@ import { FormEvent, useState } from "react";
 
 interface NewELabelInfoProps {
   getELabelList: () => void;
+  setNewLabelMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function NewELabelInfo({ getELabelList }: NewELabelInfoProps) {
+export default function NewELabelInfo({
+  getELabelList,
+  setNewLabelMode,
+}: NewELabelInfoProps) {
   const [newLabelInfo, setNewLabelInfo] = useState({
     LabelBrandId: "",
     LabelSn: "",
@@ -20,7 +24,7 @@ export default function NewELabelInfo({ getELabelList }: NewELabelInfoProps) {
 
   const postNewLabelInfo = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiNewELabel(newLabelInfo);
+    const res: any = await apiNewELabel(newLabelInfo);
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       getELabelList();
@@ -45,8 +49,16 @@ export default function NewELabelInfo({ getELabelList }: NewELabelInfoProps) {
   };
 
   return (
-    <div>
-      <h3>新增電子標籤</h3>
+    <div className="p-4 bg-gray-700 rounded-xl">
+      <div className="relative ">
+        <h3>新增電子標籤</h3>
+        <button
+          className="absolute top-0 right-0 "
+          onClick={() => setNewLabelMode(false)}
+        >
+          X
+        </button>
+      </div>
       <form
         action=""
         className="max-w-md p-2 mx-auto"

@@ -9,7 +9,7 @@ export default function DashboardIndex() {
     "conic-gradient(from 0deg at 50% 50%, #2bfc4e 0deg 50deg, gray 50deg 360deg)";
 
   const getMachineInfoList = async () => {
-    const res = await apiGetMachineStatusList();
+    const res: any = await apiGetMachineStatusList();
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineInfoList(res.data.Values.MachineStatusList);
@@ -22,7 +22,7 @@ export default function DashboardIndex() {
   return (
     <div className="w-full lg:grid-cols-2 lg:grid lg:gap-2 xl:grid-cols-3">
       {machineInfoList
-        ? machineInfoList.map((item) => (
+        ? machineInfoList.map((item: any) => (
             <div
               className="w-full p-2 mx-auto mb-2 bg-gray-900 rounded-md"
               key={item.MachineId}
@@ -51,11 +51,10 @@ export default function DashboardIndex() {
                       {item.Status} / {item.Activation} %
                     </p>
                   </div>
-                  <p className="text-center">站號</p>
                 </div>
               </div>
               <div className="flex justify-center gap-2 mx-4 mt-10">
-                {item.AtcLoadingList.map((tool) => (
+                {item.AtcLoadingList.map((tool: any) => (
                   <div
                     className="flex flex-col justify-center "
                     key={tool.ToolSn}
