@@ -5,15 +5,15 @@ import {
   apiEditMachineType,
 } from "@/scripts/Apis/machineType/machineType";
 import { FormEvent } from "react";
-
-interface editMachineTypeItem {
-  Id: string;
-  Name: string;
-}
+import {
+  DeleteMachineTypeResponse,
+  MachineTypeItem,
+  PatchMachineTypeResponse,
+} from "./types";
 
 interface EditMachineTypeProps {
-  editMachineType: editMachineTypeItem;
-  setEditMachineType: React.Dispatch<React.SetStateAction<editMachineTypeItem>>;
+  editMachineType: MachineTypeItem;
+  setEditMachineType: React.Dispatch<React.SetStateAction<MachineTypeItem>>;
   setEditMachineTypeMode: React.Dispatch<React.SetStateAction<boolean>>;
   getMachineTypeList: () => void;
 }
@@ -29,7 +29,8 @@ export default function EditMachineType({
 
   const patchMachineType = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiEditMachineType(editMachineType);
+    const data = await apiEditMachineType(editMachineType);
+    const res = data as PatchMachineTypeResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setEditMachineTypeMode(false);
       getMachineTypeList();
@@ -39,8 +40,8 @@ export default function EditMachineType({
   const deleteMachineType = async () => {
     const confirm = window.confirm("確定刪除嗎?");
     if (confirm) {
-      const res: any = await apiDeleteMachineType(editMachineType);
-      console.log(res);
+      const data = await apiDeleteMachineType(editMachineType);
+      const res = data as DeleteMachineTypeResponse;
 
       if (res?.data?.Values?.ReqInt === 0) {
         setEditMachineTypeMode(false);

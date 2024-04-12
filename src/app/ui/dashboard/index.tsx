@@ -2,15 +2,21 @@
 import { apiGetMachineStatusList } from "@/scripts/Apis/dashboard/dashboard";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import {
+  GetMachineStatusInfoListResponse,
+  MachineStatusItem,
+} from "../machineInfo/types";
 
 export default function DashboardIndex() {
-  const [machineInfoList, setMachineInfoList] = useState([]);
+  const [machineInfoList, setMachineInfoList] = useState<MachineStatusItem[]>(
+    []
+  );
   const chartColor =
     "conic-gradient(from 0deg at 50% 50%, #2bfc4e 0deg 50deg, gray 50deg 360deg)";
 
   const getMachineInfoList = async () => {
-    const res: any = await apiGetMachineStatusList();
-    console.log(res);
+    const data = await apiGetMachineStatusList();
+    const res = data as GetMachineStatusInfoListResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineInfoList(res.data.Values.MachineStatusList);
     }
@@ -22,7 +28,7 @@ export default function DashboardIndex() {
   return (
     <div className="w-full lg:grid-cols-2 lg:grid lg:gap-2 xl:grid-cols-3">
       {machineInfoList
-        ? machineInfoList.map((item: any) => (
+        ? machineInfoList.map((item) => (
             <div
               className="w-full p-2 mx-auto mb-2 bg-gray-900 rounded-md"
               key={item.MachineId}
@@ -54,7 +60,7 @@ export default function DashboardIndex() {
                 </div>
               </div>
               <div className="flex justify-center gap-2 mx-4 mt-10">
-                {item.AtcLoadingList.map((tool: any) => (
+                {item.AtcLoadingList.map((tool) => (
                   <div
                     className="flex flex-col justify-center "
                     key={tool.ToolSn}

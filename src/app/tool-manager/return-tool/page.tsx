@@ -3,23 +3,32 @@
 import { useEffect, useState } from "react";
 
 import {
+  DeleteBindLabelResponse,
+  GetBindLabelListResponse,
+  LabelBindItem,
+} from "@/app/ui/returnTool/types";
+import {
   apiDeleteBindLabel,
   apiGetBindLabelList,
 } from "@/scripts/Apis/receiveTool/receiveTool";
 export default function Page() {
-  const [bindLabelList, setBindLabelList] = useState([]);
+  const [bindLabelList, setBindLabelList] = useState<LabelBindItem[]>([]);
 
   const getBindLabelList = async () => {
-    const res: any = await apiGetBindLabelList();
+    const data = await apiGetBindLabelList();
+    const res = data as GetBindLabelListResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setBindLabelList(res.data.Values.LabelBindList);
     }
   };
 
-  const deleteBindLabel = async (data: any) => {
-    const confirm = window.confirm(`確定要歸還${data.LToolCode}嗎?`);
+  const deleteBindLabel = async (item: LabelBindItem) => {
+    console.log("delete bind label", item);
+
+    const confirm = window.confirm(`確定要歸還${item.LToolCode}嗎?`);
     if (confirm) {
-      const res: any = await apiDeleteBindLabel(data);
+      const data = await apiDeleteBindLabel(item);
+      const res = data as DeleteBindLabelResponse;
       console.log(res);
       if (res?.data?.Values?.ReqInt === 0) {
         getBindLabelList();
@@ -47,13 +56,13 @@ export default function Page() {
             </thead>
             <tbody>
               {bindLabelList.length > 0 ? (
-                bindLabelList.map((item: any, index: number) => (
+                bindLabelList.map((item: LabelBindItem, index: number) => (
                   <tr key={index} className="bg-indigo-200">
                     <td className="p-2 text-black whitespace-nowrap">
-                      {item.LabelSpec?.LabelID}
+                      {item.LToolCode}
                     </td>
                     <td className="p-2 text-black whitespace-nowrap">
-                      {item.LabelSpec?.ToolSN}
+                      {item.ToolSn}
                     </td>
                     <td
                       className="p-2 text-black cursor-pointer whitespace-nowrap"

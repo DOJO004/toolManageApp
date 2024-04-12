@@ -1,37 +1,8 @@
 import Image from "next/image";
-
-interface toolInfoDataItem {
-  ToolSn: string;
-  ToolSpecId: string;
-  ToolSpecName: string;
-  ToolTypeData: {
-    Id: string;
-    Name: string;
-  };
-  LifeStatus: string;
-  LifePercentage: number;
-  SpecData: {
-    BladeDiameter: number;
-    BladeHeight: number;
-    TotalLength: number;
-    HandleDiameter: number;
-  };
-  LifeData: {
-    ProcessCnt: number;
-    ProcessTime: number;
-    ProcessLength: number;
-    RepairCnt: number;
-  };
-  LoadingData: {
-    IsLoading: boolean;
-    MachineId: string;
-    AtcNo: number;
-  };
-  LastModify: string;
-}
+import { ToolStockItem } from "./types";
 
 interface PieChartProps {
-  toolInfoData: toolInfoDataItem;
+  toolInfoData: ToolStockItem;
 }
 const PieChart = ({ toolInfoData }: PieChartProps) => {
   const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A 30%, #B9E6B5 30%, #B9E6B5)`;

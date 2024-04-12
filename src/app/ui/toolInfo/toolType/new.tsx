@@ -2,19 +2,21 @@
 
 import { apiNewToolType } from "@/scripts/Apis/toolType/toolTypeApi";
 import { FormEvent, useState } from "react";
+import { PostToolTypeResponse, ToolTypeItem } from "./types";
 
 interface NewToolTypeProps {
   getToolTypeList: () => void;
 }
 export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
-  const [newToolType, setNewToolType] = useState({
+  const [newToolType, setNewToolType] = useState<ToolTypeItem>({
     Id: "",
     Name: "",
   });
 
   const doAddToolType = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiNewToolType(newToolType);
+    const data = await apiNewToolType(newToolType);
+    const res = data as PostToolTypeResponse;
     const inputToolTypeId = document.querySelector<HTMLInputElement>("#id");
 
     if (res?.data?.Values?.ReqInt === 0) {

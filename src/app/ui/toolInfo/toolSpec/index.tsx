@@ -3,9 +3,32 @@ import { apiGetToolSpecList } from "@/scripts/Apis/toolSpec/toolSpecApi";
 import { useEffect, useState } from "react";
 import { EditToolSpec } from "./edit";
 import { NewToolSpec } from "./new";
+import { GetToolSpecListResponse, ToolSpecItem } from "./types";
 
 const ToolSpecIndex = () => {
-  const [toolSpecList, setToolSpecList] = useState([]);
+  const [toolSpecList, setToolSpecList] = useState([
+    {
+      ToolSpecId: "",
+      Name: "",
+      ToolTypeData: {
+        Id: "",
+        Name: "",
+      },
+      SafetyStock: 0,
+      SpecData: {
+        BladeDiameter: 0,
+        BladeHeight: 0,
+        TotalLength: 0,
+        HandleDiameter: 0,
+      },
+      MaxLife: {
+        ProcessCnt: 0,
+        ProcessTime: 0,
+        ProcessLength: 0,
+        RepairCnt: 0,
+      },
+    },
+  ]);
   const [newToolSpecMode, setNewToolSpecMode] = useState(false);
   const [editToolSpecMode, setEditToolSpecMode] = useState(false);
 
@@ -25,8 +48,8 @@ const ToolSpecIndex = () => {
   });
 
   const getToolSpecList = async () => {
-    const res: any = await apiGetToolSpecList();
-    console.log(res);
+    const data = await apiGetToolSpecList();
+    const res = data as GetToolSpecListResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setToolSpecList(res.data.Values.ToolSpecList);
     }
@@ -42,7 +65,7 @@ const ToolSpecIndex = () => {
     setNewToolSpecMode(false);
   };
 
-  const handleSetEditSpec = (item: any) => {
+  const handleSetEditSpec = (item: ToolSpecItem) => {
     setEditToolSpec({
       ToolSpecId: item.ToolSpecId,
       Name: item.Name,
@@ -93,7 +116,7 @@ const ToolSpecIndex = () => {
             </thead>
             <tbody>
               {toolSpecList?.length >= 1 ? (
-                toolSpecList.map((item: any) => (
+                toolSpecList.map((item) => (
                   <tr
                     key={item.ToolSpecId}
                     className="cursor-pointer hover:bg-gray-500"

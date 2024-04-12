@@ -5,6 +5,7 @@ import {
   apiEditELabel,
 } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
 import { FormEvent } from "react";
+import { DeleteELabelInfoResponse, PatchELabelInfoResponse } from "./types";
 
 interface editLabelDataItem {
   LabelBrandId: string;
@@ -39,14 +40,15 @@ export default function EditELabelInfo({
   };
   const patchELabelInfo = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiEditELabel(editLabelData);
+    const data = await apiEditELabel(editLabelData);
+    const res = data as PatchELabelInfoResponse;
   };
 
   const deleteELabelInfo = async () => {
     const confirm = window.confirm("確定刪除嗎?");
     if (confirm) {
-      const res: any = await apiDeleteELabel(editLabelData);
-      console.log(res);
+      const data = await apiDeleteELabel(editLabelData);
+      const res = data as DeleteELabelInfoResponse;
       if (res?.data?.Values?.ReqInt === 0) {
         getELabelList();
         setEditLabelMode(false);

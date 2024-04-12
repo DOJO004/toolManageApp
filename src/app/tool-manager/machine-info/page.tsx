@@ -1,54 +1,30 @@
 "use client";
 import MachineLogInfo from "@/app/ui/machineInfo/logInfo";
 import MachineInfoPieChart from "@/app/ui/machineInfo/pieChart";
+import {
+  GetMachineStatusInfoListResponse,
+  MachineStatusItem,
+} from "@/app/ui/machineInfo/types";
 import { apiGetMachineStatusList } from "@/scripts/Apis/dashboard/dashboard";
 import { useEffect, useState } from "react";
 export default function Page() {
-  const [machineInfoList, setMachineInfoList] = useState([]);
-  const [selectMachineInfo, setSelectMachineInfo] = useState({
-    MachineId: "",
-    ProductLineData: {
-      Id: "",
-      Name: "",
-    },
-    MacTypeData: {
-      Id: "",
-      Name: "",
-    },
-    SerialNumber: "",
-    MachineIP: "",
-    SystemData: {
-      Brand: "",
-      Series: "",
-      MT: "",
-    },
-    Status: "",
-    Activation: 0,
-    ProcessTime: 0,
-    CurrentParameter: {
-      CurrentGcd: 0,
-      TotalFeedRate: 0,
-      SpindleRPM: 0,
-      SpindleLoading: 0,
-      SpindleSpeed: 0,
-      CurrentProgram: "",
-    },
-    AtcLoadingList: [],
-    LoadingLogList: [],
-    LastModify: "",
-  });
+  const [machineInfoList, setMachineInfoList] = useState<MachineStatusItem[]>(
+    []
+  );
+  const [selectMachineInfo, setSelectMachineInfo] = useState<MachineStatusItem>(
+    {} as MachineStatusItem
+  );
 
   const getMachineInfoList = async () => {
-    const res: any = await apiGetMachineStatusList();
-    console.log(res);
-
+    const data = await apiGetMachineStatusList();
+    const res = data as GetMachineStatusInfoListResponse;
     if (res.data?.Values?.ReqInt === 0) {
       setMachineInfoList(res.data.Values.MachineStatusList);
       setSelectMachineInfo(res.data.Values.MachineStatusList[0]);
     }
   };
 
-  const handleSelectMachineInfo = (item: any) => {
+  const handleSelectMachineInfo = (item: MachineStatusItem) => {
     setSelectMachineInfo(item);
   };
 
@@ -76,7 +52,7 @@ export default function Page() {
             </thead>
             <tbody>
               {machineInfoList
-                ? machineInfoList.map((item: any) => (
+                ? machineInfoList.map((item) => (
                     <tr
                       key={item.MachineId}
                       onClick={() => handleSelectMachineInfo(item)}

@@ -6,14 +6,15 @@ import {
 } from "@/scripts/Apis/productLineType/productLineType";
 import React, { FormEvent } from "react";
 
-interface EditProductLineItem {
-  Id: string;
-  Name: string;
-}
+import {
+  DeleteProductLineResponse,
+  PatchProductLineResponse,
+  ProductLineItem,
+} from "./types";
 
 interface EditProductLineProps {
-  editProductLine: EditProductLineItem;
-  setEditProductLine: React.Dispatch<React.SetStateAction<EditProductLineItem>>;
+  editProductLine: ProductLineItem;
+  setEditProductLine: React.Dispatch<React.SetStateAction<ProductLineItem>>;
   getProductLineList: () => void;
   setEditProductLineMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -30,8 +31,8 @@ export default function EditProductLine({
 
   const patchProductLine = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiEditProductLineType(editProductLine);
-    console.log(res);
+    const data = await apiEditProductLineType(editProductLine);
+    const res = data as PatchProductLineResponse;
 
     if (res?.data?.Values?.ReqInt === 0) {
       getProductLineList();
@@ -42,7 +43,8 @@ export default function EditProductLine({
   const deleteProductLine = async () => {
     const confirm = window.confirm("確定刪除嗎?");
     if (confirm) {
-      const res: any = await apiDeleteProductLineType(editProductLine);
+      const data = await apiDeleteProductLineType(editProductLine);
+      const res = data as DeleteProductLineResponse;
       if (res?.data?.Values?.ReqInt === 0) {
         getProductLineList();
         setEditProductLineMode(false);

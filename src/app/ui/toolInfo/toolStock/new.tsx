@@ -3,19 +3,22 @@
 import { apiGetToolSpecList } from "@/scripts/Apis/toolSpec/toolSpecApi";
 import { apiNewToolStock } from "@/scripts/Apis/toolStock/toolStock";
 import { FormEvent, useEffect, useState } from "react";
+import { GetToolSpecListResponse, ToolSpecItem } from "../toolSpec/types";
+import { PostToolStockResponse } from "./types";
 
 interface NewToolStockProps {
   getToolStockList: () => void;
 }
 export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
-  const [toolSpecList, setToolSpecList] = useState([]);
+  const [toolSpecList, setToolSpecList] = useState<ToolSpecItem[]>([]);
   const [toolStock, setToolStock] = useState({
     ToolSpecId: "",
     Qty: 0,
   });
 
   const getToolSpecList = async () => {
-    const res: any = await apiGetToolSpecList();
+    const data = await apiGetToolSpecList();
+    const res = data as GetToolSpecListResponse;
     console.log("tool spec list ", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
@@ -25,7 +28,8 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
 
   const postToolStock = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiNewToolStock(toolStock);
+    const data = await apiNewToolStock(toolStock);
+    const res = data as PostToolStockResponse;
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       getToolStockList();
@@ -70,7 +74,7 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
             <option value="" className="text-black ">
               請選擇
             </option>
-            {toolSpecList.map((item: any) => (
+            {toolSpecList.map((item) => (
               <option
                 key={item.ToolSpecId}
                 value={item.ToolSpecId}

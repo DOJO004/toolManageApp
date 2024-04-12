@@ -2,6 +2,7 @@
 
 import { apiNewMachineType } from "@/scripts/Apis/machineType/machineType";
 import { FormEvent, useState } from "react";
+import { PostMachineTypeResponse } from "./types";
 
 interface NewMachineTypeProps {
   getMachineTypeList: () => void;
@@ -19,8 +20,8 @@ export default function NewMachineType({
 
   const postMachineType = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiNewMachineType(newMachineType);
-    console.log(res);
+    const data = await apiNewMachineType(newMachineType);
+    const res = data as PostMachineTypeResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       cleanNewMachineType();
       getMachineTypeList();

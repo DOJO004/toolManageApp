@@ -7,9 +7,14 @@ import {
 import { useEffect, useState } from "react";
 import EditELabelInfo from "./edit";
 import NewELabelInfo from "./new";
+import {
+  GetELabelListResponse,
+  LabelItem,
+  SyncLabelDataFromAimsResponse,
+} from "./types";
 
 export default function ELabelInfoIndex() {
-  const [eLabelList, setELabelList] = useState([]);
+  const [eLabelList, setELabelList] = useState<LabelItem[]>([]);
   const [newLabelMode, setNewLabelMode] = useState(false);
   const [editLabelMode, setEditLabelMode] = useState(false);
   const [editLabelData, setEditLabelData] = useState({
@@ -29,8 +34,8 @@ export default function ELabelInfoIndex() {
   });
 
   const getELabelList = async () => {
-    const res: any = await apiGetELabelList();
-    console.log(res);
+    const data = await apiGetELabelList();
+    const res = data as GetELabelListResponse;
 
     if (res?.data?.Values?.ReqInt === 0) {
       setELabelList(res.data.Values.LabelList);
@@ -42,7 +47,7 @@ export default function ELabelInfoIndex() {
     setEditLabelMode(false);
   };
 
-  const handleEditLabeMode = (labeData: any) => {
+  const handleEditLabeMode = (labeData: LabelItem) => {
     console.log(labeData);
 
     setEditLabelMode(true);
@@ -65,7 +70,8 @@ export default function ELabelInfoIndex() {
   };
 
   const postAsyncELabelInfoFromAims = async () => {
-    const res: any = await syncELabelDataFromAims();
+    const data = await syncELabelDataFromAims();
+    const res = data as SyncLabelDataFromAimsResponse;
     console.log(res);
   };
 
@@ -99,7 +105,7 @@ export default function ELabelInfoIndex() {
             </thead>
             <tbody>
               {eLabelList
-                ? eLabelList.map((item: any) => (
+                ? eLabelList.map((item) => (
                     <tr
                       key={item.LabelId}
                       className="cursor-pointer hover:bg-gray-600"

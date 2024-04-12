@@ -4,11 +4,7 @@ import { getLoginTime, getUserToken } from "../mainApi";
 export async function apiGetToolTypeList() {
   try {
     const res = await apiInstance.get("tool_get/GetToolTypeInfoList");
-
-    if (res.data.Values.ToolTypeMenus) {
-      return res.data.Values.ToolTypeMenus;
-    }
-    return {};
+    return res;
   } catch (error) {
     console.error("Error", error);
     return error;

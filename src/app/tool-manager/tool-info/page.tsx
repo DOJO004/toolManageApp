@@ -3,48 +3,32 @@ import PieChart from "@/app/ui/toolInfo/piechart";
 import ToolInfoLog from "@/app/ui/toolInfo/toolInfoLog";
 import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
 import { useEffect, useState } from "react";
+import {
+  ApiResponse,
+  GetToolInfoData,
+  ToolStockItem,
+} from "../../ui/toolInfo/types";
 
 export default function Page() {
-  const [toolInfoList, setToolInfoList] = useState([]);
-  const [toolInfoData, setToolInfoData] = useState({
-    ToolSn: "",
-    ToolSpecId: "",
-    ToolSpecName: "",
-    ToolTypeData: {
-      Id: "",
-      Name: "",
-    },
-    LifeStatus: "",
-    LifePercentage: 0,
-    SpecData: {
-      BladeDiameter: 0,
-      BladeHeight: 0,
-      TotalLength: 0,
-      HandleDiameter: 0,
-    },
-    LifeData: {
-      ProcessCnt: 0,
-      ProcessTime: 0,
-      ProcessLength: 0,
-      RepairCnt: 0,
-    },
-    LoadingData: {
-      IsLoading: false,
-      MachineId: "",
-      AtcNo: 0,
-    },
-    LastModify: "",
-  });
+  const [toolInfoList, setToolInfoList] = useState<ToolStockItem[]>([]);
+  const [toolInfoData, setToolInfoData] = useState<ToolStockItem>(
+    {} as ToolStockItem
+  );
 
   const getToolInfoList = async () => {
-    const res: any = await apiGetToolStockList();
+    const data = await apiGetToolStockList();
+    const res = data as ApiResponse;
+    console.log("get tool stock list", res);
+
     if (res?.data?.Values?.ReqInt === 0) {
       setToolInfoList(res.data.Values.ToolStockList);
       setToolInfoData(res.data.Values.ToolStockList[0]);
     }
   };
 
-  const handleGetToolInfoData = (data: any) => {
+  const handleGetToolInfoData = (data: GetToolInfoData) => {
+    console.log("get tool info data", data);
+
     setToolInfoData(data);
   };
 
@@ -85,7 +69,7 @@ export default function Page() {
           </thead>
           <tbody>
             {toolInfoList
-              ? toolInfoList.map((item: any) => (
+              ? toolInfoList.map((item) => (
                   <tr
                     key={item.ToolSn}
                     className="cursor-pointer hover:bg-gray-600"

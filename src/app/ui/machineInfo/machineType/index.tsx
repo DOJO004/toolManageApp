@@ -4,18 +4,19 @@ import { apiGetMachineTypeList } from "@/scripts/Apis/machineType/machineType";
 import { useEffect, useState } from "react";
 import EditMachineType from "./edit";
 import NewMachineType from "./new";
+import { GetToolTypeListResponse, MachineTypeItem } from "./types";
 
 const MachineTypeIndex = () => {
-  const [machineTypeList, setMachineTypeList] = useState([]);
+  const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
   const [newMachineTypeMode, setNewMachineTypeMode] = useState(false);
   const [editMachineTypeMode, setEditMachineTypeMode] = useState(false);
 
-  const [editMachineType, setEditMachineType] = useState({
-    Id: "",
-    Name: "",
-  });
+  const [editMachineType, setEditMachineType] = useState<MachineTypeItem>(
+    {} as MachineTypeItem
+  );
   const getMachineTypeList = async () => {
-    const res: any = await apiGetMachineTypeList();
+    const data = await apiGetMachineTypeList();
+    const res = data as GetToolTypeListResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineTypeList(res.data.Values.MachineTypeList);
     }
@@ -26,7 +27,7 @@ const MachineTypeIndex = () => {
     setEditMachineTypeMode(false);
   };
 
-  const handleClickEditMachineType = (item: any) => {
+  const handleClickEditMachineType = (item: MachineTypeItem) => {
     setEditMachineTypeMode(true);
     setNewMachineTypeMode(false);
 
@@ -57,7 +58,7 @@ const MachineTypeIndex = () => {
               </tr>
             </thead>
             <tbody>
-              {machineTypeList.map((item: any, index: number) => (
+              {machineTypeList.map((item, index: number) => (
                 <tr
                   key={index}
                   className="text-center cursor-pointer hover:bg-gray-600"

@@ -6,32 +6,37 @@ import {
 import { FormEvent, useEffect, useState } from "react";
 import { EditToolType } from "./edit";
 import { NewToolType } from "./new";
+import {
+  GetToolTypeListResponse,
+  PatchToolTypeResponse,
+  ToolTypeItem,
+} from "./types";
 
 export function ToolTypeIndex() {
-  const [toolTypeList, setToolTypeList] = useState([
-    {
-      Id: "",
-      Name: "",
-    },
-  ]);
+  const [toolTypeList, setToolTypeList] = useState<ToolTypeItem[]>([]);
 
   const [newToolTypeMode, setNewToolTypeMode] = useState(false);
   const [editToolTypeMode, setEditToolTypeMode] = useState(false);
-  const [editToolType, setEditToolType] = useState({
+  const [editToolType, setEditToolType] = useState<ToolTypeItem>({
     Id: "",
     Name: "",
   });
 
   const getToolTypeList = async () => {
-    const res = await apiGetToolTypeList();
-    console.log("get tool type list ", res);
-
-    setToolTypeList(res);
+    const data = await apiGetToolTypeList();
+    const res = data as GetToolTypeListResponse;
+    if (res?.data?.Values?.ReqInt === 0) {
+      setToolTypeList(res.data.Values.ToolTypeMenus);
+    }
   };
 
   const doEditToolType = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiEditToolType(editToolType);
+    const data = await apiEditToolType(editToolType);
+    const res = data as PatchToolTypeResponse;
+    if (res?.data?.Values?.ReqInt === 0) {
+      alert("edit tool type success!");
+    }
   };
 
   const handleClickNewToolType = () => {
@@ -39,7 +44,7 @@ export function ToolTypeIndex() {
     setNewToolTypeMode(!newToolTypeMode);
   };
 
-  const handleClickEditToolType = (item: { Id: string; Name: string }) => {
+  const handleClickEditToolType = (item: ToolTypeItem) => {
     setNewToolTypeMode(false);
     setEditToolTypeMode(true);
     setEditToolType({

@@ -4,6 +4,15 @@ import { apiNewMachineSpec } from "@/scripts/Apis/machineSpec/machineSpec";
 import { apiGetMachineTypeList } from "@/scripts/Apis/machineType/machineType";
 import { apiGetProductLineTypeList } from "@/scripts/Apis/productLineType/productLineType";
 import React, { FormEvent, useEffect, useState } from "react";
+import {
+  GetMachineTypeListResponse,
+  MachineTypeItem,
+} from "../machineType/types";
+import {
+  GetProductLineListResponse,
+  ProductLineItem,
+} from "../productLine/types";
+import { PostMachineSpecResponse } from "./types";
 
 interface NewMachineSpecProps {
   getMachineSpecList: () => void;
@@ -21,26 +30,27 @@ export default function NewMachineSpec({
     Name: "",
     MachineIP: "",
     ReaderId: "",
-    Brand: 0,
+    Brand: "",
     Series: "",
     MT: "",
     AxisIndex: 0,
     AxisName: "",
     IsSpindle: false,
   });
-  const [productLineList, setProductLineList] = useState([]);
-  const [machineTypeList, setMachineTypeList] = useState([]);
+  const [productLineList, setProductLineList] = useState<ProductLineItem[]>([]);
+  const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const getProductLineList = async () => {
-    const res: any = await apiGetProductLineTypeList();
-
+    const data = await apiGetProductLineTypeList();
+    const res = data as GetProductLineListResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setProductLineList(res.data.Values.ProductLineList);
     }
   };
 
   const getMachineTypeList = async () => {
-    const res: any = await apiGetMachineTypeList();
+    const data = await apiGetMachineTypeList();
+    const res = data as GetMachineTypeListResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineTypeList(res.data.Values.MachineTypeList);
     }
@@ -48,8 +58,8 @@ export default function NewMachineSpec({
 
   const postMachineSpec = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiNewMachineSpec(newMachineSpec);
-    console.log(res);
+    const data = await apiNewMachineSpec(newMachineSpec);
+    const res = data as PostMachineSpecResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setCurrentPage(1);
       cleanNewMachineSpec();
@@ -65,7 +75,7 @@ export default function NewMachineSpec({
       Name: "",
       MachineIP: "",
       ReaderId: "",
-      Brand: 0,
+      Brand: "",
       Series: "",
       MT: "",
       AxisIndex: 0,
@@ -113,7 +123,7 @@ export default function NewMachineSpec({
               }
             >
               <option value="">請選擇</option>
-              {productLineList.map((item: any) => (
+              {productLineList.map((item) => (
                 <option key={item.Id} value={item.Id} className="text-black">
                   {item.Name}
                 </option>
@@ -133,7 +143,7 @@ export default function NewMachineSpec({
               <option value="" className="text-black">
                 請選擇
               </option>
-              {machineTypeList.map((item: any) => (
+              {machineTypeList.map((item) => (
                 <option key={item.Id} value={item.Id} className="text-black">
                   {item.Name}
                 </option>
