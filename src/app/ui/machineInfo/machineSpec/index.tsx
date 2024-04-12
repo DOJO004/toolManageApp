@@ -4,9 +4,14 @@ import { apiGetMachineSpecList } from "@/scripts/Apis/machineSpec/machineSpec";
 import { useEffect, useState } from "react";
 import EditMachineSpec from "./edit";
 import NewMachineSpec from "./new";
+import {
+  EditMachineSpecItem,
+  GetMachineSpecListResponse,
+  MachineSpecItem,
+} from "./types";
 
 const MachineSpecIndex = () => {
-  const [machineSpecList, setMachineSpecList] = useState([]);
+  const [machineSpecList, setMachineSpecList] = useState<MachineSpecItem[]>([]);
   const [newMachineSpecMode, setNewMachineSpecMode] = useState(false);
   const [editMachineSpecMode, setEditMachineSpecMode] = useState(false);
   const [editMachineSpec, setEditMachineSpec] = useState({
@@ -17,7 +22,7 @@ const MachineSpecIndex = () => {
     Name: "",
     MachineIP: "",
     ReaderId: "",
-    Brand: 0,
+    Brand: "",
     Series: "",
     MT: "",
     AxisIndex: 0,
@@ -26,7 +31,8 @@ const MachineSpecIndex = () => {
   });
 
   const getMachineSpecList = async () => {
-    const res: any = await await apiGetMachineSpecList();
+    const data = await await apiGetMachineSpecList();
+    const res = data as GetMachineSpecListResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineSpecList(res.data.Values.MachineeSpecList);
     }
@@ -37,9 +43,7 @@ const MachineSpecIndex = () => {
     setEditMachineSpecMode(false);
   };
 
-  const clickEditMachineSpec = (machineSpec: any) => {
-    console.log(machineSpec);
-
+  const clickEditMachineSpec = (machineSpec: EditMachineSpecItem) => {
     setEditMachineSpecMode(true);
     setNewMachineSpecMode(false);
     setEditMachineSpec({
@@ -92,7 +96,7 @@ const MachineSpecIndex = () => {
               </tr>
             </thead>
             <tbody>
-              {machineSpecList.map((item: any) => {
+              {machineSpecList.map((item) => {
                 return (
                   <tr
                     key={item.MachineId}

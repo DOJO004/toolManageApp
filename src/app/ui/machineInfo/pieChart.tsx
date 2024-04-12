@@ -1,39 +1,8 @@
 import Image from "next/image";
+import { MachineStatusItem } from "./types";
 
-interface selectMachineInfoItem {
-  MachineId: string;
-  ProductLineData: {
-    Id: string;
-    Name: string;
-  };
-  MacTypeData: {
-    Id: string;
-    Name: string;
-  };
-  SerialNumber: string;
-  MachineIP: string;
-  SystemData: {
-    Brand: string;
-    Series: string;
-    MT: string;
-  };
-  Status: string;
-  Activation: number;
-  ProcessTime: number;
-  CurrentParameter: {
-    CurrentGcd: number;
-    TotalFeedRate: number;
-    SpindleRPM: number;
-    SpindleLoading: number;
-    SpindleSpeed: number;
-    CurrentProgram: string;
-  };
-  AtcLoadingList: { AtcNo: number; ToolSn: string }[];
-  LoadingLogList: never[];
-  LastModify: string;
-}
 interface MachineInfoPieChartProps {
-  selectMachineInfo: selectMachineInfoItem;
+  selectMachineInfo: MachineStatusItem;
 }
 export default function MachineInfoPieChart({
   selectMachineInfo,
@@ -46,11 +15,11 @@ export default function MachineInfoPieChart({
         <div className="flex justify-between border-b-2">
           <div>
             <p className="text-gray-300">
-              {selectMachineInfo.ProductLineData.Name}
+              {selectMachineInfo.ProductLineData?.Name}
             </p>
             <h3>{selectMachineInfo.SerialNumber}</h3>
             <p className="text-gray-300">
-              {selectMachineInfo.MacTypeData.Name}
+              {selectMachineInfo.MacTypeData?.Name}
             </p>
           </div>
           <div className="flex items-center gap-2">

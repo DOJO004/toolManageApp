@@ -3,6 +3,8 @@
 import { apiNewToolSpec } from "@/scripts/Apis/toolSpec/toolSpecApi";
 import { apiGetToolTypeList } from "@/scripts/Apis/toolType/toolTypeApi";
 import { FormEvent, useEffect, useState } from "react";
+import { GetToolTypeListResponse, ToolTypeItem } from "../toolType/types";
+import { PostToolSpecResponse, ToolSpecItem } from "./types";
 
 interface NewToolSpecProps {
   getToolSpecList: () => void;
@@ -14,11 +16,14 @@ export function NewToolSpec({
   setNewToolSpecMode,
 }: NewToolSpecProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [toolTypeList, setToolTypeList] = useState([]);
-  const [toolSpec, setToolSpec] = useState({
+  const [toolTypeList, setToolTypeList] = useState<ToolTypeItem[]>([]);
+  const [toolSpec, setToolSpec] = useState<ToolSpecItem>({
     ToolSpecId: "",
     Name: "",
-    ToolTypeId: "",
+    ToolTypeData: {
+      Id: "",
+      Name: "",
+    },
     SafetyStock: 0,
     SpecData: {
       BladeDiameter: 0,
@@ -39,14 +44,18 @@ export function NewToolSpec({
   };
 
   const getToolTypeList = async () => {
-    const res = await apiGetToolTypeList();
-    setToolTypeList(res);
+    const data = await apiGetToolTypeList();
+    const res = data as GetToolTypeListResponse;
+
+    if (res?.data?.Values?.ReqInt === 0) {
+      setToolTypeList(res.data.Values.ToolTypeMenus);
+    }
   };
 
   const postNewToolSpec = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiNewToolSpec(toolSpec);
-    console.log(res);
+    const data = await apiNewToolSpec(toolSpec);
+    const res = data as PostToolSpecResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       getToolSpecList();
       cleanToolSpec();
@@ -58,7 +67,10 @@ export function NewToolSpec({
     setToolSpec({
       ToolSpecId: "",
       Name: "",
-      ToolTypeId: "",
+      ToolTypeData: {
+        Id: "",
+        Name: "",
+      },
       SafetyStock: 0,
       SpecData: {
         BladeDiameter: 0,
@@ -75,7 +87,7 @@ export function NewToolSpec({
     });
   };
 
-  const handelSetToolSpec = (key: string, value: any) => {
+  const handelSetToolSpec = (key: string, value: string | number) => {
     setToolSpec((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -107,12 +119,12 @@ export function NewToolSpec({
           <label htmlFor="ID">刀具類型</label>
           <select
             id="ID"
-            value={toolSpec.ToolTypeId}
+            value={toolSpec.ToolTypeData.Id}
             className="block w-full p-2 text-black border rounded-md"
             onChange={(e) => handelSetToolSpec("ToolTypeId", e.target.value)}
           >
             <option value="">請選擇</option>
-            {toolTypeList.map((item: any) => (
+            {toolTypeList.map((item) => (
               <option key={item.Id} value={item.Id} className="text-black ">
                 {item.Name}
               </option>
@@ -153,15 +165,15 @@ export function NewToolSpec({
           <label htmlFor="Φ">Φ</label>
           <input
             id="Φ"
-            type="text"
+            type="number"
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.SpecData.BladeDiameter}
             onChange={(e) =>
-              setToolSpec((prev: any) => ({
+              setToolSpec((prev) => ({
                 ...prev,
                 SpecData: {
                   ...prev.SpecData,
-                  BladeDiameter: e.target.value,
+                  BladeDiameter: Number(e.target.value),
                 },
               }))
             }
@@ -171,15 +183,15 @@ export function NewToolSpec({
           <label htmlFor="height">高度</label>
           <input
             id="height"
-            type="text"
+            type="number"
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.SpecData.BladeHeight}
             onChange={(e) =>
-              setToolSpec((prev: any) => ({
+              setToolSpec((prev) => ({
                 ...prev,
                 SpecData: {
                   ...prev.SpecData,
-                  BladeHeight: e.target.value,
+                  BladeHeight: Number(e.target.value),
                 },
               }))
             }
@@ -189,15 +201,15 @@ export function NewToolSpec({
           <label htmlFor="totalLength">總長度</label>
           <input
             id="totalLength"
-            type="text"
+            type="number"
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.SpecData.TotalLength}
             onChange={(e) =>
-              setToolSpec((prev: any) => ({
+              setToolSpec((prev) => ({
                 ...prev,
                 SpecData: {
                   ...prev.SpecData,
-                  TotalLength: e.target.value,
+                  TotalLength: Number(e.target.value),
                 },
               }))
             }
@@ -207,15 +219,15 @@ export function NewToolSpec({
           <label htmlFor="手柄Φ">手柄Φ</label>
           <input
             id="手柄Φ"
-            type="text"
+            type="number"
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.SpecData.HandleDiameter}
             onChange={(e) =>
-              setToolSpec((prev: any) => ({
+              setToolSpec((prev) => ({
                 ...prev,
                 SpecData: {
                   ...prev.SpecData,
-                  HandleDiameter: e.target.value,
+                  HandleDiameter: Number(e.target.value),
                 },
               }))
             }
@@ -253,15 +265,15 @@ export function NewToolSpec({
           <label htmlFor="RepairCnt">最大修整次數</label>
           <input
             id="RepairCnt"
-            type="text"
+            type="number"
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.MaxLife.RepairCnt}
             onChange={(e) =>
-              setToolSpec((prev: any) => ({
+              setToolSpec((prev) => ({
                 ...prev,
                 MaxLife: {
                   ...prev.MaxLife,
-                  RepairCnt: e.target.value,
+                  RepairCnt: Number(e.target.value),
                 },
               }))
             }
@@ -271,15 +283,15 @@ export function NewToolSpec({
           <label htmlFor="ProcessCnt">最大加工次數</label>
           <input
             id="ProcessCnt"
-            type="text"
+            type="number"
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.MaxLife.ProcessCnt}
             onChange={(e) =>
-              setToolSpec((prev: any) => ({
+              setToolSpec((prev) => ({
                 ...prev,
                 MaxLife: {
                   ...prev.MaxLife,
-                  ProcessCnt: e.target.value,
+                  ProcessCnt: Number(e.target.value),
                 },
               }))
             }
@@ -289,15 +301,15 @@ export function NewToolSpec({
           <label htmlFor="ProcessLength">最大加工長度</label>
           <input
             id="ProcessLength"
-            type="text"
+            type="number"
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.MaxLife.ProcessLength}
             onChange={(e) =>
-              setToolSpec((prev: any) => ({
+              setToolSpec((prev) => ({
                 ...prev,
                 MaxLife: {
                   ...prev.MaxLife,
-                  ProcessLength: e.target.value,
+                  ProcessLength: Number(e.target.value),
                 },
               }))
             }
@@ -307,15 +319,15 @@ export function NewToolSpec({
           <label htmlFor="ProcessTime">最大加工時間</label>
           <input
             id="ProcessTime"
-            type="text"
+            type="number"
             className="block w-full p-2 text-black border rounded-md"
             value={toolSpec.MaxLife.ProcessTime}
             onChange={(e) =>
-              setToolSpec((prev: any) => ({
+              setToolSpec((prev) => ({
                 ...prev,
                 MaxLife: {
                   ...prev.MaxLife,
-                  ProcessTime: e.target.value,
+                  ProcessTime: Number(e.target.value),
                 },
               }))
             }

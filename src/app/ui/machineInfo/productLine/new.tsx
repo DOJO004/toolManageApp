@@ -2,6 +2,7 @@
 
 import { apiNewProductLineType } from "@/scripts/Apis/productLineType/productLineType";
 import { FormEvent, useState } from "react";
+import { PostProductLineResponse } from "./types";
 
 interface NewProductLineProps {
   getProductLineList: () => void;
@@ -19,8 +20,9 @@ export default function NewProductLine({
 
   const postProductLine = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiNewProductLineType(newProductLine);
-    console.log(res);
+    const data = await apiNewProductLineType(newProductLine);
+    const res = data as PostProductLineResponse;
+    console.log("post product line", res);
     if (res?.data?.Values?.ReqInt === 0) {
       getProductLineList();
       cleanProductLine();

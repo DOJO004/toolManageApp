@@ -3,15 +3,17 @@
 import { apiGetToolStockCountList } from "@/scripts/Apis/toolStock/toolStock";
 import { useEffect, useState } from "react";
 import NewToolStock from "./new";
+import { GetToolStockListResponse, StockToolCountItem } from "./types";
 
 const ToolStockIndex = () => {
-  const [toolStockList, setToolStockList] = useState([]);
+  const [toolStockList, setToolStockList] = useState<StockToolCountItem[]>([]);
   const [newToolStockMode, setNewToolStockMode] = useState(false);
   const [newToolStockIndex, setNewToolStockIndex] = useState(-1);
 
   const getToolStockList = async () => {
-    const res: any = await apiGetToolStockCountList();
-    console.log(res);
+    const data = await apiGetToolStockCountList();
+    const res = data as GetToolStockListResponse;
+    console.log("get tool stock count list", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
       setToolStockList(res.data.Values.StockToolCountList);
@@ -47,7 +49,7 @@ const ToolStockIndex = () => {
       </div>
 
       {toolStockList
-        ? toolStockList.map((item: any, index: number) => (
+        ? toolStockList.map((item, index: number) => (
             <div key={item.ToolSpecId} className="flex ">
               <div className="w-full p-2 my-4 overflow-auto rounded-md">
                 <div className="relative ">
@@ -89,7 +91,7 @@ const ToolStockIndex = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {item.ToolStatusList.map((tool: any) => (
+                      {item.ToolStatusList.map((tool) => (
                         <tr key={tool.ToolSn} className="hover:bg-gray-500">
                           <td className="p-1 whitespace-nowrap">
                             {tool.ToolSn}

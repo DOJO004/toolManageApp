@@ -6,21 +6,12 @@ import {
 } from "@/scripts/Apis/toolSpec/toolSpecApi";
 import { apiGetToolTypeList } from "@/scripts/Apis/toolType/toolTypeApi";
 import React, { FormEvent, useEffect, useState } from "react";
-
-interface editToolSpecItem {
-  ToolSpecId: string;
-  Name: string;
-  ToolTypeId: string;
-  SafetyStock: number;
-  BladeDiameter: number;
-  BladeHeight: number;
-  TotalLength: number;
-  HandleDiameter: number;
-  ProcessCnt: number;
-  ProcessTime: number;
-  ProcessLength: number;
-  RepairCnt: number;
-}
+import { GetToolTypeListResponse, ToolTypeItem } from "../toolType/types";
+import {
+  DeleteToolSpecResponse,
+  PatchToolSpecResponse,
+  editToolSpecItem,
+} from "./types";
 
 interface EditToolSpecProps {
   editToolSpec: editToolSpecItem;
@@ -35,20 +26,23 @@ export function EditToolSpec({
   getToolSpecList,
 }: EditToolSpecProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [toolTypeList, setToolTypeList] = useState([]);
+  const [toolTypeList, setToolTypeList] = useState<ToolTypeItem[]>([]);
 
   const changePage = (value: number) => {
     setCurrentPage((prev) => prev + value);
   };
 
   const getToolTypeList = async () => {
-    const res = await apiGetToolTypeList();
-    setToolTypeList(res);
+    const data = await apiGetToolTypeList();
+    const res = data as GetToolTypeListResponse;
+    if (res?.data?.Values?.ReqInt === 0) {
+      setToolTypeList(res.data.Values.ToolTypeMenus);
+    }
   };
   const patchToolSpec = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiEditToolSpec(editToolSpec);
-    console.log(res);
+    const data = await apiEditToolSpec(editToolSpec);
+    const res = data as PatchToolSpecResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setEditToolSpecMode(false);
       getToolSpecList();
@@ -56,7 +50,7 @@ export function EditToolSpec({
     }
   };
 
-  const handelEditToolSpec = (key: string, value: any) => {
+  const handelEditToolSpec = (key: string, value: string | number) => {
     setEditToolSpec((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -65,7 +59,8 @@ export function EditToolSpec({
     const confirm = window.confirm("確定要刪除嗎?");
 
     if (confirm) {
-      const res: any = await apiDeleteToolSpec(editToolSpec.ToolSpecId);
+      const data = await apiDeleteToolSpec(editToolSpec.ToolSpecId);
+      const res = data as DeleteToolSpecResponse;
       if (res?.data?.Values?.ReqInt === 0) {
         setEditToolSpecMode(false);
         getToolSpecList();
@@ -110,7 +105,7 @@ export function EditToolSpec({
             onChange={(e) => handelEditToolSpec("ToolTypeId", e.target.value)}
           >
             <option value="">請選擇</option>
-            {toolTypeList.map((item: any) => (
+            {toolTypeList.map((item) => (
               <option key={item.Id} value={item.Id} className="text-black ">
                 {item.Name}
               </option>

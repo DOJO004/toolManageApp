@@ -7,6 +7,15 @@ import {
 import { apiGetMachineTypeList } from "@/scripts/Apis/machineType/machineType";
 import { apiGetProductLineTypeList } from "@/scripts/Apis/productLineType/productLineType";
 import React, { FormEvent, useEffect, useState } from "react";
+import {
+  GetMachineTypeListResponse,
+  MachineTypeItem,
+} from "../machineType/types";
+import {
+  GetProductLineListResponse,
+  ProductLineItem,
+} from "../productLine/types";
+import { DeleteMachineSpecResponse, PatchMachineSpecResponse } from "./types";
 
 interface editMachineSpecItem {
   MachineId: string;
@@ -16,7 +25,7 @@ interface editMachineSpecItem {
   Name: string;
   MachineIP: string;
   ReaderId: string;
-  Brand: number;
+  Brand: string;
   Series: string;
   MT: string;
   AxisIndex: number;
@@ -38,11 +47,12 @@ export default function EditMachineSpec({
   setEditMachineSpecMode,
 }: EditMachineSpecProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [productLineList, setProductLineList] = useState([]);
-  const [machineTypeList, setMachineTypeList] = useState([]);
+  const [productLineList, setProductLineList] = useState<ProductLineItem[]>([]);
+  const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
 
   const getProductLineList = async () => {
-    const res: any = await apiGetProductLineTypeList();
+    const data = await apiGetProductLineTypeList();
+    const res = data as GetProductLineListResponse;
 
     if (res?.data?.Values?.ReqInt === 0) {
       setProductLineList(res.data.Values.ProductLineList);
@@ -50,15 +60,16 @@ export default function EditMachineSpec({
   };
 
   const getMachineTypeList = async () => {
-    const res: any = await apiGetMachineTypeList();
+    const data = await apiGetMachineTypeList();
+    const res = data as GetMachineTypeListResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineTypeList(res.data.Values.MachineTypeList);
     }
   };
   const patchMachineSpec = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiEditMachineSpec(editMachineSpec);
-    console.log(res);
+    const data = await apiEditMachineSpec(editMachineSpec);
+    const res = data as PatchMachineSpecResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setCurrentPage(1);
       getMachineSpecList();
@@ -78,8 +89,8 @@ export default function EditMachineSpec({
   const deleteMachineSpec = async () => {
     const confirm = window.confirm("確定要刪除嗎?");
     if (confirm) {
-      const res: any = await apiDeleteMachineSpec(editMachineSpec);
-      console.log(res);
+      const data = await apiDeleteMachineSpec(editMachineSpec);
+      const res = data as DeleteMachineSpecResponse;
       if (res?.data?.Values?.ReqInt === 0) {
         setCurrentPage(1);
         getMachineSpecList();
@@ -123,7 +134,7 @@ export default function EditMachineSpec({
               }
             >
               <option value="">請選擇</option>
-              {productLineList.map((item: any) => (
+              {productLineList.map((item) => (
                 <option key={item.Id} value={item.Id} className="text-black">
                   {item.Name}
                 </option>
@@ -143,7 +154,7 @@ export default function EditMachineSpec({
               <option value="" className="text-black">
                 請選擇
               </option>
-              {machineTypeList.map((item: any) => (
+              {machineTypeList.map((item) => (
                 <option key={item.Id} value={item.Id} className="text-black">
                   {item.Name}
                 </option>

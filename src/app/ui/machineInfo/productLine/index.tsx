@@ -4,11 +4,12 @@ import { apiGetProductLineTypeList } from "@/scripts/Apis/productLineType/produc
 import { useEffect, useState } from "react";
 import EditProductLine from "./edit";
 import NewProductLine from "./new";
+import { GetProductLineListResponse, ProductLineItem } from "./types";
 
 const ProductLineIndex = () => {
   const [newProductListMode, setNewProductLineMode] = useState(false);
   const [editProductListMode, setEditProductLineMode] = useState(false);
-  const [productLineList, setProductLineList] = useState([]);
+  const [productLineList, setProductLineList] = useState<ProductLineItem[]>([]);
 
   const [editProductLine, setEditProductLine] = useState({
     Id: "",
@@ -16,8 +17,8 @@ const ProductLineIndex = () => {
   });
 
   const getProductLineList = async () => {
-    const res: any = await apiGetProductLineTypeList();
-    console.log(res);
+    const data = await apiGetProductLineTypeList();
+    const res = data as GetProductLineListResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setProductLineList(res.data.Values.ProductLineList);
     }
@@ -28,7 +29,7 @@ const ProductLineIndex = () => {
     setNewProductLineMode(!newProductListMode);
   };
 
-  const handleClickEditProductLine = (data: any) => {
+  const handleClickEditProductLine = (data: ProductLineItem) => {
     setEditProductLineMode(true);
     setNewProductLineMode(false);
     setEditProductLine(data);
@@ -58,7 +59,7 @@ const ProductLineIndex = () => {
               </tr>
             </thead>
             <tbody>
-              {productLineList.map((item: any) => (
+              {productLineList.map((item) => (
                 <tr
                   key={item.Id}
                   className="cursor-pointer hover:bg-gray-600"

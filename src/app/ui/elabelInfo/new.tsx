@@ -2,6 +2,7 @@
 
 import { apiNewELabel } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
 import { FormEvent, useState } from "react";
+import { PostELabelInfoResponse } from "./types";
 
 interface NewELabelInfoProps {
   getELabelList: () => void;
@@ -24,8 +25,8 @@ export default function NewELabelInfo({
 
   const postNewLabelInfo = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await apiNewELabel(newLabelInfo);
-    console.log(res);
+    const data = await apiNewELabel(newLabelInfo);
+    const res = data as PostELabelInfoResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       getELabelList();
       cleanNewLabelInfo();

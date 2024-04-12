@@ -2,46 +2,22 @@
 
 import { apiGetToolLoadingLogList } from "@/scripts/Apis/toolInfo/toolInfo";
 import { useEffect, useState } from "react";
-interface toolInfoDataItem {
-  ToolSn: string;
-  ToolSpecId: string;
-  ToolSpecName: string;
-  ToolTypeData: {
-    Id: string;
-    Name: string;
-  };
-  LifeStatus: string;
-  LifePercentage: number;
-  SpecData: {
-    BladeDiameter: number;
-    BladeHeight: number;
-    TotalLength: number;
-    HandleDiameter: number;
-  };
-  LifeData: {
-    ProcessCnt: number;
-    ProcessTime: number;
-    ProcessLength: number;
-    RepairCnt: number;
-  };
-  LoadingData: {
-    IsLoading: boolean;
-    MachineId: string;
-    AtcNo: number;
-  };
-  LastModify: string;
-}
+import {
+  GetToolInfoData,
+  GetToolLoadingLogResponse,
+  ToolLoadingItem,
+} from "./types";
 
 interface ToolInfoLogProps {
-  toolInfoData: toolInfoDataItem;
+  toolInfoData: GetToolInfoData;
 }
 const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
-  const [toolLogData, setToolLogData] = useState([]);
+  const [toolLogData, setToolLogData] = useState<ToolLoadingItem[]>([]);
 
   const getToolLogData = async () => {
     cleanToolLogData();
-    const res: any = await apiGetToolLoadingLogList(toolInfoData.ToolSn);
-    console.log(res);
+    const data = await apiGetToolLoadingLogList(toolInfoData.ToolSn);
+    const res = data as GetToolLoadingLogResponse;
 
     if (res?.data?.Values?.ReqInt === 0) {
       setToolLogData(res.data.Values.ToolMacLoadingOpsList);
@@ -70,7 +46,7 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
           </thead>
           <tbody>
             {toolLogData?.length > 0 ? (
-              toolLogData.map((item: any) => (
+              toolLogData.map((item) => (
                 <tr key={item.LogTime}>
                   <td>{item.MachineId}</td>
                   <td>{item.OpActions}</td>

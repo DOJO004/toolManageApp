@@ -2,18 +2,11 @@
 
 import { apiDeleteToolType } from "@/scripts/Apis/toolType/toolTypeApi";
 import React, { FormEvent } from "react";
+import { DeleteToolTypeResponse, ToolTypeItem } from "./types";
 
 interface EditToolTypeProps {
-  editToolType: {
-    Id: string;
-    Name: string;
-  };
-  setEditToolType: React.Dispatch<
-    React.SetStateAction<{
-      Id: string;
-      Name: string;
-    }>
-  >;
+  editToolType: ToolTypeItem;
+  setEditToolType: React.Dispatch<React.SetStateAction<ToolTypeItem>>;
   doEditToolType: (e: FormEvent) => void;
   getToolTypeList: () => void;
   setEditToolTypeMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,9 +22,12 @@ export function EditToolType({
   const doDeleteToolType = async (id: string) => {
     const confirm = window.confirm("確定刪除嗎?");
     if (confirm) {
-      await apiDeleteToolType(id);
-      setEditToolTypeMode(false);
-      getToolTypeList();
+      const data = await apiDeleteToolType(id);
+      const res = data as DeleteToolTypeResponse;
+      if (res.data.Values.ReqInt === 0) {
+        setEditToolTypeMode(false);
+        getToolTypeList();
+      }
     }
   };
   return (
