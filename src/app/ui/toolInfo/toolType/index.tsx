@@ -4,7 +4,8 @@ import {
   apiEditToolType,
   apiGetToolTypeList,
 } from "@/scripts/Apis/toolType/toolTypeApi";
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import { FormEvent, useEffect, useState } from "react";
 import { NewToolType } from "./new";
 import {
   DeleteToolTypeResponse,
@@ -23,6 +24,7 @@ export function ToolTypeIndex() {
     Id: "",
     Name: "",
   });
+  const [filterToolTypeTarget, setFilterToolTypeTarget] = useState("");
 
   const getToolTypeList = async () => {
     const data = await apiGetToolTypeList();
@@ -31,6 +33,7 @@ export function ToolTypeIndex() {
 
     if (res?.data?.Values?.ReqInt === 0) {
       setToolTypeList(res.data.Values.ToolTypeMenus);
+      return res.data.Values.ToolTypeMenus;
     }
   };
 
@@ -54,6 +57,30 @@ export function ToolTypeIndex() {
         getToolTypeList();
         setEditToolTypeMode(false);
       }
+    }
+  };
+
+  const filterToolTypeList = async (e: FormEvent) => {
+    e.preventDefault();
+
+    // 获取完整的工具类型列表
+    const data: ToolTypeItem[] | undefined = await getToolTypeList();
+    console.log(data);
+
+    if (data) {
+      // 过滤工具类型列表
+      const filterData = data.filter((item) => {
+        return (
+          item.Name.includes(filterToolTypeTarget) ||
+          item.Id.includes(filterToolTypeTarget)
+        );
+      });
+      console.log("filter data", filterData);
+
+      // 更新状态以显示过滤后的列表
+      setToolTypeList(filterData);
+    } else {
+      console.log("获取工具类型列表失败或返回的数据为空");
     }
   };
 
@@ -104,6 +131,29 @@ export function ToolTypeIndex() {
             </button>
             <NewToolType getToolTypeList={getToolTypeList} />
           </div>
+          {/* search */}
+          <div>
+            <form
+              onSubmit={(e) => filterToolTypeList(e)}
+              className="grid items-center grid-cols-12"
+            >
+              <input
+                type="search"
+                className="col-start-6 col-end-8 p-2 my-2 text-black rounded-md "
+                placeholder="請輸入搜尋關鍵字"
+                onChange={(e) => setFilterToolTypeTarget(e.target.value)}
+              />
+              <button>
+                <Image
+                  src="/search.png"
+                  alt="search"
+                  width={30}
+                  height={30}
+                  className="p-2 bg-white rounded-md cursor-pointer hover:bg-gray-300"
+                />
+              </button>
+            </form>
+          </div>
           <table className="w-full ">
             <thead className="bg-indigo-500 border-b-2">
               <tr>
@@ -114,7 +164,7 @@ export function ToolTypeIndex() {
               </tr>
             </thead>
             <tbody className="">
-              {toolTypeList.length > 1 ? (
+              {toolTypeList.length > 0 ? (
                 // edit mode
                 toolTypeList.map((item, index) =>
                   editToolTypeMode && index === editToolTypeModeIndex ? (
@@ -148,6 +198,12 @@ export function ToolTypeIndex() {
                           onClick={() => deleteToolType(item)}
                         >
                           刪除
+                        </span>
+                        <span
+                          className="p-2 m-4 rounded-full cursor-pointer hover:bg-gray-900 "
+                          onClick={() => setEditToolTypeMode(false)}
+                        >
+                          X
                         </span>
                       </td>
                     </tr>
