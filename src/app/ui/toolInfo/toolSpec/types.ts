@@ -33,19 +33,25 @@ export interface ToolSpecItem {
 };
 
 export interface editToolSpecItem {
-    ToolSpecId: string;
-    Name: string;
-    ToolTypeId: string;
-    SafetyStock: number;
-    BladeDiameter: number;
-    BladeHeight: number;
-    TotalLength: number;
-    HandleDiameter: number;
-    ProcessCnt: number;
-    ProcessTime: number;
-    ProcessLength: number;
-    RepairCnt: number;
-  }
+  ToolSpecId: string,
+  ModifyDatas: {
+    Name: string,
+    ToolTypeId: string,
+    SafetyStock: number,
+    SpecData: {
+      BladeDiameter: number,
+      BladeHeight: number,
+      TotalLength: number,
+      HandleDiameter: number,
+    },
+    MaxLife: {
+      ProcessCnt: number,
+      ProcessTime: number,
+      ProcessLength: number,
+      RepairCnt: number,
+    },
+  },
+}
    
 interface BaseResponse{
   "RC": string,
