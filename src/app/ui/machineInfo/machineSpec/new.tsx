@@ -39,7 +39,6 @@ export default function NewMachineSpec({
   });
   const [productLineList, setProductLineList] = useState<ProductLineItem[]>([]);
   const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const getProductLineList = async () => {
     const data = await apiGetProductLineTypeList();
     const res = data as GetProductLineListResponse;
@@ -61,7 +60,6 @@ export default function NewMachineSpec({
     const data = await apiNewMachineSpec(newMachineSpec);
     const res = data as PostMachineSpecResponse;
     if (res?.data?.Values?.ReqInt === 0) {
-      setCurrentPage(1);
       cleanNewMachineSpec();
       getMachineSpecList();
     }
@@ -88,11 +86,6 @@ export default function NewMachineSpec({
     setNewMachineSpec((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleChangePage = (e: FormEvent, page: number) => {
-    e.preventDefault();
-    setCurrentPage((prev) => prev + page);
-  };
-
   useEffect(() => {
     getProductLineList();
     getMachineTypeList();
@@ -100,20 +93,20 @@ export default function NewMachineSpec({
   return (
     <div className="p-4 bg-gray-700 rounded-xl">
       <div className="relative ">
-        <h3>新增設備規格</h3>
+        <h3 className="font-bold text-left">新增設備規格</h3>
         <button
-          className="absolute top-0 right-0 "
+          className="absolute top-0 right-0 p-1 rounded-full hover:bg-gray-900 "
           onClick={() => setNewMachineSpecMode(false)}
         >
           X
         </button>
       </div>
-      <form className="max-w-md mx-auto" onSubmit={(e) => postMachineSpec(e)}>
-        {/* part one */}
-        <div className={currentPage === 1 ? "block" : "hidden"}>
-          <p className="my-2">●○○</p>
-          <div className="my-4">
-            <label htmlFor="productLineId">生產線</label>
+      <form onSubmit={(e) => postMachineSpec(e)}>
+        <div className="grid grid-cols-12 gap-2 my-4">
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="productLineId">
+              生產線
+            </label>
             <select
               id="productLineId"
               className="w-full p-2 text-black rounded-md"
@@ -122,7 +115,7 @@ export default function NewMachineSpec({
                 handleNewMachineSpec("ProductLineId", e.target.value)
               }
             >
-              <option value="">請選擇</option>
+              <option value="">選擇生產線</option>
               {productLineList.map((item) => (
                 <option key={item.Id} value={item.Id} className="text-black">
                   {item.Name}
@@ -130,8 +123,10 @@ export default function NewMachineSpec({
               ))}
             </select>
           </div>
-          <div className="my-4">
-            <label htmlFor="machineTypeId">設備類型</label>
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="machineTypeId">
+              設備類型
+            </label>
             <select
               id="machineTypeId"
               className="w-full p-2 text-black rounded-md"
@@ -141,7 +136,7 @@ export default function NewMachineSpec({
               }
             >
               <option value="" className="text-black">
-                請選擇
+                選擇設備類型
               </option>
               {machineTypeList.map((item) => (
                 <option key={item.Id} value={item.Id} className="text-black">
@@ -150,140 +145,139 @@ export default function NewMachineSpec({
               ))}
             </select>
           </div>
-          <div className="my-4">
-            <label htmlFor="serialNumber">設備序號</label>
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="serialNumber">
+              設備 SN 序號
+            </label>
             <input
               id="serialNumber"
               className="w-full p-2 text-black rounded-md"
               value={newMachineSpec.SerialNumber}
+              placeholder="設備 SN 序號"
               onChange={(e) =>
                 handleNewMachineSpec("SerialNumber", e.target.value)
               }
             />
           </div>
-          <div className="my-4">
-            <label htmlFor="name">設備名稱</label>
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="name">
+              設備名稱
+            </label>
             <input
               id="name"
               className="w-full p-2 text-black rounded-md"
               value={newMachineSpec.Name}
+              placeholder="設備名稱"
               onChange={(e) => handleNewMachineSpec("Name", e.target.value)}
             />
           </div>
-          <button
-            className="w-full bg-gray-600 rounded-md hover:bg-gray-500"
-            onClick={(e) => handleChangePage(e, 1)}
-          >
-            下一步
-          </button>
-        </div>
-        {/* part two */}
-        <div className={currentPage === 2 ? "block" : "hidden"}>
-          <p className="my-2">○●○</p>
 
-          <div className="my-4">
-            <label htmlFor="machineIP">設備IP位址</label>
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="machineIP">
+              設備 IP 位址
+            </label>
             <input
               id="machineIP"
               className="w-full p-2 text-black rounded-md"
+              placeholder="設備 IP 位址"
               value={newMachineSpec.MachineIP}
               onChange={(e) =>
                 handleNewMachineSpec("MachineIP", e.target.value)
               }
             />
           </div>
-          <div className="my-4">
-            <label htmlFor="readerId">讀取器ID</label>
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="readerId">
+              讀取器 ID
+            </label>
             <input
               id="readerId"
               className="w-full p-2 text-black rounded-md"
+              placeholder="讀取器 ID"
               value={newMachineSpec.ReaderId}
               onChange={(e) => handleNewMachineSpec("ReaderId", e.target.value)}
             />
           </div>
-          <div className="my-4">
-            <label htmlFor="brand">品牌</label>
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="brand">
+              品牌
+            </label>
             <input
               id="brand"
               className="w-full p-2 text-black rounded-md"
+              placeholder="品牌"
               value={newMachineSpec.Brand}
               onChange={(e) => handleNewMachineSpec("Brand", e.target.value)}
             />
           </div>
-          <div className="my-4">
-            <label htmlFor="series">系列</label>
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="series">
+              系列
+            </label>
             <input
               id="series"
               className="w-full p-2 text-black rounded-md"
+              placeholder="系列"
               value={newMachineSpec.Series}
               onChange={(e) => handleNewMachineSpec("Series", e.target.value)}
             />
           </div>
-          <div className="flex gap-2">
-            <button
-              className="w-full bg-gray-800 rounded-md hover:bg-gray-600"
-              onClick={(e) => handleChangePage(e, -1)}
-            >
-              上一步
-            </button>
-            <button
-              className="w-full bg-gray-600 rounded-md hover:bg-gray-500"
-              onClick={(e) => handleChangePage(e, 1)}
-            >
-              下一步
-            </button>
-          </div>
-        </div>
-        {/* part three */}
-        <div className={currentPage === 3 ? "block" : "hidden"}>
-          <p className="my-2">○○●</p>
-          <div className="my-4">
-            <label htmlFor="mt">MT</label>
+
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="mt">
+              MT
+            </label>
             <input
               id="mt"
               className="w-full p-2 text-black rounded-md"
+              placeholder="MT"
               value={newMachineSpec.MT}
               onChange={(e) => handleNewMachineSpec("MT", e.target.value)}
             />
           </div>
-          <div className="my-4">
-            <label htmlFor="axisIndex">AxisIndex</label>
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="axisIndex">
+              AxisIndex
+            </label>
             <input
               type="text"
               id="axisIndex"
               className="w-full p-2 text-black rounded-md"
+              placeholder="AxisIndex"
               value={newMachineSpec.AxisIndex}
               onChange={(e) =>
                 handleNewMachineSpec("AxisIndex", e.target.value)
               }
             />
           </div>
-          <div className="my-4">
-            <label htmlFor="axisName">AxisName</label>
+          <div className="relative my-4">
+            <label className="absolute left-0 -top-6" htmlFor="axisName">
+              AxisName
+            </label>
             <input
               type="text"
               id="axisName"
               className="w-full p-2 text-black rounded-md"
+              placeholder="AxisName"
               value={newMachineSpec.AxisName}
               onChange={(e) => handleNewMachineSpec("AxisName", e.target.value)}
             />
           </div>
-          <div className="my-4">
+          <div className="my-4 ">
+            <input
+              type="checkbox"
+              id="isSpindle"
+              checked={newMachineSpec.IsSpindle}
+              onChange={(e) =>
+                handleNewMachineSpec("IsSpindle", e.target.checked)
+              }
+            />
             <label htmlFor="isSpindle">IsSpindle</label>
-            <input type="checkbox" />
-          </div>
-          <div className="flex gap-2">
-            <button
-              className="w-full bg-gray-800 rounded-md hover:bg-gray-600"
-              onClick={(e) => handleChangePage(e, -1)}
-            >
-              上一步
-            </button>
-            <button className="w-full bg-gray-500 rounded-md hover:bg-gray-400">
-              新增
-            </button>
           </div>
         </div>
+        <button className="w-full bg-gray-500 rounded-md hover:bg-gray-900">
+          新增
+        </button>
       </form>
     </div>
   );
