@@ -1,3 +1,4 @@
+
 const navbarItem = [
     {
         src:"/returnTool.png",
@@ -28,28 +29,32 @@ const navbarItem = [
         alt:"tool info image",
         width:30,
         height:30,
-        name:"刀具資訊"
+        name:"刀具資訊",
+        path:"/tool-manager/tool-info"
     },
     {
         src:"/machineInfo.png",
         alt:"machine info image",
         width:30,
         height:30,
-        name:"設備資訊"
+        name:"設備資訊",
+        path: "/tool-manager/machine-info"
     },
     {
         src:"/eLabelInfo.png",
         alt:"eLabel info image",
         width:30,
         height:30,
-        name:"電子標籤資訊"
+        name:"電子標籤資訊",
+        path:"/tool-manager/elabel-info"
     },
     {
         src:"/userInfo.png",
         alt:"user info image",
         width:30,
         height:30,
-        name:"使用者資訊"
+        name:"使用者資訊",
+        path:"/tool-manager/user-info"
     },
 ]
 
