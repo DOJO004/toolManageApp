@@ -18,14 +18,16 @@ export default function BindToolIndex() {
   });
   const [eLabeList, setELabelList] = useState<LabelItem[]>([]);
   const [toolList, setToolList] = useState<ToolStockItem[]>([]);
+  const [inputUnbindTool, setInputUnbindTool] = useState<string>("");
+  const [inputUnbindLabel, setInputUnbindLabel] = useState<string>("");
 
   const getELabelList = async () => {
     const data = await apiGetELabelList();
     const res = data as GetELabelListResponse;
-    console.log("get eLabel list", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
       setELabelList(filterUnbindLabel(res.data.Values.LabelList));
+      return res.data.Values.LabelList;
     }
   };
 
@@ -35,6 +37,7 @@ export default function BindToolIndex() {
 
     if (res?.data?.Values?.ReqInt === 0) {
       setToolList(filterToolStatus(res.data.Values.ToolStockList));
+      return res.data.Values.ToolStockList;
     }
   };
 
@@ -56,6 +59,38 @@ export default function BindToolIndex() {
       return item.LifeStatus === "Normal" && !item.LoadingData.IsLoading;
     });
     return filterData;
+  };
+
+  const searchUnbindTool = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const toolData = await getToolList();
+
+    const filterData = toolData.filter((item: ToolStockItem) => {
+      return (
+        item.ToolTypeData.Name.includes(inputUnbindTool) ||
+        item.ToolSn.includes(inputUnbindTool) ||
+        item.ToolSpecName.includes(inputUnbindTool)
+      );
+    });
+    setToolList(filterToolStatus(filterData));
+  };
+
+  const searchUnbindLabel = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const data: LabelItem[] | undefined = await getELabelList();
+    if (data) {
+      const filterData = data.filter((item: LabelItem) => {
+        return (
+          item.LabelId.toLowerCase().includes(inputUnbindLabel.toLowerCase()) ||
+          item.LabelSn.toLowerCase().includes(
+            inputUnbindLabel.toLocaleLowerCase()
+          )
+        );
+      });
+      setELabelList(filterUnbindLabel(filterData));
+    }
   };
 
   const handleClickBindData = (
@@ -84,68 +119,88 @@ export default function BindToolIndex() {
 
   return (
     <div className="h-full p-2 overflow-auto bg-gray-900 rounded-xl">
-      <form
-        className="flex flex-col justify-center w-full max-w-4xl p-4 mx-auto my-4 bg-gray-700 rounded-md "
-        onSubmit={(e) => postBindTool(e)}
-      >
-        <h3 className="text-center ">領取刀具</h3>
-        <div className="relative ">
-          <label htmlFor="labelCode">標籤號碼</label>
-          <input
-            id="labelCode"
-            type="text"
-            list="labelCodeList"
-            className="block w-full pl-2 my-2 text-black rounded-md min-h-10 "
-            placeholder="標籤號碼"
-            value={bindToolData.LabelId}
-            onChange={(e) => handleInputBindData("LabelId", e.target.value)}
-          />
-          <datalist
-            id="labelCodeList"
-            className="absolute top-0 left-0 "
-          ></datalist>
-        </div>
-        <div className="relative ">
-          <label htmlFor="eLabelSN">電子標籤SN</label>
-          <input
-            type="text"
-            id="eLabelSN"
-            list="labelList"
-            placeholder="電子標籤SN"
-            className="block w-full pl-2 my-2 text-black rounded-md min-h-10 "
-            value={bindToolData.LabelSn}
-            onChange={(e) => handleInputBindData("LabelSn", e.target.value)}
-          />
-          <datalist
-            id="labelList"
-            className="absolute top-0 left-0 "
-          ></datalist>
-        </div>
+      <div className="p-2 my-4 bg-gray-700 rounded-md ">
+        <h3 className="font-bold text-left ">領取刀具</h3>
+        <form
+          className="grid grid-cols-5 gap-2 "
+          onSubmit={(e) => postBindTool(e)}
+        >
+          <div className="relative ">
+            <label htmlFor="labelCode">標籤號碼</label>
+            <input
+              id="labelCode"
+              type="text"
+              list="labelCodeList"
+              className="w-full p-1 text-black rounded-md"
+              placeholder="標籤號碼"
+              value={bindToolData.LabelId}
+              onChange={(e) => handleInputBindData("LabelId", e.target.value)}
+            />
+            <datalist
+              id="labelCodeList"
+              className="absolute top-0 left-0 "
+            ></datalist>
+          </div>
+          <div className="relative ">
+            <label htmlFor="eLabelSN">電子標籤SN</label>
+            <input
+              type="text"
+              id="eLabelSN"
+              list="labelList"
+              placeholder="電子標籤SN"
+              className="w-full p-1 text-black rounded-md"
+              value={bindToolData.LabelSn}
+              onChange={(e) => handleInputBindData("LabelSn", e.target.value)}
+            />
+            <datalist
+              id="labelList"
+              className="absolute top-0 left-0 "
+            ></datalist>
+          </div>
+          <div className="relative ">
+            <label htmlFor="toolSN">刀具SN</label>
+            <input
+              id="toolSN"
+              type="text"
+              list="toolSNList"
+              className="w-full p-1 text-black rounded-md"
+              placeholder="刀具SN"
+              value={bindToolData.ToolSn}
+              onChange={(e) => handleInputBindData("ToolSn", e.target.value)}
+            />
+            <datalist
+              id="toolSNList"
+              className="absolute top-0 left-0 "
+            ></datalist>
+          </div>
+          <div>
+            <label htmlFor="receiver">領取人</label>
+            <input
+              type="text"
+              id="receiver"
+              className="w-full p-1 text-black rounded-md"
+              placeholder="領取人"
+            />
+          </div>
+          <button className="p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-900">
+            綁定標籤
+          </button>
+        </form>
+      </div>
+      {/* label */}
+      <div className="flex h-full gap-4 ">
+        <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md ">
+          <form className="mx-24 my-4" onSubmit={(e) => searchUnbindLabel(e)}>
+            <h3 className="my-4">未綁定標籤</h3>
+            <input
+              type="search"
+              className="w-full p-2 text-black rounded-md "
+              placeholder="搜尋標籤"
+              value={inputUnbindLabel}
+              onChange={(e) => setInputUnbindLabel(e.target.value)}
+            />
+          </form>
 
-        <div className="relative ">
-          <label htmlFor="toolSN">刀具SN</label>
-          <input
-            id="toolSN"
-            type="text"
-            list="toolSNList"
-            className="block w-full pl-2 my-2 text-black rounded-md min-h-10 "
-            placeholder="刀具SN"
-            value={bindToolData.ToolSn}
-            onChange={(e) => handleInputBindData("ToolSn", e.target.value)}
-          />
-          <datalist
-            id="toolSNList"
-            className="absolute top-0 left-0 "
-          ></datalist>
-        </div>
-        <button className="p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          綁定標籤
-        </button>
-      </form>
-      {/* data area */}
-      <div className="flex gap-4 ">
-        <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md h-[28rem]">
-          <h3 className="my-4">未綁定標籤</h3>
           <table className="w-full">
             <thead>
               <tr className="bg-indigo-500">
@@ -174,28 +229,60 @@ export default function BindToolIndex() {
             </tbody>
           </table>
         </div>
-        <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md h-[28rem]">
+        {/* tool */}
+        <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md">
           <h3 className="my-4">未綁定刀具</h3>
+          <form
+            className="flex items-center justify-center gap-2 mx-24 my-4"
+            onSubmit={(e) => searchUnbindTool(e)}
+          >
+            <input
+              type="search"
+              id="search"
+              className="w-full p-2 text-black rounded-md"
+              placeholder="搜尋刀具"
+              value={inputUnbindTool}
+              onChange={(e) => setInputUnbindTool(e.target.value)}
+            />
+          </form>
+
           <table className="w-full">
             <thead>
               <tr className="bg-indigo-500">
+                <th className="p-1 whitespace-nowrap">刀具類型</th>
+                <th className="p-1 whitespace-nowrap">刀具規格</th>
                 <th className="p-1 whitespace-nowrap">刀具 SN</th>
-                <th className="p-1 whitespace-nowrap">刀具規格 ID</th>
-                <th className="p-1 whitespace-nowrap">刀具規格名稱</th>
               </tr>
             </thead>
             <tbody>
-              {toolList.map((item: any) => (
-                <tr
-                  key={item.ToolSn}
-                  className="cursor-pointer hover:bg-gray-600"
-                  onClick={() => handleClickBindData("tool", "", "", item)}
-                >
-                  <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
-                  <td className="p-1 whitespace-nowrap">{item.ToolSpecId}</td>
-                  <td className="p-1 whitespace-nowrap">{item.ToolSpecName}</td>
+              {toolList.length > 0 ? (
+                toolList.map((item: ToolStockItem) => (
+                  <tr
+                    key={item.ToolSn}
+                    className="cursor-pointer hover:bg-gray-600"
+                    onClick={() =>
+                      handleClickBindData("tool", "", "", item.ToolSn)
+                    }
+                  >
+                    <td className="p-1 whitespace-nowrap">
+                      {item.ToolTypeData.Name}
+                    </td>
+                    <td className="p-1 whitespace-nowrap">
+                      {item.ToolSpecName}
+                    </td>
+                    <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={3}>
+                    無此刀具... <br />
+                    <span className="text-blue-500 cursor-pointer">
+                      新增庫存?
+                    </span>
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
