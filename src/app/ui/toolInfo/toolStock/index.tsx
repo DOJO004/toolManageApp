@@ -2,6 +2,7 @@
 
 import { apiGetToolStockCountList } from "@/scripts/Apis/toolStock/toolStock";
 import { useEffect, useState } from "react";
+import NewToolStock from "./new";
 import {
   GetToolStockListResponse,
   ToolStatusItem,
@@ -84,6 +85,23 @@ const ToolStockIndex = () => {
     <div className="relative w-full h-screen p-2 mx-auto overflow-auto text-center rounded-xl">
       <div className="relative ">
         <h2 className="my-4">刀具庫存</h2>
+        <button
+          className="absolute top-0 right-0 p-1 border rounded-md hover:bg-gray-600"
+          onClick={() => setNewToolStockMode(!newToolStockMode)}
+        >
+          新增
+        </button>
+        {/* new */}
+        <div
+          className={` overflow-hidden transition-all duration-300 easy-in-out ${
+            newToolStockMode ? "h-40" : "h-0"
+          }`}
+        >
+          <NewToolStock
+            getToolStockList={getToolStockList}
+            setNewToolStockMode={setNewToolStockMode}
+          />
+        </div>
         <div className="flex justify-center gap-2">
           {toolSpecClass.map((name) => (
             <div key={name}>
@@ -143,16 +161,6 @@ const ToolStockIndex = () => {
                   <p>{item.LastModify}</p>
                 </div>
               ))}
-              {/* new */}
-              {/* <div
-                className={` overflow-hidden transition-all duration-300 easy-in-out ${
-                  newToolStockMode && newToolStockIndex === index
-                    ? "w-full"
-                    : "w-0"
-                }`}
-              >
-                <NewToolStock getToolStockList={getToolStockList} />
-              </div> */}
             </div>
           ))
         : null}
