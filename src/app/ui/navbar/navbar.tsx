@@ -45,6 +45,7 @@ const Navbar = () => {
               <Image
                 src="/logo.png"
                 alt="logo image"
+                loader={({ src, width }) => `${src}?w=${width}`}
                 width={30}
                 height={30}
                 className=" min-w-fit"
@@ -62,6 +63,7 @@ const Navbar = () => {
                   <Image
                     src={item.src}
                     alt={item.alt}
+                    loader={({ src, width }) => `${src}?w=${width}`}
                     width={item.width}
                     height={item.height}
                     className="mx-auto"
@@ -79,6 +81,7 @@ const Navbar = () => {
                   <Image
                     src={item.src}
                     alt={item.alt}
+                    loader={({ src, width }) => `${src}?w=${width}`}
                     width={item.width}
                     height={item.height}
                     className="mx-auto"
