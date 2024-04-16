@@ -2,21 +2,60 @@
 
 import { apiGetToolStockCountList } from "@/scripts/Apis/toolStock/toolStock";
 import { useEffect, useState } from "react";
-import NewToolStock from "./new";
-import { GetToolStockListResponse, StockToolCountItem } from "./types";
+import {
+  GetToolStockListResponse,
+  ToolStatusItem,
+  ToolStockItem,
+} from "./types";
 
 const ToolStockIndex = () => {
-  const [toolStockList, setToolStockList] = useState<StockToolCountItem[]>([]);
+  const [toolStockList, setToolStockList] = useState<ToolStockItem[]>([]);
   const [newToolStockMode, setNewToolStockMode] = useState(false);
-  const [newToolStockIndex, setNewToolStockIndex] = useState(-1);
+  const [selectToolStock, setSelectToolStock] = useState<
+    { name: string; checked: boolean }[]
+  >([]);
+  const [toolSpecClass, setToolSpecClass] = useState<string[]>([]);
 
   const getToolStockList = async () => {
     const data = await apiGetToolStockCountList();
     const res = data as GetToolStockListResponse;
-    console.log("get tool stock count list", res);
-
+    console.log("get tool stock list", res);
     if (res?.data?.Values?.ReqInt === 0) {
       setToolStockList(res.data.Values.StockToolCountList);
+
+      // 使用 Set 來過濾重複元素
+      const uniqueToolSpecNames = new Set<string>();
+      res.data.Values.StockToolCountList.forEach((item) => {
+        uniqueToolSpecNames.add(item.ToolSpecName);
+      });
+
+      // 將 Set 轉換為陣列，然後更新 toolSpecClass 狀態
+      setToolSpecClass(Array.from(uniqueToolSpecNames));
+    }
+  };
+
+  const handleCheckboxChange = (name: string, value: boolean) => {
+    if (value) {
+      setSelectToolStock((prev) => [...prev, { name: name, checked: value }]);
+    } else {
+      setSelectToolStock((prev) => prev.filter((item) => item.name !== name));
+    }
+  };
+
+  const filterToolStockList = async () => {
+    const data = await apiGetToolStockCountList();
+    const res = data as GetToolStockListResponse;
+
+    if (selectToolStock.length === 0) {
+      setToolStockList(res.data.Values.StockToolCountList);
+      return;
+    }
+
+    if (res?.data?.Values?.ReqInt === 0) {
+      const filterData = res.data.Values.StockToolCountList.filter((item) =>
+        selectToolStock.map((obj) => obj.name).includes(item.ToolSpecName)
+      );
+      filterData.length > 0 ? setToolStockList(filterData) : null;
     }
   };
 
@@ -33,90 +72,79 @@ const ToolStockIndex = () => {
     }
   };
 
-  const handleNewToolStockButton = (id: string, index: number) => {
-    setNewToolStockIndex(index);
-
-    setNewToolStockMode(!newToolStockMode);
-  };
-
   useEffect(() => {
     getToolStockList();
   }, []);
+
+  useEffect(() => {
+    filterToolStockList();
+  }, [selectToolStock]);
+
   return (
     <div className="relative w-full h-screen p-2 mx-auto overflow-auto text-center rounded-xl">
       <div className="relative ">
         <h2 className="my-4">刀具庫存</h2>
+        <div className="flex justify-center gap-2">
+          {toolSpecClass.map((name) => (
+            <div key={name}>
+              <input
+                type="checkbox"
+                id={name}
+                onChange={(e) => handleCheckboxChange(name, e.target.checked)}
+              />
+              <label htmlFor={name}>{name}</label>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {toolStockList
-        ? toolStockList.map((item, index: number) => (
-            <div key={item.ToolSpecId} className="flex ">
-              <div className="w-full p-2 my-4 overflow-auto rounded-md">
-                <div className="relative ">
-                  <h3 className="my-2">{item.ToolSpecName}</h3>
-                  <button
-                    className="absolute top-0 p-2 border rounded-md right-12 hover:bg-gray-700"
-                    onClick={() =>
-                      handleNewToolStockButton(item.ToolSpecId, index)
-                    }
-                  >
-                    新增
-                  </button>
-                </div>
-                <div className="flex justify-center gap-2 my-2">
+      {toolStockList?.length > 0
+        ? toolStockList.map((item: ToolStockItem, index: number) => (
+            <div key={item.ToolSpecId} className="relative ">
+              <div className="sticky top-0 ">
+                <div className="flex items-center p-2 bg-gray-700 rounded-md">
+                  <h3 className="p-1 my-2 font-bold text-left ">
+                    {item.ToolSpecName}
+                  </h3>
                   <p>
-                    安全庫存 : <span className="text-">{item.SafetyStock}</span>
+                    安全庫存 :<span className="text-">{item.SafetyStock}</span>
                   </p>
                   <p>
-                    現有庫存 :{" "}
+                    現有庫存 :
                     <span className="text-green-500">{item.CurrentStock}</span>
                   </p>
                   <p>
-                    危險 :{" "}
+                    危險 :
                     <span className="text-amber-500">{item.WarningCount}</span>
                   </p>
                   <p>
-                    警告 :{" "}
+                    警告 :
                     <span className="text-red-500">{item.AlarmCount}</span>
                   </p>
                 </div>
-                <div className="overflow-auto bg-gray-600 rounded-md">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="bg-indigo-500 ">
-                        <th className="p-1 whitespace-nowrap">ToolSN</th>
-                        <th className="p-1 whitespace-nowrap">狀態</th>
-                        <th className="p-1 whitespace-nowrap">生命百分比</th>
-                        <th className="p-1 whitespace-nowrap">最後修改時間</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {item.ToolStatusList.map((tool) => (
-                        <tr key={tool.ToolSn} className="hover:bg-gray-500">
-                          <td className="p-1 whitespace-nowrap">
-                            {tool.ToolSn}
-                          </td>
-                          <td
-                            className={`p-1 whitespace-nowrap ${getLifeStatusClassName(
-                              tool.LifeStatus
-                            )}`}
-                          >
-                            {tool.LifeStatus}
-                          </td>
-                          <td className="p-1 whitespace-nowrap">
-                            {tool.LifePercentage}
-                          </td>
-                          <td className="p-1 whitespace-nowrap">
-                            {tool.LastModify}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div className="grid grid-cols-7 gap-2 bg-indigo-500 ">
+                  <p className="p-1 whitespace-nowrap">ToolSN</p>
+                  <p className="p-1 whitespace-nowrap">狀態</p>
+                  <p className="p-1 whitespace-nowrap">生命百分比</p>
+                  <p className="p-1 whitespace-nowrap">最後修改時間</p>
+                  <p className="p-1 whitespace-nowrap">machine_id</p>
+                  <p className="p-1 whitespace-nowrap">所在位置</p>
+                  <p className="p-1 whitespace-nowrap">領用人</p>
                 </div>
               </div>
+              {item.ToolStatusList?.map((item: ToolStatusItem) => (
+                <div
+                  key={item.ToolSn}
+                  className="grid grid-cols-7 gap-2 hover:bg-gray-600"
+                >
+                  <p>{item.ToolSn}</p>
+                  <p>{item.LifeStatus}</p>
+                  <p>{item.LifePercentage}</p>
+                  <p>{item.LastModify}</p>
+                </div>
+              ))}
               {/* new */}
-              <div
+              {/* <div
                 className={` overflow-hidden transition-all duration-300 easy-in-out ${
                   newToolStockMode && newToolStockIndex === index
                     ? "w-full"
@@ -124,7 +152,7 @@ const ToolStockIndex = () => {
                 }`}
               >
                 <NewToolStock getToolStockList={getToolStockList} />
-              </div>
+              </div> */}
             </div>
           ))
         : null}
