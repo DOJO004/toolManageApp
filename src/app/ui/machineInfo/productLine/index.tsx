@@ -102,6 +102,7 @@ const ProductLineIndex = () => {
               <tr className="bg-indigo-500 ">
                 <th className="p-1 whitespace-nowrap">產線ID</th>
                 <th className="p-1 whitespace-nowrap">產線名稱</th>
+                <th className="p-1 whitespace-nowrap">負責部門</th>
                 <th className="p-1 whitespace-nowrap">編輯</th>
               </tr>
             </thead>
@@ -120,6 +121,12 @@ const ProductLineIndex = () => {
                         onChange={(e) =>
                           handelSetEditData("Name", e.target.value)
                         }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        className="p-1 text-center text-black rounded-md"
                       />
                     </td>
                     <td>
@@ -143,6 +150,8 @@ const ProductLineIndex = () => {
                   <tr key={item.Id} className=" hover:bg-gray-600">
                     <td className="p-1 whitespace-nowrap">{item.Id}</td>
                     <td className="p-1 whitespace-nowrap">{item.Name}</td>
+                    <td className="p-1 whitespace-nowrap">部門名稱</td>
+
                     <td className="p-1 whitespace-nowrap">
                       <button
                         className="p-1 cursor-pointer hover:bg-gray-900"

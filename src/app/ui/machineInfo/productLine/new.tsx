@@ -49,7 +49,7 @@ export default function NewProductLine({
         X
       </button>
       <form
-        className="grid items-center grid-cols-3 gap-2 my-2 "
+        className="grid items-center grid-cols-4 gap-2 my-2 "
         onSubmit={(e) => postProductLine(e)}
       >
         <div className="relative my-4">
@@ -76,6 +76,17 @@ export default function NewProductLine({
             placeholder="產線名稱"
             value={newProductLine.Name}
             onChange={(e) => handleNewProductLine("Name", e.target.value)}
+          />
+        </div>
+        <div className="relative my-4">
+          <label htmlFor="" className="absolute left-0 -top-6 ">
+            負責部門
+          </label>
+          <input
+            type="text"
+            id=""
+            className="w-full p-2 text-black rounded-md "
+            placeholder="負責部門"
           />
         </div>
         <button className="w-full p-1 bg-gray-500 rounded-md hover:bg-gray-900">
