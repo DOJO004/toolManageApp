@@ -40,41 +40,56 @@ export default function NewProductLine({
     setNewProductLine((prev) => ({ ...prev, [key]: value }));
   };
   return (
-    <div className="w-full p-4 my-4 bg-gray-700 rounded-xl">
-      <div className="relative ">
-        <h3>新增產線類型</h3>
-        <button
-          className="absolute top-0 right-0"
-          onClick={() => setNewProductLineMode(false)}
-        >
-          X
-        </button>
-      </div>
+    <div className="relative p-4 bg-gray-700 rounded-xl">
+      <h3 className="text-left ">新增產線類型</h3>
+      <button
+        className="absolute top-0 right-0 rounded-full hover:bg-gray-900"
+        onClick={() => setNewProductLineMode(false)}
+      >
+        X
+      </button>
       <form
-        className="max-w-lg mx-auto my-4"
+        className="grid items-center grid-cols-4 gap-2 my-2 "
         onSubmit={(e) => postProductLine(e)}
       >
-        <div className="my-4">
-          <label htmlFor="Id">產線 ID</label>
+        <div className="relative my-4">
+          <label htmlFor="Id" className="absolute left-0 -top-6 ">
+            產線 ID
+          </label>
           <input
             type="text"
             id="Id"
             className="w-full p-2 text-black rounded-md "
+            placeholder="產線 ID"
             value={newProductLine.Id}
             onChange={(e) => handleNewProductLine("Id", e.target.value)}
           />
         </div>
-        <div className="my-4">
-          <label htmlFor="Name">產線名稱</label>
+        <div className="relative my-4">
+          <label htmlFor="Name" className="absolute left-0 -top-6 ">
+            產線名稱
+          </label>
           <input
             type="text"
             id="Name"
             className="w-full p-2 text-black rounded-md "
+            placeholder="產線名稱"
             value={newProductLine.Name}
             onChange={(e) => handleNewProductLine("Name", e.target.value)}
           />
         </div>
-        <button className="w-full bg-gray-600 rounded-md hover:bg-gray-500">
+        <div className="relative my-4">
+          <label htmlFor="" className="absolute left-0 -top-6 ">
+            負責部門
+          </label>
+          <input
+            type="text"
+            id=""
+            className="w-full p-2 text-black rounded-md "
+            placeholder="負責部門"
+          />
+        </div>
+        <button className="w-full p-1 bg-gray-500 rounded-md hover:bg-gray-900">
           新增
         </button>
       </form>

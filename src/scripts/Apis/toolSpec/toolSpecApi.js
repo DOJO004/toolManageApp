@@ -27,7 +27,7 @@ export async function apiNewToolSpec(toolSpec) {
     ToolsInfo: {
       ToolSpecId: toolSpec.ToolSpecId,
       Name: toolSpec.Name,
-      ToolTypeId: toolSpec.ToolTypeId,
+      ToolTypeId: toolSpec.ToolTypeData.Id,
       SafetyStock: toolSpec.SafetyStock,
       SpecData: {
         BladeDiameter: toolSpec.SpecData.BladeDiameter,
@@ -59,20 +59,20 @@ export async function apiEditToolSpec(toolSpec) {
   const body = {
     ToolSpecId: toolSpec.ToolSpecId,
     ModifyDatas: {
-      Name: toolSpec.Name,
-      ToolTypeId: toolSpec.ToolTypeId,
-      SafetyStock: toolSpec.SafetyStock,
+      Name: toolSpec.ModifyDatas.Name,
+      ToolTypeId: toolSpec.ModifyDatas.ToolTypeId,
+      SafetyStock: toolSpec.ModifyDatas.SafetyStock,
       SpecData: {
-        BladeDiameter: toolSpec.BladeDiameter,
-        BladeHeight: toolSpec.BladeHeight,
-        TotalLength: toolSpec.TotalLength,
-        HandleDiameter: toolSpec.HandleDiameter,
+        BladeDiameter: toolSpec.ModifyDatas.SpecData.BladeDiameter,
+        BladeHeight: toolSpec.ModifyDatas.SpecData.BladeHeight,
+        TotalLength: toolSpec.ModifyDatas.SpecData.TotalLength,
+        HandleDiameter: toolSpec.ModifyDatas.SpecData.HandleDiameter,
       },
       MaxLife: {
-        ProcessCnt: toolSpec.ProcessCnt,
-        ProcessTime: toolSpec.ProcessTime,
-        ProcessLength: toolSpec.ProcessLength,
-        RepairCnt: toolSpec.RepairCnt,
+        ProcessCnt: toolSpec.ModifyDatas.MaxLife.ProcessCnt,
+        ProcessTime: toolSpec.ModifyDatas.MaxLife.ProcessTime,
+        ProcessLength: toolSpec.ModifyDatas.MaxLife.ProcessLength,
+        RepairCnt: toolSpec.ModifyDatas.MaxLife.RepairCnt,
       },
     },
     UserToken: getUserToken(),

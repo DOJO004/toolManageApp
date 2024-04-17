@@ -41,36 +41,43 @@ export default function NewMachineType({
   return (
     <div className="p-4 my-4 bg-gray-700 rounded-md">
       <div className="relative ">
-        <h3>新增設備類型</h3>
+        <h3 className="font-bold text-left ">新增設備類型</h3>
         <button
-          className="absolute top-0 right-0 "
+          className="absolute top-0 right-0 p-2 rounded-full hover:bg-gray-900"
           onClick={() => setNewMachineTypeMode(false)}
         >
           X
         </button>
       </div>
-      <form className="max-w-lg mx-auto" onSubmit={(e) => postMachineType(e)}>
-        <div className="my-4">
-          <label htmlFor="Id">設備 ID</label>
+      <form
+        className="grid items-center grid-cols-3 gap-2 my-4"
+        onSubmit={(e) => postMachineType(e)}
+      >
+        <div className="relative my-4">
+          <label htmlFor="Id" className="absolute left-0 -top-6 ">
+            設備 ID
+          </label>
           <input
             type="text"
             id="Id"
-            className="w-full p-1 text-black rounded-md "
+            className="w-full p-1 text-center text-black rounded-md"
             value={newMachineType.Id}
             onChange={(e) => handleNewMachineType("Id", e.target.value)}
           />
         </div>
-        <div className="my-4">
-          <label htmlFor="Name">設備名稱</label>
+        <div className="relative my-4">
+          <label htmlFor="Name" className="absolute left-0 -top-6 ">
+            設備名稱
+          </label>
           <input
             type="text"
             id="Name"
-            className="w-full p-1 text-black rounded-md "
+            className="w-full p-1 text-center text-black rounded-md"
             value={newMachineType.Name}
             onChange={(e) => handleNewMachineType("Name", e.target.value)}
           />
         </div>
-        <button className="w-full my-4 bg-gray-500 rounded-md hover:bg-gray-400">
+        <button className="w-full p-1 bg-gray-500 rounded-md hover:bg-gray-900">
           新增
         </button>
       </form>

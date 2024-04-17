@@ -77,6 +77,7 @@ export async function apiEditMachineSpec(machineSpec) {
     LoginTime: "2023-08-23 13:31:32",
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
   };
+  console.log("editMachineSpec", body);
   try {
     const res = await apiInstance.post(
       "/user_operate/ModifyMachineSpecInfo",
@@ -91,7 +92,7 @@ export async function apiEditMachineSpec(machineSpec) {
 
 export async function apiDeleteMachineSpec(machineSpec) {
   const body = {
-    MachineSpecId: machineSpec.MachineId,
+    MachineId: machineSpec.MachineId,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],

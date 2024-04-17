@@ -18,6 +18,7 @@ export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
     const data = await apiNewToolType(newToolType);
     const res = data as PostToolTypeResponse;
     const inputToolTypeId = document.querySelector<HTMLInputElement>("#id");
+    console.log(res);
 
     if (res?.data?.Values?.ReqInt === 0) {
       setNewToolType({
@@ -31,18 +32,24 @@ export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
     }
   };
   return (
-    <div className="w-full p-4 mx-auto my-4 bg-gray-600 rounded-md">
-      <h3 id="scrollTarget" className="my-4 text-center">
+    <div className="px-4 pb-2 m-4 border rounded-lg ">
+      <h4 id="scrollTarget" className="my-4 font-bold text-left">
         新增刀具類型
-      </h3>
-      <form onSubmit={(e) => doAddToolType(e)}>
-        <div className="my-4 text-left">
-          <label htmlFor="id">刀具類型 ID</label>
+      </h4>
+      <form
+        onSubmit={(e) => doAddToolType(e)}
+        className="grid items-center grid-cols-12 gap-2"
+      >
+        <div className="relative col-span-5 p-2">
+          <label htmlFor="id" className="absolute left-2 -top-4 ">
+            刀具類型 ID
+          </label>
           <input
             type="text"
             id="id"
-            className="w-full p-2 mx-auto text-black border rounded-md "
+            className="w-full p-2 text-black border rounded-md"
             value={newToolType.Id}
+            placeholder="刀具類型 ID"
             onChange={(e) =>
               setNewToolType({
                 ...newToolType,
@@ -51,12 +58,15 @@ export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
             }
           />
         </div>
-        <div className="my-4 text-left">
-          <label htmlFor="name">刀具類型名稱</label>
+        <div className="relative col-span-5 p-2">
+          <label htmlFor="name" className="absolute left-2 -top-4 ">
+            刀具類型名稱
+          </label>
           <input
             type="text"
             id="name"
-            className="w-full p-2 mx-auto text-black border rounded-md "
+            className="w-full p-2 text-black border rounded-md "
+            placeholder="刀具類型名稱"
             value={newToolType.Name}
             onChange={(e) =>
               setNewToolType({
@@ -66,7 +76,9 @@ export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
             }
           />
         </div>
-        <button className="w-full bg-gray-900">新增</button>
+        <button className="col-span-2 bg-gray-800 hover:bg-gray-900">
+          新增
+        </button>
       </form>
     </div>
   );

@@ -2,14 +2,18 @@
 
 import { apiGetToolSpecList } from "@/scripts/Apis/toolSpec/toolSpecApi";
 import { apiNewToolStock } from "@/scripts/Apis/toolStock/toolStock";
-import { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { GetToolSpecListResponse, ToolSpecItem } from "../toolSpec/types";
 import { PostToolStockResponse } from "./types";
 
 interface NewToolStockProps {
   getToolStockList: () => void;
+  setNewToolStockMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
+export default function NewToolStock({
+  getToolStockList,
+  setNewToolStockMode,
+}: NewToolStockProps) {
   const [toolSpecList, setToolSpecList] = useState<ToolSpecItem[]>([]);
   const [toolStock, setToolStock] = useState({
     ToolSpecId: "",
@@ -55,19 +59,27 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
   }, []);
 
   return (
-    <div className="w-full p-4 my-4 overflow-hidden bg-gray-600 max-h-96 mt-28 rounded-xl">
-      <h3 className="text-center ">新增刀具庫存</h3>
+    <div className="w-full p-4 bg-gray-600 rounded-md">
+      <div className="relative ">
+        <h3 className="text-left ">新增刀具庫存</h3>
+        <button
+          className="absolute top-0 right-0 rounded-full hover:bg-gray-900 "
+          onClick={() => setNewToolStockMode(false)}
+        >
+          X
+        </button>
+      </div>
       <form
-        className="p-2 mx-auto rounded-md "
         onSubmit={(e) => postToolStock(e)}
+        className="grid items-end grid-cols-3 gap-2"
       >
-        <div className="my-4">
+        <div>
           <label htmlFor="ToolSpecId" className="block text-left">
             刀具規格名稱
           </label>
           <select
             id="ToolSpecId"
-            className="w-full p-2 mx-auto text-black border rounded-md w-60"
+            className="w-full p-1 text-center text-black rounded-md"
             value={toolStock.ToolSpecId}
             onChange={(e) => handleToolStock("ToolSpecId", e.target.value)}
           >
@@ -85,7 +97,7 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
             ))}
           </select>
         </div>
-        <div className="my-4">
+        <div>
           <label htmlFor="Qty" className="block text-left">
             數量
           </label>
@@ -93,11 +105,11 @@ export default function NewToolStock({ getToolStockList }: NewToolStockProps) {
             type="number"
             id="Qty"
             value={toolStock.Qty}
-            className="w-full p-2 mx-auto text-black border rounded-md w-60"
+            className="w-full p-1 text-center text-black rounded-md"
             onChange={(e) => handleToolStock("Qty", e.target.value)}
           />
         </div>
-        <button className="w-full p-2 my-4 bg-gray-500 rounded-md hover:bg-gray-800">
+        <button className="p-1 bg-gray-500 rounded-md hover:bg-gray-900">
           新增
         </button>
       </form>

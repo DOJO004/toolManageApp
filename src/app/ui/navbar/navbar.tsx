@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import ELabelInfoMenu from "./eLabelInfoMenu/menu";
 import navbarItem from "./items";
 import MachineInfoMenu from "./machineInfoMenu/menu";
 import ToolStatusMenu from "./toolInfoMenu/menu";
@@ -14,12 +13,12 @@ const Navbar = () => {
   const [clickItemName, setClickItemName] = useState("");
 
   const handleNavbarMenu = (name: string) => {
-    console.log("name", name);
     if (
       name === "dashboard" ||
       name === "領取刀具" ||
       name === "歸還刀具" ||
-      name === "修整/報廢"
+      name === "修整/報廢" ||
+      name === "電子標籤資訊"
     ) {
       setOpenMenu(false);
       return;
@@ -45,6 +44,7 @@ const Navbar = () => {
               <Image
                 src="/logo.png"
                 alt="logo image"
+                loader={({ src, width }) => `${src}?w=${width}`}
                 width={30}
                 height={30}
                 className=" min-w-fit"
@@ -62,6 +62,7 @@ const Navbar = () => {
                   <Image
                     src={item.src}
                     alt={item.alt}
+                    loader={({ src, width }) => `${src}?w=${width}`}
                     width={item.width}
                     height={item.height}
                     className="mx-auto"
@@ -79,6 +80,7 @@ const Navbar = () => {
                   <Image
                     src={item.src}
                     alt={item.alt}
+                    loader={({ src, width }) => `${src}?w=${width}`}
                     width={item.width}
                     height={item.height}
                     className="mx-auto"
@@ -102,9 +104,6 @@ const Navbar = () => {
         )}
         {clickItemName === "設備資訊" && openMenu && (
           <MachineInfoMenu setOpenMenu={setOpenMenu} />
-        )}
-        {clickItemName === "電子標籤資訊" && openMenu && (
-          <ELabelInfoMenu setOpenMenu={setOpenMenu} />
         )}
         {clickItemName === "使用者資訊" && openMenu && (
           <UserInfoMenu setOpenMenu={setOpenMenu} />
