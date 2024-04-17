@@ -136,7 +136,13 @@ const ToolSpecIndex = () => {
       {/* index */}
       <div className="w-full mx-4 ">
         <div className="relative">
-          <h2 className="my-4 text-center">刀具規格</h2>
+          <div>
+            <h2 className="my-4 text-center">刀具規格</h2>
+            <input
+              type="search"
+              className="flex p-2 mx-auto my-4 text-black rounded-md w-96"
+            />
+          </div>
           <button
             className="absolute top-0 right-0 p-2 border rounded-md hover:bg-gray-600"
             onClick={() => handleNewToolSpecMode()}

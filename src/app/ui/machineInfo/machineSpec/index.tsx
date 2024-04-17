@@ -172,7 +172,6 @@ const MachineSpecIndex = () => {
                 <th className="p-1 whitespace-nowrap">系列</th>
                 <th className="p-1 whitespace-nowrap">設備IP位址</th>
                 <th className="p-1 whitespace-nowrap">讀取器ID</th>
-                <th className="p-1 whitespace-nowrap">MT</th>
                 <th className="p-1 whitespace-nowrap">編輯</th>
               </tr>
             </thead>
@@ -290,19 +289,9 @@ const MachineSpecIndex = () => {
                             }
                           />
                         </td>
-                        <td>
-                          <input
-                            type="text"
-                            className="w-32 text-center text-black rounded-md"
-                            value={editMachineSpec.MT}
-                            onChange={(e) =>
-                              handleEditMachineSpec("MT", e.target.value)
-                            }
-                          />
-                        </td>
                         <td className="p-1 whitespace-nowrap">
                           <button
-                            className="p-1 bg-gray-500 rounded-md hover:bg-gray-900"
+                            className="p-1 bg-green-500 rounded-md hover:bg-green-600"
                             onClick={() => patchMachineSpec()}
                           >
                             完成
@@ -340,9 +329,7 @@ const MachineSpecIndex = () => {
                         <td className="p-1 whitespace-nowrap">
                           {item.ReaderId}
                         </td>
-                        <td className="p-1 whitespace-nowrap">
-                          {item.SystemData.MT}
-                        </td>
+
                         <td className="p-1 whitespace-nowrap">
                           <button
                             className="p-1 hover:bg-gray-900"

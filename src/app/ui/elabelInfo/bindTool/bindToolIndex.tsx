@@ -121,68 +121,67 @@ export default function BindToolIndex() {
     <div className="h-full p-2 overflow-auto bg-gray-900 rounded-xl">
       <div className="p-2 my-4 bg-gray-700 rounded-md ">
         <h3 className="font-bold text-left ">領取刀具</h3>
-        <form
-          className="grid grid-cols-5 gap-2 "
-          onSubmit={(e) => postBindTool(e)}
-        >
-          <div className="relative ">
-            <label htmlFor="labelCode">標籤號碼</label>
-            <input
-              id="labelCode"
-              type="text"
-              list="labelCodeList"
-              className="w-full p-1 text-black rounded-md"
-              placeholder="標籤號碼"
-              value={bindToolData.LabelId}
-              onChange={(e) => handleInputBindData("LabelId", e.target.value)}
-            />
-            <datalist
-              id="labelCodeList"
-              className="absolute top-0 left-0 "
-            ></datalist>
+        <form onSubmit={(e) => postBindTool(e)}>
+          <div className="grid grid-cols-4 gap-2 ">
+            <div className="relative ">
+              <label htmlFor="labelCode">標籤號碼</label>
+              <input
+                id="labelCode"
+                type="text"
+                list="labelCodeList"
+                className="w-full p-1 text-black rounded-md"
+                placeholder="標籤號碼"
+                value={bindToolData.LabelId}
+                onChange={(e) => handleInputBindData("LabelId", e.target.value)}
+              />
+              <datalist
+                id="labelCodeList"
+                className="absolute top-0 left-0 "
+              ></datalist>
+            </div>
+            <div className="relative ">
+              <label htmlFor="eLabelSN">電子標籤SN</label>
+              <input
+                type="text"
+                id="eLabelSN"
+                list="labelList"
+                placeholder="電子標籤SN"
+                className="w-full p-1 text-black rounded-md"
+                value={bindToolData.LabelSn}
+                onChange={(e) => handleInputBindData("LabelSn", e.target.value)}
+              />
+              <datalist
+                id="labelList"
+                className="absolute top-0 left-0 "
+              ></datalist>
+            </div>
+            <div className="relative ">
+              <label htmlFor="toolSN">刀具SN</label>
+              <input
+                id="toolSN"
+                type="text"
+                list="toolSNList"
+                className="w-full p-1 text-black rounded-md"
+                placeholder="刀具SN"
+                value={bindToolData.ToolSn}
+                onChange={(e) => handleInputBindData("ToolSn", e.target.value)}
+              />
+              <datalist
+                id="toolSNList"
+                className="absolute top-0 left-0 "
+              ></datalist>
+            </div>
+            <div>
+              <label htmlFor="receiver">領取人</label>
+              <input
+                type="text"
+                id="receiver"
+                className="w-full p-1 text-black rounded-md"
+                placeholder="領取人"
+              />
+            </div>
           </div>
-          <div className="relative ">
-            <label htmlFor="eLabelSN">電子標籤SN</label>
-            <input
-              type="text"
-              id="eLabelSN"
-              list="labelList"
-              placeholder="電子標籤SN"
-              className="w-full p-1 text-black rounded-md"
-              value={bindToolData.LabelSn}
-              onChange={(e) => handleInputBindData("LabelSn", e.target.value)}
-            />
-            <datalist
-              id="labelList"
-              className="absolute top-0 left-0 "
-            ></datalist>
-          </div>
-          <div className="relative ">
-            <label htmlFor="toolSN">刀具SN</label>
-            <input
-              id="toolSN"
-              type="text"
-              list="toolSNList"
-              className="w-full p-1 text-black rounded-md"
-              placeholder="刀具SN"
-              value={bindToolData.ToolSn}
-              onChange={(e) => handleInputBindData("ToolSn", e.target.value)}
-            />
-            <datalist
-              id="toolSNList"
-              className="absolute top-0 left-0 "
-            ></datalist>
-          </div>
-          <div>
-            <label htmlFor="receiver">領取人</label>
-            <input
-              type="text"
-              id="receiver"
-              className="w-full p-1 text-black rounded-md"
-              placeholder="領取人"
-            />
-          </div>
-          <button className="p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-900">
+          <button className="w-full p-1 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
             綁定標籤
           </button>
         </form>

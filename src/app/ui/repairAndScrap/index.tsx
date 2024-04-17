@@ -6,16 +6,24 @@ import {
   apiScrapTool,
 } from "@/scripts/Apis/repairAndScrap/repairAndScrap";
 import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import {
+  GetToolStockInfoListResponse,
+  ToolStockListItem,
+} from "../toolInfo/toolStock/types";
 
 export default function RepairAndScrapIndex() {
-  const [toolStockList, setToolStockList] = useState([]);
+  const [toolStockList, setToolStockList] = useState<ToolStockListItem[]>([]);
+  const [inputSearch, setInputSearch] = useState<string>("");
 
   const getToolStockList = async () => {
-    const res: any = await apiGetToolStockList();
+    const data = await apiGetToolStockList();
+    const res = data as GetToolStockInfoListResponse;
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
-      setToolStockList(res.data.Values.ToolStockList);
+      const sortData = sortToolList(res.data.Values.ToolStockList);
+      setToolStockList(sortData);
+      return res.data.Values.ToolStockList;
     }
   };
 
@@ -42,6 +50,48 @@ export default function RepairAndScrapIndex() {
     getToolStockList();
   };
 
+  const filterToolList = async (e: FormEvent) => {
+    e.preventDefault();
+    const data = await getToolStockList();
+    if (data) {
+      const filterData = data.filter((item) => {
+        return (
+          item.ToolSn.includes(inputSearch) ||
+          item.ToolTypeData.Name.includes(inputSearch)
+        );
+      });
+      setToolStockList(filterData);
+    }
+  };
+
+  const sortToolList = (data: ToolStockListItem[]) => {
+    const sortData = data.slice().sort((a, b) => {
+      // 定義 LifeStatus 的排序優先順序
+      const statusOrder: { [key: string]: number } = {
+        Normal: 1,
+        Repairing: 2,
+        Scrap: 3,
+      };
+
+      // 比較 LifeStatus 的優先順序
+      const statusComparison =
+        statusOrder[a.LifeStatus] - statusOrder[b.LifeStatus];
+      if (statusComparison !== 0) {
+        return statusComparison;
+      }
+
+      // 如果 LifeStatus 相同，則按照 ToolSn 進行排序
+      if (a.ToolSn < b.ToolSn) {
+        return -1;
+      }
+      if (a.ToolSn > b.ToolSn) {
+        return 1;
+      }
+      return 0;
+    });
+    return sortData;
+  };
+
   const getLifeStatusClassName = (lifeStatus: string) => {
     switch (lifeStatus) {
       case "Normal":
@@ -55,13 +105,35 @@ export default function RepairAndScrapIndex() {
     }
   };
 
+  const showLifeStatusText = (lifeStatus: string) => {
+    switch (lifeStatus) {
+      case "Normal":
+        return "正常";
+      case "Repairing":
+        return "修整中";
+      case "Scrap":
+        return "報廢";
+      default:
+        return "";
+    }
+  };
+
   useEffect(() => {
     getToolStockList();
   }, []);
   return (
     <div className="h-screen overflow-auto text-center">
-      <h3 className="my-4">修整 / 報廢</h3>
-      <div className="overflow-hidden bg-gray-700 rounded-t-md">
+      <form className="my-4" onSubmit={(e) => filterToolList(e)}>
+        <h3>修整 / 報廢</h3>
+        <input
+          type="search"
+          className="p-2 my-2 text-black rounded-md w-96"
+          placeholder="搜尋序號 / 名稱"
+          value={inputSearch}
+          onChange={(e) => setInputSearch(e.target.value)}
+        />
+      </form>
+      <div className="overflow-auto bg-gray-700 rounded-t-md">
         <table className="w-full ">
           <thead>
             <tr className="bg-indigo-500">
@@ -72,71 +144,81 @@ export default function RepairAndScrapIndex() {
               <th className="p-1 whitespace-nowrap">已加工次數</th>
               <th className="p-1 whitespace-nowrap">已加工時間</th>
               <th className="p-1 whitespace-nowrap">已加工長度</th>
-              <th className="p-1 whitespace-nowrap">修整次數</th>
+              <th className="p-1 whitespace-nowrap">修整次數 / 最大修整次數</th>
+              <th className="p-1 whitespace-nowrap">報廢 / 修整時間</th>
+              <th className="p-1 whitespace-nowrap">報廢 / 修整人員</th>
               <th className="p-1 whitespace-nowrap">送修 / 重新入庫</th>
               <th className="p-1 whitespace-nowrap">報廢</th>
             </tr>
           </thead>
           <tbody>
-            {toolStockList
-              ? toolStockList.map((item: any) => (
-                  <tr key={item.ToolSn} className="hover:bg-gray-600 ">
-                    <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
-                    <td className="p-1 whitespace-nowrap">
-                      {item.ToolSpecName}
-                    </td>
-                    <td className="p-1 whitespace-nowrap">
-                      {item.LifePercentage}
-                    </td>
+            {toolStockList.length > 0 ? (
+              toolStockList.map((item: any) => (
+                <tr key={item.ToolSn} className="hover:bg-gray-600 ">
+                  <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
+                  <td className="p-1 whitespace-nowrap">{item.ToolSpecName}</td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.LifePercentage}
+                  </td>
+                  <td
+                    className={`p-1 whitespace-nowrap ${getLifeStatusClassName(
+                      item.LifeStatus
+                    )}`}
+                  >
+                    {showLifeStatusText(item.LifeStatus)}
+                  </td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.LifeData.ProcessCnt}
+                  </td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.LifeData.ProcessTime}
+                  </td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.LifeData.ProcessLength}
+                  </td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.LifeData.RepairCnt} / {item.LifeData.ProcessCnt}
+                  </td>
+                  <td></td>
+                  <td></td>
+                  {item.LifeStatus === "Normal" ? (
                     <td
-                      className={`p-1 whitespace-nowrap ${getLifeStatusClassName(
-                        item.LifeStatus
-                      )}`}
+                      className="p-1 whitespace-nowrap"
+                      onClick={() => postRepairTool(item)}
                     >
-                      {item.LifeStatus}
-                    </td>
-                    <td className="p-1 whitespace-nowrap">
-                      {item.LifeData.ProcessCnt}
-                    </td>
-                    <td className="p-1 whitespace-nowrap">
-                      {item.LifeData.ProcessTime}
-                    </td>
-                    <td className="p-1 whitespace-nowrap">
-                      {item.LifeData.ProcessLength}
-                    </td>
-                    <td className="p-1 whitespace-nowrap">
-                      {item.LifeData.RepairCnt}
-                    </td>
-                    {item.LifeStatus === "Normal" ? (
-                      <td
-                        className="p-1 cursor-pointer whitespace-nowrap"
-                        onClick={() => postRepairTool(item)}
-                      >
+                      <button className="p-1 rounded-md bg-amber-500 hover:bg-amber-600 ">
                         送修
-                      </td>
-                    ) : null}
-                    {item.LifeStatus === "Repairing" ? (
-                      <td
-                        className="p-1 cursor-pointer whitespace-nowrap"
-                        onClick={() => postRestockTool(item)}
-                      >
-                        重新入庫
-                      </td>
-                    ) : null}
-                    {item.LifeStatus === "Scrap" ? <td> - </td> : null}
-                    {item.LifeStatus !== "Scrap" ? (
-                      <td
-                        className="p-1 cursor-pointer whitespace-nowrap"
-                        onClick={() => postScrapTool(item)}
-                      >
+                      </button>
+                    </td>
+                  ) : null}
+                  {item.LifeStatus === "Repairing" ? (
+                    <td
+                      className="p-1 whitespace-nowrap"
+                      onClick={() => postRestockTool(item)}
+                    >
+                      重新入庫
+                    </td>
+                  ) : null}
+                  {item.LifeStatus === "Scrap" ? <td> - </td> : null}
+                  {item.LifeStatus !== "Scrap" ? (
+                    <td
+                      className="p-1 whitespace-nowrap"
+                      onClick={() => postScrapTool(item)}
+                    >
+                      <button className="p-1 bg-red-500 rounded-md hover:bg-red-600 ">
                         報廢
-                      </td>
-                    ) : (
-                      " - "
-                    )}
-                  </tr>
-                ))
-              : null}
+                      </button>
+                    </td>
+                  ) : (
+                    " - "
+                  )}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={12}>no data...</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

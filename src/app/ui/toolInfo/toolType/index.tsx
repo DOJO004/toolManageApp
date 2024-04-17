@@ -4,8 +4,7 @@ import {
   apiEditToolType,
   apiGetToolTypeList,
 } from "@/scripts/Apis/toolType/toolTypeApi";
-import Image from "next/image";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NewToolType } from "./new";
 import {
   DeleteToolTypeResponse,
@@ -60,28 +59,28 @@ export function ToolTypeIndex() {
     }
   };
 
-  const filterToolTypeList = async (e: FormEvent) => {
-    e.preventDefault();
+  let timer: ReturnType<typeof setTimeout>;
 
-    // 获取完整的工具类型列表
-    const data: ToolTypeItem[] | undefined = await getToolTypeList();
-    console.log(data);
+  const filterToolTypeList = async (value: string) => {
+    clearTimeout(timer);
 
-    if (data) {
-      // 过滤工具类型列表
-      const filterData = data.filter((item) => {
-        return (
-          item.Name.includes(filterToolTypeTarget) ||
-          item.Id.includes(filterToolTypeTarget)
-        );
-      });
-      console.log("filter data", filterData);
+    timer = setTimeout(async () => {
+      const data: ToolTypeItem[] | undefined = await getToolTypeList();
 
-      // 更新状态以显示过滤后的列表
-      setToolTypeList(filterData);
-    } else {
-      console.log("获取工具类型列表失败或返回的数据为空");
-    }
+      if (data) {
+        const filterData = data.filter((item) => {
+          return (
+            item.Name.toLowerCase().includes(value.toLowerCase()) ||
+            item.Id.toLowerCase().includes(value.toLowerCase())
+          );
+        });
+        console.log("filter data", filterData);
+
+        setToolTypeList(filterData);
+      } else {
+        console.log("获取工具类型列表失败或返回的数据为空");
+      }
+    }, 500);
   };
 
   const handleClickNewToolType = () => {
@@ -133,26 +132,14 @@ export function ToolTypeIndex() {
           </div>
           {/* search */}
           <div>
-            <form
-              onSubmit={(e) => filterToolTypeList(e)}
-              className="grid items-center grid-cols-12"
-            >
+            <div className="grid items-center grid-cols-12">
               <input
                 type="search"
                 className="col-start-6 col-end-8 p-2 my-2 text-black rounded-md "
                 placeholder="請輸入搜尋關鍵字"
-                onChange={(e) => setFilterToolTypeTarget(e.target.value)}
+                onChange={(e) => filterToolTypeList(e.target.value)}
               />
-              <button>
-                <Image
-                  src="/search.png"
-                  alt="search"
-                  width={30}
-                  height={30}
-                  className="p-2 bg-white rounded-md cursor-pointer hover:bg-gray-300"
-                />
-              </button>
-            </form>
+            </div>
           </div>
           <table className="w-full ">
             <thead className="bg-indigo-500 border-b-2">

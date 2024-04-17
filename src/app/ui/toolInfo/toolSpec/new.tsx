@@ -95,11 +95,11 @@ export function NewToolSpec({
   }, [toolSpec]);
 
   return (
-    <div className="p-2 m-2 border rounded-md">
+    <div className="p-2 m-2 rounded-md">
       <div className="relative ">
         <h3 className="font-bold text-left ">新增刀具規格</h3>
         <button
-          className="absolute top-0 right-0 transition-all duration-300 rounded-full hover:bg-gray-900"
+          className="absolute top-0 right-0 p-2 transition-all duration-300 rounded-full hover:bg-gray-900"
           onClick={() => setNewToolSpecMode(false)}
         >
           X

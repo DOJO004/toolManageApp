@@ -5,7 +5,6 @@ import {
   syncELabelDataFromAims,
 } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
 import { useEffect, useState } from "react";
-import EditELabelInfo from "./edit";
 import NewELabelInfo from "./new";
 import {
   GetELabelListResponse,
@@ -17,6 +16,7 @@ export default function ELabelInfoIndex() {
   const [eLabelList, setELabelList] = useState<LabelItem[]>([]);
   const [newLabelMode, setNewLabelMode] = useState(false);
   const [editLabelMode, setEditLabelMode] = useState(false);
+  const [editLabelModeIndex, setEditLabelModeIndex] = useState(-1);
   const [editLabelData, setEditLabelData] = useState({
     LabelBrandId: "",
     BindStatus: "",
@@ -36,6 +36,7 @@ export default function ELabelInfoIndex() {
   const getELabelList = async () => {
     const data = await apiGetELabelList();
     const res = data as GetELabelListResponse;
+    console.log("get eLabelList", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
       setELabelList(res.data.Values.LabelList);
@@ -47,11 +48,12 @@ export default function ELabelInfoIndex() {
     setEditLabelMode(false);
   };
 
-  const handleEditLabeMode = (labeData: LabelItem) => {
+  const handleEditLabeMode = (labeData: LabelItem, index: number) => {
     console.log(labeData);
 
     setEditLabelMode(true);
     setNewLabelMode(false);
+    setEditLabelModeIndex(index);
     setEditLabelData({
       LabelBrandId: "",
       BindStatus: labeData.BindStatus,
@@ -83,14 +85,24 @@ export default function ELabelInfoIndex() {
       <div className="w-full mx-4">
         <div className="relative">
           <button
-            className="absolute top-0 right-0 border rounded-md hover:bg-gray-600"
+            className="absolute top-0 right-0 p-1 border rounded-md hover:bg-gray-600"
             onClick={() => handleNewLabelMode()}
           >
             新增
           </button>
           <h2 className="my-4 ">電子標籤列表</h2>
         </div>
-
+        {/* new */}
+        <div
+          className={`transition-all overflow-hidden duration-300 ease-in-out ${
+            newLabelMode ? "h-40" : "h-0"
+          }`}
+        >
+          <NewELabelInfo
+            setNewLabelMode={setNewLabelMode}
+            getELabelList={getELabelList}
+          />
+        </div>
         <div className="p-4 mt-2 overflow-auto bg-gray-700 rounded-xl">
           <table className="w-full ">
             <thead>
@@ -98,67 +110,72 @@ export default function ELabelInfoIndex() {
                 <td className="p-1 ">LabelCode</td>
                 <td className="p-1 ">eLabelSN</td>
                 <td className="p-1 ">StationCode</td>
-                <td className="p-1 ">ArticleID</td>
-                <td className="p-1 ">ArticleName</td>
+                <td className="p-1 ">Status</td>
                 <td className="p-1 ">LastModify</td>
+                <td className="p-1 ">編輯</td>
               </tr>
             </thead>
             <tbody>
-              {eLabelList
-                ? eLabelList.map((item) => (
-                    <tr
-                      key={item.LabelId}
-                      className="cursor-pointer hover:bg-gray-600"
-                      onClick={() => handleEditLabeMode(item)}
-                    >
-                      <td className="p-1 ">{item.AimsSpec?.LabelCode}</td>
-                      <td className="p-1 ">{item.LabelSn}</td>
-                      <td className="p-1 ">{item.AimsSpec?.StationCode}</td>
-                      <td className="p-1 ">
-                        {item.AimsSpec?.ArticleInfo.ArticleID}
-                      </td>
-                      <td className="p-1 ">
-                        {item.AimsSpec?.ArticleInfo.ArticleName}
-                      </td>
-                      <td className="p-1 ">{item.LastModify}</td>
-                    </tr>
-                  ))
+              {eLabelList.length > 0
+                ? eLabelList.map((item, index) =>
+                    editLabelMode && editLabelModeIndex === index ? (
+                      <tr key={item.LabelId}>
+                        <td>
+                          <input type="text" />
+                        </td>
+                        <td>
+                          <input type="text" />
+                        </td>
+                        <td>
+                          <input type="text" />
+                        </td>
+                        <td>
+                          <input type="text" />
+                        </td>
+                        <td>
+                          <input type="text" />
+                        </td>
+                        <td>
+                          <input type="text" />
+                        </td>
+                        <td>
+                          <input type="text" />
+                        </td>
+                      </tr>
+                    ) : (
+                      <tr key={item.LabelId} className=" hover:bg-gray-600">
+                        <td className="p-1 ">{item.AimsSpec?.LabelCode}</td>
+                        <td className="p-1 ">{item.LabelSn}</td>
+                        <td className="p-1 ">{item.AimsSpec?.StationCode}</td>
+                        <td className="p-1 ">
+                          {item.BindStatus === "Standby"
+                            ? `已綁定 / ${item.LabelBind.ToolSn}`
+                            : "未綁定"}{" "}
+                        </td>
+                        <td className="p-1 ">{item.LastModify}</td>
+                        <td className="p-1 ">
+                          <button
+                            className="p-1 rounded-md hover:bg-indigo-600"
+                            onClick={() => handleEditLabeMode(item, index)}
+                          >
+                            編輯
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  )
                 : null}
             </tbody>
           </table>
           <div className="mt-4">
             <button
-              className="p-1 text-white bg-gray-500 rounded-md hover:bg-gray-600 "
+              className="p-1 bg-indigo-500 rounded-md hover:bg-indigo-600"
               onClick={() => postAsyncELabelInfoFromAims()}
             >
               同步AIMS電子標籤
             </button>
           </div>
         </div>
-      </div>
-      {/* new */}
-      <div
-        className={`transition-all overflow-hidden duration-300 ease-in-out ${
-          newLabelMode ? "w-1/2" : "w-0"
-        }`}
-      >
-        <NewELabelInfo
-          setNewLabelMode={setNewLabelMode}
-          getELabelList={getELabelList}
-        />
-      </div>
-      {/* edit */}
-      <div
-        className={`transition-all overflow-hidden duration-300 ease-in-out ${
-          editLabelMode ? "w-1/2" : "w-0"
-        }`}
-      >
-        <EditELabelInfo
-          editLabelData={editLabelData}
-          setEditLabelData={setEditLabelData}
-          getELabelList={getELabelList}
-          setEditLabelMode={setEditLabelMode}
-        />
       </div>
     </div>
   );

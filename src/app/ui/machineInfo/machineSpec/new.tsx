@@ -275,7 +275,7 @@ export default function NewMachineSpec({
             <label htmlFor="isSpindle">IsSpindle</label>
           </div>
         </div>
-        <button className="w-full bg-gray-500 rounded-md hover:bg-gray-900">
+        <button className="w-full bg-indigo-500 rounded-md hover:bg-indigo-600">
           新增
         </button>
       </form>

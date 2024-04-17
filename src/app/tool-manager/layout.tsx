@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   return (
-    <div className="w-full md:flex">
+    <div className="w-full p-2 md:flex">
       {pathname !== "/tool-manager/login" ? (
         <div className="h-full mx-2">
           <Navbar />

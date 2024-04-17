@@ -54,105 +54,111 @@ export default function NewELabelInfo({
       <div className="relative ">
         <h3>新增電子標籤</h3>
         <button
-          className="absolute top-0 right-0 "
+          className="absolute top-0 right-0 p-1 rounded-full hover:bg-gray-900 "
           onClick={() => setNewLabelMode(false)}
         >
           X
         </button>
       </div>
       <form
-        action=""
-        className="max-w-md p-2 mx-auto"
+        className="grid items-center grid-cols-8 gap-2 my-4"
         onSubmit={(e) => postNewLabelInfo(e)}
       >
-        <div className="my-4">
-          <label htmlFor="LabelBrandID" className="block text-left">
+        <div className="relative ">
+          <label htmlFor="LabelBrandID" className="absolute left-0 -top-6 ">
             LabelBrandID
           </label>
           <input
             type="text"
             id="LabelBrandID"
             className="w-full p-2 text-black rounded-md "
+            placeholder="LabelBrandID"
             value={newLabelInfo.LabelBrandId}
             onChange={(e) => handleNewLabelInfo("LabelBrandId", e.target.value)}
           />
         </div>
-        <div className="my-4">
-          <label htmlFor="LabelSn" className="block text-left">
+        <div className="relative ">
+          <label htmlFor="LabelSn" className="absolute left-0 -top-6 ">
             LabelSN
           </label>
           <input
             type="text"
             id="LabelSn"
+            placeholder="LabelSN"
             className="w-full p-2 text-black rounded-md "
             value={newLabelInfo.LabelSn}
             onChange={(e) => handleNewLabelInfo("LabelSn", e.target.value)}
           />
         </div>
-        <div className="my-4">
-          <label htmlFor="LabelCode" className="block text-left">
+        <div className="relative ">
+          <label htmlFor="LabelCode" className="absolute left-0 -top-6 ">
             LabelCode
           </label>
           <input
             type="text"
             id="LabelCode"
+            placeholder="LabelCode"
             className="w-full p-2 text-black rounded-md "
             value={newLabelInfo.LabelCode}
             onChange={(e) => handleNewLabelInfo("LabelCode", e.target.value)}
           />
         </div>
-        <div className="my-4">
-          <label htmlFor="NfcRecord" className="block text-left">
+        <div className="relative ">
+          <label htmlFor="NfcRecord" className="absolute left-0 -top-6 ">
             NfcRecord
           </label>
           <input
             type="text"
             id="NfcRecord"
+            placeholder="NfcRecord"
             className="w-full p-2 text-black rounded-md "
             value={newLabelInfo.NfcRecord}
             onChange={(e) => handleNewLabelInfo("NfcRecord", e.target.value)}
           />
         </div>
 
-        <div className="my-4">
-          <label htmlFor="StationCode" className="block text-left">
+        <div className="relative ">
+          <label htmlFor="StationCode" className="absolute left-0 -top-6 ">
             StationCode
           </label>
           <input
             type="text"
             id="StationCode"
+            placeholder="StationCode"
             className="w-full p-2 text-black rounded-md "
             value={newLabelInfo.StationCode}
             onChange={(e) => handleNewLabelInfo("StationCode", e.target.value)}
           />
         </div>
 
-        <div className="my-4">
-          <label htmlFor="ArticleID" className="block text-left">
+        <div className="relative ">
+          <label htmlFor="ArticleID" className="absolute left-0 -top-6 ">
             ArticleID
           </label>
           <input
             type="text"
             id="ArticleID"
+            placeholder="ArticleID"
             className="w-full p-2 text-black rounded-md "
             value={newLabelInfo.ArticleID}
             onChange={(e) => handleNewLabelInfo("ArticleID", e.target.value)}
           />
         </div>
 
-        <div className="my-4">
-          <label htmlFor="ArticleName" className="block text-left">
+        <div className="relative ">
+          <label htmlFor="ArticleName" className="absolute left-0 -top-6 ">
             ArticleName
           </label>
           <input
             type="text"
             id="ArticleName"
+            placeholder="ArticleName"
             className="w-full p-2 text-black rounded-md "
             value={newLabelInfo.ArticleName}
             onChange={(e) => handleNewLabelInfo("ArticleName", e.target.value)}
           />
         </div>
-        <button className="w-full p-2 bg-gray-600 rounded-md hover:bg-gray-500">
+        <button className="w-full p-2 bg-indigo-500 rounded-md hover:bg-indigo-600">
           新增
         </button>
       </form>
