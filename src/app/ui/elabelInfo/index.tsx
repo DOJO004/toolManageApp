@@ -40,6 +40,7 @@ export default function ELabelInfoIndex() {
 
     if (res?.data?.Values?.ReqInt === 0) {
       setELabelList(res.data.Values.LabelList);
+      return res.data.Values.LabelList;
     }
   };
 
@@ -77,13 +78,30 @@ export default function ELabelInfoIndex() {
     console.log(res);
   };
 
+  let timer: ReturnType<typeof setTimeout>;
+  const searchLabel = (value: string) => {
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      const data = await getELabelList();
+      if (data) {
+        const filterData = data.filter((item) => {
+          return (
+            item.LabelSn.toLowerCase().includes(value.toLowerCase()) ||
+            item.LabelId.toLowerCase().includes(value.toLowerCase())
+          );
+        });
+        setELabelList(filterData);
+      }
+    }, 500);
+  };
+
   useEffect(() => {
     getELabelList();
   }, []);
   return (
     <div className="relative flex w-full p-2 overflow-auto text-center ">
       <div className="w-full mx-4">
-        <div className="relative">
+        <div className="relative my-4">
           <button
             className="absolute top-0 right-0 p-1 border rounded-md hover:bg-gray-600"
             onClick={() => handleNewLabelMode()}
@@ -91,11 +109,17 @@ export default function ELabelInfoIndex() {
             新增
           </button>
           <h2 className="my-4 ">電子標籤列表</h2>
+          <input
+            type="search"
+            placeholder="搜尋標籤"
+            className="p-2 text-black rounded-md w-96"
+            onChange={(e) => searchLabel(e.target.value)}
+          />
         </div>
         {/* new */}
         <div
           className={`transition-all overflow-hidden duration-300 ease-in-out ${
-            newLabelMode ? "h-40" : "h-0"
+            newLabelMode ? "h-52" : "h-0"
           }`}
         >
           <NewELabelInfo

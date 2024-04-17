@@ -27,6 +27,7 @@ const MachineTypeIndex = () => {
     const res = data as GetMachineTypeListResponse;
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineTypeList(res.data.Values.MachineTypeList);
+      return res.data.Values.MachineTypeList;
     }
   };
 
@@ -49,6 +50,24 @@ const MachineTypeIndex = () => {
         getMachineTypeList();
       }
     }
+  };
+
+  let timer: ReturnType<typeof setTimeout>;
+  const searchMachineType = (value: string) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(async () => {
+      const machineTypeList = await getMachineTypeList();
+      if (machineTypeList) {
+        const filterData = machineTypeList.filter((item) => {
+          return (
+            item.Name.toLowerCase().includes(value.toLowerCase()) ||
+            item.Id.toLowerCase().includes(value.toLowerCase())
+          );
+        });
+        setMachineTypeList(filterData);
+      }
+    }, 500);
   };
 
   const handleClickNewMachineType = () => {
@@ -77,12 +96,20 @@ const MachineTypeIndex = () => {
           >
             新增
           </button>
-          <h2 className="">設備類型</h2>
+          <div>
+            <h2 className="">設備類型</h2>
+            <input
+              type="search"
+              placeholder="搜尋 ID / 名稱"
+              className="p-2 my-2 text-black rounded-md w-96"
+              onChange={(e) => searchMachineType(e.target.value)}
+            />
+          </div>
         </div>
         {/* new */}
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            newMachineTypeMode ? "h-40" : "h-0"
+          className={`overflow-hidden transition-all my-4 duration-300 ease-in-out ${
+            newMachineTypeMode ? "h-60" : "h-0"
           }`}
         >
           <NewMachineType
@@ -100,55 +127,63 @@ const MachineTypeIndex = () => {
               </tr>
             </thead>
             <tbody>
-              {machineTypeList.map((item, index: number) =>
-                // edit
-                editMachineTypeMode && editMachineTypeModeIndex === index ? (
-                  <tr key={item.Id}>
-                    <td>{editMachineType.Id}</td>
-                    <td>
-                      <input
-                        type="text"
-                        className="w-full p-1 text-center text-black rounded-md"
-                        value={editMachineType.Name}
-                        onChange={(e) => {
-                          setEditMachineType((prev) => ({
-                            ...prev,
-                            Name: e.target.value,
-                          }));
-                        }}
-                        autoFocus
-                      />
-                    </td>
-                    <td>
-                      <button
-                        className="p-1 bg-gray-500 rounded-md hover:bg-gray-900"
-                        onClick={() => patchMachineType()}
-                      >
-                        完成
-                      </button>
-                      <span> / </span>
-                      <button
-                        className="p-1 bg-red-500 rounded-md hover:bg-red-900"
-                        onClick={() => deleteMachineType()}
-                      >
-                        刪除
-                      </button>
-                    </td>
-                  </tr>
-                ) : (
-                  <tr key={index} className="text-center hover:bg-gray-600">
-                    <td className="p-1 whitespace-nowrap">{item.Id}</td>
-                    <td className="p-1 whitespace-nowrap">{item.Name}</td>
-                    <td className="p-1 whitespace-nowrap">
-                      <button
-                        className="p-1 hover:bg-gray-900"
-                        onClick={() => handleClickEditMachineType(item, index)}
-                      >
-                        編輯
-                      </button>
-                    </td>
-                  </tr>
+              {machineTypeList.length > 0 ? (
+                machineTypeList.map((item, index: number) =>
+                  // edit
+                  editMachineTypeMode && editMachineTypeModeIndex === index ? (
+                    <tr key={item.Id}>
+                      <td>{editMachineType.Id}</td>
+                      <td>
+                        <input
+                          type="text"
+                          className="p-1 text-center text-black rounded-md w-96"
+                          value={editMachineType.Name}
+                          onChange={(e) => {
+                            setEditMachineType((prev) => ({
+                              ...prev,
+                              Name: e.target.value,
+                            }));
+                          }}
+                          autoFocus
+                        />
+                      </td>
+                      <td>
+                        <button
+                          className="p-1 bg-green-500 rounded-md hover:bg-green-600"
+                          onClick={() => patchMachineType()}
+                        >
+                          完成
+                        </button>
+                        <span> / </span>
+                        <button
+                          className="p-1 bg-red-500 rounded-md hover:bg-red-900"
+                          onClick={() => deleteMachineType()}
+                        >
+                          刪除
+                        </button>
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr key={index} className="text-center hover:bg-gray-600">
+                      <td className="p-1 whitespace-nowrap">{item.Id}</td>
+                      <td className="p-1 whitespace-nowrap">{item.Name}</td>
+                      <td className="p-1 whitespace-nowrap">
+                        <button
+                          className="p-1 hover:bg-gray-900"
+                          onClick={() =>
+                            handleClickEditMachineType(item, index)
+                          }
+                        >
+                          編輯
+                        </button>
+                      </td>
+                    </tr>
+                  )
                 )
+              ) : (
+                <tr>
+                  <td colSpan={3}>no data...</td>
+                </tr>
               )}
             </tbody>
           </table>

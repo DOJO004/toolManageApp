@@ -153,7 +153,7 @@ const ToolSpecIndex = () => {
     getToolSpecList();
   }, []);
   return (
-    <div className="relative flex w-full h-screen p-2 overflow-auto">
+    <div className="relative flex w-full p-2 ">
       {/* index */}
       <div className="w-full mx-4 ">
         <div className="relative">
@@ -174,18 +174,18 @@ const ToolSpecIndex = () => {
           </button>
         </div>
 
-        <div className="overflow-auto text-center bg-gray-700 rounded-md">
-          {/* new */}
-          <div
-            className={` transition-all duration-300  ease-in-out rounded-md overflow-hidden  ${
-              newToolSpecMode ? "h-48" : "h-0"
-            }`}
-          >
-            <NewToolSpec
-              getToolSpecList={getToolSpecList}
-              setNewToolSpecMode={setNewToolSpecMode}
-            />
-          </div>
+        {/* new */}
+        <div
+          className={` transition-all duration-300  ease-in-out rounded-md overflow-hidden  ${
+            newToolSpecMode ? "h-48" : "h-0"
+          }`}
+        >
+          <NewToolSpec
+            getToolSpecList={getToolSpecList}
+            setNewToolSpecMode={setNewToolSpecMode}
+          />
+        </div>
+        <div className="h-full overflow-auto text-center bg-gray-700 rounded-md">
           <table className="w-full">
             <thead className="bg-indigo-500 border-b-2">
               <tr>
@@ -455,11 +455,13 @@ const ToolSpecIndex = () => {
                         <td className="p-1 whitespace-nowrap">
                           {item.MaxLife.ProcessTime}
                         </td>
-                        <td
-                          className="rounded-md cursor-pointer hover:bg-gray-800"
-                          onClick={() => handleEditToolSpecMode(item, index)}
-                        >
-                          編輯
+                        <td>
+                          <button
+                            className="p-2 rounded-md hover:bg-gray-800"
+                            onClick={() => handleEditToolSpecMode(item, index)}
+                          >
+                            編輯
+                          </button>
                         </td>
                       </>
                     )}
@@ -467,7 +469,7 @@ const ToolSpecIndex = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={11}>Don&apos;t have any data...</td>
+                  <td colSpan={12}>no data...</td>
                 </tr>
               )}
             </tbody>
