@@ -1,4 +1,4 @@
-export interface ApiResponse{
+export interface GetToolStockListResponse{
     data: {
     Values: {
         ReqInt: number,

@@ -21,7 +21,24 @@ export default function Page() {
     if (res.data?.Values?.ReqInt === 0) {
       setMachineInfoList(res.data.Values.MachineStatusList);
       setSelectMachineInfo(res.data.Values.MachineStatusList[0]);
+      return res.data.Values.MachineStatusList;
     }
+  };
+
+  let timer: ReturnType<typeof setTimeout>;
+  const searchMachineInfo = async (value: string) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(async () => {
+      const data = await getMachineInfoList();
+
+      if (data) {
+        const filterData = data.filter((item) => {
+          return item.MachineId.toLowerCase().includes(value.toLowerCase());
+        });
+        setMachineInfoList(filterData);
+      }
+    }, 500);
   };
 
   const handleSelectMachineInfo = (item: MachineStatusItem) => {
@@ -38,7 +55,15 @@ export default function Page() {
         <MachineLogInfo selectMachineInfo={selectMachineInfo} />
       </div>
       <div className="h-[40rem] p-2 my-4 bg-gray-700 rounded-md overflow-auto">
-        <h3 className="my-4 text-center ">設備資訊</h3>
+        <div className="grid justify-center my-4">
+          <h3 className="my-2 text-center ">設備資訊</h3>
+          <input
+            type="search"
+            className="p-2 text-black rounded-md w-96"
+            placeholder="搜尋設備序號"
+            onChange={(e) => searchMachineInfo(e.target.value)}
+          />
+        </div>
         <div className="overflow-auto text-center rounded-t-md">
           <table className="w-full">
             <thead className="bg-indigo-500 ">
@@ -51,30 +76,30 @@ export default function Page() {
               </tr>
             </thead>
             <tbody>
-              {machineInfoList
-                ? machineInfoList.map((item) => (
-                    <tr
-                      key={item.MachineId}
-                      onClick={() => handleSelectMachineInfo(item)}
-                      className="cursor-pointer hover:bg-gray-600"
-                    >
-                      <td className="p-1 whitespace-nowrap">
-                        {item.MachineId}
-                      </td>
-                      <td className="p-1 whitespace-nowrap">
-                        {item.ProductLineData.Name}
-                      </td>
-                      <td className="p-1 whitespace-nowrap">{item.Status}</td>
-                      <td className="p-1 whitespace-nowrap">
-                        {item.CurrentParameter.SpindleRPM} /
-                        {item.CurrentParameter.TotalFeedRate}
-                      </td>
-                      <td className="p-1 whitespace-nowrap">
-                        {item.LastModify}
-                      </td>
-                    </tr>
-                  ))
-                : null}
+              {machineInfoList.length > 0 ? (
+                machineInfoList.map((item) => (
+                  <tr
+                    key={item.MachineId}
+                    onClick={() => handleSelectMachineInfo(item)}
+                    className="cursor-pointer hover:bg-gray-600"
+                  >
+                    <td className="p-1 whitespace-nowrap">{item.MachineId}</td>
+                    <td className="p-1 whitespace-nowrap">
+                      {item.ProductLineData.Name}
+                    </td>
+                    <td className={`p-1 whitespace-nowrap`}>{item.Status}</td>
+                    <td className="p-1 whitespace-nowrap">
+                      {item.CurrentParameter.SpindleRPM} /
+                      {item.CurrentParameter.TotalFeedRate}
+                    </td>
+                    <td className="p-1 whitespace-nowrap">{item.LastModify}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5}> no data...</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

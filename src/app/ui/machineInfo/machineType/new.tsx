@@ -49,35 +49,36 @@ export default function NewMachineType({
           X
         </button>
       </div>
-      <form
-        className="grid items-center grid-cols-3 gap-2 my-4"
-        onSubmit={(e) => postMachineType(e)}
-      >
-        <div className="relative my-4">
-          <label htmlFor="Id" className="absolute left-0 -top-6 ">
-            設備 ID
-          </label>
-          <input
-            type="text"
-            id="Id"
-            className="w-full p-1 text-center text-black rounded-md"
-            value={newMachineType.Id}
-            onChange={(e) => handleNewMachineType("Id", e.target.value)}
-          />
+      <form onSubmit={(e) => postMachineType(e)}>
+        <div className="grid items-center grid-cols-2 gap-2 my-4">
+          <div className="relative my-4">
+            <label htmlFor="Id" className="absolute left-0 -top-6 ">
+              設備 ID
+            </label>
+            <input
+              type="text"
+              id="Id"
+              placeholder="設備 ID"
+              className="w-full p-1 text-center text-black rounded-md"
+              value={newMachineType.Id}
+              onChange={(e) => handleNewMachineType("Id", e.target.value)}
+            />
+          </div>
+          <div className="relative my-4">
+            <label htmlFor="Name" className="absolute left-0 -top-6 ">
+              設備名稱
+            </label>
+            <input
+              type="text"
+              id="Name"
+              placeholder="設備名稱"
+              className="w-full p-1 text-center text-black rounded-md"
+              value={newMachineType.Name}
+              onChange={(e) => handleNewMachineType("Name", e.target.value)}
+            />
+          </div>
         </div>
-        <div className="relative my-4">
-          <label htmlFor="Name" className="absolute left-0 -top-6 ">
-            設備名稱
-          </label>
-          <input
-            type="text"
-            id="Name"
-            className="w-full p-1 text-center text-black rounded-md"
-            value={newMachineType.Name}
-            onChange={(e) => handleNewMachineType("Name", e.target.value)}
-          />
-        </div>
-        <button className="w-full p-1 bg-gray-500 rounded-md hover:bg-gray-900">
+        <button className="w-full p-1 bg-indigo-500 rounded-md hover:bg-indigo-600">
           新增
         </button>
       </form>

@@ -59,57 +59,56 @@ export default function NewToolStock({
   }, []);
 
   return (
-    <div className="w-full p-4 bg-gray-600 rounded-md">
+    <div className="w-full p-4 bg-gray-700 rounded-md">
       <div className="relative ">
         <h3 className="text-left ">新增刀具庫存</h3>
         <button
-          className="absolute top-0 right-0 rounded-full hover:bg-gray-900 "
+          className="absolute top-0 right-0 p-2 rounded-full hover:bg-gray-900 "
           onClick={() => setNewToolStockMode(false)}
         >
           X
         </button>
       </div>
-      <form
-        onSubmit={(e) => postToolStock(e)}
-        className="grid items-end grid-cols-3 gap-2"
-      >
-        <div>
-          <label htmlFor="ToolSpecId" className="block text-left">
-            刀具規格名稱
-          </label>
-          <select
-            id="ToolSpecId"
-            className="w-full p-1 text-center text-black rounded-md"
-            value={toolStock.ToolSpecId}
-            onChange={(e) => handleToolStock("ToolSpecId", e.target.value)}
-          >
-            <option value="" className="text-black ">
-              請選擇
-            </option>
-            {toolSpecList.map((item) => (
-              <option
-                key={item.ToolSpecId}
-                value={item.ToolSpecId}
-                className="text-black"
-              >
-                {item.Name}
+      <form onSubmit={(e) => postToolStock(e)}>
+        <div className="grid items-end grid-cols-2 gap-2">
+          <div>
+            <label htmlFor="ToolSpecId" className="block text-left">
+              刀具規格名稱
+            </label>
+            <select
+              id="ToolSpecId"
+              className="w-full p-1 text-center text-black rounded-md"
+              value={toolStock.ToolSpecId}
+              onChange={(e) => handleToolStock("ToolSpecId", e.target.value)}
+            >
+              <option value="" className="text-black ">
+                請選擇
               </option>
-            ))}
-          </select>
+              {toolSpecList.map((item) => (
+                <option
+                  key={item.ToolSpecId}
+                  value={item.ToolSpecId}
+                  className="text-black"
+                >
+                  {item.Name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="Qty" className="block text-left">
+              數量
+            </label>
+            <input
+              type="number"
+              id="Qty"
+              value={toolStock.Qty}
+              className="w-full p-1 text-center text-black rounded-md"
+              onChange={(e) => handleToolStock("Qty", e.target.value)}
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="Qty" className="block text-left">
-            數量
-          </label>
-          <input
-            type="number"
-            id="Qty"
-            value={toolStock.Qty}
-            className="w-full p-1 text-center text-black rounded-md"
-            onChange={(e) => handleToolStock("Qty", e.target.value)}
-          />
-        </div>
-        <button className="p-1 bg-gray-500 rounded-md hover:bg-gray-900">
+        <button className="w-full p-1 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
           新增
         </button>
       </form>

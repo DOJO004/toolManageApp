@@ -23,7 +23,6 @@ export function ToolTypeIndex() {
     Id: "",
     Name: "",
   });
-  const [filterToolTypeTarget, setFilterToolTypeTarget] = useState("");
 
   const getToolTypeList = async () => {
     const data = await apiGetToolTypeList();
@@ -114,22 +113,6 @@ export function ToolTypeIndex() {
             新增
           </button>
           <h2 className="my-4 text-center">刀具類型</h2>
-        </div>
-        <div className="overflow-hidden text-center bg-gray-700 rounded-md ">
-          {/* new */}
-          <div
-            className={`overflow-hidden relative  mx-auto transition-all  duration-300 ease-in-out ${
-              newToolTypeMode ? "h-40" : "h-0"
-            }`}
-          >
-            <button
-              className="absolute transition-all duration-300 right-5 top-7 hover:rounded-full hover:bg-gray-900"
-              onClick={() => handleClickNewToolType()}
-            >
-              X
-            </button>
-            <NewToolType getToolTypeList={getToolTypeList} />
-          </div>
           {/* search */}
           <div>
             <div className="grid items-center grid-cols-12">
@@ -141,6 +124,22 @@ export function ToolTypeIndex() {
               />
             </div>
           </div>
+        </div>
+        {/* new */}
+        <div
+          className={`overflow-hidden relative transition-all  duration-300 ease-in-out ${
+            newToolTypeMode ? "h-48" : "h-0"
+          }`}
+        >
+          <button
+            className="absolute top-0 p-2 transition-all duration-300 right-5 hover:rounded-full hover:bg-gray-900"
+            onClick={() => handleClickNewToolType()}
+          >
+            X
+          </button>
+          <NewToolType getToolTypeList={getToolTypeList} />
+        </div>
+        <div className="h-full text-center bg-gray-700 rounded-md">
           <table className="w-full ">
             <thead className="bg-indigo-500 border-b-2">
               <tr>
@@ -150,7 +149,7 @@ export function ToolTypeIndex() {
                 <th className="p-1 whitespace-nowrap">編輯</th>
               </tr>
             </thead>
-            <tbody className="">
+            <tbody>
               {toolTypeList.length > 0 ? (
                 // edit mode
                 toolTypeList.map((item, index) =>
@@ -174,7 +173,7 @@ export function ToolTypeIndex() {
                       <td className="p-1">-</td>
                       <td className="p-1">
                         <span
-                          className="p-1 bg-gray-500 rounded-md cursor-pointer hover:bg-gray-600"
+                          className="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
                           onClick={() => patchEditToolType()}
                         >
                           完成
@@ -186,12 +185,6 @@ export function ToolTypeIndex() {
                         >
                           刪除
                         </span>
-                        <span
-                          className="p-2 m-4 rounded-full cursor-pointer hover:bg-gray-900 "
-                          onClick={() => setEditToolTypeMode(false)}
-                        >
-                          X
-                        </span>
                       </td>
                     </tr>
                   ) : (
@@ -200,18 +193,17 @@ export function ToolTypeIndex() {
                       <td className="p-1">{item.Id}</td>
                       <td className="p-1">{item.Name}</td>
                       <td className="p-1"> last modify none...</td>
-                      <td
-                        className="p-1 cursor-pointer hover:bg-gray-900 "
-                        onClick={() => handleClickEditToolType(item, index)}
-                      >
-                        編輯
+                      <td onClick={() => handleClickEditToolType(item, index)}>
+                        <button className="p-1 rounded-md hover:bg-gray-900 ">
+                          編輯
+                        </button>
                       </td>
                     </tr>
                   )
                 )
               ) : (
                 <tr>
-                  <td colSpan={3}>Don&apos;t have any data...</td>
+                  <td colSpan={4}>no data...</td>
                 </tr>
               )}
             </tbody>

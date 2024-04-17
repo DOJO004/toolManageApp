@@ -60,14 +60,55 @@ const ToolStockIndex = () => {
     }
   };
 
-  const getLifeStatusClassName = (lifeStatus: string) => {
-    switch (lifeStatus) {
+  const sortToolStockList = (toolList: ToolStatusItem[]) => {
+    const sortData = toolList.sort((a, b) => {
+      // 定義 LifeStatus 的排序優先順序
+      const statusOrder: { [key: string]: number } = {
+        Normal: 1,
+        Repairing: 2,
+        Scrap: 3,
+      };
+
+      // 比較 LifeStatus 的優先順序
+      const statusComparison =
+        statusOrder[a.LifeStatus] - statusOrder[b.LifeStatus];
+      if (statusComparison !== 0) {
+        return statusComparison;
+      }
+
+      // 如果 LifeStatus 相同，則按照其他屬性進行排序，例如 ToolSn
+      if (a.ToolSn < b.ToolSn) {
+        return -1;
+      }
+      if (a.ToolSn > b.ToolSn) {
+        return 1;
+      }
+      return 0;
+    });
+    return sortData;
+  };
+
+  const getToolStatusClass = (status: string) => {
+    switch (status) {
       case "Normal":
         return "text-green-500";
       case "Repairing":
         return "text-amber-500";
       case "Scrap":
         return "text-gray-500";
+      default:
+        return "";
+    }
+  };
+
+  const translateToolStatus = (status: string) => {
+    switch (status) {
+      case "Normal":
+        return "正常";
+      case "Repairing":
+        return "維修中";
+      case "Scrap":
+        return "報廢";
       default:
         return "";
     }
@@ -91,17 +132,6 @@ const ToolStockIndex = () => {
         >
           新增
         </button>
-        {/* new */}
-        <div
-          className={` overflow-hidden transition-all duration-300 easy-in-out ${
-            newToolStockMode ? "h-40" : "h-0"
-          }`}
-        >
-          <NewToolStock
-            getToolStockList={getToolStockList}
-            setNewToolStockMode={setNewToolStockMode}
-          />
-        </div>
         <div className="flex justify-center gap-2">
           {toolSpecClass.map((name) => (
             <div key={name}>
@@ -113,6 +143,17 @@ const ToolStockIndex = () => {
               <label htmlFor={name}>{name}</label>
             </div>
           ))}
+        </div>
+        {/* new */}
+        <div
+          className={` overflow-hidden transition-all duration-300 easy-in-out ${
+            newToolStockMode ? "h-52" : "h-0"
+          }`}
+        >
+          <NewToolStock
+            getToolStockList={getToolStockList}
+            setNewToolStockMode={setNewToolStockMode}
+          />
         </div>
       </div>
 
@@ -150,17 +191,23 @@ const ToolStockIndex = () => {
                   <p className="p-1 whitespace-nowrap">領用人</p>
                 </div>
               </div>
-              {item.ToolStatusList?.map((item: ToolStatusItem) => (
-                <div
-                  key={item.ToolSn}
-                  className="grid grid-cols-7 gap-2 hover:bg-gray-600"
-                >
-                  <p>{item.ToolSn}</p>
-                  <p>{item.LifeStatus}</p>
-                  <p>{item.LifePercentage}</p>
-                  <p>{item.LastModify}</p>
-                </div>
-              ))}
+              {item.ToolStatusList.length > 0
+                ? sortToolStockList(item.ToolStatusList).map(
+                    (item: ToolStatusItem) => (
+                      <div
+                        key={item.ToolSn}
+                        className="grid grid-cols-7 gap-2 hover:bg-gray-600"
+                      >
+                        <p>{item.ToolSn}</p>
+                        <p className={getToolStatusClass(item.LifeStatus)}>
+                          {translateToolStatus(item.LifeStatus)}
+                        </p>
+                        <p>{item.LifePercentage}</p>
+                        <p>{item.LastModify}</p>
+                      </div>
+                    )
+                  )
+                : null}
             </div>
           ))
         : null}

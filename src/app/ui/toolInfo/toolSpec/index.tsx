@@ -65,8 +65,11 @@ const ToolSpecIndex = () => {
   const getToolSpecList = async () => {
     const data = await apiGetToolSpecList();
     const res = data as GetToolSpecListResponse;
+    console.log("tool spec list ", res);
+
     if (res?.data?.Values?.ReqInt === 0) {
       setToolSpecList(res.data.Values.ToolSpecList);
+      return res.data.Values.ToolSpecList;
     }
   };
 
@@ -93,6 +96,24 @@ const ToolSpecIndex = () => {
         getToolSpecList();
       }
     }
+  };
+
+  let timer: ReturnType<typeof setTimeout>;
+  const searchToolSpec = async (value: string) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(async () => {
+      const toolSpecList = await getToolSpecList();
+      if (toolSpecList) {
+        const filterData = toolSpecList?.filter((item) => {
+          return (
+            item.Name.toLowerCase().includes(value.toLowerCase()) ||
+            item.ToolSpecId.toLowerCase().includes(value.toLowerCase())
+          );
+        });
+        setToolSpecList(filterData);
+      }
+    }, 500);
   };
 
   const handleNewToolSpecMode = () => {
@@ -132,7 +153,7 @@ const ToolSpecIndex = () => {
     getToolSpecList();
   }, []);
   return (
-    <div className="relative flex w-full h-screen p-2 overflow-auto">
+    <div className="relative flex w-full p-2 ">
       {/* index */}
       <div className="w-full mx-4 ">
         <div className="relative">
@@ -140,7 +161,9 @@ const ToolSpecIndex = () => {
             <h2 className="my-4 text-center">刀具規格</h2>
             <input
               type="search"
+              placeholder="搜尋刀具規格 ID / 名稱"
               className="flex p-2 mx-auto my-4 text-black rounded-md w-96"
+              onChange={(e) => searchToolSpec(e.target.value)}
             />
           </div>
           <button
@@ -151,33 +174,33 @@ const ToolSpecIndex = () => {
           </button>
         </div>
 
-        <div className="overflow-auto text-center bg-gray-700 rounded-md">
-          {/* new */}
-          <div
-            className={` transition-all duration-300  ease-in-out rounded-md overflow-hidden  ${
-              newToolSpecMode ? "h-32" : "h-0"
-            }`}
-          >
-            <NewToolSpec
-              getToolSpecList={getToolSpecList}
-              setNewToolSpecMode={setNewToolSpecMode}
-            />
-          </div>
+        {/* new */}
+        <div
+          className={` transition-all duration-300  ease-in-out rounded-md overflow-hidden  ${
+            newToolSpecMode ? "h-48" : "h-0"
+          }`}
+        >
+          <NewToolSpec
+            getToolSpecList={getToolSpecList}
+            setNewToolSpecMode={setNewToolSpecMode}
+          />
+        </div>
+        <div className="h-full overflow-auto text-center bg-gray-700 rounded-md">
           <table className="w-full">
             <thead className="bg-indigo-500 border-b-2">
               <tr>
-                <td className="p-1">ID</td>
-                <td className="p-1">名稱</td>
-                <td className="p-1">Φ</td>
-                <td className="p-1">高度</td>
-                <td className="p-1">總長度</td>
-                <td className="p-1">手柄Φ</td>
-                <td className="p-1">安全庫存</td>
-                <td className="p-1">最大修整次數</td>
-                <td className="p-1">最大加工次數</td>
-                <td className="p-1">最大加工長度</td>
-                <td className="p-1">最大加工時間</td>
-                <td className="p-1">編輯</td>
+                <td className="p-1 whitespace-nowrap">ID</td>
+                <td className="p-1 whitespace-nowrap">名稱</td>
+                <td className="p-1 whitespace-nowrap">Φ</td>
+                <td className="p-1 whitespace-nowrap">高度</td>
+                <td className="p-1 whitespace-nowrap">總長度</td>
+                <td className="p-1 whitespace-nowrap">手柄Φ</td>
+                <td className="p-1 whitespace-nowrap">安全庫存</td>
+                <td className="p-1 whitespace-nowrap">最大修整次數</td>
+                <td className="p-1 whitespace-nowrap">最大加工次數</td>
+                <td className="p-1 whitespace-nowrap">最大加工長度</td>
+                <td className="p-1 whitespace-nowrap">最大加工時間</td>
+                <td className="p-1 whitespace-nowrap">編輯</td>
               </tr>
             </thead>
             <tbody>
@@ -186,8 +209,10 @@ const ToolSpecIndex = () => {
                   <tr key={item.ToolSpecId}>
                     {editToolSpecMode && editToolSpecModeIndex === index ? (
                       <>
-                        <td>{item.ToolSpecId}</td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
+                          {item.ToolSpecId}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
                           <input
                             type="text"
                             className="w-24 text-center text-black rounded-md"
@@ -203,7 +228,7 @@ const ToolSpecIndex = () => {
                             }}
                           />
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
@@ -224,7 +249,7 @@ const ToolSpecIndex = () => {
                             }}
                           />
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
@@ -245,7 +270,7 @@ const ToolSpecIndex = () => {
                             }}
                           />
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
@@ -266,7 +291,7 @@ const ToolSpecIndex = () => {
                             }}
                           />
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
@@ -287,7 +312,7 @@ const ToolSpecIndex = () => {
                             }}
                           />
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
@@ -303,7 +328,7 @@ const ToolSpecIndex = () => {
                             }}
                           />
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
@@ -322,7 +347,7 @@ const ToolSpecIndex = () => {
                             }}
                           />
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
@@ -341,7 +366,7 @@ const ToolSpecIndex = () => {
                             }}
                           />
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
@@ -362,7 +387,7 @@ const ToolSpecIndex = () => {
                             }}
                           />
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
@@ -381,16 +406,16 @@ const ToolSpecIndex = () => {
                             }}
                           />
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <span
-                            className="bg-gray-500 rounded-md cursor-pointer hover:bg-gray-900"
+                            className="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
                             onClick={() => patchToolSpec()}
                           >
                             完成
                           </span>
                           <span> / </span>
                           <span
-                            className="bg-red-500 rounded-md cursor-pointer hover:bg-red-900"
+                            className="p-1 bg-red-500 rounded-md cursor-pointer hover:bg-red-600"
                             onClick={() => deleteToolSpec()}
                           >
                             刪除
@@ -399,22 +424,44 @@ const ToolSpecIndex = () => {
                       </>
                     ) : (
                       <>
-                        <td className="p-1">{item.ToolSpecId}</td>
-                        <td className="p-1">{item.Name}</td>
-                        <td className="p-1">{item.SpecData.BladeDiameter}</td>
-                        <td className="p-1">{item.SpecData.BladeHeight}</td>
-                        <td className="p-1">{item.SpecData.TotalLength}</td>
-                        <td className="p-1">{item.SpecData.HandleDiameter}</td>
-                        <td className="p-1">{item.SafetyStock}</td>
-                        <td className="p-1">{item.MaxLife.RepairCnt}</td>
-                        <td className="p-1">{item.MaxLife.ProcessCnt}</td>
-                        <td className="p-1">{item.MaxLife.ProcessLength}</td>
-                        <td className="p-1">{item.MaxLife.ProcessTime}</td>
-                        <td
-                          className="rounded-md cursor-pointer hover:bg-gray-900"
-                          onClick={() => handleEditToolSpecMode(item, index)}
-                        >
-                          編輯
+                        <td className="p-1 whitespace-nowrap">
+                          {item.ToolSpecId}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">{item.Name}</td>
+                        <td className="p-1 whitespace-nowrap">
+                          {item.SpecData.BladeDiameter}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          {item.SpecData.BladeHeight}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          {item.SpecData.TotalLength}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          {item.SpecData.HandleDiameter}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          {item.SafetyStock}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          {item.MaxLife.RepairCnt}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          {item.MaxLife.ProcessCnt}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          {item.MaxLife.ProcessLength}
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          {item.MaxLife.ProcessTime}
+                        </td>
+                        <td>
+                          <button
+                            className="p-2 rounded-md hover:bg-gray-800"
+                            onClick={() => handleEditToolSpecMode(item, index)}
+                          >
+                            編輯
+                          </button>
                         </td>
                       </>
                     )}
@@ -422,7 +469,7 @@ const ToolSpecIndex = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={11}>Don&apos;t have any data...</td>
+                  <td colSpan={12}>no data...</td>
                 </tr>
               )}
             </tbody>

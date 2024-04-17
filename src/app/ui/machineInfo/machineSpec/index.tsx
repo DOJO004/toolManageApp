@@ -29,6 +29,7 @@ const MachineSpecIndex = () => {
   const [productLineList, setProductLineList] = useState<ProductLineItem[]>([]);
   const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
   const [machineSpecList, setMachineSpecList] = useState<MachineSpecItem[]>([]);
+
   const [newMachineSpecMode, setNewMachineSpecMode] = useState(false);
   const [editMachineSpecMode, setEditMachineSpecMode] = useState(false);
   const [editMachineSpecModeIndex, setEditMachineSpecModeIndex] = useState(-1);
@@ -71,6 +72,7 @@ const MachineSpecIndex = () => {
 
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineSpecList(res.data.Values.MachineeSpecList);
+      return res.data.Values.MachineeSpecList;
     }
   };
 
@@ -104,6 +106,24 @@ const MachineSpecIndex = () => {
 
   const handleEditMachineSpec = (key: string, value: string) => {
     setEditMachineSpec((prev) => ({ ...prev, [key]: value }));
+  };
+
+  let timer: ReturnType<typeof setTimeout>;
+  const searchMachineSpec = (value: string) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(async () => {
+      const data = await getMachineSpecList();
+      if (data) {
+        const filterData = data.filter((item) => {
+          return (
+            item.Name.toLowerCase().includes(value.toLowerCase()) ||
+            item.MachineId.toLowerCase().includes(value.toLowerCase())
+          );
+        });
+        setMachineSpecList(filterData);
+      }
+    }, 500);
   };
 
   const clickEditMachineSpec = (
@@ -146,11 +166,19 @@ const MachineSpecIndex = () => {
           >
             新增
           </button>
-          <h2 className="my-4">設備規格</h2>
+          <div>
+            <h2 className="my-4">設備規格</h2>
+            <input
+              type="search"
+              placeholder="搜尋 ID / 名稱"
+              className="p-2 text-black rounded-md w-96"
+              onChange={(e) => searchMachineSpec(e.target.value)}
+            />
+          </div>
         </div>
         {/* new */}
         <div
-          className={` overflow-hidden transition-all duration-300 ease-in-out ${
+          className={` overflow-hidden transition-all my-4 duration-300 ease-in-out ${
             newMachineSpecMode ? "h-52" : "h-0"
           }`}
         >
@@ -176,7 +204,7 @@ const MachineSpecIndex = () => {
               </tr>
             </thead>
             <tbody>
-              {machineSpecList.length > 0 &&
+              {machineSpecList.length > 0 ? (
                 machineSpecList.map((item, index) => (
                   <React.Fragment key={item.MachineId}>
                     {editMachineSpecMode &&
@@ -298,7 +326,7 @@ const MachineSpecIndex = () => {
                           </button>
                           <span> / </span>
                           <button
-                            className="p-1 bg-red-500 rounded-md hover:bg-red-900"
+                            className="p-1 bg-red-500 rounded-md hover:bg-red-600"
                             onClick={() => deleteMachineSpec()}
                           >
                             刪除
@@ -341,7 +369,12 @@ const MachineSpecIndex = () => {
                       </tr>
                     )}
                   </React.Fragment>
-                ))}
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={9}>no data...</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
