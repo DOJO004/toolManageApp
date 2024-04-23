@@ -5,8 +5,8 @@ interface PieChartProps {
   toolInfoData: ToolStockItem;
 }
 const PieChart = ({ toolInfoData }: PieChartProps) => {
-  const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A 30%, #B9E6B5 30%, #B9E6B5)`;
-  const gradientColorsInSide = `conic-gradient(#FACC15 0, #FACC15 50%, #F5ECB5 50%, #F5ECB5)`;
+  const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${toolInfoData.LifeData?.ProcessLength}%, #B9E6B5 ${toolInfoData.LifeData?.ProcessLength}%, #B9E6B5)`;
+  const gradientColorsInSide = `conic-gradient(#FACC15 0, #FACC15 ${toolInfoData.LifeData?.ProcessTime}%, #F5ECB5 ${toolInfoData.LifeData?.ProcessTime}%, #F5ECB5)`;
 
   return (
     <div className="flex flex-col w-full p-2 mb-2 bg-gray-700 rounded-xl md:mr-4">

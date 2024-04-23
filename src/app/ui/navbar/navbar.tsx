@@ -37,17 +37,17 @@ const Navbar = () => {
       <div className="overflow-auto bg-gray-900 rounded-md md:flex md:justify-center md:h-screen">
         <ul className="flex items-center m-2 md:flex-col">
           <li
-            className="p-1 mx-2 my-2 bg-white rounded-full cursor-pointer min-w-fit "
             onClick={() => handleNavbarMenu("dashboard")}
+            className="rounded-md bg-gray-50 hover:bg-gray-200"
           >
-            <Link href="/tool-manager/dashboard">
+            <Link href="/tool-manager/dashboard" className="w-full">
               <Image
                 src="/logo.png"
                 alt="logo image"
                 loader={({ src, width }) => `${src}?w=${width}`}
-                width={30}
-                height={30}
-                className=" min-w-fit"
+                width={40}
+                height={40}
+                className="mx-auto"
               />
             </Link>
           </li>

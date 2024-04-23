@@ -141,9 +141,6 @@ export default function RepairAndScrapIndex() {
               <th className="p-1 whitespace-nowrap">刀具名稱</th>
               <th className="p-1 whitespace-nowrap">生命指數</th>
               <th className="p-1 whitespace-nowrap">目前狀態</th>
-              <th className="p-1 whitespace-nowrap">已加工次數</th>
-              <th className="p-1 whitespace-nowrap">已加工時間</th>
-              <th className="p-1 whitespace-nowrap">已加工長度</th>
               <th className="p-1 whitespace-nowrap">修整次數 / 最大修整次數</th>
               <th className="p-1 whitespace-nowrap">報廢 / 修整時間</th>
               <th className="p-1 whitespace-nowrap">報廢 / 修整人員</th>
@@ -166,15 +163,6 @@ export default function RepairAndScrapIndex() {
                     )}`}
                   >
                     {showLifeStatusText(item.LifeStatus)}
-                  </td>
-                  <td className="p-1 whitespace-nowrap">
-                    {item.LifeData.ProcessCnt}
-                  </td>
-                  <td className="p-1 whitespace-nowrap">
-                    {item.LifeData.ProcessTime}
-                  </td>
-                  <td className="p-1 whitespace-nowrap">
-                    {item.LifeData.ProcessLength}
                   </td>
                   <td className="p-1 whitespace-nowrap">
                     {item.LifeData.RepairCnt} / {item.LifeData.ProcessCnt}

@@ -180,7 +180,7 @@ const ProductLineIndex = () => {
 
                       <td className="p-1 whitespace-nowrap">
                         <button
-                          className="p-1 cursor-pointer hover:bg-gray-900"
+                          className="p-1 cursor-pointer hover:bg-indigo-600"
                           onClick={() =>
                             handleClickEditProductLine(item, index)
                           }
