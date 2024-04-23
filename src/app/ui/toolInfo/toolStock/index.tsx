@@ -159,7 +159,7 @@ const ToolStockIndex = () => {
 
       {toolStockList?.length > 0
         ? toolStockList.map((item: ToolStockItem, index: number) => (
-            <div key={item.ToolSpecId} className="relative ">
+            <div className="relative " key={item.ToolSpecId}>
               <div className="sticky top-0 ">
                 <div className="flex items-center p-2 bg-gray-700 rounded-md">
                   <h3 className="p-1 my-2 font-bold text-left ">
@@ -182,13 +182,13 @@ const ToolStockIndex = () => {
                   </p>
                 </div>
                 <div className="grid grid-cols-7 gap-2 bg-indigo-500 ">
-                  <p className="p-1 whitespace-nowrap">ToolSN</p>
-                  <p className="p-1 whitespace-nowrap">狀態</p>
-                  <p className="p-1 whitespace-nowrap">生命百分比</p>
-                  <p className="p-1 whitespace-nowrap">最後修改時間</p>
-                  <p className="p-1 whitespace-nowrap">machine_id</p>
-                  <p className="p-1 whitespace-nowrap">所在位置</p>
-                  <p className="p-1 whitespace-nowrap">領用人</p>
+                  <p className="p-1 ">ToolSN</p>
+                  <p className="p-1 ">狀態</p>
+                  <p className="p-1 ">生命百分比</p>
+                  <p className="p-1 ">最後修改時間</p>
+                  <p className="p-1 ">machine_id</p>
+                  <p className="p-1 ">所在位置</p>
+                  <p className="p-1 ">領用人</p>
                 </div>
               </div>
               {item.ToolStatusList.length > 0
@@ -198,7 +198,7 @@ const ToolStockIndex = () => {
                         key={item.ToolSn}
                         className="grid grid-cols-7 gap-2 hover:bg-gray-600"
                       >
-                        <p>{item.ToolSn}</p>
+                        <p className="break-all ">{item.ToolSn}</p>
                         <p className={getToolStatusClass(item.LifeStatus)}>
                           {translateToolStatus(item.LifeStatus)}
                         </p>

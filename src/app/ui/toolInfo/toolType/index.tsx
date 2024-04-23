@@ -112,18 +112,14 @@ export function ToolTypeIndex() {
           >
             新增
           </button>
-          <h2 className="my-4 text-center">刀具類型</h2>
+          <h2 className="text-center ">刀具類型</h2>
           {/* search */}
-          <div>
-            <div className="grid items-center grid-cols-12">
-              <input
-                type="search"
-                className="col-start-6 col-end-8 p-2 my-2 text-black rounded-md "
-                placeholder="請輸入搜尋關鍵字"
-                onChange={(e) => filterToolTypeList(e.target.value)}
-              />
-            </div>
-          </div>
+          <input
+            type="search"
+            className="flex p-2 mx-auto my-2 text-black rounded-md w-96 "
+            placeholder="請輸入搜尋關鍵字"
+            onChange={(e) => filterToolTypeList(e.target.value)}
+          />
         </div>
         {/* new */}
         <div
@@ -194,7 +190,7 @@ export function ToolTypeIndex() {
                       <td className="p-1">{item.Name}</td>
                       <td className="p-1"> last modify none...</td>
                       <td onClick={() => handleClickEditToolType(item, index)}>
-                        <button className="p-1 rounded-md hover:bg-gray-900 ">
+                        <button className="p-1 rounded-md hover:bg-indigo-600 ">
                           編輯
                         </button>
                       </td>

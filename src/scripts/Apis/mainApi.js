@@ -9,4 +9,12 @@ export const getLoginTime = () => {
   return cookies[1]?.split("=")[1];
 };
 
-export const apiUserLogin = (userAccount, userPassword) => {};
+export const setCookie = (name, value, days) => {
+  let expires = "";
+  if (days) {
+    let date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+};

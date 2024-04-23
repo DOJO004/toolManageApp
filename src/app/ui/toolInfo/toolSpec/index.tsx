@@ -455,9 +455,9 @@ const ToolSpecIndex = () => {
                         <td className="p-1 whitespace-nowrap">
                           {item.MaxLife.ProcessTime}
                         </td>
-                        <td>
+                        <td className="p-1 whitespace-nowrap">
                           <button
-                            className="p-2 rounded-md hover:bg-gray-800"
+                            className="p-2 rounded-md hover:bg-indigo-600"
                             onClick={() => handleEditToolSpecMode(item, index)}
                           >
                             編輯

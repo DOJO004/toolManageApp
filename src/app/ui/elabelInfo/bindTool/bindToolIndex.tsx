@@ -4,7 +4,9 @@ import {
   apiGetELabelList,
 } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
 import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
+import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import { GetToolStockListResponse } from "../../toolInfo/toolStock/types";
 import { ToolStockItem } from "../../toolInfo/types";
 import { GetELabelListResponse } from "../types";
@@ -112,6 +114,16 @@ export default function BindToolIndex() {
     setBindToolData((prev) => ({ ...prev, [key]: value }));
   };
 
+  const hintLabelCodeImage = () => {
+    Swal.fire({
+      title: "Check out this way!",
+      imageUrl: "/label hint.png",
+      imageWidth: 300,
+      imageHeight: 300,
+      imageAlt: "Custom image",
+    });
+  };
+
   useEffect(() => {
     getELabelList();
     getToolList();
@@ -124,12 +136,22 @@ export default function BindToolIndex() {
         <form onSubmit={(e) => postBindTool(e)}>
           <div className="grid grid-cols-4 gap-2 ">
             <div className="relative ">
-              <label htmlFor="labelCode">標籤號碼</label>
+              <div className="flex items-end ">
+                <label htmlFor="labelCode">標籤號碼</label>
+                <Image
+                  src={"/bulb.png"}
+                  width={30}
+                  height={30}
+                  alt="hit"
+                  onClick={() => hintLabelCodeImage()}
+                  className="p-1 mx-1 bg-gray-500 rounded-full cursor-pointer hover:bg-yellow-400"
+                />
+              </div>
               <input
                 id="labelCode"
                 type="text"
                 list="labelCodeList"
-                className="w-full p-1 text-black rounded-md"
+                className="w-full p-2 text-black rounded-md"
                 placeholder="標籤號碼"
                 value={bindToolData.LabelId}
                 onChange={(e) => handleInputBindData("LabelId", e.target.value)}
@@ -146,7 +168,7 @@ export default function BindToolIndex() {
                 id="eLabelSN"
                 list="labelList"
                 placeholder="電子標籤SN"
-                className="w-full p-1 text-black rounded-md"
+                className="w-full p-2 text-black rounded-md"
                 value={bindToolData.LabelSn}
                 onChange={(e) => handleInputBindData("LabelSn", e.target.value)}
               />
@@ -161,7 +183,7 @@ export default function BindToolIndex() {
                 id="toolSN"
                 type="text"
                 list="toolSNList"
-                className="w-full p-1 text-black rounded-md"
+                className="w-full p-2 text-black rounded-md"
                 placeholder="刀具SN"
                 value={bindToolData.ToolSn}
                 onChange={(e) => handleInputBindData("ToolSn", e.target.value)}
@@ -176,7 +198,7 @@ export default function BindToolIndex() {
               <input
                 type="text"
                 id="receiver"
-                className="w-full p-1 text-black rounded-md"
+                className="w-full p-2 text-black rounded-md"
                 placeholder="領取人"
               />
             </div>
