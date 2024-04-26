@@ -1,4 +1,4 @@
-import ToolSpecIndex from "@/app/ui/toolInfo/toolSpec";
+import ToolSpecIndex from "@/app/components/toolInfo/toolSpec";
 
 export default function Page() {
   return (

@@ -1,4 +1,4 @@
-import { ELabelInfoSkeletons } from "@/app/ui/skeletons";
+import { ELabelInfoSkeletons } from "@/app/components/skeletons";
 
 export default function Loading() {
   return (

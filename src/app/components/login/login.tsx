@@ -2,9 +2,11 @@
 
 import { setCookie } from "@/scripts/Apis/mainApi";
 import { ApiUserLogin } from "@/scripts/Apis/userInfo/userInfoApi";
+import CircularProgress from "@mui/joy/CircularProgress";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import Swal from "sweetalert2";
+import { SweetAlert } from "../sweetAlert";
 import { LoginResponse } from "./types";
 
 export default function Login() {
@@ -13,32 +15,26 @@ export default function Login() {
     UserAccount: "",
     UserPwd: "",
   });
+  const [waitLogin, setWaitLogin] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const postLoginInfo = async (e: FormEvent) => {
     e.preventDefault();
+    setWaitLogin(true);
     const data = await ApiUserLogin(loginInfo);
     const res = data as LoginResponse;
+    const reqInt = res?.data?.Values?.ReqInt;
     console.log(res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
+    if (reqInt === 0) {
       setCookie("userToken", res.data.Values.Token, 30);
       setCookie("loginTime", res.data.Values.LoginTime, 30);
-      Swal.fire({
-        icon: "success",
-        title: "登入成功",
-        timer: 2000,
-        timerProgressBar: true,
-      });
+      SweetAlert(reqInt, "登入成功");
       router.push("/tool-manager/tool-info");
     } else {
-      Swal.fire({
-        icon: "error",
-        title: "登入失敗",
-        text: `error code : ${res?.data?.Values?.ReqInt}`,
-        timer: 2000,
-        timerProgressBar: true,
-      });
+      SweetAlert(reqInt, "登入失敗");
     }
+    setWaitLogin(false);
   };
 
   const handleLoginInfo = (key: string, value: string) => {
@@ -58,18 +54,26 @@ export default function Login() {
             onChange={(e) => handleLoginInfo("UserAccount", e.target.value)}
           />
         </div>
-        <div className="my-4">
+        <div className="relative my-4">
           <label htmlFor="Password">密碼</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="Password"
             className="w-full p-2 text-black rounded-md "
             value={loginInfo.UserPwd}
             onChange={(e) => handleLoginInfo("UserPwd", e.target.value)}
           />
+          <Image
+            src={showPassword ? "/visible.png" : "/hide.png"}
+            width={20}
+            height={20}
+            alt="show password icon"
+            className="absolute cursor-pointer right-3 top-10 hover:scale-110"
+            onClick={() => setShowPassword((prev) => !prev)}
+          />
         </div>
         <button className="w-full p-2 my-4 bg-indigo-500 rounded-md">
-          登入
+          {waitLogin ? <CircularProgress variant="solid" size="sm" /> : "登入"}
         </button>
       </form>
     </div>

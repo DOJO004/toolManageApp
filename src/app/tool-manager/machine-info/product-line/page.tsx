@@ -1,6 +1,6 @@
 "use client";
 
-import ProductLineIndex from "@/app/ui/machineInfo/productLine";
+import ProductLineIndex from "@/app/components/machineInfo/productLine";
 
 export default function Page() {
   return (

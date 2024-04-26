@@ -1,10 +1,10 @@
 "use client";
-import MachineLogInfo from "@/app/ui/machineInfo/logInfo";
-import MachineInfoPieChart from "@/app/ui/machineInfo/pieChart";
+import MachineLogInfo from "@/app/components/machineInfo/logInfo";
+import MachineInfoPieChart from "@/app/components/machineInfo/pieChart";
 import {
   GetMachineStatusInfoListResponse,
   MachineStatusItem,
-} from "@/app/ui/machineInfo/types";
+} from "@/app/components/machineInfo/types";
 import { apiGetMachineStatusList } from "@/scripts/Apis/dashboard/dashboard";
 import { useEffect, useState } from "react";
 export default function Page() {

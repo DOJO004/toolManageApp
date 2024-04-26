@@ -1,5 +1,5 @@
 "use client";
-import { ToolTypeIndex } from "@/app/ui/toolInfo/toolType";
+import { ToolTypeIndex } from "@/app/components/toolInfo/toolType";
 
 export default function Page() {
   return (

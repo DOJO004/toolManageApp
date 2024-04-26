@@ -1,4 +1,4 @@
-import { ProductLineSkeletons } from "@/app/ui/skeletons";
+import { ProductLineSkeletons } from "@/app/components/skeletons";
 
 export default function Loading() {
   return (

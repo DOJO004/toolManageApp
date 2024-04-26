@@ -1,4 +1,4 @@
-import { ToolTypeSkeletons } from "@/app/ui/skeletons";
+import { ToolTypeSkeletons } from "@/app/components/skeletons";
 
 export default function Loading() {
   return (

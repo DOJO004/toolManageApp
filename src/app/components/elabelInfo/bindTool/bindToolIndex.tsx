@@ -1,4 +1,4 @@
-import { LabelItem } from "@/app/ui/elabelInfo/types";
+import { LabelItem } from "@/app/components/elabelInfo/types";
 import {
   apiBindELabelInfo,
   apiGetELabelList,

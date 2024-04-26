@@ -1,4 +1,4 @@
-import { DashboardCardSkeleton } from "@/app/ui/skeletons";
+import { DashboardCardSkeleton } from "@/app/components/skeletons";
 
 export default function Loading() {
   return (

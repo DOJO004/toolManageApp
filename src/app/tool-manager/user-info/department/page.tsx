@@ -1,4 +1,4 @@
-import IndexDepartment from "@/app/ui/userInfo/department";
+import IndexDepartment from "@/app/components/userInfo/department";
 
 export default function Page() {
   return (
