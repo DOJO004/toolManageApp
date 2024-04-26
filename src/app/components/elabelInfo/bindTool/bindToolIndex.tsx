@@ -7,7 +7,10 @@ import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { GetToolStockListResponse } from "../../toolInfo/toolStock/types";
+import {
+  GetToolStockInfoListResponse,
+  ToolStockListItem,
+} from "../../toolInfo/toolStock/types";
 import { ToolStockItem } from "../../toolInfo/types";
 import { GetELabelListResponse } from "../types";
 import { BindToolDataItem } from "./types";
@@ -19,7 +22,7 @@ export default function BindToolIndex() {
     ToolSn: "",
   });
   const [eLabeList, setELabelList] = useState<LabelItem[]>([]);
-  const [toolList, setToolList] = useState<ToolStockItem[]>([]);
+  const [toolList, setToolList] = useState<ToolStockListItem[]>([]);
   const [inputUnbindTool, setInputUnbindTool] = useState<string>("");
   const [inputUnbindLabel, setInputUnbindLabel] = useState<string>("");
 
@@ -35,7 +38,8 @@ export default function BindToolIndex() {
 
   const getToolList = async () => {
     const data = await apiGetToolStockList();
-    const res = data as GetToolStockListResponse;
+    const res = data as GetToolStockInfoListResponse;
+    console.log("get tool list", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
       setToolList(filterToolStatus(res.data.Values.ToolStockList));
@@ -56,7 +60,7 @@ export default function BindToolIndex() {
     return filterData;
   };
 
-  const filterToolStatus = (data: ToolStockItem[]) => {
+  const filterToolStatus = (data: ToolStockListItem[]) => {
     const filterData = data.filter((item) => {
       return item.LifeStatus === "Normal" && !item.LoadingData.IsLoading;
     });
@@ -68,14 +72,16 @@ export default function BindToolIndex() {
 
     const toolData = await getToolList();
 
-    const filterData = toolData.filter((item: ToolStockItem) => {
-      return (
-        item.ToolTypeData.Name.includes(inputUnbindTool) ||
-        item.ToolSn.includes(inputUnbindTool) ||
-        item.ToolSpecName.includes(inputUnbindTool)
-      );
-    });
-    setToolList(filterToolStatus(filterData));
+    if (toolData) {
+      const filterData = toolData.filter((item: ToolStockItem) => {
+        return (
+          item.ToolTypeData.Name.includes(inputUnbindTool) ||
+          item.ToolSn.includes(inputUnbindTool) ||
+          item.ToolSpecName.includes(inputUnbindTool)
+        );
+      });
+      setToolList(filterToolStatus(filterData));
+    }
   };
 
   const searchUnbindLabel = async (e: FormEvent) => {

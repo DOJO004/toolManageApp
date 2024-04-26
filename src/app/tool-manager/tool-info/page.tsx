@@ -7,7 +7,7 @@ import {
   GetToolInfoData,
   GetToolStockListResponse,
   ToolStockItem,
-} from "../../ui/toolInfo/types";
+} from "../../components/toolInfo/types";
 
 export default function Page() {
   const [toolInfoList, setToolInfoList] = useState<ToolStockItem[]>([]);

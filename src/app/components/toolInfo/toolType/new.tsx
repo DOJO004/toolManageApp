@@ -2,7 +2,7 @@
 
 import { apiNewToolType } from "@/scripts/Apis/toolType/toolTypeApi";
 import { FormEvent, useState } from "react";
-import { SweetAlert } from "../../sweetAlert";
+import SweetAlert from "../../sweetAlert";
 import { PostToolTypeResponse, ToolTypeItem } from "./types";
 
 interface NewToolTypeProps {
@@ -23,17 +23,17 @@ export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
     console.log(res);
 
     if (reqInt === 0) {
+      SweetAlert(reqInt, "新增成功");
       setNewToolType({
         Id: "",
         Name: "",
       });
-      SweetAlert(reqInt, "新增成功!");
       getToolTypeList();
       if (inputToolTypeId) {
         inputToolTypeId.focus();
       }
     } else {
-      SweetAlert(reqInt, "新增失敗!");
+      SweetAlert(reqInt, "新增失敗");
     }
   };
   return (

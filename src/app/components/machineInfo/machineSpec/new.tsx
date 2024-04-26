@@ -82,7 +82,10 @@ export default function NewMachineSpec({
     });
   };
 
-  const handleNewMachineSpec = (key: string, value: string | number) => {
+  const handleNewMachineSpec = (
+    key: string,
+    value: string | number | boolean
+  ) => {
     setNewMachineSpec((prev) => ({ ...prev, [key]: value }));
   };
 

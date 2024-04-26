@@ -6,7 +6,7 @@ import CircularProgress from "@mui/joy/CircularProgress";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { SweetAlert } from "../sweetAlert";
+import SweetAlert from "../sweetAlert";
 import { LoginResponse } from "./types";
 
 export default function Login() {

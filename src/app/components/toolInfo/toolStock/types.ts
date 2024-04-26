@@ -1,9 +1,32 @@
+export interface GetToolStockCountListResponse{
+    data: {
+        Values: {
+            ReqInt: number,
+            StockToolCountList: StockToolCountItem[]
+        }
+    }
+}
+
+export interface StockToolCountItem {
+        ToolSpecId: string,
+        ToolTypeData: {
+            Id: string,
+            Name: string
+        },
+        ToolSpecName: string,
+        SafetyStock: number,
+        CurrentStock: number,
+        WarningCount: number,
+        AlarmCount: number,
+        ToolStatusList: ToolStatusItem[]
+}
+
 export interface GetToolStockListResponse {
     data: {
-    Values: {
-        ReqInt: number,
-        StockToolCountList: ToolStockItem[]
-    }
+        Values: {
+            ReqInt: number,
+            ToolStockList: ToolStockItem[]
+        }
     }
 }
 
