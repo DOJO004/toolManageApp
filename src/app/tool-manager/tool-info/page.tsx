@@ -1,13 +1,13 @@
 "use client";
-import PieChart from "@/app/ui/toolInfo/piechart";
-import ToolInfoLog from "@/app/ui/toolInfo/toolInfoLog";
+import PieChart from "@/app/components/toolInfo/piechart";
+import ToolInfoLog from "@/app/components/toolInfo/toolInfoLog";
 import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
 import { useEffect, useState } from "react";
 import {
   GetToolInfoData,
   GetToolStockListResponse,
   ToolStockItem,
-} from "../../ui/toolInfo/types";
+} from "../../components/toolInfo/types";
 
 export default function Page() {
   const [toolInfoList, setToolInfoList] = useState<ToolStockItem[]>([]);

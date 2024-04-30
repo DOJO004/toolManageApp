@@ -1,4 +1,4 @@
-import UserInfoIndex from "@/app/ui/userInfo";
+import UserInfoIndex from "@/app/components/userInfo";
 
 export default function Page() {
   return (

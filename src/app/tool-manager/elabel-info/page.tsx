@@ -1,6 +1,6 @@
 "use client";
 
-import ELabelInfoIndex from "@/app/ui/elabelInfo";
+import ELabelInfoIndex from "@/app/components/elabelInfo";
 
 export default function Page() {
   return (

@@ -7,7 +7,7 @@ import {
   DeleteBindLabelResponse,
   GetBindLabelListResponse,
   LabelBindItem,
-} from "@/app/ui/returnTool/types";
+} from "@/app/components/returnTool/types";
 import {
   apiDeleteBindLabel,
   apiGetBindLabelList,

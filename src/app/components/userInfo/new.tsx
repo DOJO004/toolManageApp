@@ -1,7 +1,6 @@
 import { ApiPostUserInfo } from "@/scripts/Apis/userInfo/userInfoApi";
 import { FormEvent, useState } from "react";
-import { DepartmentItem } from "./types";
-
+import { DepartmentItem } from "./department/type";
 interface NewUserInfoProps {
   setNewUserMode: (value: boolean) => void;
   departmentList: DepartmentItem[];

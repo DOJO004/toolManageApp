@@ -1,5 +1,4 @@
-import Link from "next/link";
-import Login from "./ui/login/login";
+import Login from "./components/login/login";
 
 export default function Home() {
   return (
@@ -8,11 +7,11 @@ export default function Home() {
         WELCOME TO <span className="text-blue-500">DLCTEK</span>
       </h1>
       <Login />
-      <Link href="/tool-manager/tool-info">
+      {/* <Link href="/tool-manager/tool-info">
         <p className="px-12 py-4 my-4 text-xl bg-blue-500 rounded-xl">
           Get Start
         </p>
-      </Link>
+      </Link> */}
     </div>
   );
 }

@@ -11,6 +11,7 @@ import {
   GetToolSpecListResponse,
   PatchToolSpecResponse,
   ToolSpecItem,
+  editToolSpecItem,
 } from "./types";
 
 const ToolSpecIndex = () => {
@@ -41,25 +42,19 @@ const ToolSpecIndex = () => {
   const [editToolSpecMode, setEditToolSpecMode] = useState(false);
   const [editToolSpecModeIndex, setEditToolSpecModeIndex] = useState(-1);
 
-  const [editToolSpec, setEditToolSpec] = useState({
+  const [editToolSpec, setEditToolSpec] = useState<editToolSpecItem>({
     ToolSpecId: "",
-    ModifyDatas: {
-      Name: "",
-      ToolTypeId: "",
-      SafetyStock: 0,
-      SpecData: {
-        BladeDiameter: 0,
-        BladeHeight: 0,
-        TotalLength: 0,
-        HandleDiameter: 0,
-      },
-      MaxLife: {
-        ProcessCnt: 0,
-        ProcessTime: 0,
-        ProcessLength: 0,
-        RepairCnt: 0,
-      },
-    },
+    Name: "",
+    ToolTypeId: "",
+    SafetyStock: 0,
+    BladeDiameter: 0,
+    BladeHeight: 0,
+    TotalLength: 0,
+    HandleDiameter: 0,
+    ProcessCnt: 0,
+    ProcessTime: 0,
+    ProcessLength: 0,
+    RepairCnt: 0,
   });
 
   const getToolSpecList = async () => {
@@ -129,24 +124,22 @@ const ToolSpecIndex = () => {
     setEditToolSpecModeIndex(index);
     setEditToolSpec({
       ToolSpecId: item.ToolSpecId,
-      ModifyDatas: {
-        Name: item.Name,
-        ToolTypeId: item.ToolTypeData.Name,
-        SafetyStock: item.SafetyStock,
-        SpecData: {
-          BladeDiameter: item.SpecData.BladeDiameter,
-          BladeHeight: item.SpecData.BladeHeight,
-          TotalLength: item.SpecData.TotalLength,
-          HandleDiameter: item.SpecData.HandleDiameter,
-        },
-        MaxLife: {
-          ProcessCnt: item.MaxLife.ProcessCnt,
-          ProcessTime: item.MaxLife.ProcessTime,
-          ProcessLength: item.MaxLife.ProcessLength,
-          RepairCnt: item.MaxLife.RepairCnt,
-        },
-      },
+      Name: item.Name,
+      ToolTypeId: item.ToolTypeData.Name,
+      SafetyStock: item.SafetyStock,
+      BladeDiameter: item.SpecData.BladeDiameter,
+      BladeHeight: item.SpecData.BladeHeight,
+      TotalLength: item.SpecData.TotalLength,
+      HandleDiameter: item.SpecData.HandleDiameter,
+      ProcessCnt: item.MaxLife.ProcessCnt,
+      ProcessTime: item.MaxLife.ProcessTime,
+      ProcessLength: item.MaxLife.ProcessLength,
+      RepairCnt: item.MaxLife.RepairCnt,
     });
+  };
+
+  const handleEditToolSpec = (key: string, value: string) => {
+    setEditToolSpec({ ...editToolSpec, [key]: value });
   };
 
   useEffect(() => {
@@ -216,194 +209,109 @@ const ToolSpecIndex = () => {
                           <input
                             type="text"
                             className="w-24 text-center text-black rounded-md"
-                            value={editToolSpec.ModifyDatas.Name}
-                            onChange={(e) => {
-                              setEditToolSpec((prev) => ({
-                                ...prev,
-                                ModifyDatas: {
-                                  ...prev.ModifyDatas,
-                                  Name: e.target.value,
-                                },
-                              }));
-                            }}
-                          />
-                        </td>
-                        <td className="p-1 whitespace-nowrap">
-                          <input
-                            type="number"
-                            className="w-24 text-center text-black rounded-md"
-                            value={
-                              editToolSpec.ModifyDatas.SpecData.BladeDiameter
+                            value={editToolSpec.Name}
+                            onChange={(e) =>
+                              handleEditToolSpec("Name", e.target.value)
                             }
-                            onChange={(e) => {
-                              setEditToolSpec((prev) => ({
-                                ...prev,
-                                ModifyDatas: {
-                                  ...prev.ModifyDatas,
-                                  SpecData: {
-                                    ...prev.ModifyDatas.SpecData,
-                                    BladeDiameter: Number(e.target.value),
-                                  },
-                                },
-                              }));
-                            }}
                           />
                         </td>
                         <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
-                            value={
-                              editToolSpec.ModifyDatas.SpecData.BladeHeight
+                            value={editToolSpec.BladeDiameter}
+                            onChange={(e) =>
+                              handleEditToolSpec(
+                                "BladeDiameter",
+                                e.target.value
+                              )
                             }
-                            onChange={(e) => {
-                              setEditToolSpec((prev) => ({
-                                ...prev,
-                                ModifyDatas: {
-                                  ...prev.ModifyDatas,
-                                  SpecData: {
-                                    ...prev.ModifyDatas.SpecData,
-                                    BladeHeight: Number(e.target.value),
-                                  },
-                                },
-                              }));
-                            }}
                           />
                         </td>
                         <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
-                            value={
-                              editToolSpec.ModifyDatas.SpecData.TotalLength
+                            value={editToolSpec.BladeHeight}
+                            onChange={(e) =>
+                              handleEditToolSpec("BladeHeight", e.target.value)
                             }
-                            onChange={(e) => {
-                              setEditToolSpec((prev) => ({
-                                ...prev,
-                                ModifyDatas: {
-                                  ...prev.ModifyDatas,
-                                  SpecData: {
-                                    ...prev.ModifyDatas.SpecData,
-                                    TotalLength: Number(e.target.value),
-                                  },
-                                },
-                              }));
-                            }}
                           />
                         </td>
                         <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
-                            value={
-                              editToolSpec.ModifyDatas.SpecData.HandleDiameter
+                            value={editToolSpec.TotalLength}
+                            onChange={(e) =>
+                              handleEditToolSpec("TotalLength", e.target.value)
                             }
-                            onChange={(e) => {
-                              setEditToolSpec((prev) => ({
-                                ...prev,
-                                ModifyDatas: {
-                                  ...prev.ModifyDatas,
-                                  SpecData: {
-                                    ...prev.ModifyDatas.SpecData,
-                                    HandleDiameter: Number(e.target.value),
-                                  },
-                                },
-                              }));
-                            }}
                           />
                         </td>
                         <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
-                            value={editToolSpec.ModifyDatas.SafetyStock}
-                            onChange={(e) => {
-                              setEditToolSpec((prev) => ({
-                                ...prev,
-                                ModifyDatas: {
-                                  ...prev.ModifyDatas,
-                                  SafetyStock: Number(e.target.value),
-                                },
-                              }));
-                            }}
-                          />
-                        </td>
-                        <td className="p-1 whitespace-nowrap">
-                          <input
-                            type="number"
-                            className="w-24 text-center text-black rounded-md"
-                            value={editToolSpec.ModifyDatas.MaxLife.RepairCnt}
-                            onChange={(e) => {
-                              setEditToolSpec((prev) => ({
-                                ...prev,
-                                ModifyDatas: {
-                                  ...prev.ModifyDatas,
-                                  MaxLife: {
-                                    ...prev.ModifyDatas.MaxLife,
-                                    RepairCnt: Number(e.target.value),
-                                  },
-                                },
-                              }));
-                            }}
-                          />
-                        </td>
-                        <td className="p-1 whitespace-nowrap">
-                          <input
-                            type="number"
-                            className="w-24 text-center text-black rounded-md"
-                            value={editToolSpec.ModifyDatas.MaxLife.ProcessCnt}
-                            onChange={(e) => {
-                              setEditToolSpec((prev) => ({
-                                ...prev,
-                                ModifyDatas: {
-                                  ...prev.ModifyDatas,
-                                  MaxLife: {
-                                    ...prev.ModifyDatas.MaxLife,
-                                    ProcessCnt: Number(e.target.value),
-                                  },
-                                },
-                              }));
-                            }}
-                          />
-                        </td>
-                        <td className="p-1 whitespace-nowrap">
-                          <input
-                            type="number"
-                            className="w-24 text-center text-black rounded-md"
-                            value={
-                              editToolSpec.ModifyDatas.MaxLife.ProcessLength
+                            value={editToolSpec.HandleDiameter}
+                            onChange={(e) =>
+                              handleEditToolSpec(
+                                "HandleDiameter",
+                                e.target.value
+                              )
                             }
-                            onChange={(e) => {
-                              setEditToolSpec((prev) => ({
-                                ...prev,
-                                ModifyDatas: {
-                                  ...prev.ModifyDatas,
-                                  MaxLife: {
-                                    ...prev.ModifyDatas.MaxLife,
-                                    ProcessLength: Number(e.target.value),
-                                  },
-                                },
-                              }));
-                            }}
                           />
                         </td>
                         <td className="p-1 whitespace-nowrap">
                           <input
                             type="number"
                             className="w-24 text-center text-black rounded-md"
-                            value={editToolSpec.ModifyDatas.MaxLife.ProcessTime}
-                            onChange={(e) => {
-                              setEditToolSpec((prev) => ({
-                                ...prev,
-                                ModifyDatas: {
-                                  ...prev.ModifyDatas,
-                                  MaxLife: {
-                                    ...prev.ModifyDatas.MaxLife,
-                                    ProcessTime: Number(e.target.value),
-                                  },
-                                },
-                              }));
-                            }}
+                            value={editToolSpec.SafetyStock}
+                            onChange={(e) =>
+                              handleEditToolSpec("SafetyStock", e.target.value)
+                            }
+                          />
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          <input
+                            type="number"
+                            className="w-24 text-center text-black rounded-md"
+                            value={editToolSpec.RepairCnt}
+                            onChange={(e) =>
+                              handleEditToolSpec("RepairCnt", e.target.value)
+                            }
+                          />
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          <input
+                            type="number"
+                            className="w-24 text-center text-black rounded-md"
+                            value={editToolSpec.ProcessCnt}
+                            onChange={(e) =>
+                              handleEditToolSpec("ProcessCnt", e.target.value)
+                            }
+                          />
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          <input
+                            type="number"
+                            className="w-24 text-center text-black rounded-md"
+                            value={editToolSpec.ProcessLength}
+                            onChange={(e) =>
+                              handleEditToolSpec(
+                                "ProcessLength",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td className="p-1 whitespace-nowrap">
+                          <input
+                            type="number"
+                            className="w-24 text-center text-black rounded-md"
+                            value={editToolSpec.ProcessTime}
+                            onChange={(e) =>
+                              handleEditToolSpec("ProcessTime", e.target.value)
+                            }
                           />
                         </td>
                         <td className="p-1 whitespace-nowrap">

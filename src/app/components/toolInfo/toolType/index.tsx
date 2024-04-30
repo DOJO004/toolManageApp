@@ -5,6 +5,7 @@ import {
   apiGetToolTypeList,
 } from "@/scripts/Apis/toolType/toolTypeApi";
 import { useEffect, useState } from "react";
+import SweetAlert from "../../sweetAlert";
 import { NewToolType } from "./new";
 import {
   DeleteToolTypeResponse,
@@ -15,7 +16,6 @@ import {
 
 export function ToolTypeIndex() {
   const [toolTypeList, setToolTypeList] = useState<ToolTypeItem[]>([]);
-
   const [newToolTypeMode, setNewToolTypeMode] = useState(false);
   const [editToolTypeMode, setEditToolTypeMode] = useState(false);
   const [editToolTypeModeIndex, setEditToolTypeModeIndex] = useState(-1);
@@ -38,9 +38,13 @@ export function ToolTypeIndex() {
   const patchEditToolType = async () => {
     const data = await apiEditToolType(editToolType);
     const res = data as PatchToolTypeResponse;
-    if (res?.data?.Values?.ReqInt === 0) {
+    const reqInt = res.data.Values.ReqInt;
+    if (reqInt === 0) {
       setEditToolTypeMode(false);
       getToolTypeList();
+      SweetAlert(reqInt, "更新成功");
+    } else {
+      SweetAlert(reqInt, "更新失敗");
     }
   };
 

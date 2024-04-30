@@ -1,4 +1,4 @@
-import DashboardIndex from "@/app/ui/dashboard";
+import DashboardIndex from "@/app/components/dashboard";
 
 export default function Page() {
   return (

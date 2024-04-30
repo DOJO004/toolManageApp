@@ -4,13 +4,14 @@ import { apiGetToolStockCountList } from "@/scripts/Apis/toolStock/toolStock";
 import { useEffect, useState } from "react";
 import NewToolStock from "./new";
 import {
-  GetToolStockListResponse,
+  GetToolStockCountListResponse,
+  StockToolCountItem,
   ToolStatusItem,
   ToolStockItem,
 } from "./types";
 
 const ToolStockIndex = () => {
-  const [toolStockList, setToolStockList] = useState<ToolStockItem[]>([]);
+  const [toolStockList, setToolStockList] = useState<StockToolCountItem[]>([]);
   const [newToolStockMode, setNewToolStockMode] = useState(false);
   const [selectToolStock, setSelectToolStock] = useState<
     { name: string; checked: boolean }[]
@@ -19,7 +20,7 @@ const ToolStockIndex = () => {
 
   const getToolStockList = async () => {
     const data = await apiGetToolStockCountList();
-    const res = data as GetToolStockListResponse;
+    const res = data as GetToolStockCountListResponse;
     console.log("get tool stock list", res);
     if (res?.data?.Values?.ReqInt === 0) {
       setToolStockList(res.data.Values.StockToolCountList);
@@ -45,7 +46,7 @@ const ToolStockIndex = () => {
 
   const filterToolStockList = async () => {
     const data = await apiGetToolStockCountList();
-    const res = data as GetToolStockListResponse;
+    const res = data as GetToolStockCountListResponse;
 
     if (selectToolStock.length === 0) {
       setToolStockList(res.data.Values.StockToolCountList);

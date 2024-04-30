@@ -1,6 +1,6 @@
 "use client";
 
-import BindToolIndex from "@/app/ui/elabelInfo/bindTool/bindToolIndex";
+import BindToolIndex from "@/app/components/elabelInfo/bindTool/bindToolIndex";
 
 export default function Page() {
   return (

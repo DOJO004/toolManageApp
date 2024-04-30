@@ -1,4 +1,4 @@
-import IndexPoliceInfo from "@/app/ui/userInfo/policeInfo";
+import IndexPoliceInfo from "@/app/components/userInfo/policeInfo";
 
 export default function Page() {
   return (

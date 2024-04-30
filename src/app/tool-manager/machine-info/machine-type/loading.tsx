@@ -1,4 +1,4 @@
-import { MachineTypeSkeletons } from "@/app/ui/skeletons";
+import { MachineTypeSkeletons } from "@/app/components/skeletons";
 
 export default function Loading() {
   return (
