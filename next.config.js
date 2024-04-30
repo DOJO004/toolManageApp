@@ -2,7 +2,9 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-  output: "export",
+  output: "standalone",
+
+  // Change images path
   images: {
     loader: "custom",
     loaderFile: "./my-loader.ts",
@@ -15,7 +17,6 @@ const nextConfig = {
   // skipTrailingSlashRedirect: true,
 
   // Optional: Change the output directory `out` -> `dist`
-  // distDir: 'dist',
 };
 
 module.exports = nextConfig;

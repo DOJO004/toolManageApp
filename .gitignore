@@ -34,3 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# output file
+dist
+out
+.next
+__test__
+toolmanager-docker.tar
