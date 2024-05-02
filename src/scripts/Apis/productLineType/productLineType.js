@@ -16,9 +16,13 @@ export async function apiNewProductLineType(productLineType) {
       {
         Id: productLineType.Id,
         Name: productLineType.Name,
+        Department: {
+          Id: productLineType.DepartmentId,
+        },
       },
     ],
   };
+  console.log("new product line body", body);
   try {
     const res = await apiInstance.post(
       "/sync_operate/SyncAddProductLineInfo",
@@ -36,8 +40,12 @@ export async function apiEditProductLineType(productLineType) {
     Id: productLineType.Id,
     ModifyData: {
       Name: productLineType.Name,
+      Department: {
+        Id: productLineType.DepartmentId,
+      },
     },
   };
+  console.log("edit product line body", body);
   try {
     const res = await apiInstance.post(
       "/sync_operate/SyncModifyProductLineInfo",

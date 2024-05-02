@@ -2,20 +2,24 @@
 
 import { apiNewProductLineType } from "@/scripts/Apis/productLineType/productLineType";
 import { FormEvent, useState } from "react";
+import { DepartmentItem } from "../../userInfo/department/type";
 import { PostProductLineResponse } from "./types";
 
 interface NewProductLineProps {
   getProductLineList: () => void;
   setNewProductLineMode: React.Dispatch<React.SetStateAction<boolean>>;
+  departmentList: DepartmentItem[];
 }
 
 export default function NewProductLine({
   getProductLineList,
   setNewProductLineMode,
+  departmentList,
 }: NewProductLineProps) {
   const [newProductLine, setNewProductLine] = useState({
     Id: "",
     Name: "",
+    DepartmentId: "",
   });
 
   const postProductLine = async (e: FormEvent) => {
@@ -33,6 +37,7 @@ export default function NewProductLine({
     setNewProductLine({
       Id: "",
       Name: "",
+      DepartmentId: "",
     });
   };
 
@@ -77,15 +82,25 @@ export default function NewProductLine({
             />
           </div>
           <div className="relative my-4">
-            <label htmlFor="" className="absolute left-0 -top-6 ">
+            <label htmlFor="department" className="absolute left-0 -top-6 ">
               負責部門
             </label>
             <input
               type="text"
-              id=""
+              id="department"
+              list="departmentList"
               className="w-full p-2 text-black rounded-md "
               placeholder="負責部門"
+              value={newProductLine.DepartmentId}
+              onChange={(e) =>
+                handleNewProductLine("DepartmentId", e.target.value)
+              }
             />
+            <datalist id="departmentList">
+              {departmentList.map((item) => (
+                <option key={item.Id} value={item.Id}></option>
+              ))}
+            </datalist>
           </div>
         </div>
         <button className="w-full p-1 bg-indigo-500 rounded-md hover:bg-indigo-600">

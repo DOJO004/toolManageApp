@@ -5,7 +5,9 @@ import {
   apiEditProductLineType,
   apiGetProductLineTypeList,
 } from "@/scripts/Apis/productLineType/productLineType";
+import { ApiGetDepartmentList } from "@/scripts/Apis/userInfo/departmentApi";
 import { useEffect, useState } from "react";
+import { DepartmentItem, DepartmentList } from "../../userInfo/department/type";
 import NewProductLine from "./new";
 import {
   DeleteProductLineResponse,
@@ -23,7 +25,9 @@ const ProductLineIndex = () => {
   const [editProductLine, setEditProductLine] = useState({
     Id: "",
     Name: "",
+    DepartmentId: "",
   });
+  const [departmentList, setDepartmentList] = useState<DepartmentItem[]>([]);
 
   const getProductLineList = async () => {
     const data = await apiGetProductLineTypeList();
@@ -31,6 +35,15 @@ const ProductLineIndex = () => {
     if (res?.data?.Values?.ReqInt === 0) {
       setProductLineList(res.data.Values.ProductLineList);
       return res.data.Values.ProductLineList;
+    }
+  };
+
+  const getDepartmentList = async () => {
+    const data = await ApiGetDepartmentList();
+    const res = data as DepartmentList;
+    console.log(res);
+    if (res?.data?.Values?.ReqInt === 0) {
+      setDepartmentList(res.data.Values.DepartmentMenus);
     }
   };
 
@@ -81,7 +94,11 @@ const ProductLineIndex = () => {
   const handleClickEditProductLine = (data: ProductLineItem, index: number) => {
     setEditProductLineMode(true);
     setNewProductLineMode(false);
-    setEditProductLine(data);
+    setEditProductLine({
+      Id: data.Id,
+      Name: data.Name,
+      DepartmentId: data.Department.Id,
+    });
     setEditProductLineIndex(index);
   };
 
@@ -91,6 +108,7 @@ const ProductLineIndex = () => {
 
   useEffect(() => {
     getProductLineList();
+    getDepartmentList();
   }, []);
   return (
     <div className="relative flex w-full p-4 text-center">
@@ -119,6 +137,7 @@ const ProductLineIndex = () => {
           <NewProductLine
             getProductLineList={getProductLineList}
             setNewProductLineMode={setNewProductLineMode}
+            departmentList={departmentList}
           />
         </div>
         <div className="w-full mt-2 overflow-auto bg-gray-700 rounded-md">
@@ -152,8 +171,18 @@ const ProductLineIndex = () => {
                       <td>
                         <input
                           type="text"
+                          list="editDepartmentList"
                           className="p-1 text-center text-black rounded-md"
+                          value={editProductLine.DepartmentId}
+                          onChange={(e) =>
+                            handelSetEditData("DepartmentId", e.target.value)
+                          }
                         />
+                        <datalist id="editDepartmentList">
+                          {departmentList.map((item) => (
+                            <option key={item.Id} value={item.Id}></option>
+                          ))}
+                        </datalist>
                       </td>
                       <td>
                         <button
@@ -176,7 +205,9 @@ const ProductLineIndex = () => {
                     <tr key={item.Id} className=" hover:bg-gray-600">
                       <td className="p-1 whitespace-nowrap">{item.Id}</td>
                       <td className="p-1 whitespace-nowrap">{item.Name}</td>
-                      <td className="p-1 whitespace-nowrap">部門名稱</td>
+                      <td className="p-1 whitespace-nowrap">
+                        {item.Department.Name}
+                      </td>
 
                       <td className="p-1 whitespace-nowrap">
                         <button
