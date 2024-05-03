@@ -192,7 +192,7 @@ const ToolStockIndex = () => {
                 <div className="grid grid-cols-7 gap-2 bg-indigo-500 ">
                   <p className="p-1 ">ToolSN</p>
                   <p className="p-1 ">狀態</p>
-                  <p className="p-1 ">生命百分比</p>
+                  <p className="p-1 ">生命指數</p>
                   <p className="p-1 ">最後修改時間</p>
                   <p className="p-1 ">machine_id</p>
                   <p className="p-1 ">所在位置</p>

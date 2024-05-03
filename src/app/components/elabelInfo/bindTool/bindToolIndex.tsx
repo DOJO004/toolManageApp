@@ -4,7 +4,9 @@ import {
   apiGetELabelList,
 } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
 import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
+import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
 import Image from "next/image";
+import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import SweetAlert from "../../sweetAlert";
@@ -12,7 +14,7 @@ import {
   GetToolStockInfoListResponse,
   ToolStockListItem,
 } from "../../toolInfo/toolStock/types";
-import { ToolStockItem } from "../../toolInfo/types";
+import { UserAccountItem, UserInfoList } from "../../userInfo/types";
 import { GetELabelListResponse } from "../types";
 import { BindToolDataItem } from "./types";
 
@@ -24,13 +26,16 @@ export default function BindToolIndex() {
   });
   const [eLabeList, setELabelList] = useState<LabelItem[]>([]);
   const [toolList, setToolList] = useState<ToolStockListItem[]>([]);
+  const [userList, setUserList] = useState<UserAccountItem[]>([]);
   const [inputUnbindTool, setInputUnbindTool] = useState<string>("");
   const [inputUnbindLabel, setInputUnbindLabel] = useState<string>("");
 
   const getELabelList = async (count = 1) => {
-    if (count === 3) {
-      SweetAlert(-99, "請求失敗，請重新整理頁面。");
-    } else {
+    try {
+      if (count === 3) {
+        SweetAlert(-99, "請求失敗，請重新整理頁面。");
+        throw new Error("Maximum retry count reached");
+      }
       const data = await apiGetELabelList();
       const res = data as GetELabelListResponse;
 
@@ -40,45 +45,66 @@ export default function BindToolIndex() {
       } else {
         getELabelList(count + 1);
       }
+    } catch (error: any) {
+      console.error("Error", error);
     }
   };
 
   const getToolList = async (count = 1) => {
-    if (count === 3) {
-      SweetAlert(-99, "請求失敗，請重新整理頁面。");
-    } else {
+    try {
+      if (count >= 3) {
+        SweetAlert(-99, "請求失敗，請重新整理頁面。");
+        throw new Error("Maximum retry count reached");
+      }
       const data = await apiGetToolStockList();
       const res = data as GetToolStockInfoListResponse;
+      const reqInt = res?.data?.Values?.ReqInt;
       console.log("get tool list", res);
+      reqInt !== 0 ? getToolList(count + 1) : null;
 
-      if (res?.data?.Values?.ReqInt === 0) {
+      if (reqInt === 0) {
         setToolList(filterToolStatus(res.data.Values.ToolStockList));
         return res.data.Values.ToolStockList;
-      } else {
-        getToolList(count + 1);
       }
+    } catch (error) {
+      console.error("Error", error);
     }
   };
 
+  const getUserList = async (count = 1) => {
+    if (count >= 3) {
+      SweetAlert(-99, "請求失敗，請重新整理頁面。");
+      throw new Error("Maximum retry count reached");
+    }
+    try {
+      const data = await ApiGetUserInfoList();
+      const res = data as UserInfoList;
+      const reqInt = res?.data?.Values?.ReqInt;
+      console.log("get user list", res);
+
+      if (reqInt === 0) {
+        setUserList(res.data.Values.UserAccountList);
+      } else {
+        getUserList(count + 1);
+      }
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
   const postBindTool = async (e: FormEvent) => {
     e.preventDefault();
     const res = await apiBindELabelInfo(bindToolData);
     console.log(res);
   };
 
-  const filterUnbindLabel = (data: LabelItem[]) => {
-    const filterData = data.filter((item) => {
-      return item.BindStatus === "Unbinding";
-    });
-    return filterData;
-  };
+  const filterUnbindLabel = (data: LabelItem[]) =>
+    data.filter((item) => item.BindStatus === "Unbinding");
 
-  const filterToolStatus = (data: ToolStockListItem[]) => {
-    const filterData = data.filter((item) => {
-      return item.LifeStatus === "Normal" && !item.LoadingData.IsLoading;
-    });
-    return filterData;
-  };
+  const filterToolStatus = (data: ToolStockListItem[]) =>
+    data.filter(
+      (item) =>
+        item.LifeStatus === "Normal" && item.PositionData.PositionStatus === 0
+    );
 
   const searchUnbindTool = async (e: FormEvent) => {
     e.preventDefault();
@@ -86,7 +112,7 @@ export default function BindToolIndex() {
     const toolData = await getToolList();
 
     if (toolData) {
-      const filterData = toolData.filter((item: ToolStockItem) => {
+      const filterData = toolData.filter((item: ToolStockListItem) => {
         return (
           item.ToolTypeData.Name.includes(inputUnbindTool) ||
           item.ToolSn.includes(inputUnbindTool) ||
@@ -137,7 +163,7 @@ export default function BindToolIndex() {
     Swal.fire({
       title: "Check out this way!",
       imageUrl: "/label hint.png",
-      imageWidth: 300,
+      imageWidth: 500,
       imageHeight: 300,
       imageAlt: "Custom image",
     });
@@ -146,6 +172,7 @@ export default function BindToolIndex() {
   useEffect(() => {
     getELabelList();
     getToolList();
+    getUserList();
   }, []);
 
   return (
@@ -216,10 +243,15 @@ export default function BindToolIndex() {
               <label htmlFor="receiver">領取人</label>
               <input
                 type="text"
-                id="receiver"
-                className="w-full p-2 text-black rounded-md"
+                list="userList"
                 placeholder="領取人"
+                className="w-full p-2 text-black rounded-md"
               />
+              <datalist id="userList">
+                {userList.map((item) => (
+                  <option key={item.AccountId} value={item.UserName}></option>
+                ))}
+              </datalist>
             </div>
           </div>
           <button className="w-full p-1 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
@@ -296,7 +328,7 @@ export default function BindToolIndex() {
             </thead>
             <tbody>
               {toolList.length > 0 ? (
-                toolList.map((item: ToolStockItem) => (
+                toolList.map((item: ToolStockListItem) => (
                   <tr
                     key={item.ToolSn}
                     className="cursor-pointer hover:bg-gray-600"
@@ -317,9 +349,12 @@ export default function BindToolIndex() {
                 <tr>
                   <td colSpan={3}>
                     無此刀具... <br />
-                    <span className="text-blue-500 cursor-pointer">
+                    <Link
+                      href="/tool-manager/tool-info/tool-stock"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
                       新增庫存?
-                    </span>
+                    </Link>
                   </td>
                 </tr>
               )}
