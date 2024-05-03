@@ -7,15 +7,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="w-full p-2 md:flex">
-      {pathname !== "/tool-manager/login" ? (
-        <div className="h-full mx-2">
-          <Navbar />
-        </div>
-      ) : (
-        ""
-      )}
-
-      <div className="flex justify-center w-full ">{children}</div>
+      <Navbar />
+      <div className="flex justify-center w-full mx-2 ">{children}</div>
     </div>
   );
 };

@@ -109,7 +109,7 @@ export default function Page() {
         <PieChart toolInfoData={toolInfoData} />
         <ToolInfoLog toolInfoData={toolInfoData} />
       </div>
-      <div className="p-2 overflow-auto text-center bg-gray-700 rounded-md h-[40rem] ">
+      <div className="p-2 overflow-auto text-center bg-gray-700 rounded-md">
         <div className="my-4">
           <h3 className="my-4">刀具狀態列表</h3>
           <input

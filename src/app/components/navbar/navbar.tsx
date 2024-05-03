@@ -33,8 +33,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className=" md:flex">
-      <div className="overflow-auto bg-gray-900 rounded-md md:flex md:justify-center md:h-screen">
+    <div className="h-full bg-gray-900 rounded-md md:flex">
+      <div className="overflow-auto md:flex md:justify-center">
         <ul className="flex items-center m-2 md:flex-col">
           <li
             onClick={() => handleNavbarMenu("dashboard")}

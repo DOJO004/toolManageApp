@@ -8,6 +8,17 @@ const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
   return (
     <div className="flex justify-center md:flex-col">
       <div className="flex md:block">
+        <button
+          className="block ml-auto w-fit"
+          onClick={() => setOpenMenu(false)}
+        >
+          <Image
+            src="/arrow_back_icon.png"
+            alt="back icon"
+            width={20}
+            height={20}
+          />
+        </button>
         <Link
           href={"/tool-manager/user-info"}
           className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
