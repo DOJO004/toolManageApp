@@ -7,6 +7,7 @@ import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import SweetAlert from "../../sweetAlert";
 import {
   GetToolStockInfoListResponse,
   ToolStockListItem,
@@ -26,24 +27,36 @@ export default function BindToolIndex() {
   const [inputUnbindTool, setInputUnbindTool] = useState<string>("");
   const [inputUnbindLabel, setInputUnbindLabel] = useState<string>("");
 
-  const getELabelList = async () => {
-    const data = await apiGetELabelList();
-    const res = data as GetELabelListResponse;
+  const getELabelList = async (count = 1) => {
+    if (count === 3) {
+      SweetAlert(-99, "請求失敗，請重新整理頁面。");
+    } else {
+      const data = await apiGetELabelList();
+      const res = data as GetELabelListResponse;
 
-    if (res?.data?.Values?.ReqInt === 0) {
-      setELabelList(filterUnbindLabel(res.data.Values.LabelList));
-      return res.data.Values.LabelList;
+      if (res?.data?.Values?.ReqInt === 0) {
+        setELabelList(filterUnbindLabel(res.data.Values.LabelList));
+        return res.data.Values.LabelList;
+      } else {
+        getELabelList(count + 1);
+      }
     }
   };
 
-  const getToolList = async () => {
-    const data = await apiGetToolStockList();
-    const res = data as GetToolStockInfoListResponse;
-    console.log("get tool list", res);
+  const getToolList = async (count = 1) => {
+    if (count === 3) {
+      SweetAlert(-99, "請求失敗，請重新整理頁面。");
+    } else {
+      const data = await apiGetToolStockList();
+      const res = data as GetToolStockInfoListResponse;
+      console.log("get tool list", res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolList(filterToolStatus(res.data.Values.ToolStockList));
-      return res.data.Values.ToolStockList;
+      if (res?.data?.Values?.ReqInt === 0) {
+        setToolList(filterToolStatus(res.data.Values.ToolStockList));
+        return res.data.Values.ToolStockList;
+      } else {
+        getToolList(count + 1);
+      }
     }
   };
 

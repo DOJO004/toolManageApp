@@ -59,6 +59,8 @@ export default function NewMachineSpec({
     e.preventDefault();
     const data = await apiNewMachineSpec(newMachineSpec);
     const res = data as PostMachineSpecResponse;
+    console.log("new machine spec", res);
+
     if (res?.data?.Values?.ReqInt === 0) {
       cleanNewMachineSpec();
       getMachineSpecList();

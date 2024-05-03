@@ -61,7 +61,7 @@ export default function NewELabelInfo({
         </button>
       </div>
       <form onSubmit={(e) => postNewLabelInfo(e)}>
-        <div className="grid items-center grid-cols-8 gap-2 my-4">
+        <div className="grid items-center grid-cols-7 gap-2 my-4">
           <div className="relative ">
             <label htmlFor="LabelBrandID" className="absolute left-0 -top-6 ">
               LabelBrandID

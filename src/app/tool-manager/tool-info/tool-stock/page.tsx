@@ -1,5 +1,3 @@
-"use client";
-
 import ToolStockIndex from "@/app/components/toolInfo/toolStock";
 export default function Page() {
   return (

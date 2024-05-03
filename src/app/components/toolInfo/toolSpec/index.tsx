@@ -5,6 +5,7 @@ import {
   apiGetToolSpecList,
 } from "@/scripts/Apis/toolSpec/toolSpecApi";
 import { useEffect, useState } from "react";
+import SweetAlert from "../../sweetAlert";
 import { NewToolSpec } from "./new";
 import {
   DeleteToolSpecResponse,
@@ -57,14 +58,20 @@ const ToolSpecIndex = () => {
     RepairCnt: 0,
   });
 
-  const getToolSpecList = async () => {
-    const data = await apiGetToolSpecList();
-    const res = data as GetToolSpecListResponse;
-    console.log("tool spec list ", res);
+  const getToolSpecList = async (count = 1) => {
+    if (count === 3) {
+      SweetAlert(-99, "請求失敗，請重新整理頁面。");
+    } else {
+      const data = await apiGetToolSpecList();
+      const res = data as GetToolSpecListResponse;
+      console.log("tool spec list ", res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolSpecList(res.data.Values.ToolSpecList);
-      return res.data.Values.ToolSpecList;
+      if (res?.data?.Values?.ReqInt === 0) {
+        setToolSpecList(res.data.Values.ToolSpecList);
+        return res.data.Values.ToolSpecList;
+      } else {
+        getToolSpecList(count + 1);
+      }
     }
   };
 

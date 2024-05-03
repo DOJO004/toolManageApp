@@ -37,7 +37,7 @@ export async function apiNewMachineSpec(machineSpec) {
     LoginTime: getLoginTime(),
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
   };
-  console.log("newMachineSpec", body);
+  console.log("new machine spec body", body);
   try {
     const res = await apiInstance.post(
       "/user_operate/AddMachineSpecInfo",
@@ -73,8 +73,8 @@ export async function apiEditMachineSpec(machineSpec) {
         },
       ],
     },
-    UserToken: "smcW2T4x",
-    LoginTime: "2023-08-23 13:31:32",
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
   };
   console.log("editMachineSpec", body);

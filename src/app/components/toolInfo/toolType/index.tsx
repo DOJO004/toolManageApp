@@ -24,14 +24,20 @@ export function ToolTypeIndex() {
     Name: "",
   });
 
-  const getToolTypeList = async () => {
-    const data = await apiGetToolTypeList();
-    const res = data as GetToolTypeListResponse;
-    console.log(`tool type list`, res);
+  const getToolTypeList = async (count = 0) => {
+    if (count === 3) {
+      SweetAlert(-99, "請求失敗，請重新整理頁面。");
+    } else {
+      const data = await apiGetToolTypeList();
+      const res = data as GetToolTypeListResponse;
+      console.log(`tool type list`, res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolTypeList(res.data.Values.ToolTypeMenus);
-      return res.data.Values.ToolTypeMenus;
+      if (res?.data?.Values?.ReqInt === 0) {
+        setToolTypeList(res.data.Values.ToolTypeMenus);
+        return res.data.Values.ToolTypeMenus;
+      } else {
+        getToolTypeList(count + 1);
+      }
     }
   };
 

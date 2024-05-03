@@ -1,4 +1,5 @@
 "use client";
+import SweetAlert from "@/app/components/sweetAlert";
 import PieChart from "@/app/components/toolInfo/piechart";
 import ToolInfoLog from "@/app/components/toolInfo/toolInfoLog";
 import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
@@ -15,15 +16,21 @@ export default function Page() {
     {} as ToolStockItem
   );
 
-  const getToolInfoList = async () => {
-    const data = await apiGetToolStockList();
-    const res = data as GetToolStockListResponse;
-    console.log("get tool stock list", res);
+  const getToolInfoList = async (count = 0) => {
+    if (count === 3) {
+      SweetAlert(-99, "請求失敗，請重新整理頁面。");
+    } else {
+      const data = await apiGetToolStockList();
+      const res = data as GetToolStockListResponse;
+      console.log("get tool stock list", res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolInfoList(res.data.Values.ToolStockList);
-      setToolInfoData(res.data.Values.ToolStockList[0]);
-      return res.data.Values.ToolStockList;
+      if (res?.data?.Values?.ReqInt === 0) {
+        setToolInfoList(res.data.Values.ToolStockList);
+        setToolInfoData(res.data.Values.ToolStockList[0]);
+        return res.data.Values.ToolStockList;
+      } else {
+        getToolInfoList(count + 1);
+      }
     }
   };
 
@@ -141,7 +148,7 @@ export default function Page() {
                     {item.LifeData.RepairCnt}
                   </td>
                   <td className="p-1 whitespace-nowrap">
-                    {item.LoadingData.IsLoading
+                    {item.LoadingData?.IsLoading
                       ? `裝載中 / ${item.LoadingData.MachineId}`
                       : "未裝載"}
                   </td>

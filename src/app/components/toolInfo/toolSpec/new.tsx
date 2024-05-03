@@ -90,9 +90,6 @@ export function NewToolSpec({
   useEffect(() => {
     getToolTypeList();
   }, []);
-  useEffect(() => {
-    console.log(toolSpec);
-  }, [toolSpec]);
 
   return (
     <div className="p-2 my-2 bg-gray-700 rounded-md">

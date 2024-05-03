@@ -2,6 +2,7 @@
 
 import { apiGetToolStockCountList } from "@/scripts/Apis/toolStock/toolStock";
 import { useEffect, useState } from "react";
+import SweetAlert from "../../sweetAlert";
 import NewToolStock from "./new";
 import {
   GetToolStockCountListResponse,
@@ -18,21 +19,27 @@ const ToolStockIndex = () => {
   >([]);
   const [toolSpecClass, setToolSpecClass] = useState<string[]>([]);
 
-  const getToolStockList = async () => {
-    const data = await apiGetToolStockCountList();
-    const res = data as GetToolStockCountListResponse;
-    console.log("get tool stock list", res);
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolStockList(res.data.Values.StockToolCountList);
+  const getToolStockList = async (count = 1) => {
+    if (count === 3) {
+      SweetAlert(-99, "請求失敗，請重新整理頁面。");
+    } else {
+      const data = await apiGetToolStockCountList();
+      const res = data as GetToolStockCountListResponse;
+      console.log("get tool stock list", res);
+      if (res?.data?.Values?.ReqInt === 0) {
+        setToolStockList(res.data.Values.StockToolCountList);
 
-      // 使用 Set 來過濾重複元素
-      const uniqueToolSpecNames = new Set<string>();
-      res.data.Values.StockToolCountList.forEach((item) => {
-        uniqueToolSpecNames.add(item.ToolSpecName);
-      });
+        // 使用 Set 來過濾重複元素
+        const uniqueToolSpecNames = new Set<string>();
+        res.data.Values.StockToolCountList.forEach((item) => {
+          uniqueToolSpecNames.add(item.ToolSpecName);
+        });
 
-      // 將 Set 轉換為陣列，然後更新 toolSpecClass 狀態
-      setToolSpecClass(Array.from(uniqueToolSpecNames));
+        // 將 Set 轉換為陣列，然後更新 toolSpecClass 狀態
+        setToolSpecClass(Array.from(uniqueToolSpecNames));
+      } else {
+        getToolStockList(count + 1);
+      }
     }
   };
 

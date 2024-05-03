@@ -61,10 +61,19 @@ export interface GetToolInfoData{
         ProcessLength: number,
         RepairCnt: number
     },
-    LoadingData: {
-        IsLoading: boolean,
-        MachineId: string,
-        AtcNo: number
+    PositionData: {
+        PositionStatus: number,
+        StorageInfo: {
+          StorageNo: number
+        },
+        LoadingInfo: {
+          MachineId: string,
+          AtcNo: number,
+          MachineSpec: {
+            MachineSn: string,
+            MachineName: string
+          }
+        }
     },
     LastModify: string
 }
