@@ -33,7 +33,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="h-full bg-gray-900 rounded-md md:flex">
+    <div className="sticky h-full bg-gray-900 rounded-md top-2 md:flex">
       <div className="overflow-auto md:flex md:justify-center">
         <ul className="flex items-center m-2 md:flex-col">
           <li

@@ -4,7 +4,7 @@ import {
   apiEditToolType,
   apiGetToolTypeList,
 } from "@/scripts/Apis/toolType/toolTypeApi";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SweetAlert from "../../sweetAlert";
 import { NewToolType } from "./new";
 import {
@@ -123,6 +123,21 @@ export function ToolTypeIndex() {
             新增
           </button>
           <h2 className="text-center ">刀具類型</h2>
+
+          {/* new */}
+          <div
+            className={`overflow-hidden relative transition-all my-4  duration-300 ease-in-out ${
+              newToolTypeMode ? "h-48" : "h-0"
+            }`}
+          >
+            <button
+              className="absolute top-0 p-2 transition-all duration-300 right-5 hover:rounded-full hover:bg-gray-900"
+              onClick={() => handleClickNewToolType()}
+            >
+              X
+            </button>
+            <NewToolType getToolTypeList={getToolTypeList} />
+          </div>
           {/* search */}
           <input
             type="search"
@@ -131,89 +146,69 @@ export function ToolTypeIndex() {
             onChange={(e) => filterToolTypeList(e.target.value)}
           />
         </div>
-        {/* new */}
-        <div
-          className={`overflow-hidden relative transition-all  duration-300 ease-in-out ${
-            newToolTypeMode ? "h-48" : "h-0"
-          }`}
-        >
-          <button
-            className="absolute top-0 p-2 transition-all duration-300 right-5 hover:rounded-full hover:bg-gray-900"
-            onClick={() => handleClickNewToolType()}
-          >
-            X
-          </button>
-          <NewToolType getToolTypeList={getToolTypeList} />
-        </div>
-        <div className="h-full text-center bg-gray-700 rounded-md">
-          <table className="w-full ">
-            <thead className="bg-indigo-500 border-b-2">
-              <tr>
-                <th className="p-1 whitespace-nowrap">ID</th>
-                <th className="p-1 whitespace-nowrap">名稱</th>
-                <th className="p-1 whitespace-nowrap">更新時間</th>
-                <th className="p-1 whitespace-nowrap">編輯</th>
-              </tr>
-            </thead>
-            <tbody>
-              {toolTypeList.length > 0 ? (
-                // edit mode
-                toolTypeList.map((item, index) =>
-                  editToolTypeMode && index === editToolTypeModeIndex ? (
-                    <tr key={item.Id}>
-                      <td className="p-1">{item.Id}</td>
-                      <td className="p-1">
-                        <input
-                          autoFocus
-                          type="text"
-                          className="w-full mx-auto text-center text-black border rounded-md"
-                          value={editToolType.Name}
-                          onChange={(e) =>
-                            setEditToolType({
-                              ...editToolType,
-                              Name: e.target.value,
-                            })
-                          }
-                        />
-                      </td>
-                      <td className="p-1">-</td>
-                      <td className="p-1">
-                        <span
-                          className="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
-                          onClick={() => patchEditToolType()}
-                        >
-                          完成
-                        </span>
-                        <span className="mx-2">/</span>
-                        <span
-                          className="p-1 bg-red-500 rounded-md cursor-pointer hover:bg-red-600"
-                          onClick={() => deleteToolType(item)}
-                        >
-                          刪除
-                        </span>
-                      </td>
-                    </tr>
-                  ) : (
-                    // render data
-                    <tr key={item.Id} className=" hover:bg-gray-600">
-                      <td className="p-1">{item.Id}</td>
-                      <td className="p-1">{item.Name}</td>
-                      <td className="p-1"> last modify none...</td>
-                      <td onClick={() => handleClickEditToolType(item, index)}>
-                        <button className="p-1 rounded-md hover:bg-indigo-600 ">
-                          編輯
-                        </button>
-                      </td>
-                    </tr>
-                  )
+        <div className="mx-auto overflow-auto bg-gray-800 rounded-md ">
+          <div className="grid grid-cols-4 gap-2 text-center bg-indigo-500 ">
+            <p className="p-1 whitespace-nowrap">ID</p>
+            <p className="p-1 whitespace-nowrap">名稱</p>
+            <p className="p-1 whitespace-nowrap">更新時間</p>
+            <p className="p-1 whitespace-nowrap">編輯</p>
+          </div>
+          <div className="grid grid-cols-4 text-center">
+            {toolTypeList.length > 0 ? (
+              // edit mode
+              toolTypeList.map((item, index) =>
+                editToolTypeMode && index === editToolTypeModeIndex ? (
+                  <React.Fragment key={item.Id}>
+                    <p className="p-1">{item.Id}</p>
+                    <p className="p-1">
+                      <input
+                        autoFocus
+                        type="text"
+                        className="w-full mx-auto text-center text-black border rounded-md"
+                        value={editToolType.Name}
+                        onChange={(e) =>
+                          setEditToolType({
+                            ...editToolType,
+                            Name: e.target.value,
+                          })
+                        }
+                      />
+                    </p>
+                    <p className="p-1">-</p>
+                    <p className="p-1">
+                      <span
+                        className="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
+                        onClick={() => patchEditToolType()}
+                      >
+                        完成
+                      </span>
+                      <span className="mx-2">/</span>
+                      <span
+                        className="p-1 bg-red-500 rounded-md cursor-pointer hover:bg-red-600"
+                        onClick={() => deleteToolType(item)}
+                      >
+                        刪除
+                      </span>
+                    </p>
+                  </React.Fragment>
+                ) : (
+                  // render data
+                  <React.Fragment key={item.Id} className=" hover:bg-gray-600">
+                    <p className="p-1">{item.Id}</p>
+                    <p className="p-1">{item.Name}</p>
+                    <p className="p-1"> last modify none...</p>
+                    <p onClick={() => handleClickEditToolType(item, index)}>
+                      <button className="p-1 rounded-md hover:bg-indigo-600 ">
+                        編輯
+                      </button>
+                    </p>
+                  </React.Fragment>
                 )
-              ) : (
-                <tr>
-                  <td colSpan={4}>no data...</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+              )
+            ) : (
+              <div>no data...</div>
+            )}
+          </div>
         </div>
       </div>
     </div>
