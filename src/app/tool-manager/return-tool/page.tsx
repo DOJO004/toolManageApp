@@ -3,51 +3,66 @@
 import { fakeData } from "@/scripts/Apis/receiveTool/fakeReceiveData";
 import { useEffect, useState } from "react";
 
-import {
-  DeleteBindLabelResponse,
-  GetBindLabelListResponse,
-  LabelBindItem,
-} from "@/app/components/returnTool/types";
-import {
-  apiDeleteBindLabel,
-  apiGetBindLabelList,
-} from "@/scripts/Apis/receiveTool/receiveTool";
+import { LabelBindItem } from "@/app/components/returnTool/types";
+import SweetAlert, { SweetAlertSelect } from "@/app/components/sweetAlert";
+import { apiGetBindLabelList } from "@/scripts/Apis/receiveTool/receiveTool";
+import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
 export default function Page() {
   const [bindLabelList, setBindLabelList] = useState<LabelBindItem[]>([]);
   const [handleToolReturnIndex, setHandleToolReturnIndex] =
     useState<number>(-1);
+  const [userList, setUserList] = useState<any[]>([]);
 
-  const getBindLabelList = async () => {
-    const data = await apiGetBindLabelList();
-    const res = data as GetBindLabelListResponse;
-    console.log(res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      setBindLabelList(res.data.Values.LabelBindList);
+  const getBindLabelList = async (count = 1) => {
+    if (count === 3) {
+      SweetAlert(-99, "請求失敗，請重新整理頁面。");
+      throw new Error("Maximum retry count reached");
     }
+    try {
+      const data = await apiGetBindLabelList();
+      const res = data as any;
+      const reqInt = res?.data?.Values?.ReqInt;
+      console.log(res);
+      if (reqInt === 0) {
+        setBindLabelList(res.data.Values.LabelBindList);
+      } else {
+        SweetAlert(reqInt, "請求失敗");
+      }
+    } catch (error) {
+      getBindLabelList(count + 1);
+      console.error("Error", error);
+    }
+  };
+
+  const getUserList = async () => {
+    const data = await ApiGetUserInfoList();
+    const res = data as any;
+    console.log("user list ", res);
+
+    setUserList(res.data.Values.UserAccountList);
+  };
+
+  const getUserOptions = () => {
+    const option: { [key: string]: string } = {};
+    userList.forEach((item) => {
+      option[item.AccountId] = item.UserName;
+    });
+    return option;
   };
 
   const repairTool = () => {
-    const confirm = window.confirm("確定要送修嗎?");
-    if (!confirm) return;
-    alert("送修功能尚未開放");
+    const option = getUserOptions();
+    SweetAlertSelect("選擇送修人員", option);
   };
 
   const scrapTool = () => {
-    const confirm = window.confirm("確定要報廢嗎?");
-    if (!confirm) return;
-    alert("報廢功能尚未開放");
+    const option = getUserOptions();
+    SweetAlertSelect("選擇報廢人員", option);
   };
 
   const returnTool = async (item: LabelBindItem) => {
-    const confirm = window.confirm(`確定要歸還${item.LToolCode}嗎?`);
-    if (!confirm) return;
-    const data = await apiDeleteBindLabel(item);
-    const res = data as DeleteBindLabelResponse;
-    console.log(res);
-    if (res?.data?.Values?.ReqInt === 0) {
-      getBindLabelList();
-    }
+    const option = getUserOptions();
+    SweetAlertSelect("選擇歸還人員", option);
   };
 
   let timer: ReturnType<typeof setTimeout>;
@@ -82,6 +97,19 @@ export default function Page() {
     }
   };
 
+  const setToolStatusText = (status: string) => {
+    switch (status) {
+      case "Normal":
+        return "正常";
+      case "Warning":
+        return "危險";
+      case "Alert":
+        return "警告";
+      default:
+        return " -";
+    }
+  };
+
   const sortByToolStatus = (data: LabelBindItem[]) => {
     const sortTable: { [key: string]: number } = {
       Normal: 3,
@@ -99,7 +127,8 @@ export default function Page() {
   };
   useEffect(() => {
     setBindLabelList(sortByToolStatus(fakeData)); // for test
-    // getBindLabelList();
+    getBindLabelList();
+    getUserList();
   }, []);
 
   return (
@@ -137,7 +166,7 @@ export default function Page() {
                         item.ToolStatus
                       )}`}
                     >
-                      {item.ToolStatus}
+                      {setToolStatusText(item.ToolStatus)}
                     </td>
 
                     <td className="p-1 whitespace-nowrap">{item.receiver}</td>

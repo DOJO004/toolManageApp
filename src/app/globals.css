@@ -51,3 +51,6 @@ button {
   @apply lg:text-xl
 }
 
+#swal2-select option{
+  @apply  text-black
+}
