@@ -1,11 +1,11 @@
 export interface GetToolStockListResponse{
     data: {
-    Values: {
-        ReqInt: number,
-        TotalPages: number,
-        TotalRecords: number,
-        ToolStockList: ToolStockItem[]
-    }
+        Values: {
+            ReqInt: number,
+            TotalPages: number,
+            TotalRecords: number,
+            ToolStockList: ToolStockItem[]
+        }
     }
 }
 
@@ -80,23 +80,41 @@ export interface GetToolInfoData{
 
 export interface GetToolLoadingLogResponse {
     data:{
+        RC: string,
         Values: {
-        ToolMacLoadingOpsList: ToolLoadingItem[],
-        TotalRecords: number,
-        TotalPages: number,
-        ReqInt: number
+          ToolMacLoadingOpsList: ToolLoadingItem[],
+          TotalRecords: number,
+          TotalPages: number,
+          ReqInt: number
         }
-    }
+      }
   }
 
-export interface ToolLoadingItem  {
+export interface ToolLoadingItem   {
     ToolSn: string,
-    MachineId: string,
-    MachineSpec: {
-      MachineSn: string,
-      MachineName: string
+    OpActions: number,
+    StockInfo: {
+      StorageNo: number
     },
-    OpActions: string,
-    AtcNo: number,
+    MachineLoading: {
+      MachineId: string,
+      AtcNo: number,
+      MachineSpec: {
+        MachineSn: string,
+        MachineName: string
+      }
+    },
+    UserInfo: {
+      AccountId: string,
+      UserAccount: string,
+      EmployeeId: string,
+      UserName: string
+    },
+    OperatorInfo: {
+      AccountId: string,
+      UserAccount: string,
+      EmployeeId: string,
+      UserName: string
+    },
     LogTime: string
-  }
+}

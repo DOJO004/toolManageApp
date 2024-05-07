@@ -9,7 +9,7 @@ export async function apiGetToolLoadingLogList(toolSn) {
     const formattedDate = today.toISOString().split("T")[0]; // 格式化為 YYYY-MM-DD
 
     const res = await apiInstance.get(
-      `tool_get/GetToolMacLoadingOpLogList?ToolSn=${toolSn}&OpActions=1&StartTime=2023-08-23&EndTime=${formattedDate}`
+      `http://10.45.34.126:8082/tool_get/GetStockToolTrackOpLogList?ToolSn=${toolSn}&StartTime=2023-08-23&EndTime=${formattedDate}`
     );
     return res;
   } catch (error) {

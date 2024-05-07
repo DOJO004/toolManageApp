@@ -2,14 +2,10 @@
 
 import { apiGetToolLoadingLogList } from "@/scripts/Apis/toolInfo/toolInfo";
 import { useEffect, useState } from "react";
-import {
-  GetToolInfoData,
-  GetToolLoadingLogResponse,
-  ToolLoadingItem,
-} from "./types";
+import { GetToolLoadingLogResponse, ToolLoadingItem } from "./types";
 
 interface ToolInfoLogProps {
-  toolInfoData: GetToolInfoData;
+  toolInfoData: any;
 }
 const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
   const [toolLogData, setToolLogData] = useState<ToolLoadingItem[]>([]);
@@ -26,6 +22,29 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
 
   const cleanToolLogData = () => {
     setToolLogData([]);
+  };
+
+  const setOpActionsText = (opActions: number) => {
+    switch (opActions) {
+      case 0:
+        return "入庫";
+      case 1:
+        return "重新入庫";
+      case 2:
+        return "出庫";
+      case 3:
+        return "修整";
+      case 4:
+        return "裝載";
+      case 5:
+        return "卸載";
+      case -99:
+        return "強制失敗";
+      case -1:
+        return "報廢";
+      default:
+        return "無法辨識此編號";
+    }
   };
 
   useEffect(() => {
@@ -48,9 +67,17 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
             {toolLogData?.length > 0 ? (
               toolLogData.map((item) => (
                 <tr key={item.LogTime}>
-                  <td>{item.MachineId}</td>
-                  <td>{item.OpActions}</td>
-                  <td>{item.AtcNo}</td>
+                  <td>
+                    {item.MachineLoading?.MachineId
+                      ? item.MachineLoading?.MachineId
+                      : " - "}
+                  </td>
+                  <td>{setOpActionsText(item.OpActions)}</td>
+                  <td>
+                    {item.MachineLoading?.AtcNo
+                      ? item.MachineLoading?.AtcNo
+                      : " - "}
+                  </td>
                   <td>{item.LogTime}</td>
                 </tr>
               ))

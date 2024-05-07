@@ -15,7 +15,7 @@ const PieChart = ({ toolInfoData }: PieChartProps) => {
           <h3 className="font-bold ">{toolInfoData?.ToolSn} </h3>
           <h4 className="mb-4 text-gray-300">{toolInfoData?.ToolSpecName}</h4>
         </div>
-        <div className="flex items-start">
+        <div title="修整次數 / 最大修整次數" className="flex items-start">
           <Image
             src={"/hammer.png"}
             alt="hammer"
@@ -23,7 +23,7 @@ const PieChart = ({ toolInfoData }: PieChartProps) => {
             height={20}
             className="mx-2"
           />
-          <div>2/7</div>
+          <p>{toolInfoData?.LifeData?.RepairCnt} / null</p>
         </div>
       </div>
       <div className="w-full h-full md:flex">

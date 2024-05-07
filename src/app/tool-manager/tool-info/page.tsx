@@ -5,7 +5,6 @@ import ToolInfoLog from "@/app/components/toolInfo/toolInfoLog";
 import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
 import { useEffect, useState } from "react";
 import {
-  GetToolInfoData,
   GetToolStockListResponse,
   ToolStockItem,
 } from "../../components/toolInfo/types";
@@ -19,22 +18,27 @@ export default function Page() {
   const getToolInfoList = async (count = 0) => {
     if (count === 3) {
       SweetAlert(-99, "請求失敗，請重新整理頁面。");
-    } else {
+    }
+    try {
       const data = await apiGetToolStockList();
       const res = data as GetToolStockListResponse;
+      const reqInt = res?.data?.Values?.ReqInt;
       console.log("get tool stock list", res);
 
-      if (res?.data?.Values?.ReqInt === 0) {
+      if (reqInt === 0) {
         setToolInfoList(res.data.Values.ToolStockList);
         setToolInfoData(res.data.Values.ToolStockList[0]);
         return res.data.Values.ToolStockList;
       } else {
-        getToolInfoList(count + 1);
+        throw new Error(`ReqInt = ${reqInt}`);
       }
+    } catch (error) {
+      console.error("Error", error);
+      getToolInfoList(count + 1);
     }
   };
 
-  const handleGetToolInfoData = (data: GetToolInfoData) => {
+  const handleGetToolInfoData = (data: any) => {
     console.log("get tool info data", data);
 
     setToolInfoData(data);
