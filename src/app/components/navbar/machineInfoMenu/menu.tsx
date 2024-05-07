@@ -5,6 +5,12 @@ interface MachineInfoMenuProps {
 const MachineInfoMenu = ({ setOpenMenu }: MachineInfoMenuProps) => {
   const menuItem = [
     {
+      src: "/overView.png",
+      alt: "overView",
+      name: "總覽",
+      path: "/tool-manager/machine-info/",
+    },
+    {
       src: "/productLine.png",
       alt: "productLineTypes",
       name: "產線類型",
@@ -21,12 +27,6 @@ const MachineInfoMenu = ({ setOpenMenu }: MachineInfoMenuProps) => {
       alt: "toolStocks",
       name: "設備規格",
       path: "/tool-manager/machine-info/machine-spec/",
-    },
-    {
-      src: "/overView.png",
-      alt: "overView",
-      name: "總覽",
-      path: "/tool-manager/machine-info/",
     },
   ];
   return (

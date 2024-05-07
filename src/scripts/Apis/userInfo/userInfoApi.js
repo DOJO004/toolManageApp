@@ -34,7 +34,7 @@ export const ApiPostUserInfo = async (data) => {
       DepartmentId: data.DepartmentId,
       EmployeeId: data.EmployeeId,
       EMailAddress: data.EMailAddress,
-      PermissionIds: ["Account", "Machine"],
+      PermissionIds: data.PermissionIds,
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),

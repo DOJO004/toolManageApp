@@ -22,7 +22,6 @@ const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
         <Link
           href={"/tool-manager/user-info"}
           className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
-          onClick={() => setOpenMenu(false)}
         >
           <Image
             src="/overView.png"
@@ -36,7 +35,6 @@ const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
         <Link
           href={"/tool-manager/user-info/department"}
           className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
-          onClick={() => setOpenMenu(false)}
         >
           <Image
             src="/department_icon.png"
@@ -48,9 +46,8 @@ const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
           <div className="hidden truncate md:block">部門資訊</div>
         </Link>
         <Link
-          href={"/tool-manager/user-info/police-info"}
+          href={"/tool-manager/user-info/permissions"}
           className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
-          onClick={() => setOpenMenu(false)}
         >
           <Image
             src="/police_icon.png"

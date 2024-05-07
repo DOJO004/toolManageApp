@@ -43,3 +43,23 @@ export interface EditUserInfo{
   EmployeeId: string,
   EMailAddress: string,
 }
+
+export interface NewUserInfo{
+  UserAccount: string,
+  Password: string,
+  UserName: string,
+  DepartmentId: string,
+  EmployeeId: string,
+  EMailAddress: string,
+  PermissionData: string[],
+}
+
+export interface NewUserResponse{
+  data: {
+    RC: string,
+    Values: {
+        ReqInt: number,
+        UnknownPermissionIds: string[]
+    }
+  },
+}

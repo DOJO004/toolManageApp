@@ -1,7 +1,7 @@
 import { apiInstance } from "../../userInfoApi";
 import { getLoginTime, getUserToken } from "../mainApi";
 
-export const apiGetPoliceInfoList = async () => {
+export const apiGetPermissionsInfoList = async () => {
   try {
     const res = await apiInstance.get("/account_get/GetPermissionInfoList");
     return res;
@@ -11,7 +11,7 @@ export const apiGetPoliceInfoList = async () => {
   }
 };
 
-export const apiNewPoliceInfo = async (data) => {
+export const apiNewPermissionsInfo = async (data) => {
   const body = {
     PermissionInfos: [
       {
@@ -34,7 +34,7 @@ export const apiNewPoliceInfo = async (data) => {
   }
 };
 
-export const apiEditPoliceInfo = async (data) => {
+export const apiEditPermissionsInfo = async (data) => {
   const body = {
     PermissionId: data.PermissionId,
     ModifyInfo: {
@@ -57,7 +57,7 @@ export const apiEditPoliceInfo = async (data) => {
   }
 };
 
-export const apiDeletePoliceInfo = async (data) => {
+export const apiDeletePermissionsInfo = async (data) => {
   const body = {
     PermissionId: data.PermissionId,
     UserToken: getUserToken(),

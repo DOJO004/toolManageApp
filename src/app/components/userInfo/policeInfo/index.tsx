@@ -1,13 +1,17 @@
 "use client";
 
 import {
-  apiDeletePoliceInfo,
-  apiEditPoliceInfo,
-  apiGetPoliceInfoList,
+  apiDeletePermissionsInfo,
+  apiEditPermissionsInfo,
+  apiGetPermissionsInfoList,
 } from "@/scripts/Apis/userInfo/policeApi";
 import { useEffect, useState } from "react";
 import NewPoliceInfo from "./new";
-import { EditPoliceItemInfo, PermissionMenuItem, PoliceInfoList } from "./type";
+import {
+  EditPermissionItemInfo,
+  PermissionInfoList,
+  PermissionMenuItem,
+} from "./type";
 
 export default function IndexPoliceInfo() {
   const [policeInfoList, setPoliceInfoList] = useState<PermissionMenuItem[]>(
@@ -16,29 +20,29 @@ export default function IndexPoliceInfo() {
   const [newPoliceMode, setNewPoliceMode] = useState(false);
   const [editPoliceMode, setEditPoliceMode] = useState(false);
   const [editPoliceIndex, setEditPoliceIndex] = useState<number>(-1);
-  const [editPoliceInfo, setEditPoliceInfo] = useState<EditPoliceItemInfo>({
+  const [editPoliceInfo, setEditPoliceInfo] = useState<EditPermissionItemInfo>({
     PermissionId: "",
     Name: "",
     PermissionType: 0,
   });
 
-  const getPoliceInfoList = async () => {
-    const data = await apiGetPoliceInfoList();
-    const res = data as PoliceInfoList;
+  const getPermissionsInfoList = async () => {
+    const data = await apiGetPermissionsInfoList();
+    const res = data as PermissionInfoList;
     if (res?.data?.Values?.ReqInt === 0) {
       setPoliceInfoList(res.data.Values.PermissionMenus);
     }
   };
 
-  const patchPoliceInfo = async () => {
-    const data = await apiEditPoliceInfo(editPoliceInfo);
+  const patchPermissionsInfo = async () => {
+    const data = await apiEditPermissionsInfo(editPoliceInfo);
     console.log(data);
   };
 
-  const deletePoliceInfo = async () => {
+  const deletePermissionsInfo = async () => {
     const confirm = window.confirm("確定要刪除嗎?");
     if (!confirm) return;
-    const data = await apiDeletePoliceInfo(editPoliceInfo);
+    const data = await apiDeletePermissionsInfo(editPoliceInfo);
     console.log(data);
   };
 
@@ -56,7 +60,7 @@ export default function IndexPoliceInfo() {
     setEditPoliceInfo({ ...editPoliceInfo, [key]: value });
   };
   useEffect(() => {
-    getPoliceInfoList();
+    getPermissionsInfoList();
   }, []);
 
   return (
@@ -104,8 +108,11 @@ export default function IndexPoliceInfo() {
                   </td>
                   <td> - </td>
                   <td>
-                    <button onClick={() => patchPoliceInfo()}>完成</button> /{" "}
-                    <button onClick={() => deletePoliceInfo()}>刪除</button>
+                    <button onClick={() => patchPermissionsInfo()}>完成</button>{" "}
+                    /{" "}
+                    <button onClick={() => deletePermissionsInfo()}>
+                      刪除
+                    </button>
                   </td>
                 </tr>
               ) : (

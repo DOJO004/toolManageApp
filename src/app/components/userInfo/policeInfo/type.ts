@@ -1,4 +1,4 @@
-export interface PoliceInfoList{
+export interface PermissionInfoList{
     data: {
         Values: {
             PermissionMenus: PermissionMenuItem [],
@@ -15,13 +15,13 @@ export interface PermissionMenuItem{
     PermissionType: number
 }
 
-export interface NewPoliceItemInfo {
+export interface NewPermissionItemInfo {
     PermissionId: string,
     Name: string,
     PermissionType: number
 }
   
-export interface EditPoliceItemInfo {
+export interface EditPermissionItemInfo {
     PermissionId: string,
     Name: string,
     PermissionType: number

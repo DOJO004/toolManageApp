@@ -11,9 +11,17 @@ export interface GetMachineStatusInfoListResponse{
 }
 
 export interface MachineStatusItem{
+  Department: {
+    Id: string,
+    Name: string
+  },
   MachineId: string,
   ProductLineData: {
     Id: string,
+    Department: {
+      Id: string,
+      Name: string
+    },
     Name: string
   },
   MacTypeData: {
@@ -28,6 +36,7 @@ export interface MachineStatusItem{
     MT: string
   },
   Status: string,
+  StatusKeepTime: number,
   Activation: number,
   ProcessTime: number,
   CurrentParameter: {

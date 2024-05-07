@@ -54,3 +54,7 @@ button {
 #swal2-select option{
   @apply  text-black
 }
+
+.MuiButtonBase-root {
+  @apply text-black !important
+}
