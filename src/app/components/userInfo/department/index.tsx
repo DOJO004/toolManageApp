@@ -82,7 +82,7 @@ export default function IndexDepartment() {
             <tr className="bg-indigo-500 ">
               <th className="p-1 whitespace-nowrap">部門 ID</th>
               <th className="p-1 whitespace-nowrap">部門 名稱</th>
-              <th className="p-1 whitespace-nowrap">最後修改</th>
+              <th className="p-1 whitespace-nowrap">最後更新</th>
               <th className="p-1 whitespace-nowrap">編輯</th>
             </tr>
           </thead>

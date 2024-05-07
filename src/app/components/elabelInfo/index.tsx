@@ -131,11 +131,11 @@ export default function ELabelInfoIndex() {
           <table className="w-full ">
             <thead>
               <tr className="p-1 bg-indigo-500">
-                <td className="p-1 ">LabelCode</td>
-                <td className="p-1 ">eLabelSN</td>
-                <td className="p-1 ">StationCode</td>
-                <td className="p-1 ">Status</td>
-                <td className="p-1 ">LastModify</td>
+                <td className="p-1 ">標籤號碼</td>
+                <td className="p-1 ">標籤 SN</td>
+                <td className="p-1 ">站號</td>
+                <td className="p-1 ">狀態 / 綁定刀具 SN</td>
+                <td className="p-1 ">最後更新</td>
                 <td className="p-1 ">編輯</td>
               </tr>
             </thead>

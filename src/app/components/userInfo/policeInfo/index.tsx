@@ -87,9 +87,7 @@ export default function IndexPoliceInfo() {
             <tr>
               <th className="p-1 bg-indigo-500 whitespace-nowrap">ID</th>
               <th className="p-1 bg-indigo-500 whitespace-nowrap">名稱</th>
-              <th className="p-1 bg-indigo-500 whitespace-nowrap">
-                最後更新時間
-              </th>
+              <th className="p-1 bg-indigo-500 whitespace-nowrap">最後更新</th>
               <th className="p-1 bg-indigo-500 whitespace-nowrap">編輯</th>
             </tr>
           </thead>

@@ -138,9 +138,7 @@ export default function UserInfoIndex() {
               <th className="p-1 bg-indigo-500 whitespace-nowrap">部門</th>
               <th className="p-1 bg-indigo-500 whitespace-nowrap">Email</th>
 
-              <th className="p-1 bg-indigo-500 whitespace-nowrap">
-                最後修改時間
-              </th>
+              <th className="p-1 bg-indigo-500 whitespace-nowrap">最後更新</th>
               <th className="p-1 bg-indigo-500 whitespace-nowrap">編輯</th>
             </tr>
           </thead>

@@ -206,7 +206,7 @@ const ToolStockIndex = () => {
                     <th className="p-1 ">刀具 SN</th>
                     <th className="p-1 ">狀態</th>
                     <th className="p-1 ">生命指數</th>
-                    <th className="p-1 ">最後修改時間</th>
+                    <th className="p-1 ">最後更新</th>
                     <th className="p-1 ">設備 SN</th>
                     <th className="p-1 ">所在位置</th>
                     <th className="p-1 ">領用人 / 歸還人</th>
