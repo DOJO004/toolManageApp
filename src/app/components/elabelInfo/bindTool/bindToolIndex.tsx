@@ -16,10 +16,11 @@ import {
 } from "../../toolInfo/toolStock/types";
 import { UserAccountItem, UserInfoList } from "../../userInfo/types";
 import { GetELabelListResponse } from "../types";
-import { BindToolDataItem } from "./types";
+import { BindToolDataItem, PostBindToolResponse } from "./types";
 
 export default function BindToolIndex() {
   const [bindToolData, setBindToolData] = useState<BindToolDataItem>({
+    ReceiptorId: "",
     LabelId: "",
     LabelSn: "",
     ToolSn: "",
@@ -93,8 +94,26 @@ export default function BindToolIndex() {
   };
   const postBindTool = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await apiBindELabelInfo(bindToolData);
-    console.log(res);
+    const data = await apiBindELabelInfo(bindToolData);
+    const res = data as PostBindToolResponse;
+    console.log("bind tool", res);
+    const reqInt = res.data.Values.ReqInt;
+    if (reqInt === 0) {
+      getELabelList();
+      getToolList();
+      cleanBindToolData();
+    } else {
+      SweetAlert(reqInt, "綁定失敗，請重新在試。");
+    }
+  };
+
+  const cleanBindToolData = () => {
+    setBindToolData({
+      ReceiptorId: "",
+      LabelId: "",
+      LabelSn: "",
+      ToolSn: "",
+    });
   };
 
   const filterUnbindLabel = (data: LabelItem[]) =>
@@ -176,8 +195,8 @@ export default function BindToolIndex() {
   }, []);
 
   return (
-    <div className="h-full p-2 overflow-auto bg-gray-900 rounded-xl">
-      <div className="p-2 my-4 bg-gray-700 rounded-md ">
+    <div className="relative p-2 ">
+      <div className="sticky p-2 my-4 bg-gray-700 rounded-md top-4 ">
         <h3 className="font-bold text-left ">領取刀具</h3>
         <form onSubmit={(e) => postBindTool(e)}>
           <div className="grid grid-cols-4 gap-2 ">
@@ -246,6 +265,10 @@ export default function BindToolIndex() {
                 list="userList"
                 placeholder="領取人"
                 className="w-full p-2 text-black rounded-md"
+                value={bindToolData.ReceiptorId}
+                onChange={(e) =>
+                  handleInputBindData("ReceiptorId", e.target.value)
+                }
               />
               <datalist id="userList">
                 {userList.map((item) => (
@@ -260,9 +283,9 @@ export default function BindToolIndex() {
         </form>
       </div>
       {/* label */}
-      <div className="flex h-full gap-4 ">
+      <div className="flex gap-4 ">
         <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md ">
-          <form className="mx-24 my-4" onSubmit={(e) => searchUnbindLabel(e)}>
+          <form className="w-full my-4" onSubmit={(e) => searchUnbindLabel(e)}>
             <h3 className="my-4">未綁定標籤</h3>
             <input
               type="search"
@@ -305,7 +328,7 @@ export default function BindToolIndex() {
         <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md">
           <h3 className="my-4">未綁定刀具</h3>
           <form
-            className="flex items-center justify-center gap-2 mx-24 my-4"
+            className="flex items-center justify-center w-full gap-2 my-4"
             onSubmit={(e) => searchUnbindTool(e)}
           >
             <input

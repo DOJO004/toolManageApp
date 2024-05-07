@@ -8,7 +8,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full p-2 md:flex">
       <Navbar />
-      <div className="flex justify-center w-full mx-2 ">{children}</div>
+      <div className="flex justify-center w-full max-h-screen overflow-auto mx2 ">
+        {children}
+      </div>
     </div>
   );
 };

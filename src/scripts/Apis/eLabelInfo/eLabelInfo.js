@@ -86,6 +86,7 @@ export async function apiDeleteELabel(eLabel) {
 // 綁定刀具
 export async function apiBindELabelInfo(data) {
   const body = {
+    ReceiptorId: data.ReceiptorId,
     LabelId: data.LabelId,
     LabelSn: data.LabelSn,
     ToolSn: data.ToolSn,
@@ -93,6 +94,7 @@ export async function apiBindELabelInfo(data) {
     LoginTime: getLoginTime(),
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
   };
+  console.log("body", body);
   try {
     const res = await apiInstance.post(
       "/user_operate/SelectLabelBindInfo",
