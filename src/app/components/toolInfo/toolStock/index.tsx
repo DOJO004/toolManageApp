@@ -131,7 +131,7 @@ const ToolStockIndex = () => {
   }, [selectToolStock]);
 
   return (
-    <div className="relative w-full h-screen p-2 mx-auto overflow-auto text-center rounded-xl">
+    <div className="relative w-full  p-2 mx-auto overflow-auto text-center rounded-xl">
       <div className="relative ">
         <h2 className="my-4">刀具庫存</h2>
         <button

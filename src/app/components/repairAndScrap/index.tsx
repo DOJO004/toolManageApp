@@ -22,7 +22,8 @@ export default function RepairAndScrapIndex() {
     console.log(res);
     if (res?.data?.Values?.ReqInt === 0) {
       const sortData = sortToolList(res.data.Values.ToolStockList);
-      setToolStockList(sortData);
+      const filterData = filterToolStatus(sortData);
+      setToolStockList(filterData);
       return res.data.Values.ToolStockList;
     }
   };
@@ -48,6 +49,12 @@ export default function RepairAndScrapIndex() {
     const res = await apiRestockTool(data);
     console.log("reStock", res);
     getToolStockList();
+  };
+
+  const filterToolStatus = (data: ToolStockListItem[]) => {
+    return data.filter(
+      (item) => item.LifeStatus === "Repairing" || item.LifeStatus === "Scrap"
+    );
   };
 
   const filterToolList = async (e: FormEvent) => {
@@ -122,7 +129,7 @@ export default function RepairAndScrapIndex() {
     getToolStockList();
   }, []);
   return (
-    <div className="h-screen overflow-auto text-center">
+    <div className=" overflow-auto text-center">
       <form className="my-4" onSubmit={(e) => filterToolList(e)}>
         <h3>修整 / 報廢</h3>
         <input
@@ -140,7 +147,7 @@ export default function RepairAndScrapIndex() {
               <th className="p-1 whitespace-nowrap">刀具序號</th>
               <th className="p-1 whitespace-nowrap">刀具名稱</th>
               <th className="p-1 whitespace-nowrap">生命指數</th>
-              <th className="p-1 whitespace-nowrap">目前狀態</th>
+              <th className="p-1 whitespace-nowrap">狀態</th>
               <th className="p-1 whitespace-nowrap">修整次數 / 最大修整次數</th>
               <th className="p-1 whitespace-nowrap">報廢 / 修整時間</th>
               <th className="p-1 whitespace-nowrap">報廢 / 修整人員</th>
