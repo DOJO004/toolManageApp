@@ -140,7 +140,7 @@ const ProductLineIndex = () => {
             departmentList={departmentList}
           />
         </div>
-        <div className="w-full mt-2 overflow-auto bg-gray-700 rounded-md">
+        <div className="w-full mt-2 overflow-auto bg-gray-900 rounded-md">
           <table className="w-full ">
             <thead>
               <tr className="bg-indigo-500 ">
@@ -169,20 +169,23 @@ const ProductLineIndex = () => {
                         />
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          list="editDepartmentList"
+                        <select
                           className="p-1 text-center text-black rounded-md"
                           value={editProductLine.DepartmentId}
                           onChange={(e) =>
                             handelSetEditData("DepartmentId", e.target.value)
                           }
-                        />
-                        <datalist id="editDepartmentList">
+                        >
                           {departmentList.map((item) => (
-                            <option key={item.Id} value={item.Id}></option>
+                            <option
+                              key={item.Id}
+                              value={item.Id}
+                              className="text-black"
+                            >
+                              {item.Name}
+                            </option>
                           ))}
-                        </datalist>
+                        </select>
                       </td>
                       <td>
                         <button

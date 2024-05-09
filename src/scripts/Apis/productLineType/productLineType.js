@@ -40,9 +40,7 @@ export async function apiEditProductLineType(productLineType) {
     Id: productLineType.Id,
     ModifyData: {
       Name: productLineType.Name,
-      Department: {
-        Id: productLineType.DepartmentId,
-      },
+      DepartmentId: productLineType.DepartmentId,
     },
   };
   console.log("edit product line body", body);

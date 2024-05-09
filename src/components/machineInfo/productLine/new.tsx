@@ -45,10 +45,10 @@ export default function NewProductLine({
     setNewProductLine((prev) => ({ ...prev, [key]: value }));
   };
   return (
-    <div className="relative p-4 bg-gray-700 rounded-xl">
+    <div className="relative p-4 bg-gray-900 rounded-xl">
       <h3 className="text-left ">新增產線類型</h3>
       <button
-        className="absolute top-0 right-0 p-2 rounded-full hover:bg-gray-900"
+        className="absolute top-0 right-0 p-2 m-2 rounded-full hover:bg-gray-700"
         onClick={() => setNewProductLineMode(false)}
       >
         X
@@ -85,22 +85,23 @@ export default function NewProductLine({
             <label htmlFor="department" className="absolute left-0 -top-6 ">
               負責部門
             </label>
-            <input
-              type="text"
+            <select
               id="department"
-              list="departmentList"
               className="w-full p-2 text-black rounded-md "
-              placeholder="負責部門"
               value={newProductLine.DepartmentId}
               onChange={(e) =>
                 handleNewProductLine("DepartmentId", e.target.value)
               }
-            />
-            <datalist id="departmentList">
+            >
+              <option value="" className="text-gray-500">
+                選擇部門
+              </option>
               {departmentList.map((item) => (
-                <option key={item.Id} value={item.Id}></option>
+                <option key={item.Id} value={item.Id} className="text-black">
+                  {item.Name}
+                </option>
               ))}
-            </datalist>
+            </select>
           </div>
         </div>
         <button className="w-full p-1 bg-indigo-500 rounded-md hover:bg-indigo-600">
