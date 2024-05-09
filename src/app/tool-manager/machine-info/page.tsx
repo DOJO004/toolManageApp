@@ -106,7 +106,8 @@ export default function Page() {
                 <th className="p-1 whitespace-nowrap">轉速/進給倍率</th>
                 <th className="p-1 whitespace-nowrap">運行狀態</th>
                 <th className="p-1 whitespace-nowrap">
-                  狀態持續時間 <span className="text-gray-300 ">min</span>
+                  狀態持續時間
+                  <span className="text-sm text-gray-300 "> min</span>
                 </th>
               </tr>
             </thead>
@@ -128,7 +129,11 @@ export default function Page() {
                       {item.CurrentParameter.SpindleRPM} /
                       {item.CurrentParameter.TotalFeedRate}
                     </td>
-                    <td className="p-1 whitespace-nowrap">{item.Status}</td>
+                    <td
+                      className={`p-1 whitespace-nowrap ${item.Status === "Disconnect" ? "text-gray-400" : ""}`}
+                    >
+                      {item.Status === "Disconnect" ? "離線" : item.Status}
+                    </td>
                     <td className="p-1 whitespace-nowrap">
                       {item.StatusKeepTime === -1
                         ? "connection failed"

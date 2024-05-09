@@ -19,6 +19,7 @@ export default function MachineLogInfo({
             <tr className="bg-indigo-500">
               <th className="p-1 whitespace-nowrap">Atc No</th>
               <th className="p-1 whitespace-nowrap">刀具序號</th>
+              <th className="p-1 whitespace-nowrap">使用中</th>
             </tr>
           </thead>
           <tbody>
@@ -26,6 +27,11 @@ export default function MachineLogInfo({
               <tr key={item.ToolSn}>
                 <td>{item.AtcNo}</td>
                 <td>{item.ToolSn}</td>
+                <td
+                  className={item.IsUsing ? "text-green-500" : "text-gray-400"}
+                >
+                  {item.IsUsing ? "是" : "否"}
+                </td>
               </tr>
             ))}
           </tbody>

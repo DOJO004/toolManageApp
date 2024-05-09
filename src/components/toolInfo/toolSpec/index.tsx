@@ -198,8 +198,12 @@ const ToolSpecIndex = () => {
                 <td className="p-1 whitespace-nowrap ">安全庫存</td>
                 <td className="p-1 whitespace-nowrap ">最大修整次數</td>
                 <td className="p-1 whitespace-nowrap ">最大加工次數</td>
-                <td className="p-1 whitespace-nowrap ">最大加工長度</td>
-                <td className="p-1 whitespace-nowrap ">最大加工時間</td>
+                <td className="p-1 whitespace-nowrap ">
+                  最大加工長度 <span className="text-xs">mm</span>
+                </td>
+                <td className="p-1 whitespace-nowrap ">
+                  最大加工時間 <span className="text-xs">sec</span>
+                </td>
                 <td className="p-1 whitespace-nowrap ">編輯</td>
               </tr>
             </thead>

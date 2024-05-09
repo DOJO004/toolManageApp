@@ -7,7 +7,16 @@ interface MachineInfoPieChartProps {
 export default function MachineInfoPieChart({
   selectMachineInfo,
 }: MachineInfoPieChartProps) {
-  const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${selectMachineInfo.ProcessTime}%, #B9E6B5 ${selectMachineInfo.ProcessTime}%, #B9E6B5)`;
+  console.log("selectMachineInfo", selectMachineInfo);
+  const machineActivation = (selectMachineInfo.Activation * 100).toFixed(2);
+  const processTimeInMs = selectMachineInfo.ProcessTime;
+  const hours = Math.floor(processTimeInMs / (1000 * 60 * 60));
+  const minutes = Math.floor(
+    (processTimeInMs % (1000 * 60 * 60)) / (1000 * 60)
+  );
+  const seconds = Math.floor((processTimeInMs % (1000 * 60)) / 1000);
+  const machineProcessTime = `${hours}:${minutes}:${seconds}`;
+  const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${machineActivation}%, #B9E6B5 ${machineActivation}%, #B9E6B5)`;
 
   return (
     <div className="w-full p-2 bg-gray-700 rounded-md">
@@ -36,7 +45,7 @@ export default function MachineInfoPieChart({
             >
               <div className="absolute w-16 h-16 -translate-x-1/2 -translate-y-1/2 bg-gray-700 rounded-full lg:w-32 lg:h-32 md:w-24 md:h-24 left-1/2 top-1/2">
                 <p className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                  {selectMachineInfo.ProcessTime}%
+                  {machineActivation}%
                 </p>
               </div>
             </div>
@@ -45,14 +54,16 @@ export default function MachineInfoPieChart({
             <div className="p-2 my-2 bg-gray-800 rounded-md">
               <div>總稼動時數(當日)</div>
               <hr className="my-1" />
-              <div>{selectMachineInfo.ProcessTime}</div>
+              <div>{machineProcessTime}</div>
             </div>
             <div className="p-2 my-2 bg-gray-800 rounded-md">
               <div>刀庫調用資訊</div>
               <hr className="my-1" />
               <div>AtcNo / ToolSN</div>
             </div>
-            <div className="w-full p-2 my-2 text-center bg-green-500 rounded-md">
+            <div
+              className={`w-full p-2 my-2 text-center rounded-md ${selectMachineInfo.Status === "Disconnect" ? "bg-gray-500" : "bg-green-500"}`}
+            >
               {selectMachineInfo.Status}
             </div>
           </div>
