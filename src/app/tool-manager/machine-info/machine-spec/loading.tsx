@@ -1,4 +1,4 @@
-import { MachineSpecSkeletons } from "@/app/components/skeletons";
+import { MachineSpecSkeletons } from "@/components/skeletons";
 
 export default function Loading() {
   return (

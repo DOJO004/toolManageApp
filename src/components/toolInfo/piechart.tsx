@@ -5,8 +5,18 @@ interface PieChartProps {
   toolInfoData: ToolStockItem;
 }
 const PieChart = ({ toolInfoData }: PieChartProps) => {
-  const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${toolInfoData.LifeData?.ProcessLength}%, #B9E6B5 ${toolInfoData.LifeData?.ProcessLength}%, #B9E6B5)`;
-  const gradientColorsInSide = `conic-gradient(#FACC15 0, #FACC15 ${toolInfoData.LifeData?.ProcessTime}%, #F5ECB5 ${toolInfoData.LifeData?.ProcessTime}%, #F5ECB5)`;
+  const processTimePercent =
+    (toolInfoData?.LifeData?.ProcessTime / toolInfoData?.MaxLife?.ProcessTime) *
+    100;
+  const processLengthPercent =
+    (toolInfoData?.LifeData?.ProcessLength /
+      toolInfoData?.MaxLife?.ProcessLength) *
+    100;
+  console.log("time percent = ", processTimePercent);
+  console.log("length percent = ", processLengthPercent);
+
+  const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${processLengthPercent}%, #B9E6B5 ${processLengthPercent}%, #B9E6B5)`;
+  const gradientColorsInSide = `conic-gradient(#FACC15 0, #FACC15 ${processTimePercent}%, #F5ECB5 ${processTimePercent}%, #F5ECB5)`;
 
   return (
     <div className="flex flex-col w-full p-2 mb-2 bg-gray-700 rounded-xl md:mr-4">
@@ -23,7 +33,10 @@ const PieChart = ({ toolInfoData }: PieChartProps) => {
             height={20}
             className="mx-2"
           />
-          <p>{toolInfoData?.LifeData?.RepairCnt} / null</p>
+          <p>
+            {toolInfoData?.LifeData?.RepairCnt} /{" "}
+            {toolInfoData?.MaxLife?.RepairCnt}
+          </p>
         </div>
       </div>
       <div className="w-full h-full md:flex">

@@ -4,7 +4,7 @@ import {
   apiEditToolType,
   apiGetToolTypeList,
 } from "@/scripts/Apis/toolType/toolTypeApi";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SweetAlert from "../../sweetAlert";
 import { NewToolType } from "./new";
 import {
@@ -26,20 +26,30 @@ export function ToolTypeIndex() {
 
   const getToolTypeList = async (count = 0) => {
     if (count === 3) {
-      SweetAlert(-99, "請求失敗，請重新整理頁面。");
-    } else {
-      const data = await apiGetToolTypeList();
-      const res = data as GetToolTypeListResponse;
-      console.log(`tool type list`, res);
-
-      if (res?.data?.Values?.ReqInt === 0) {
-        setToolTypeList(res.data.Values.ToolTypeMenus);
-        return res.data.Values.ToolTypeMenus;
-      } else {
-        getToolTypeList(count + 1);
-      }
+        SweetAlert(-99, "請求失敗，請重新整理頁面。");
+        return;
     }
-  };
+    try {
+        const data = await apiGetToolTypeList();
+        const res = data as GetToolTypeListResponse;
+        console.log(`tool type list`, res);
+
+        if (res?.data?.Values?.ReqInt === 0) {
+            setToolTypeList(res.data.Values.ToolTypeMenus);
+            return res.data.Values.ToolTypeMenus;
+        } else {
+            console.log(`ReqInt = ${res.data.Values.ReqInt}`);
+        }
+    } catch (error) {
+        console.error("Error", error);
+        console.log(count);
+        // 等待秒一後再次嘗試
+        setTimeout(() => {
+            getToolTypeList(count + 1);
+        }, 1000);
+    }
+};
+
 
   const patchEditToolType = async () => {
     const data = await apiEditToolType(editToolType);
@@ -147,18 +157,16 @@ export function ToolTypeIndex() {
           />
         </div>
         <div className="mx-auto overflow-auto bg-gray-800 rounded-md ">
-          <div className="grid grid-cols-4 gap-2 text-center bg-indigo-500 ">
+          <div className="grid grid-cols-3 gap-2 text-center bg-indigo-500 ">
             <p className="p-1 whitespace-nowrap">ID</p>
             <p className="p-1 whitespace-nowrap">名稱</p>
-            <p className="p-1 whitespace-nowrap">更新時間</p>
             <p className="p-1 whitespace-nowrap">編輯</p>
           </div>
-          <div className="grid grid-cols-4 text-center">
             {toolTypeList.length > 0 ? (
               // edit mode
               toolTypeList.map((item, index) =>
                 editToolTypeMode && index === editToolTypeModeIndex ? (
-                  <React.Fragment key={item.Id}>
+                  <div className="grid grid-cols-3 text-center" key={item.Id}>
                     <p className="p-1">{item.Id}</p>
                     <p className="p-1">
                       <input
@@ -174,7 +182,6 @@ export function ToolTypeIndex() {
                         }
                       />
                     </p>
-                    <p className="p-1">-</p>
                     <p className="p-1">
                       <span
                         className="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
@@ -190,26 +197,24 @@ export function ToolTypeIndex() {
                         刪除
                       </span>
                     </p>
-                  </React.Fragment>
+                  </div>
                 ) : (
                   // render data
-                  <React.Fragment key={item.Id} className=" hover:bg-gray-600">
+                  <div className="grid grid-cols-3 text-center" key={item.Id}>
                     <p className="p-1">{item.Id}</p>
                     <p className="p-1">{item.Name}</p>
-                    <p className="p-1"> last modify none...</p>
                     <p onClick={() => handleClickEditToolType(item, index)}>
                       <button className="p-1 rounded-md hover:bg-indigo-600 ">
                         編輯
                       </button>
                     </p>
-                  </React.Fragment>
+                  </div>
                 )
               )
             ) : (
               <div>no data...</div>
             )}
           </div>
-        </div>
       </div>
     </div>
   );

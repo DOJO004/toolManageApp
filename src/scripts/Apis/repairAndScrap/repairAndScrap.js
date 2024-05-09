@@ -44,6 +44,7 @@ export async function apiScrapTool(data) {
 // 送修完畢重新入庫
 export async function apiRestockTool(data) {
   const body = {
+    RevertorId: data.RevertorId,
     ToolSn: data.ToolSn,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),

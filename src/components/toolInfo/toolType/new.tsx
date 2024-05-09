@@ -36,8 +36,10 @@ export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
       SweetAlert(reqInt, "新增失敗");
     }
   };
+
   return (
     <div className="w-full p-2 bg-gray-800 rounded-md ">
+
       <h4 id="scrollTarget" className="my-4 font-bold text-left">
         新增刀具類型
       </h4>

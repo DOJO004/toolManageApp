@@ -1,6 +1,6 @@
 "use client";
 
-import RepairAndScrapIndex from "@/app/components/repairAndScrap";
+import RepairAndScrapIndex from "@/components/repairAndScrap";
 
 export default function Page() {
   return (

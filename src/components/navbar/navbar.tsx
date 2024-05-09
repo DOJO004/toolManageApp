@@ -38,7 +38,7 @@ const Navbar = () => {
         <ul className="flex items-center m-2 md:flex-col">
           <li
             onClick={() => handleNavbarMenu("dashboard")}
-            className="rounded-md bg-gray-50 hover:bg-gray-200"
+            className="w-full bg-gray-300 rounded-md hover:bg-gray-50"
           >
             <Link href="/tool-manager/dashboard" className="w-full">
               <Image

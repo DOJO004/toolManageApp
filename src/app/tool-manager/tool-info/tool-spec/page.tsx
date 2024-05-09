@@ -1,9 +1,5 @@
-import ToolSpecIndex from "@/app/components/toolInfo/toolSpec";
+import ToolSpecIndex from "@/components/toolInfo/toolSpec";
 
 export default function Page() {
-  return (
-    <div className="w-full  overflow-auto bg-gray-900 rounded-lg">
-      <ToolSpecIndex />
-    </div>
-  );
+  return <ToolSpecIndex />;
 }

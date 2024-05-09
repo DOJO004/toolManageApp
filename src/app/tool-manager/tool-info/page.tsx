@@ -1,13 +1,13 @@
 "use client";
-import SweetAlert from "@/app/components/sweetAlert";
-import PieChart from "@/app/components/toolInfo/piechart";
-import ToolInfoLog from "@/app/components/toolInfo/toolInfoLog";
+import SweetAlert from "@/components/sweetAlert";
+import PieChart from "@/components/toolInfo/piechart";
+import ToolInfoLog from "@/components/toolInfo/toolInfoLog";
 import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
 import { useEffect, useState } from "react";
 import {
   GetToolStockListResponse,
   ToolStockItem,
-} from "../../components/toolInfo/types";
+} from "../../../components/toolInfo/types";
 
 export default function Page() {
   const [toolInfoList, setToolInfoList] = useState<ToolStockItem[]>([]);
@@ -18,6 +18,7 @@ export default function Page() {
   const getToolInfoList = async (count = 0) => {
     if (count === 3) {
       SweetAlert(-99, "請求失敗，請重新整理頁面。");
+      return;
     }
     try {
       const data = await apiGetToolStockList();
@@ -30,7 +31,7 @@ export default function Page() {
         setToolInfoData(res.data.Values.ToolStockList[0]);
         return res.data.Values.ToolStockList;
       } else {
-        throw new Error(`ReqInt = ${reqInt}`);
+        console.log(`ReqInt = ${reqInt}`);
       }
     } catch (error) {
       console.error("Error", error);
@@ -108,12 +109,12 @@ export default function Page() {
     getToolInfoList();
   }, []);
   return (
-    <div className="w-full h-full p-2 bg-gray-900 rounded-lg ">
-      <div className="flex flex-col w-full md:flex-row">
+    <div className="w-full p-2 bg-gray-900 rounded-lg ">
+      <div className="sticky top-0 flex flex-col w-full bg-gray-900 md:flex-row">
         <PieChart toolInfoData={toolInfoData} />
         <ToolInfoLog toolInfoData={toolInfoData} />
       </div>
-      <div className="p-2 overflow-auto text-center bg-gray-700 rounded-md">
+      <div className="h-full p-2 overflow-auto text-center bg-gray-700 rounded-md">
         <div className="my-4">
           <h3 className="my-4">刀具狀態列表</h3>
           <input

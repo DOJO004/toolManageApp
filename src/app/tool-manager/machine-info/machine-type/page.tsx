@@ -1,6 +1,6 @@
 "use client";
 
-import MachineTypeIndex from "@/app/components/machineInfo/machineType";
+import MachineTypeIndex from "@/components/machineInfo/machineType";
 
 export default function Page() {
   return (

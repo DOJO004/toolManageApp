@@ -3,7 +3,9 @@ import { getLoginTime, getUserToken } from "../mainApi";
 
 export async function apiGetToolStockList() {
   try {
-    const res = await apiInstance.get("tool_get/GetToolStockInfoList");
+    const res = await apiInstance.get(
+      "tool_get/GetToolStockInfoList?RecordsPerPage=999"
+    );
     return res;
   } catch (error) {
     console.error("Error", error);

@@ -3,8 +3,8 @@
 import { fakeData } from "@/scripts/Apis/receiveTool/fakeReceiveData";
 import { useEffect, useState } from "react";
 
-import { LabelBindItem } from "@/app/components/returnTool/types";
-import SweetAlert, { SweetAlertSelect } from "@/app/components/sweetAlert";
+import { LabelBindItem } from "@/components/returnTool/types";
+import SweetAlert, { SweetAlertSelect } from "@/components/sweetAlert";
 import { apiGetBindLabelList } from "@/scripts/Apis/receiveTool/receiveTool";
 import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
 export default function Page() {

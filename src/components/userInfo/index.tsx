@@ -26,6 +26,7 @@ export default function UserInfoIndex() {
   const getUserInfoList = async (count = 1) => {
     if (count >= 3) {
       SweetAlert(-99, "請求失敗。");
+      return
     }
     try {
       const data = await ApiGetUserInfoList();
@@ -36,11 +37,11 @@ export default function UserInfoIndex() {
       if (reqInt === 0) {
         setUserInfoList(res.data.Values.UserAccountList);
       } else {
-        throw new Error(`ReqInt = ${reqInt}`);
+        console.log(`ReqInt = ${reqInt}`);
       }
     } catch (error) {
-      getUserInfoList(count + 1);
       console.error("Error", error);
+      getUserInfoList(count + 1);
     }
   };
 

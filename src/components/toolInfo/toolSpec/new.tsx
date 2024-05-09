@@ -92,9 +92,13 @@ export function NewToolSpec({
   }, []);
 
   return (
-    <div className="p-2 my-2 bg-gray-700 rounded-md">
+    <div className="p-2 bg-gray-900 rounded-md">
       <div className="relative ">
-        <h3 className="font-bold text-left ">新增刀具規格</h3>
+        <div className="flex items-end gap-2">
+          <h3 className="font-bold text-left ">新增刀具規格</h3>
+          <p className="text-sm text-gray-400 ">長度單位: mm</p>
+          <p className="text-sm text-gray-400 ">時間單位: sec</p>
+        </div>
         <button
           className="absolute top-0 right-0 p-2 rounded-full hover:bg-gray-900"
           onClick={() => setNewToolSpecMode(false)}
@@ -103,7 +107,7 @@ export function NewToolSpec({
         </button>
       </div>
       <form onSubmit={(e) => postNewToolSpec(e)}>
-        <div className="grid items-end grid-cols-12 gap-2 mx-auto">
+        <div className="flex gap-2 mx-auto my-4 overflow-auto text-center whitespace-nowrap">
           <div className="">
             <label htmlFor="ID" className="block">
               刀具類型
@@ -111,7 +115,7 @@ export function NewToolSpec({
             <select
               id="ID"
               value={toolSpec.ToolTypeData.Id}
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-black rounded-md min-w-24"
               onChange={(e) =>
                 setToolSpec((prev) => ({
                   ...prev,
@@ -134,7 +138,7 @@ export function NewToolSpec({
             <input
               id="ID"
               type="text"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               placeholder="刀具規格 ID"
               value={toolSpec.ToolSpecId}
               onChange={(e) => handelSetToolSpec("ToolSpecId", e.target.value)}
@@ -147,7 +151,7 @@ export function NewToolSpec({
             <input
               id="Name"
               type="text"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               placeholder="刀具規格名稱"
               value={toolSpec.Name}
               onChange={(e) => handelSetToolSpec("Name", e.target.value)}
@@ -161,7 +165,7 @@ export function NewToolSpec({
             <input
               id="Φ"
               type="number"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               value={toolSpec.SpecData.BladeDiameter}
               onChange={(e) =>
                 setToolSpec((prev) => ({
@@ -181,7 +185,7 @@ export function NewToolSpec({
             <input
               id="height"
               type="number"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               value={toolSpec.SpecData.BladeHeight}
               onChange={(e) =>
                 setToolSpec((prev) => ({
@@ -201,7 +205,7 @@ export function NewToolSpec({
             <input
               id="totalLength"
               type="number"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               value={toolSpec.SpecData.TotalLength}
               onChange={(e) =>
                 setToolSpec((prev) => ({
@@ -221,7 +225,7 @@ export function NewToolSpec({
             <input
               id="手柄Φ"
               type="number"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               value={toolSpec.SpecData.HandleDiameter}
               onChange={(e) =>
                 setToolSpec((prev) => ({
@@ -241,7 +245,7 @@ export function NewToolSpec({
             <input
               id="safetyStock"
               type="text"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               value={toolSpec.SafetyStock}
               onChange={(e) => handelSetToolSpec("SafetyStock", e.target.value)}
             />
@@ -254,7 +258,7 @@ export function NewToolSpec({
             <input
               id="RepairCnt"
               type="number"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               value={toolSpec.MaxLife.RepairCnt}
               onChange={(e) =>
                 setToolSpec((prev) => ({
@@ -274,7 +278,7 @@ export function NewToolSpec({
             <input
               id="ProcessCnt"
               type="number"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               value={toolSpec.MaxLife.ProcessCnt}
               onChange={(e) =>
                 setToolSpec((prev) => ({
@@ -294,7 +298,7 @@ export function NewToolSpec({
             <input
               id="ProcessLength"
               type="number"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               value={toolSpec.MaxLife.ProcessLength}
               onChange={(e) =>
                 setToolSpec((prev) => ({
@@ -314,7 +318,7 @@ export function NewToolSpec({
             <input
               id="ProcessTime"
               type="number"
-              className="w-full text-center text-black rounded-md "
+              className="w-full text-center text-black rounded-md min-w-24 "
               value={toolSpec.MaxLife.ProcessTime}
               onChange={(e) =>
                 setToolSpec((prev) => ({
