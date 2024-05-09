@@ -39,11 +39,11 @@ export default function NewMachineType({
     setNewMachineType((prev) => ({ ...prev, [key]: value }));
   };
   return (
-    <div className="p-4 my-4 bg-gray-700 rounded-md">
+    <div className="p-4 my-4 bg-gray-900 rounded-md">
       <div className="relative ">
         <h3 className="font-bold text-left ">新增設備類型</h3>
         <button
-          className="absolute top-0 right-0 p-2 rounded-full hover:bg-gray-900"
+          className="absolute top-0 right-0 p-2 m-2 rounded-full hover:bg-gray-700"
           onClick={() => setNewMachineTypeMode(false)}
         >
           X
@@ -59,7 +59,7 @@ export default function NewMachineType({
               type="text"
               id="Id"
               placeholder="設備 ID"
-              className="w-full p-1 text-center text-black rounded-md"
+              className="w-full p-2 text-center text-black rounded-md"
               value={newMachineType.Id}
               onChange={(e) => handleNewMachineType("Id", e.target.value)}
             />
@@ -72,7 +72,7 @@ export default function NewMachineType({
               type="text"
               id="Name"
               placeholder="設備名稱"
-              className="w-full p-1 text-center text-black rounded-md"
+              className="w-full p-2 text-center text-black rounded-md"
               value={newMachineType.Name}
               onChange={(e) => handleNewMachineType("Name", e.target.value)}
             />

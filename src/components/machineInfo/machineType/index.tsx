@@ -87,7 +87,7 @@ const MachineTypeIndex = () => {
     getMachineTypeList();
   }, []);
   return (
-    <div className="flex p-4 text-center ">
+    <div className="flex w-full p-4 text-center ">
       <div className="w-full mx-4">
         <div className="relative">
           <button
@@ -117,7 +117,7 @@ const MachineTypeIndex = () => {
             setNewMachineTypeMode={setNewMachineTypeMode}
           />
         </div>
-        <div className="mt-2 overflow-auto bg-gray-700 rounded-t-xl">
+        <div className="mt-2 overflow-hidden bg-gray-900 rounded-md">
           <table className="w-full">
             <thead>
               <tr className="bg-indigo-500 ">
