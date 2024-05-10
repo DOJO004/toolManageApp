@@ -117,11 +117,15 @@ export default function Page() {
   const patchToolSpec = async () => {
     const data = await apiEditToolSpec(editToolSpec);
     const res = data as PatchToolSpecResponse;
+    const reqInt = res.data?.Values?.ReqInt;
+
     console.log("patch tool spec", res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
+    if (reqInt === 0) {
       setEditToolSpecMode(false);
       getToolSpecList();
+    } else {
+      console.log(reqInt);
     }
   };
 

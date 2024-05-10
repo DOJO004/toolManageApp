@@ -3,8 +3,9 @@ import { ToolStockItem } from "./types";
 
 interface PieChartProps {
   toolInfoData: ToolStockItem;
+  formatTime: (time: number) => string;
 }
-const PieChart = ({ toolInfoData }: PieChartProps) => {
+const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
   const processTimePercent =
     (toolInfoData?.LifeData?.ProcessTime / toolInfoData?.MaxLife?.ProcessTime) *
     100;
@@ -12,9 +13,6 @@ const PieChart = ({ toolInfoData }: PieChartProps) => {
     (toolInfoData?.LifeData?.ProcessLength /
       toolInfoData?.MaxLife?.ProcessLength) *
     100;
-  console.log("time percent = ", processTimePercent);
-  console.log("length percent = ", processLengthPercent);
-
   const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${processLengthPercent}%, #B9E6B5 ${processLengthPercent}%, #B9E6B5)`;
   const gradientColorsInSide = `conic-gradient(#FACC15 0, #FACC15 ${processTimePercent}%, #F5ECB5 ${processTimePercent}%, #F5ECB5)`;
 
@@ -55,16 +53,16 @@ const PieChart = ({ toolInfoData }: PieChartProps) => {
         </div>
         <div className="flex justify-center md:mt-4 lg:mt-12 xl:mt-16 md:block">
           <div className="flex items-center mx-2">
-            <h4 className="my-2 border-l-4 border-green-600 md:whitespace-nowrap">
+            <p className="my-2 border-l-4 border-green-600 md:whitespace-nowrap">
               累積加工長度：
-            </h4>
-            <h4>{toolInfoData?.LifeData?.ProcessLength}</h4>
+            </p>
+            <h4>{toolInfoData?.LifeData?.ProcessLength / 10}</h4>
           </div>
           <div className="flex items-center mx-2">
-            <h4 className="my-2 border-l-4 border-yellow-600 md:whitespace-nowrap">
+            <p className="my-2 border-l-4 border-yellow-600 md:whitespace-nowrap">
               累積加工時間：
-            </h4>
-            <h4>{toolInfoData?.LifeData?.ProcessTime}</h4>
+            </p>
+            <h4>{formatTime(toolInfoData?.LifeData?.ProcessTime)}</h4>
           </div>
         </div>
       </div>

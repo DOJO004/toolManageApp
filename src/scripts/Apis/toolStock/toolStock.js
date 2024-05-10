@@ -15,6 +15,7 @@ export async function apiGetToolStockList() {
 
 export async function apiNewToolStock(toolStock) {
   const body = {
+    StorageId: toolStock.StorageId,
     ToolStockInfos: [
       {
         ToolSpecId: toolStock.ToolSpecId,
@@ -25,6 +26,7 @@ export async function apiNewToolStock(toolStock) {
     LoginTime: getLoginTime(),
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
   };
+  console.log("new tool stock body", body);
   try {
     const res = await apiInstance.post("user_operate/AddToolStockInfo", body);
     return res;

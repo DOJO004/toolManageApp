@@ -1,82 +1,26 @@
-"use client";
+import { StorageItem } from "@/components/storage/types";
+import React, { FormEvent } from "react";
+import { ToolSpecItem } from "../toolSpec/types";
+import { NewToolStockItem } from "./types";
 
-import {
-  GetStorageListResponse,
-  StorageItem,
-} from "@/components/storage/types";
-import { apiGetStorageList } from "@/scripts/Apis/storage/storageApi";
-import { apiGetToolSpecList } from "@/scripts/Apis/toolSpec/toolSpecApi";
-import { apiNewToolStock } from "@/scripts/Apis/toolStock/toolStock";
-import React, { FormEvent, useEffect, useState } from "react";
-import { GetToolSpecListResponse, ToolSpecItem } from "../toolSpec/types";
-import { PostToolStockResponse } from "./types";
-
-interface NewToolStockProps {
+interface Props {
   getToolStockList: () => void;
   setNewToolStockMode: React.Dispatch<React.SetStateAction<boolean>>;
+  postToolStock: (e: FormEvent) => void;
+  toolStock: NewToolStockItem;
+  toolSpecList: ToolSpecItem[];
+  handleToolStock: (key: string, value: string | number) => void;
+  storageList: StorageItem[];
 }
 export default function NewToolStock({
   getToolStockList,
   setNewToolStockMode,
-}: NewToolStockProps) {
-  const [toolSpecList, setToolSpecList] = useState<ToolSpecItem[]>([]);
-  const [toolStock, setToolStock] = useState({
-    ToolSpecId: "",
-    Qty: 0,
-  });
-
-  const [storageList, setStorageList] = useState<StorageItem[]>([]);
-
-  const getToolSpecList = async () => {
-    const data = await apiGetToolSpecList();
-    const res = data as GetToolSpecListResponse;
-    console.log("tool spec list ", res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolSpecList(res.data.Values.ToolSpecList);
-    }
-  };
-
-  const getStorageList = async () => {
-    const data = await apiGetStorageList();
-    const res = data as GetStorageListResponse;
-    const reqInt = res.data.Values.ReqInt;
-    console.log("storage list ", res);
-
-    if (reqInt === 0) {
-      setStorageList(res.data.Values.StorageMenus);
-    }
-  };
-
-  const postToolStock = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await apiNewToolStock(toolStock);
-    const res = data as PostToolStockResponse;
-    console.log(res);
-    if (res?.data?.Values?.ReqInt === 0) {
-      getToolStockList();
-      cleanNewToolStock();
-    }
-  };
-
-  const cleanNewToolStock = () => {
-    setToolStock({
-      ToolSpecId: "",
-      Qty: 0,
-    });
-  };
-  const handleToolStock = (name: string, value: number | string) => {
-    setToolStock({
-      ...toolStock,
-      [name]: value,
-    });
-  };
-
-  useEffect(() => {
-    getToolSpecList();
-    getStorageList();
-  }, []);
-
+  postToolStock,
+  toolStock,
+  toolSpecList,
+  handleToolStock,
+  storageList,
+}: Props) {
   return (
     <div className="w-full p-4 bg-gray-700 rounded-md">
       <div className="relative ">
@@ -131,6 +75,8 @@ export default function NewToolStock({
             <select
               id="StorageId"
               className="w-full p-2 text-center text-black rounded-md"
+              value={toolStock.StorageId}
+              onChange={(e) => handleToolStock("StorageId", e.target.value)}
             >
               <option value="">選擇倉儲</option>
               {storageList.map((item) => (

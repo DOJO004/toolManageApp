@@ -105,13 +105,22 @@ export default function Page() {
     }
   };
 
+  const formatTime = (milliseconds: number): string => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  };
+
   useEffect(() => {
     getToolInfoList();
   }, []);
   return (
     <div className="w-full h-full p-2 bg-gray-900 rounded-lg ">
       <div className="sticky top-0 flex flex-col w-full bg-gray-900 md:flex-row">
-        <PieChart toolInfoData={toolInfoData} />
+        <PieChart toolInfoData={toolInfoData} formatTime={formatTime} />
         <ToolInfoLog toolInfoData={toolInfoData} />
       </div>
       <div className="p-2 overflow-auto text-center bg-gray-700 rounded-md ">
@@ -130,7 +139,9 @@ export default function Page() {
               <th className="p-1 whitespace-nowrap">刀具序號</th>
               <th className="p-1 whitespace-nowrap">狀態/修整次數</th>
               <th className="p-1 whitespace-nowrap">裝載狀態/設備</th>
-              <th className="p-1 whitespace-nowrap">累積加工長度</th>
+              <th className="p-1 whitespace-nowrap" title="公分表示">
+                累積加工長度 <span className="text-sm text-gray-300">cm</span>
+              </th>
               <th className="p-1 whitespace-nowrap">累積加工時間</th>
               <th className="p-1 whitespace-nowrap">累積加工次數</th>
             </tr>
@@ -158,10 +169,10 @@ export default function Page() {
                       : "未裝載"}
                   </td>
                   <td className="p-1 whitespace-nowrap">
-                    {item.LifeData.ProcessLength}
+                    {item.LifeData.ProcessLength / 10}
                   </td>
                   <td className="p-1 whitespace-nowrap">
-                    {item.LifeData.ProcessTime}
+                    {formatTime(item.LifeData.ProcessTime)}
                   </td>
                   <td className="p-1 whitespace-nowrap">
                     {item.LifeData.ProcessCnt}

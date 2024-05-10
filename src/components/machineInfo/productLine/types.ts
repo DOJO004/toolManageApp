@@ -1,37 +1,47 @@
-
-export interface GetProductLineListResponse{
-   data: {
+export interface GetProductLineListResponse {
+  data: {
     Values: {
-        ProductLineList: ProductLineItem[],
-        TotalRecords: number,
-        ReqInt: number
-    }
-},
+      ProductLineList: ProductLineItem[];
+      TotalRecords: number;
+      ReqInt: number;
+    };
+  };
 }
 
-export interface ProductLineItem{
-    Id: string,
-    Name: string
-    Department: {
-        Id: string,
-        Name: string
-      },
+export interface ProductLineItem {
+  Id: string;
+  Name: string;
+  Department: {
+    Id: string;
+    Name: string;
+  };
 }
 
-interface BaseResponse{
-    RC: string,
-    Values: {
-        ReqInt: number
-    }
+export interface NewProductLineItem {
+  Id: string;
+  Name: string;
+  DepartmentId: string;
 }
-export interface PostProductLineResponse{
-    data:BaseResponse
-}
-
-export interface PatchProductLineResponse{
-    data:BaseResponse
+export interface EditProductLineItem {
+  Id: string;
+  Name: string;
+  DepartmentId: string;
 }
 
-export interface DeleteProductLineResponse{
-    data:BaseResponse
+interface BaseResponse {
+  RC: string;
+  Values: {
+    ReqInt: number;
+  };
+}
+export interface PostProductLineResponse {
+  data: BaseResponse;
+}
+
+export interface PatchProductLineResponse {
+  data: BaseResponse;
+}
+
+export interface DeleteProductLineResponse {
+  data: BaseResponse;
 }

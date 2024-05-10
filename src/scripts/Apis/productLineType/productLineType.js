@@ -16,9 +16,7 @@ export async function apiNewProductLineType(productLineType) {
       {
         Id: productLineType.Id,
         Name: productLineType.Name,
-        Department: {
-          Id: productLineType.DepartmentId,
-        },
+        DepartmentId: productLineType.DepartmentId,
       },
     ],
   };

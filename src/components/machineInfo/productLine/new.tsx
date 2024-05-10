@@ -1,49 +1,24 @@
-"use client";
-
-import { apiNewProductLineType } from "@/scripts/Apis/productLineType/productLineType";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { DepartmentItem } from "../../userInfo/department/type";
-import { PostProductLineResponse } from "./types";
+import { NewProductLineItem } from "./types";
 
-interface NewProductLineProps {
+interface Props {
   getProductLineList: () => void;
   setNewProductLineMode: React.Dispatch<React.SetStateAction<boolean>>;
   departmentList: DepartmentItem[];
+  postProductLine: (e: FormEvent) => void;
+  newProductLine: NewProductLineItem;
+  handleNewProductLine: (key: string, value: string) => void;
 }
 
 export default function NewProductLine({
   getProductLineList,
   setNewProductLineMode,
   departmentList,
-}: NewProductLineProps) {
-  const [newProductLine, setNewProductLine] = useState({
-    Id: "",
-    Name: "",
-    DepartmentId: "",
-  });
-
-  const postProductLine = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await apiNewProductLineType(newProductLine);
-    const res = data as PostProductLineResponse;
-    console.log("post product line", res);
-    if (res?.data?.Values?.ReqInt === 0) {
-      getProductLineList();
-      cleanProductLine();
-    }
-  };
-
-  const cleanProductLine = () => {
-    setNewProductLine({
-      Id: "",
-      Name: "",
-      DepartmentId: "",
-    });
-  };
-
-  const handleNewProductLine = (key: string, value: string) => {
-    setNewProductLine((prev) => ({ ...prev, [key]: value }));
-  };
+  postProductLine,
+  newProductLine,
+  handleNewProductLine,
+}: Props) {
   return (
     <div className="relative p-4 bg-gray-900 rounded-xl">
       <h3 className="text-left ">新增產線類型</h3>
