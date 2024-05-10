@@ -13,11 +13,14 @@ export async function apiGetBindLabelList() {
 
 export async function apiDeleteBindLabel(data) {
   const body = {
+    RevertorId: data.RevertorId,
     LToolCode: data.LToolCode,
+    StorageId: data.StorageId,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
   };
+  console.log("delete bind label body", body);
   try {
     const res = await apiInstance.post(
       "/user_operate/DisableLabelBindInfo",

@@ -26,7 +26,7 @@ export default function UserInfoIndex() {
   const getUserInfoList = async (count = 1) => {
     if (count >= 3) {
       SweetAlert(-99, "請求失敗。");
-      return
+      return;
     }
     try {
       const data = await ApiGetUserInfoList();
@@ -128,7 +128,7 @@ export default function UserInfoIndex() {
           getUserInfoList={getUserInfoList}
         />
       </div>
-      <div className="w-full overflow-auto bg-gray-500 rounded-md ">
+      <div className="w-full overflow-auto bg-gray-900 rounded-md ">
         <table className="w-full">
           <thead>
             <tr>
@@ -227,7 +227,10 @@ export default function UserInfoIndex() {
                     <td className="p-1 whitespace-nowrap">{item.EMail}</td>
                     <td className="p-1 whitespace-nowrap">{item.LastModify}</td>
                     <td className="p-1 whitespace-nowrap">
-                      <button onClick={() => handleEditUser(item, index)}>
+                      <button
+                        onClick={() => handleEditUser(item, index)}
+                        className="p-1 rounded-md hover:bg-indigo-500"
+                      >
                         編輯
                       </button>
                     </td>

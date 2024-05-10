@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  GetStorageListResponse,
+  StorageItem,
+} from "@/components/storage/types";
+import { apiGetStorageList } from "@/scripts/Apis/storage/storageApi";
 import { apiGetToolSpecList } from "@/scripts/Apis/toolSpec/toolSpecApi";
 import { apiNewToolStock } from "@/scripts/Apis/toolStock/toolStock";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -20,6 +25,8 @@ export default function NewToolStock({
     Qty: 0,
   });
 
+  const [storageList, setStorageList] = useState<StorageItem[]>([]);
+
   const getToolSpecList = async () => {
     const data = await apiGetToolSpecList();
     const res = data as GetToolSpecListResponse;
@@ -27,6 +34,17 @@ export default function NewToolStock({
 
     if (res?.data?.Values?.ReqInt === 0) {
       setToolSpecList(res.data.Values.ToolSpecList);
+    }
+  };
+
+  const getStorageList = async () => {
+    const data = await apiGetStorageList();
+    const res = data as GetStorageListResponse;
+    const reqInt = res.data.Values.ReqInt;
+    console.log("storage list ", res);
+
+    if (reqInt === 0) {
+      setStorageList(res.data.Values.StorageMenus);
     }
   };
 
@@ -56,6 +74,7 @@ export default function NewToolStock({
 
   useEffect(() => {
     getToolSpecList();
+    getStorageList();
   }, []);
 
   return (
@@ -70,8 +89,8 @@ export default function NewToolStock({
         </button>
       </div>
       <form onSubmit={(e) => postToolStock(e)}>
-        <div className="grid items-end grid-cols-2 gap-2">
-          <div>
+        <div className="flex items-center gap-2">
+          <div className="w-full">
             <label htmlFor="ToolSpecId" className="block text-left">
               刀具規格名稱
             </label>
@@ -95,7 +114,7 @@ export default function NewToolStock({
               ))}
             </select>
           </div>
-          <div>
+          <div className="w-full">
             <label htmlFor="Qty" className="block text-left">
               數量
             </label>
@@ -106,6 +125,24 @@ export default function NewToolStock({
               className="w-full p-1 text-center text-black rounded-md"
               onChange={(e) => handleToolStock("Qty", e.target.value)}
             />
+          </div>
+          <div className="w-full">
+            <label htmlFor="StorageId">倉儲</label>
+            <select
+              id="StorageId"
+              className="w-full p-2 text-center text-black rounded-md"
+            >
+              <option value="">選擇倉儲</option>
+              {storageList.map((item) => (
+                <option
+                  value={item.StorageId}
+                  key={item.StorageId}
+                  className="text-black"
+                >
+                  {item.Name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <button className="w-full p-1 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">

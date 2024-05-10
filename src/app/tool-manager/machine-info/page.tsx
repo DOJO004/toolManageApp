@@ -70,7 +70,7 @@ export default function Page() {
     getMachineInfoList();
   }, []);
   return (
-    <div className="w-full p-2 bg-gray-900 rounded-xl">
+    <div className="w-full p-2 my-2 bg-gray-900 rounded-xl">
       <div className="gap-4 md:flex">
         <MachineInfoPieChart selectMachineInfo={selectMachineInfo} />
         <MachineLogInfo selectMachineInfo={selectMachineInfo} />

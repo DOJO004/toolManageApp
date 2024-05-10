@@ -127,7 +127,7 @@ export default function ELabelInfoIndex() {
             getELabelList={getELabelList}
           />
         </div>
-        <div className="p-4 mt-2 overflow-auto bg-gray-700 rounded-xl">
+        <div className="p-4 mt-2 overflow-auto bg-gray-900 rounded-xl">
           <table className="w-full ">
             <thead>
               <tr className="p-1 bg-indigo-500">

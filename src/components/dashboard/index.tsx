@@ -11,8 +11,7 @@ export default function DashboardIndex() {
   const [machineInfoList, setMachineInfoList] = useState<MachineStatusItem[]>(
     []
   );
-  const chartColor =
-    "conic-gradient(from 0deg at 50% 50%, #2bfc4e 0deg 50deg, gray 50deg 360deg)";
+  const chartColor = `conic-gradient(from 0deg at 50% 50%, #2bfc4e 0deg 50deg, gray 50deg 360deg)`;
 
   const getMachineInfoList = async () => {
     const data = await apiGetMachineStatusList();
@@ -76,10 +75,10 @@ export default function DashboardIndex() {
                       <div className="w-16 h-16 bg-gray-900 rounded-full md:w-24 md:h-24"></div>
                     </div>
                     <div className="p-2 mx-auto bg-green-500 border-2 border-gray-900 rounded-md w-fit">
-                      <div className="text-center xl:text-xl ">
+                      <div className="text-center xl:text-xl " title="裝載位置">
                         {tool.AtcNo}
                       </div>
-                      <div className="text-center xl:text-xl">
+                      <div className="text-center xl:text-xl" title="刀具 SN">
                         {tool.ToolSn ? tool.ToolSn : "no data"}
                       </div>
                     </div>
