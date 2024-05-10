@@ -30,6 +30,8 @@ export default function BindToolIndex() {
   const [userList, setUserList] = useState<UserAccountItem[]>([]);
   const [inputUnbindTool, setInputUnbindTool] = useState<string>("");
   const [inputUnbindLabel, setInputUnbindLabel] = useState<string>("");
+  const [selectLabel, setSelectLabel] = useState<number>(-1);
+  const [selectTool, setSelectToll] = useState<number>(-1);
 
   const getELabelList = async (count = 1) => {
     try {
@@ -102,6 +104,7 @@ export default function BindToolIndex() {
       getELabelList();
       getToolList();
       cleanBindToolData();
+      cleanSelectData();
     } else {
       SweetAlert(reqInt, "綁定失敗，請重新在試。");
     }
@@ -114,6 +117,11 @@ export default function BindToolIndex() {
       LabelSn: "",
       ToolSn: "",
     });
+  };
+
+  const cleanSelectData = () => {
+    setSelectLabel(-1);
+    setSelectToll(-1);
   };
 
   const filterUnbindLabel = (data: LabelItem[]) =>
@@ -163,14 +171,17 @@ export default function BindToolIndex() {
     key: string,
     LabelId: string,
     LabelSn: string,
-    ToolSn: string
+    ToolSn: string,
+    index: number
   ) => {
     if (key === "eLabel") {
       setBindToolData((prev) => ({ ...prev, LabelId: LabelId }));
       setBindToolData((prev) => ({ ...prev, LabelSn: LabelSn }));
+      setSelectLabel(index);
     }
     if (key === "tool") {
       setBindToolData((prev) => ({ ...prev, ToolSn: ToolSn }));
+      setSelectToll(index);
     }
   };
 
@@ -196,7 +207,7 @@ export default function BindToolIndex() {
 
   return (
     <div className="relative p-2 ">
-      <div className="sticky p-2 my-4 bg-gray-700 rounded-md top-4 ">
+      <div className="sticky p-2 my-4 bg-gray-900 rounded-md top-4 ">
         <h3 className="font-bold text-left ">領取刀具</h3>
         <form onSubmit={(e) => postBindTool(e)}>
           <div className="grid grid-cols-4 gap-2 ">
@@ -260,21 +271,26 @@ export default function BindToolIndex() {
             </div>
             <div>
               <label htmlFor="receiver">領取人</label>
-              <input
-                type="text"
-                list="userList"
-                placeholder="領取人"
-                className="w-full p-2 text-black rounded-md"
+              <select
                 value={bindToolData.ReceiptorId}
+                className="w-full p-2 text-black rounded-md"
                 onChange={(e) =>
                   handleInputBindData("ReceiptorId", e.target.value)
                 }
-              />
-              <datalist id="userList">
+              >
+                <option value="" className="text-gray-400">
+                  選擇領取人
+                </option>
                 {userList.map((item) => (
-                  <option key={item.AccountId} value={item.UserName}></option>
+                  <option
+                    key={item.AccountId}
+                    value={item.AccountId}
+                    className="text-black"
+                  >
+                    {item.UserName}
+                  </option>
                 ))}
-              </datalist>
+              </select>
             </div>
           </div>
           <button className="w-full p-1 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
@@ -284,7 +300,7 @@ export default function BindToolIndex() {
       </div>
       {/* label */}
       <div className="flex gap-4 ">
-        <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md ">
+        <div className="w-full px-2 overflow-auto text-center bg-gray-900 rounded-md max-h-[700px] ">
           <form className="w-full my-4" onSubmit={(e) => searchUnbindLabel(e)}>
             <h3 className="my-4">未綁定標籤</h3>
             <input
@@ -304,16 +320,17 @@ export default function BindToolIndex() {
               </tr>
             </thead>
             <tbody>
-              {eLabeList.map((item) => (
+              {eLabeList.map((item, index) => (
                 <tr
                   key={item.LabelId}
-                  className="cursor-pointer hover:bg-gray-600"
+                  className={`cursor-pointer hover:bg-gray-600 ${selectLabel === index ? "bg-gray-600" : ""}`}
                   onClick={() =>
                     handleClickBindData(
                       "eLabel",
                       item.LabelId,
                       item.LabelSn,
-                      ""
+                      "",
+                      index
                     )
                   }
                 >
@@ -325,22 +342,23 @@ export default function BindToolIndex() {
           </table>
         </div>
         {/* tool */}
-        <div className="w-full p-2 overflow-auto text-center bg-gray-700 rounded-md">
-          <h3 className="my-4">未綁定刀具</h3>
-          <form
-            className="flex items-center justify-center w-full gap-2 my-4"
-            onSubmit={(e) => searchUnbindTool(e)}
-          >
-            <input
-              type="search"
-              id="search"
-              className="w-full p-2 text-black rounded-md"
-              placeholder="搜尋刀具"
-              value={inputUnbindTool}
-              onChange={(e) => setInputUnbindTool(e.target.value)}
-            />
-          </form>
-
+        <div className="w-full px-2 overflow-auto text-center bg-gray-900 rounded-md max-h-[700px]">
+          <div className="sticky top-0 py-4 bg-gray-900">
+            <h3>未綁定刀具</h3>
+            <form
+              className="flex items-center justify-center w-full gap-2 mt-4"
+              onSubmit={(e) => searchUnbindTool(e)}
+            >
+              <input
+                type="search"
+                id="search"
+                className="w-full p-2 text-black rounded-md"
+                placeholder="搜尋刀具"
+                value={inputUnbindTool}
+                onChange={(e) => setInputUnbindTool(e.target.value)}
+              />
+            </form>
+          </div>
           <table className="w-full">
             <thead>
               <tr className="bg-indigo-500">
@@ -351,12 +369,12 @@ export default function BindToolIndex() {
             </thead>
             <tbody>
               {toolList.length > 0 ? (
-                toolList.map((item: ToolStockListItem) => (
+                toolList.map((item: ToolStockListItem, index) => (
                   <tr
                     key={item.ToolSn}
-                    className="cursor-pointer hover:bg-gray-600"
+                    className={`cursor-pointer hover:bg-gray-600 ${selectTool === index ? "bg-gray-600" : ""}`}
                     onClick={() =>
-                      handleClickBindData("tool", "", "", item.ToolSn)
+                      handleClickBindData("tool", "", "", item.ToolSn, index)
                     }
                   >
                     <td className="p-1 whitespace-nowrap">

@@ -6,6 +6,12 @@ const menuItem = [
     path: "/tool-manager/tool-info/",
   },
   {
+    src: "/storage_icon.png",
+    alt: "storage_icon",
+    name: "倉儲列表",
+    path: "/tool-manager/tool-info/storage",
+  },
+  {
     src: "/types.png",
     alt: "toolTypes",
     name: "刀具類型",
@@ -23,7 +29,6 @@ const menuItem = [
     name: "刀具庫存",
     path: "/tool-manager/tool-info/tool-stock/",
   },
-   
-  ];
+];
 
-  export default menuItem
+export default menuItem;

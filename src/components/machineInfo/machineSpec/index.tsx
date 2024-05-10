@@ -157,11 +157,11 @@ const MachineSpecIndex = () => {
   }, []);
 
   return (
-    <div className="relative flex w-full p-1 text-center ">
-      <div className="w-full mx-4">
+    <div className="relative w-full text-center ">
+      <div className="w-full ">
         <div className="relative ">
           <button
-            className="absolute top-0 right-0 p-1 border rounded-md hover:bg-gray-600"
+            className="absolute top-0 right-0 p-1 m-2 border rounded-md hover:bg-gray-600"
             onClick={() => handleNewMachineSpecMode()}
           >
             新增
@@ -171,7 +171,7 @@ const MachineSpecIndex = () => {
             <input
               type="search"
               placeholder="搜尋 ID / 名稱"
-              className="p-2 text-black rounded-md w-96"
+              className="w-full p-2 text-black rounded-md"
               onChange={(e) => searchMachineSpec(e.target.value)}
             />
           </div>
@@ -179,7 +179,7 @@ const MachineSpecIndex = () => {
         {/* new */}
         <div
           className={` overflow-hidden transition-all my-4 duration-300 ease-in-out ${
-            newMachineSpecMode ? "h-52" : "h-0"
+            newMachineSpecMode ? "h-60" : "h-0"
           }`}
         >
           <NewMachineSpec
@@ -188,7 +188,7 @@ const MachineSpecIndex = () => {
           />
         </div>
 
-        <div className="mt-2 overflow-auto bg-gray-700 rounded-t-lg">
+        <div className="mt-2 overflow-auto bg-gray-900 rounded-md ">
           <table className="w-full ">
             <thead className="">
               <tr className="bg-indigo-500 ">

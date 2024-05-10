@@ -75,7 +75,7 @@ export default function Page() {
         <MachineInfoPieChart selectMachineInfo={selectMachineInfo} />
         <MachineLogInfo selectMachineInfo={selectMachineInfo} />
       </div>
-      <div className="h-[40rem] p-2 my-4 bg-gray-700 rounded-md overflow-auto">
+      <div className="p-2 my-4 overflow-auto bg-gray-700 rounded-md ">
         <div className="grid justify-center my-4">
           <div className="relative mx-auto w-fit ">
             <h3 className="my-2 text-center ">設備狀態</h3>

@@ -109,12 +109,12 @@ export default function Page() {
     getToolInfoList();
   }, []);
   return (
-    <div className="w-full p-2 bg-gray-900 rounded-lg ">
+    <div className="w-full h-full p-2 bg-gray-900 rounded-lg ">
       <div className="sticky top-0 flex flex-col w-full bg-gray-900 md:flex-row">
         <PieChart toolInfoData={toolInfoData} />
         <ToolInfoLog toolInfoData={toolInfoData} />
       </div>
-      <div className="h-full p-2 overflow-auto text-center bg-gray-700 rounded-md">
+      <div className="p-2 overflow-auto text-center bg-gray-700 rounded-md ">
         <div className="my-4">
           <h3 className="my-4">刀具狀態列表</h3>
           <input

@@ -1,10 +1,12 @@
 "use client";
 
-import { fakeData } from "@/scripts/Apis/receiveTool/fakeReceiveData";
 import { useEffect, useState } from "react";
 
 import { LabelBindItem } from "@/components/returnTool/types";
-import SweetAlert, { SweetAlertSelect } from "@/components/sweetAlert";
+import SweetAlert, {
+  SweetAlertReturnTool,
+  SweetAlertSelect,
+} from "@/components/sweetAlert";
 import { apiGetBindLabelList } from "@/scripts/Apis/receiveTool/receiveTool";
 import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
 export default function Page() {
@@ -25,8 +27,9 @@ export default function Page() {
       console.log(res);
       if (reqInt === 0) {
         setBindLabelList(res.data.Values.LabelBindList);
+        return res.data.Values.LabelBindList;
       } else {
-        SweetAlert(reqInt, "請求失敗");
+        console.log(`ReqInt = ${reqInt}`);
       }
     } catch (error) {
       getBindLabelList(count + 1);
@@ -50,9 +53,11 @@ export default function Page() {
     return option;
   };
 
-  const repairTool = () => {
+  const repairTool = (item: any) => {
+    console.log(item);
+
     const option = getUserOptions();
-    SweetAlertSelect("選擇送修人員", option);
+    // SweetAlertReceiveTool("選擇送修人員", "select", option, toolSN);
   };
 
   const scrapTool = () => {
@@ -62,77 +67,41 @@ export default function Page() {
 
   const returnTool = async (item: LabelBindItem) => {
     const option = getUserOptions();
-    SweetAlertSelect("選擇歸還人員", option);
+    SweetAlertReturnTool("選擇歸還人員", option, item);
   };
 
   let timer: ReturnType<typeof setTimeout>;
   const searchTool = (value: string) => {
     clearTimeout(timer);
     timer = setTimeout(async () => {
-      // const data = await apiGetBindLabelList();
-      const searchResult = fakeData.filter((item) => {
+      const bindLabelList = await getBindLabelList();
+
+      const searchResult = bindLabelList.filter((item: LabelBindItem) => {
         return (
           // search by LToolCode ToolSn and Receiver
           item.LToolCode.toString()
             .toLowerCase()
             .includes(value.toLowerCase()) ||
           item.ToolSn.toLowerCase().includes(value.toLowerCase()) ||
-          item.receiver.toLowerCase().includes(value.toLowerCase())
+          item.ReceiptorInfo.UserName.toLowerCase().includes(
+            value.toLowerCase()
+          )
         );
       });
       setBindLabelList(searchResult);
     }, 500);
   };
 
-  const setToolStatusColor = (status: string) => {
-    switch (status) {
-      case "Normal":
-        return "text-green-500";
-      case "Warning":
-        return "text-yellow-500";
-      case "Alert":
-        return "text-red-500";
-      default:
-        return "text-gray-500";
-    }
-  };
-
-  const setToolStatusText = (status: string) => {
-    switch (status) {
-      case "Normal":
-        return "正常";
-      case "Warning":
-        return "危險";
-      case "Alert":
-        return "警告";
-      default:
-        return " -";
-    }
-  };
-
-  const sortByToolStatus = (data: LabelBindItem[]) => {
-    const sortTable: { [key: string]: number } = {
-      Normal: 3,
-      Warning: 2,
-      Alert: 1,
-    };
-
-    return data.sort((a, b) => {
-      return sortTable[a.ToolStatus] - sortTable[b.ToolStatus];
-    });
-  };
-
   const handleToolReturn = (index: number) => {
     setHandleToolReturnIndex(index);
   };
   useEffect(() => {
-    setBindLabelList(sortByToolStatus(fakeData)); // for test
     getBindLabelList();
     getUserList();
   }, []);
 
   return (
-    <div className="w-full  p-2 mr-4 overflow-auto bg-gray-900 rounded-md">
+    <div className="w-full p-2 mr-4 overflow-auto rounded-md">
       <div>
         <div className="my-4 ">
           <h3 className="text-center ">歸還刀具</h3>
@@ -144,13 +113,12 @@ export default function Page() {
             onChange={(e) => searchTool(e.target.value)}
           />
         </div>
-        <div className="overflow-auto text-center bg-gray-700 rounded-md">
+        <div className="overflow-auto text-center bg-gray-900 rounded-md">
           <table className="w-full ">
             <thead>
               <tr className="font-bold bg-indigo-500">
                 <td className="p-2 whitespace-nowrap">標籤號碼</td>
                 <td className="p-2 whitespace-nowrap">刀具SN</td>
-                <td className="p-2 whitespace-nowrap">刀具狀態</td>
                 <td className="p-2 whitespace-nowrap">領取人</td>
                 <td className="p-2 whitespace-nowrap">歸還</td>
               </tr>
@@ -161,16 +129,11 @@ export default function Page() {
                   <tr key={index} className="hover:bg-gray-500">
                     <td className="p-1 whitespace-nowrap">{item.LToolCode}</td>
                     <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
-                    <td
-                      className={`p-1 whitespace-nowrap ${setToolStatusColor(
-                        item.ToolStatus
-                      )}`}
-                    >
-                      {setToolStatusText(item.ToolStatus)}
+
+                    <td className="p-1 whitespace-nowrap">
+                      {item.ReceiptorInfo.UserName}
                     </td>
 
-                    <td className="p-1 whitespace-nowrap">{item.receiver}</td>
-                    {}
                     <td>
                       {handleToolReturnIndex === index ? (
                         <>
@@ -182,7 +145,7 @@ export default function Page() {
                           </button>
                           <button
                             className="w-12 h-12 p-1 mx-2 rounded-md hover:bg-amber-600 bg-amber-500"
-                            onClick={() => repairTool()}
+                            onClick={() => repairTool(item)}
                           >
                             送修
                           </button>

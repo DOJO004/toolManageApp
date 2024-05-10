@@ -96,25 +96,25 @@ export default function NewMachineSpec({
     getMachineTypeList();
   }, []);
   return (
-    <div className="p-4 bg-gray-700 rounded-xl">
+    <div className="p-4 bg-gray-900 rounded-xl">
       <div className="relative ">
         <h3 className="font-bold text-left">新增設備規格</h3>
         <button
-          className="absolute top-0 right-0 p-1 rounded-full hover:bg-gray-900 "
+          className="absolute top-0 right-0 p-1 m-2 rounded-full hover:bg-gray-700 "
           onClick={() => setNewMachineSpecMode(false)}
         >
           X
         </button>
       </div>
       <form onSubmit={(e) => postMachineSpec(e)}>
-        <div className="grid grid-cols-12 gap-2 my-4">
+        <div className="flex gap-2 p-2 my-4 overflow-auto">
           <div className="relative my-4">
             <label className="absolute left-0 -top-6" htmlFor="productLineId">
               生產線
             </label>
             <select
               id="productLineId"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               value={newMachineSpec.ProductLineId}
               onChange={(e) =>
                 handleNewMachineSpec("ProductLineId", e.target.value)
@@ -134,7 +134,7 @@ export default function NewMachineSpec({
             </label>
             <select
               id="machineTypeId"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               value={newMachineSpec.MachineTypeId}
               onChange={(e) =>
                 handleNewMachineSpec("MachineTypeId", e.target.value)
@@ -156,7 +156,7 @@ export default function NewMachineSpec({
             </label>
             <input
               id="serialNumber"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               value={newMachineSpec.SerialNumber}
               placeholder="設備 SN 序號"
               onChange={(e) =>
@@ -170,7 +170,7 @@ export default function NewMachineSpec({
             </label>
             <input
               id="name"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               value={newMachineSpec.Name}
               placeholder="設備名稱"
               onChange={(e) => handleNewMachineSpec("Name", e.target.value)}
@@ -183,7 +183,7 @@ export default function NewMachineSpec({
             </label>
             <input
               id="machineIP"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               placeholder="設備 IP 位址"
               value={newMachineSpec.MachineIP}
               onChange={(e) =>
@@ -197,7 +197,7 @@ export default function NewMachineSpec({
             </label>
             <input
               id="readerId"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               placeholder="讀取器 ID"
               value={newMachineSpec.ReaderId}
               onChange={(e) => handleNewMachineSpec("ReaderId", e.target.value)}
@@ -209,7 +209,7 @@ export default function NewMachineSpec({
             </label>
             <input
               id="brand"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               placeholder="品牌"
               value={newMachineSpec.Brand}
               onChange={(e) => handleNewMachineSpec("Brand", e.target.value)}
@@ -221,7 +221,7 @@ export default function NewMachineSpec({
             </label>
             <input
               id="series"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               placeholder="系列"
               value={newMachineSpec.Series}
               onChange={(e) => handleNewMachineSpec("Series", e.target.value)}
@@ -234,7 +234,7 @@ export default function NewMachineSpec({
             </label>
             <input
               id="mt"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               placeholder="MT"
               value={newMachineSpec.MT}
               onChange={(e) => handleNewMachineSpec("MT", e.target.value)}
@@ -247,7 +247,7 @@ export default function NewMachineSpec({
             <input
               type="text"
               id="axisIndex"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               placeholder="AxisIndex"
               value={newMachineSpec.AxisIndex}
               onChange={(e) =>
@@ -262,7 +262,7 @@ export default function NewMachineSpec({
             <input
               type="text"
               id="axisName"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md min-w-24"
               placeholder="AxisName"
               value={newMachineSpec.AxisName}
               onChange={(e) => handleNewMachineSpec("AxisName", e.target.value)}

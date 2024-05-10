@@ -17,6 +17,8 @@ export default function DashboardIndex() {
   const getMachineInfoList = async () => {
     const data = await apiGetMachineStatusList();
     const res = data as GetMachineStatusInfoListResponse;
+    console.log(res);
+
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineInfoList(res.data.Values.MachineStatusList);
     }
