@@ -1,100 +1,26 @@
-"use client";
+import React, { FormEvent, useEffect } from "react";
+import { MachineTypeItem } from "../machineType/types";
+import { ProductLineItem } from "../productLine/types";
+import { NewMachineSpecItem } from "./types";
 
-import { apiNewMachineSpec } from "@/scripts/Apis/machineSpec/machineSpec";
-import { apiGetMachineTypeList } from "@/scripts/Apis/machineType/machineType";
-import { apiGetProductLineTypeList } from "@/scripts/Apis/productLineType/productLineType";
-import React, { FormEvent, useEffect, useState } from "react";
-import {
-  GetMachineTypeListResponse,
-  MachineTypeItem,
-} from "../machineType/types";
-import {
-  GetProductLineListResponse,
-  ProductLineItem,
-} from "../productLine/types";
-import { PostMachineSpecResponse } from "./types";
-
-interface NewMachineSpecProps {
-  getMachineSpecList: () => void;
+interface Props {
   setNewMachineSpecMode: React.Dispatch<React.SetStateAction<boolean>>;
+  postMachineSpec: (e: FormEvent<HTMLFormElement>) => void;
+  newMachineSpec: NewMachineSpecItem;
+  handleNewMachineSpec: (key: string, value: string | number | boolean) => void;
+  productLineList: ProductLineItem[];
+  machineTypeList: MachineTypeItem[];
 }
 
 export default function NewMachineSpec({
-  getMachineSpecList,
   setNewMachineSpecMode,
-}: NewMachineSpecProps) {
-  const [newMachineSpec, setNewMachineSpec] = useState({
-    ProductLineId: "",
-    MachineTypeId: "",
-    SerialNumber: "",
-    Name: "",
-    MachineIP: "",
-    ReaderId: "",
-    Brand: "",
-    Series: "",
-    MT: "",
-    AxisIndex: 0,
-    AxisName: "",
-    IsSpindle: false,
-  });
-  const [productLineList, setProductLineList] = useState<ProductLineItem[]>([]);
-  const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
-  const getProductLineList = async () => {
-    const data = await apiGetProductLineTypeList();
-    const res = data as GetProductLineListResponse;
-    if (res?.data?.Values?.ReqInt === 0) {
-      setProductLineList(res.data.Values.ProductLineList);
-    }
-  };
-
-  const getMachineTypeList = async () => {
-    const data = await apiGetMachineTypeList();
-    const res = data as GetMachineTypeListResponse;
-    if (res?.data?.Values?.ReqInt === 0) {
-      setMachineTypeList(res.data.Values.MachineTypeList);
-    }
-  };
-
-  const postMachineSpec = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await apiNewMachineSpec(newMachineSpec);
-    const res = data as PostMachineSpecResponse;
-    console.log("new machine spec", res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      cleanNewMachineSpec();
-      getMachineSpecList();
-    }
-  };
-
-  const cleanNewMachineSpec = () => {
-    setNewMachineSpec({
-      ProductLineId: "",
-      MachineTypeId: "",
-      SerialNumber: "",
-      Name: "",
-      MachineIP: "",
-      ReaderId: "",
-      Brand: "",
-      Series: "",
-      MT: "",
-      AxisIndex: 0,
-      AxisName: "",
-      IsSpindle: false,
-    });
-  };
-
-  const handleNewMachineSpec = (
-    key: string,
-    value: string | number | boolean
-  ) => {
-    setNewMachineSpec((prev) => ({ ...prev, [key]: value }));
-  };
-
-  useEffect(() => {
-    getProductLineList();
-    getMachineTypeList();
-  }, []);
+  postMachineSpec,
+  newMachineSpec,
+  handleNewMachineSpec,
+  productLineList,
+  machineTypeList,
+}: Props) {
+  useEffect(() => {}, []);
   return (
     <div className="p-4 bg-gray-900 rounded-xl">
       <div className="relative ">
