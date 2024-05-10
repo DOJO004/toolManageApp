@@ -1,43 +1,21 @@
-"use client";
+import { FormEvent } from "react";
+import { NewMachineTypeItem } from "./types";
 
-import { apiNewMachineType } from "@/scripts/Apis/machineType/machineType";
-import { FormEvent, useState } from "react";
-import { PostMachineTypeResponse } from "./types";
-
-interface NewMachineTypeProps {
+interface Props {
   getMachineTypeList: () => void;
   setNewMachineTypeMode: React.Dispatch<React.SetStateAction<boolean>>;
+  postMachineType: (e: FormEvent) => void;
+  newMachineType: NewMachineTypeItem;
+  handleNewMachineType: (key: string, value: string) => void;
 }
 
 export default function NewMachineType({
   getMachineTypeList,
   setNewMachineTypeMode,
-}: NewMachineTypeProps) {
-  const [newMachineType, setNewMachineType] = useState({
-    Id: "",
-    Name: "",
-  });
-
-  const postMachineType = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await apiNewMachineType(newMachineType);
-    const res = data as PostMachineTypeResponse;
-    if (res?.data?.Values?.ReqInt === 0) {
-      cleanNewMachineType();
-      getMachineTypeList();
-    }
-  };
-
-  const cleanNewMachineType = () => {
-    setNewMachineType({
-      Id: "",
-      Name: "",
-    });
-  };
-
-  const handleNewMachineType = (key: string, value: string) => {
-    setNewMachineType((prev) => ({ ...prev, [key]: value }));
-  };
+  postMachineType,
+  newMachineType,
+  handleNewMachineType,
+}: Props) {
   return (
     <div className="p-4 my-4 bg-gray-900 rounded-md">
       <div className="relative ">
