@@ -1,49 +1,22 @@
-"use client";
-
-import { apiNewToolType } from "@/scripts/Apis/toolType/toolTypeApi";
-import { FormEvent, useState } from "react";
-import SweetAlert from "../../sweetAlert";
-import { PostToolTypeResponse, ToolTypeItem } from "./types";
+import { FormEvent } from "react";
+import { ToolTypeItem } from "./types";
 
 interface NewToolTypeProps {
-  getToolTypeList: () => void;
+  postToolType: (e: FormEvent) => void;
+  newToolType: ToolTypeItem;
+  setNewToolType: React.Dispatch<React.SetStateAction<ToolTypeItem>>;
 }
-export function NewToolType({ getToolTypeList }: NewToolTypeProps) {
-  const [newToolType, setNewToolType] = useState<ToolTypeItem>({
-    Id: "",
-    Name: "",
-  });
-
-  const doAddToolType = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await apiNewToolType(newToolType);
-    const res = data as PostToolTypeResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
-    const inputToolTypeId = document.querySelector<HTMLInputElement>("#id");
-    console.log(res);
-
-    if (reqInt === 0) {
-      SweetAlert(reqInt, "新增成功");
-      setNewToolType({
-        Id: "",
-        Name: "",
-      });
-      getToolTypeList();
-      if (inputToolTypeId) {
-        inputToolTypeId.focus();
-      }
-    } else {
-      SweetAlert(reqInt, "新增失敗");
-    }
-  };
-
+export function NewToolType({
+  postToolType,
+  newToolType,
+  setNewToolType,
+}: NewToolTypeProps) {
   return (
     <div className="w-full p-2 bg-gray-800 rounded-md ">
-
       <h4 id="scrollTarget" className="my-4 font-bold text-left">
         新增刀具類型
       </h4>
-      <form onSubmit={(e) => doAddToolType(e)}>
+      <form onSubmit={(e) => postToolType(e)}>
         <div className="grid items-center grid-cols-2 gap-2">
           <div className="relative p-2">
             <label htmlFor="id" className="absolute left-2 -top-4 ">

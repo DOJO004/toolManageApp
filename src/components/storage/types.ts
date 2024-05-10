@@ -16,9 +16,23 @@ export interface StorageItem {
   Name: string;
 }
 
+export interface NewStorageItem {
+  StorageId: number;
+  Name: string;
+}
+
 export interface EditStorageItem {
   StorageId: number;
   Name: string;
+}
+
+export interface StorageBasicResponse {
+  data: {
+    RC: string;
+    Values: {
+      ReqInt: number;
+    };
+  };
 }
 
 export interface NewStorageResponse {
@@ -27,24 +41,6 @@ export interface NewStorageResponse {
     Values: {
       ReqInt: number;
       MultiStorageIds: number[];
-    };
-  };
-}
-
-export interface PatchStorageResponse {
-  data: {
-    RC: string;
-    Values: {
-      ReqInt: number;
-    };
-  };
-}
-
-export interface DeleteStorageResponse {
-  data: {
-    RC: string;
-    Values: {
-      ReqInt: number;
     };
   };
 }

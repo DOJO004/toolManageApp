@@ -1,36 +1,17 @@
-"use client";
-
-import { apiPostStorageInfo } from "@/scripts/Apis/storage/storageApi";
-import { FormEvent, useState } from "react";
-import { NewStorageResponse } from "./types";
+import { FormEvent } from "react";
+import { NewStorageItem } from "./types";
 
 interface Props {
-  getStorageList: () => void;
+  postStorage: (e: FormEvent) => void;
+  newStorage: NewStorageItem;
+  handleChangeNewStorage: (key: string, value: string) => void;
 }
 
-export default function StorageNew({ getStorageList }: Props) {
-  const [newStorage, setNewStorage] = useState({
-    StorageId: 0,
-    Name: "",
-  });
-
-  const postStorage = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await apiPostStorageInfo(newStorage);
-    const res = data as NewStorageResponse;
-    console.log(res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      getStorageList();
-      setNewStorage({
-        StorageId: 0,
-        Name: "",
-      });
-    }
-  };
-  const handleChangeNewStorage = (key: string, value: string | number) => {
-    setNewStorage((prev) => ({ ...prev, [key]: value }));
-  };
+export default function StorageNew({
+  postStorage,
+  newStorage,
+  handleChangeNewStorage,
+}: Props) {
   return (
     <div className="p-4 bg-gray-900 rounded-md">
       <h2>新增倉儲</h2>
