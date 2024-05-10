@@ -1,96 +1,24 @@
-"use client";
+import React, { FormEvent } from "react";
+import { ToolTypeItem } from "../toolType/types";
+import { ToolSpecItem } from "./types";
 
-import { apiNewToolSpec } from "@/scripts/Apis/toolSpec/toolSpecApi";
-import { apiGetToolTypeList } from "@/scripts/Apis/toolType/toolTypeApi";
-import { FormEvent, useEffect, useState } from "react";
-import { GetToolTypeListResponse, ToolTypeItem } from "../toolType/types";
-import { PostToolSpecResponse, ToolSpecItem } from "./types";
-
-interface NewToolSpecProps {
-  getToolSpecList: () => void;
+interface Props {
   setNewToolSpecMode: React.Dispatch<React.SetStateAction<boolean>>;
+  postNewToolSpec: (e: FormEvent) => void;
+  toolSpec: ToolSpecItem;
+  setToolSpec: React.Dispatch<React.SetStateAction<ToolSpecItem>>;
+  toolTypeList: ToolTypeItem[];
+  handelSetToolSpec: (key: string, value: string | number) => void;
 }
 
 export function NewToolSpec({
-  getToolSpecList,
   setNewToolSpecMode,
-}: NewToolSpecProps) {
-  const [toolTypeList, setToolTypeList] = useState<ToolTypeItem[]>([]);
-  const [toolSpec, setToolSpec] = useState<ToolSpecItem>({
-    ToolSpecId: "",
-    Name: "",
-    ToolTypeData: {
-      Id: "",
-      Name: "",
-    },
-    SafetyStock: 0,
-    SpecData: {
-      BladeDiameter: 0,
-      BladeHeight: 0,
-      TotalLength: 0,
-      HandleDiameter: 0,
-    },
-    MaxLife: {
-      ProcessCnt: 0,
-      ProcessTime: 0,
-      ProcessLength: 0,
-      RepairCnt: 0,
-    },
-  });
-
-  const getToolTypeList = async () => {
-    const data = await apiGetToolTypeList();
-    const res = data as GetToolTypeListResponse;
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolTypeList(res.data.Values.ToolTypeMenus);
-    }
-  };
-
-  const postNewToolSpec = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await apiNewToolSpec(toolSpec);
-    const res = data as PostToolSpecResponse;
-    console.log("post new tool spec", res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      getToolSpecList();
-      cleanToolSpec();
-    }
-  };
-
-  const cleanToolSpec = () => {
-    setToolSpec({
-      ToolSpecId: "",
-      Name: "",
-      ToolTypeData: {
-        Id: "",
-        Name: "",
-      },
-      SafetyStock: 0,
-      SpecData: {
-        BladeDiameter: 0,
-        BladeHeight: 0,
-        TotalLength: 0,
-        HandleDiameter: 0,
-      },
-      MaxLife: {
-        ProcessCnt: 0,
-        ProcessTime: 0,
-        ProcessLength: 0,
-        RepairCnt: 0,
-      },
-    });
-  };
-
-  const handelSetToolSpec = (key: string, value: string | number) => {
-    setToolSpec((prev) => ({ ...prev, [key]: value }));
-  };
-
-  useEffect(() => {
-    getToolTypeList();
-  }, []);
-
+  postNewToolSpec,
+  toolSpec,
+  setToolSpec,
+  toolTypeList,
+  handelSetToolSpec,
+}: Props) {
   return (
     <div className="p-2 bg-gray-900 rounded-md">
       <div className="relative ">
