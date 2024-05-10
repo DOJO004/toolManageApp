@@ -1,94 +1,27 @@
-import { apiGetPermissionsInfoList } from "@/scripts/Apis/userInfo/policeApi";
-import { ApiPostUserInfo } from "@/scripts/Apis/userInfo/userInfoApi";
-import { FormEvent, useEffect, useState } from "react";
-import SweetAlert from "../sweetAlert";
+import { FormEvent } from "react";
 import { DepartmentItem } from "./department/type";
-import { PermissionInfoList, PermissionMenuItem } from "./policeInfo/type";
-import type { NewUserInfo, NewUserResponse } from "./types";
+import { PermissionMenuItem } from "./policeInfo/type";
+import type { NewUserInfo } from "./types";
 interface NewUserInfoProps {
   setNewUserMode: (value: boolean) => void;
   departmentList: DepartmentItem[];
-  getUserInfoList: () => void;
+  postUserInfo: (e: FormEvent) => void;
+  handleSetUserInfo: (key: string, value: string) => void;
+  userInfo: NewUserInfo;
+  setFocusInput: (value: boolean) => void;
+  focusInput: boolean;
+  permissionList: PermissionMenuItem[];
+  handleCheckPermission: (checked: boolean, permissionId: string) => void;
 }
-export default function NewUserInfo({
+export default function UserInfoNew({
   setNewUserMode,
   departmentList,
-  getUserInfoList,
+  postUserInfo,
+  handleSetUserInfo,
+  userInfo,
+  setFocusInput,
+  focusInput,
 }: NewUserInfoProps) {
-  const [userInfo, setUserInfo] = useState<NewUserInfo>({
-    UserAccount: "",
-    Password: "",
-    UserName: "",
-    DepartmentId: "",
-    EmployeeId: "",
-    EMailAddress: "",
-    PermissionData: [],
-  });
-
-  const [permissionList, setPermissionList] = useState<PermissionMenuItem[]>(
-    []
-  );
-  const [focusInput, setFocusInput] = useState<boolean>(false);
-
-  const getPermissionList = async () => {
-    const data = await apiGetPermissionsInfoList();
-    const res = data as PermissionInfoList;
-    const reqInt = res?.data?.Values?.ReqInt;
-    console.log("permission", res);
-
-    if (reqInt === 0) {
-      setPermissionList(res.data.Values.PermissionMenus);
-    }
-  };
-  const postUserInfo = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await ApiPostUserInfo(userInfo);
-    const res = data as NewUserResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
-
-    if (reqInt === 0) {
-      getUserInfoList();
-      setUserInfo({
-        UserAccount: "",
-        Password: "",
-        UserName: "",
-        DepartmentId: "",
-        EmployeeId: "",
-        EMailAddress: "",
-        PermissionData: [],
-      });
-    } else {
-      SweetAlert(reqInt, "新增失敗。");
-    }
-    console.log(data);
-  };
-
-  const handleSetUserInfo = (key: string, value: string) => {
-    setUserInfo((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleCheckPermission = (checked: boolean, permissionId: string) => {
-    if (checked) {
-      setUserInfo((prev) => ({
-        ...prev,
-        PermissionData: [...prev.PermissionData, permissionId],
-      }));
-    } else {
-      setUserInfo((prev) => ({
-        ...prev,
-        PermissionData: prev.PermissionData.filter((id) => id !== permissionId),
-      }));
-    }
-  };
-
-  useEffect(() => {
-    getPermissionList();
-  }, []);
-
-  useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
-
   return (
     <div className="p-4 bg-gray-500 rounded-md">
       <div className="relative ">
@@ -189,29 +122,6 @@ export default function NewUserInfo({
                 className="absolute top-0 bottom-0 left-0 right-0"
                 onClick={() => setFocusInput(!focusInput)}
               ></div>
-            </div>
-            <div
-              className={`h-40 p-1 overflow-auto border rounded-md bg-white  ${focusInput ? "block" : "hidden"}`}
-            >
-              {permissionList.map((item) => (
-                <div
-                  key={item.Id}
-                  className="flex items-center hover:bg-gray-300"
-                >
-                  <input
-                    type="checkbox"
-                    value={item.Id}
-                    id={item.Id}
-                    className="mr-2"
-                    onChange={(e) =>
-                      handleCheckPermission(e.target.checked, item.Id)
-                    }
-                  />
-                  <label htmlFor={item.Id} className="text-black">
-                    {item.Name}
-                  </label>
-                </div>
-              ))}
             </div>
           </div>
         </div>

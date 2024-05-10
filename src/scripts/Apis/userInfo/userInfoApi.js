@@ -17,7 +17,7 @@ export const ApiUserLogin = async (data) => {
 
 export const ApiGetUserInfoList = async () => {
   try {
-    const res = await apiInstance.get("/account_get/GetUserAccountInfoList");
+    const res = await apiInstance.get("/account_get/GetUserAccountInfoList?Activated=1");
     return res;
   } catch (error) {
     console.error("Error", error);
@@ -59,18 +59,19 @@ export const ApiPatchUserInfo = async (data) => {
     ModifyInfo: {
       ModifyPassword: {
         OgnPwd: data.OgnPwd || null,
-        UserPwd: data.OgnPwd || null,
+        UserPwd: data.OgnPwd || null
+        ,
       },
       UserName: data.UserName,
       DepartmentId: data.DepartmentId,
       EmployeeId: data.EmployeeId,
       EMailAddress: data.EMailAddress,
-      PermissionIds: ["Account", "Machine"],
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
   };
+  console.log("patchUserInfo", body);
   try {
     const res = await apiInstance.post(
       "/user_operate/ModifyUserAccountInfo",
@@ -90,6 +91,7 @@ export const ApiDeleteUserInfo = async (id) => {
     LoginTime: getLoginTime(),
     NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
   };
+  console.log("deleteUserInfo", body);
   try {
     const res = await apiInstance.post(
       "/user_operate/DisabledUserAccountInfo",

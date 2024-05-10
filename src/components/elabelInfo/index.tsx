@@ -5,6 +5,7 @@ import {
   syncELabelDataFromAims,
 } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
 import { useEffect, useState } from "react";
+import SweetAlert from "../sweetAlert";
 import NewELabelInfo from "./new";
 import {
   GetELabelListResponse,
@@ -33,14 +34,26 @@ export default function ELabelInfoIndex() {
     ArticleName: "",
   });
 
-  const getELabelList = async () => {
-    const data = await apiGetELabelList();
-    const res = data as GetELabelListResponse;
-    console.log("get eLabelList", res);
+  const getELabelList = async (count = 1) => {
+    if (count === 3) {
+      SweetAlert(-99, "請求失敗，請重新整理頁面。");
+      return;
+    }
+    try {
+      const data = await apiGetELabelList();
+      const res = data as GetELabelListResponse;
+      const reqInt = res?.data?.Values?.ReqInt;
+      console.log("get eLabelList", res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
-      setELabelList(res.data.Values.LabelList);
-      return res.data.Values.LabelList;
+      if (reqInt === 0) {
+        setELabelList(res.data.Values.LabelList);
+        return res.data.Values.LabelList;
+      } else {
+        console.log(`ReqInt = ${reqInt}`);
+      }
+    } catch (error) {
+      console.error("Error", error);
+      getELabelList(count + 1);
     }
   };
 
