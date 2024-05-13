@@ -14,6 +14,9 @@ export interface LabelBindItem {
   LToolCode: number;
   Status: number;
   ToolSn: string;
+  ToolStatusInfo: {
+    ToolStatus: number;
+  };
   ReceiptorInfo: {
     AccountId: string;
     UserAccount: string;

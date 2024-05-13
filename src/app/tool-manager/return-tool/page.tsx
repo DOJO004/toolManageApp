@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { toolStockStatusInfo } from "./action";
 
 import ReturnToolFrom from "@/components/returnTool/retrunToolForm";
 import {
@@ -220,6 +221,7 @@ export default function Page() {
                 <td className="p-2 whitespace-nowrap">標籤號碼</td>
                 <td className="p-2 whitespace-nowrap">刀具SN</td>
                 <td className="p-2 whitespace-nowrap">領取人</td>
+                <td className="p-2 whitespace-nowrap">目前狀態</td>
                 <td className="p-2 whitespace-nowrap">歸還</td>
               </tr>
             </thead>
@@ -232,6 +234,10 @@ export default function Page() {
 
                     <td className="p-1 whitespace-nowrap">
                       {item.ReceiptorInfo.UserName}
+                    </td>
+
+                    <td className="p-1 whitespace-nowrap">
+                      {toolStockStatusInfo(item.ToolStatusInfo.ToolStatus)}
                     </td>
 
                     <td onClick={() => handleClickReturn(item)}>
