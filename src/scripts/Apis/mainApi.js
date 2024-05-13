@@ -9,7 +9,7 @@ export const getLoginTime = () => {
   return cookies[1]?.split("=")[1];
 };
 
-export const setCookie = (name, value, days) => {
+export const setCookie = async (name, value, days) => {
   let expires = "";
   if (days) {
     let date = new Date();

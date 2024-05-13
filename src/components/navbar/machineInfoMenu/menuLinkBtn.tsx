@@ -11,9 +11,16 @@ interface MenuItem {
 interface MenuItemProps {
   menuItem: MenuItem[];
   setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  showMenuIndex: number;
+  handleShowMenuIndex: (index: number) => void;
 }
 
-const MenuLinkBtn = ({ menuItem, setOpenMenu }: MenuItemProps) => {
+const MenuLinkBtn = ({
+  menuItem,
+  setOpenMenu,
+  showMenuIndex,
+  handleShowMenuIndex,
+}: MenuItemProps) => {
   return (
     <>
       <div className="flex md:block">
@@ -32,7 +39,8 @@ const MenuLinkBtn = ({ menuItem, setOpenMenu }: MenuItemProps) => {
           <Link
             key={index}
             href={item.path}
-            className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
+            className={`m-2 p-1 rounded-md cursor-pointer md:flex hover:bg-indigo-500 ${index === showMenuIndex ? "bg-indigo-600" : ""}`}
+            onClick={() => handleShowMenuIndex(index)}
           >
             <Image
               src={item.src}

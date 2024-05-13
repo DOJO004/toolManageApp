@@ -9,8 +9,8 @@ interface Props {
   setEditUserinfo: React.Dispatch<React.SetStateAction<EditUserInfo>>;
   departmentList: DepartmentItem[];
   handleEditUser: (item: UserAccountItem, index: number) => void;
-  patchUserInfo: ()=> void
-  
+  patchUserInfo: () => void;
+
   deleteUserInfo: () => void;
 }
 export default function UserInfoIndex({
@@ -106,7 +106,8 @@ export default function UserInfoIndex({
 
                 <td> - </td>
                 <td className="p-1 whitespace-nowrap">
-                  <button onClick={() => patchUserInfo()}>完成</button> /
+                  <button onClick={() => patchUserInfo()}>完成</button>
+                  <span> / </span>
                   <button onClick={() => deleteUserInfo()}>刪除</button>
                 </td>
               </tr>

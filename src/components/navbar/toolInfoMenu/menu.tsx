@@ -1,6 +1,7 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import menuItem from "./items";
 
 interface ToolStatusMenuProps {
@@ -8,6 +9,11 @@ interface ToolStatusMenuProps {
 }
 
 const ToolStatusMenu = ({ setOpenMenu }: ToolStatusMenuProps) => {
+  const [showSubMenuIndex, setShowSubMenuIndex] = useState(0);
+
+  const handleShowSubMenu = (index: number) => {
+    setShowSubMenuIndex(index);
+  };
   return (
     <div className="flex justify-center w-full md:block">
       <button
@@ -25,13 +31,14 @@ const ToolStatusMenu = ({ setOpenMenu }: ToolStatusMenuProps) => {
         <Link
           key={index}
           href={item.path}
-          className="m-2 cursor-pointer md:flex hover:bg-indigo-500"
+          className={`m-2 cursor-pointer md:flex hover:bg-indigo-500 rounded-md p-1 ${index === showSubMenuIndex ? "bg-indigo-600" : ""}`}
+          onClick={() => handleShowSubMenu(index)}
         >
           <Image
             src={item.src}
             alt={item.alt}
-            width={30}
-            height={30}
+            width={25}
+            height={25}
             className="mr-2"
           />
           <div className="hidden md:block whitespace-nowrap">{item.name}</div>

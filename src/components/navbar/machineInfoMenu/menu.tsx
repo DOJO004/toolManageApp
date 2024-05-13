@@ -1,8 +1,15 @@
+"use client";
+import { useState } from "react";
 import MenuLinkBtn from "./menuLinkBtn";
 interface MachineInfoMenuProps {
   setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const MachineInfoMenu = ({ setOpenMenu }: MachineInfoMenuProps) => {
+  const [showMenuIndex, setShowMenuIndex] = useState(0);
+
+  const handleShowMenuIndex = (index: number) => {
+    setShowMenuIndex(index);
+  };
   const menuItem = [
     {
       src: "/overView.png",
@@ -31,7 +38,12 @@ const MachineInfoMenu = ({ setOpenMenu }: MachineInfoMenuProps) => {
   ];
   return (
     <div className="flex justify-center md:flex-col">
-      <MenuLinkBtn menuItem={menuItem} setOpenMenu={setOpenMenu} />
+      <MenuLinkBtn
+        menuItem={menuItem}
+        setOpenMenu={setOpenMenu}
+        showMenuIndex={showMenuIndex}
+        handleShowMenuIndex={handleShowMenuIndex}
+      />
     </div>
   );
 };

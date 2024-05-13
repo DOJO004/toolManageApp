@@ -24,11 +24,12 @@ export default function Login() {
     const data = await ApiUserLogin(loginInfo);
     const res = data as LoginResponse;
     const reqInt = res?.data?.Values?.ReqInt;
-    console.log(res);
+    console.log("login", res);
 
     if (reqInt === 0) {
       setCookie("userToken", res.data.Values.Token, 30);
       setCookie("loginTime", res.data.Values.LoginTime, 30);
+      setCookie("permission", res.data.Values.PermissionList, 30);
       SweetAlert(reqInt, "登入成功");
       router.push("/tool-manager/tool-info");
     } else {
@@ -45,11 +46,12 @@ export default function Login() {
       <h1>登入</h1>
       <form onSubmit={(e) => postLoginInfo(e)}>
         <div className="my-4">
-          <label htmlFor="UserAccount">使用者名稱</label>
+          <label htmlFor="UserAccount">帳號</label>
           <input
             type="text"
             id="UserAccount"
             className="w-full p-2 text-black rounded-md "
+            placeholder="請輸入帳號"
             value={loginInfo.UserAccount}
             onChange={(e) => handleLoginInfo("UserAccount", e.target.value)}
           />
@@ -59,6 +61,7 @@ export default function Login() {
           <input
             type={showPassword ? "text" : "password"}
             id="Password"
+            placeholder="請輸入密碼"
             className="w-full p-2 text-black rounded-md "
             value={loginInfo.UserPwd}
             onChange={(e) => handleLoginInfo("UserPwd", e.target.value)}

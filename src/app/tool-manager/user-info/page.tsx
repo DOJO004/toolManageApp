@@ -165,6 +165,8 @@ export default function Page() {
   };
 
   const deleteUserInfo = async () => {
+    const confirm = window.confirm("確定要刪除嗎?");
+    if (!confirm) return;
     const data = await ApiDeleteUserInfo(editUserInfo.AccountId);
     const res = data as DeleteUserResponse;
     const reqInt = res?.data?.Values?.ReqInt;
@@ -182,6 +184,7 @@ export default function Page() {
   };
 
   const handleEditUser = (item: UserAccountItem, index: number) => {
+    setNewUserMode(false);
     setEditUserMode(true);
     setEditUserIndex(index);
     setEditUserinfo({
@@ -193,6 +196,11 @@ export default function Page() {
       EmployeeId: item.EmployeeId,
       EMailAddress: item.EMail,
     });
+  };
+
+  const handelNewUserMode = () => {
+    setNewUserMode(!newUserMode);
+    setEditUserMode(false);
   };
 
   // const confirmPassword = async () => {
@@ -223,7 +231,7 @@ export default function Page() {
         <h1 className="text-center ">使用者列表</h1>
         <button
           className="absolute right-0 p-1 -translate-y-1/2 border rounded-md top-1/2 hover:bg-gray-600"
-          onClick={() => setNewUserMode(!newUserMode)}
+          onClick={() => handelNewUserMode()}
         >
           新增
         </button>

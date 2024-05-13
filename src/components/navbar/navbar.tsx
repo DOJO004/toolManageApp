@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import navbarItem from "./items";
 import MachineInfoMenu from "./machineInfoMenu/menu";
 import ToolStatusMenu from "./toolInfoMenu/menu";
@@ -10,9 +10,13 @@ import UserInfoMenu from "./userInfoMenu/menu";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
+  const [checkAdmin, setCheckAdmin] = useState(false);
   const [clickItemName, setClickItemName] = useState("");
 
   const handleNavbarMenu = (name: string) => {
+    console.log("name = ", name);
+    setClickItemName(name);
+
     if (
       name === "dashboard" ||
       name === "領取刀具" ||
@@ -29,8 +33,20 @@ const Navbar = () => {
     } else {
       setOpenMenu(!openMenu);
     }
-    setClickItemName(name);
   };
+
+  const handleCheckAdmin = () => {
+    const cookies = document.cookie.split(";");
+    console.log(cookies[2]?.split("=")[1]);
+
+    if (cookies[2]?.split("=")[1] === "SuperAdmin") {
+      setCheckAdmin(true);
+    }
+  };
+
+  useEffect(() => {
+    handleCheckAdmin();
+  }, []);
 
   return (
     <div className="sticky h-full bg-gray-900 rounded-md top-2 md:flex">
@@ -38,22 +54,22 @@ const Navbar = () => {
         <ul className="flex items-center m-2 md:flex-col">
           <li
             onClick={() => handleNavbarMenu("dashboard")}
-            className="w-full bg-gray-300 rounded-md hover:bg-gray-50"
+            className={`flex items-center justify-center w-full bg-gray-300 rounded-md hover:bg-gray-50 ${clickItemName === "dashboard" ? "bg-gray-50" : ""}`}
           >
             <Link href="/tool-manager/dashboard" className="w-full">
               <Image
                 src="/logo.png"
                 alt="logo image"
                 loader={({ src, width }) => `${src}?w=${width}`}
-                width={40}
-                height={40}
+                width={50}
+                height={50}
                 className="mx-auto"
               />
             </Link>
           </li>
           {navbarItem.map((item, index) => (
             <li
-              className="w-auto p-1 my-2 rounded-md cursor-pointer hover:bg-indigo-500"
+              className={`w-auto p-1 my-2 rounded-md cursor-pointer hover:bg-indigo-500 ${item.name === "使用者資訊" && !checkAdmin ? "hidden" : ""} ${item.name === clickItemName ? "bg-indigo-600" : ""}`}
               onClick={() => handleNavbarMenu(item.name)}
               key={index}
             >
