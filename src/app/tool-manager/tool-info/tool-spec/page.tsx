@@ -236,7 +236,7 @@ export default function Page() {
     getToolTypeList();
   }, []);
   return (
-    <div className="relative flex overflow-auto md:max-w-[630px] lg:max-w-[880px] xl:max-w-[1300px] 2xl:max-w-full">
+    <div className="relative flex p-4 overflow-auto 2xl:max-w-full">
       <div className="">
         <div className="relative">
           <div>

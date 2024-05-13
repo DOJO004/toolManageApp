@@ -141,6 +141,9 @@ export default function Page() {
     timer = setTimeout(async () => {
       const bindLabelList = await getBindLabelList();
 
+      if (!bindLabelList) {
+        return;
+      }
       const searchResult = bindLabelList?.filter((item: LabelBindItem) => {
         return (
           // search by LToolCode ToolSn and Receiver

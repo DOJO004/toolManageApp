@@ -70,12 +70,12 @@ export default function Page() {
     getMachineInfoList();
   }, []);
   return (
-    <div className="w-full p-2 my-2 bg-gray-900 rounded-xl">
+    <div className="w-full p-2 my-2 = rounded-xl">
       <div className="gap-4 md:flex">
         <MachineInfoPieChart selectMachineInfo={selectMachineInfo} />
         <MachineLogInfo selectMachineInfo={selectMachineInfo} />
       </div>
-      <div className="p-2 my-4 overflow-auto bg-gray-700 rounded-md ">
+      <div className="p-2 my-4 overflow-auto bg-gray-900 rounded-md ">
         <div className="grid justify-center my-4">
           <div className="relative mx-auto w-fit ">
             <h3 className="my-2 text-center ">設備狀態</h3>

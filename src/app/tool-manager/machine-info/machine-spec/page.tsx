@@ -229,7 +229,7 @@ export default function Page() {
             <input
               type="search"
               placeholder="搜尋 ID / 名稱"
-              className="w-full p-2 text-black rounded-md"
+              className="w-full p-2 text-black rounded-md max-w-96 "
               onChange={(e) => searchMachineSpec(e.target.value)}
             />
           </div>

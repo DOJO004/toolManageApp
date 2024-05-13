@@ -6,6 +6,13 @@ interface PieChartProps {
   formatTime: (time: number) => string;
 }
 const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
+  console.log(
+    toolInfoData?.LifeData?.ProcessTime,
+    toolInfoData?.MaxLife?.ProcessTime,
+    toolInfoData?.LifeData?.ProcessLength,
+    toolInfoData?.MaxLife?.ProcessLength
+  );
+
   const processTimePercent =
     (toolInfoData?.LifeData?.ProcessTime / toolInfoData?.MaxLife?.ProcessTime) *
     100;
@@ -17,7 +24,7 @@ const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
   const gradientColorsInSide = `conic-gradient(#FACC15 0, #FACC15 ${processTimePercent}%, #F5ECB5 ${processTimePercent}%, #F5ECB5)`;
 
   return (
-    <div className="flex flex-col w-full p-2 mb-2 bg-gray-700 rounded-xl md:mr-4">
+    <div className="flex flex-col w-full p-2 mb-2 bg-gray-900 rounded-xl md:mr-4">
       <div className="flex justify-between mb-4 border-b-2 ">
         <div className="">
           <h3 className="font-bold ">{toolInfoData?.ToolSn} </h3>
@@ -56,7 +63,10 @@ const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
             <p className="my-2 border-l-4 border-green-600 md:whitespace-nowrap">
               累積加工長度：
             </p>
-            <h4>{toolInfoData?.LifeData?.ProcessLength / 10}</h4>
+            <h4 className="flex items-end">
+              {toolInfoData?.LifeData?.ProcessLength / 10}
+              <span className="text-sm text-gray-300"> cm</span>
+            </h4>
           </div>
           <div className="flex items-center mx-2">
             <p className="my-2 border-l-4 border-yellow-600 md:whitespace-nowrap">

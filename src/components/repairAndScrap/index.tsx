@@ -129,7 +129,7 @@ export default function RepairAndScrapIndex() {
     getToolStockList();
   }, []);
   return (
-    <div className=" overflow-auto text-center">
+    <div className="overflow-auto text-center ">
       <form className="my-4" onSubmit={(e) => filterToolList(e)}>
         <h3>修整 / 報廢</h3>
         <input
@@ -140,7 +140,7 @@ export default function RepairAndScrapIndex() {
           onChange={(e) => setInputSearch(e.target.value)}
         />
       </form>
-      <div className="overflow-auto bg-gray-700 rounded-t-md">
+      <div className="overflow-auto bg-gray-900 rounded-t-md">
         <table className="w-full ">
           <thead>
             <tr className="bg-indigo-500">

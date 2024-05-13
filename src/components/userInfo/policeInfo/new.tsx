@@ -1,8 +1,8 @@
 "use client";
 
-import { apiNewPoliceInfo } from "@/scripts/Apis/userInfo/policeApi";
+import { apiNewPermissionsInfo } from "@/scripts/Apis/userInfo/policeApi";
 import React, { FormEvent, useState } from "react";
-import { NewPoliceItemInfo } from "./type";
+import { NewPermissionItemInfo } from "./type";
 
 interface NewPoliceInfoProps {
   setNewPoliceMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,7 +11,7 @@ interface NewPoliceInfoProps {
 export default function NewPoliceInfo({
   setNewPoliceMode,
 }: NewPoliceInfoProps) {
-  const [newPolice, setNewPolice] = useState<NewPoliceItemInfo>({
+  const [newPolice, setNewPolice] = useState<NewPermissionItemInfo>({
     PermissionId: "",
     Name: "",
     PermissionType: 1,
@@ -19,7 +19,7 @@ export default function NewPoliceInfo({
 
   const postPoliceInfo = async (e: FormEvent) => {
     e.preventDefault();
-    const data = await apiNewPoliceInfo(newPolice);
+    const data = await apiNewPermissionsInfo(newPolice);
     console.log(data);
   };
 

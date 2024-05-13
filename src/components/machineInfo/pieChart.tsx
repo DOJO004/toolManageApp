@@ -19,7 +19,7 @@ export default function MachineInfoPieChart({
   const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${machineActivation}%, #B9E6B5 ${machineActivation}%, #B9E6B5)`;
 
   return (
-    <div className="w-full p-2 bg-gray-700 rounded-md">
+    <div className="w-full p-2 bg-gray-900 rounded-md">
       <div>
         <div className="flex justify-between border-b-2">
           <div>

@@ -55,7 +55,7 @@ export default function DashboardIndex() {
                     />
                     <p>{item.MachineIP}</p>
                     <p>
-                      {item.Status} / {item.Activation} %
+                      {item.Status} / {(item.Activation * 100).toFixed(2)} %
                     </p>
                   </div>
                 </div>

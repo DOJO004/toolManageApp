@@ -69,7 +69,7 @@ export default function Page() {
       getProductLineList();
       cleanProductLine();
     } else {
-      log(reqInt);
+      console.log(reqInt);
     }
   };
 

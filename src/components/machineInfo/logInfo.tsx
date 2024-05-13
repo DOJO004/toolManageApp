@@ -10,7 +10,7 @@ export default function MachineLogInfo({
   selectMachineInfo,
 }: MachineLogInfoProps) {
   return (
-    <div className="w-full p-2 bg-gray-700 rounded-md">
+    <div className="w-full p-2 bg-gray-900 rounded-md">
       <h3 className="text-center ">裝載刀具</h3>
       <hr className="w-full my-4" />
       <div className="overflow-auto text-center rounded-md ">
