@@ -1,5 +1,6 @@
 "use client";
 
+import { useNotice } from "@/components/context/NoticeContext";
 import ProductLineIndex from "@/components/machineInfo/productLine";
 import NewProductLine from "@/components/machineInfo/productLine/new";
 import {
@@ -22,9 +23,11 @@ import {
   apiNewProductLineType,
 } from "@/scripts/Apis/productLineType/productLineType";
 import { ApiGetDepartmentList } from "@/scripts/Apis/userInfo/departmentApi";
+import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
+  const { setShowNotice } = useNotice();
   const [newProductLineMode, setNewProductLineMode] = useState(false);
   const [editProductLineMode, setEditProductLineMode] = useState(false);
   const [editProductLineIndex, setEditProductLineIndex] = useState(-1);
@@ -64,12 +67,12 @@ export default function Page() {
     const data = await apiNewProductLineType(newProductLine);
     const res = data as PostProductLineResponse;
     const reqInt = res.data?.Values?.ReqInt;
-    console.log("post product line", res);
     if (reqInt === 0) {
       getProductLineList();
       cleanProductLine();
+      handleNotice("success", true, "新增成功");
     } else {
-      console.log(reqInt);
+      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -88,9 +91,13 @@ export default function Page() {
   const patchProductLine = async () => {
     const data = await apiEditProductLineType(editProductLine);
     const res = data as PatchProductLineResponse;
-    if (res?.data?.Values?.ReqInt === 0) {
+    const reqInt = res.data?.Values?.ReqInt;
+    if (reqInt === 0) {
       getProductLineList();
       setEditProductLineMode(false);
+      handleNotice("success", true, "更新成功");
+    } else {
+      handleNotice("error", true, `更新失敗，errorcode = ${reqInt}`);
     }
   };
 
@@ -99,9 +106,13 @@ export default function Page() {
     if (confirm) {
       const data = await apiDeleteProductLineType(editProductLine);
       const res = data as DeleteProductLineResponse;
-      if (res?.data?.Values?.ReqInt === 0) {
+      const reqInt = res.data?.Values?.ReqInt;
+      if (reqInt === 0) {
         getProductLineList();
         setEditProductLineMode(false);
+        handleNotice("success", true, "刪除成功");
+      } else {
+        handleNotice("error", true, `刪除失敗，errorCode = ${reqInt}`);
       }
     }
   };
@@ -142,6 +153,14 @@ export default function Page() {
 
   const handelSetEditData = (name: string, value: string) => {
     setEditProductLine((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
+    setShowNotice({
+      type: type,
+      show: show,
+      messages: messages,
+    });
   };
 
   useEffect(() => {
