@@ -4,7 +4,9 @@ import {
   apiGetELabelList,
   syncELabelDataFromAims,
 } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
+import { AlertColor } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNotice } from "../context/NoticeContext";
 import SweetAlert from "../sweetAlert";
 import NewELabelInfo from "./new";
 import {
@@ -14,6 +16,7 @@ import {
 } from "./types";
 
 export default function ELabelInfoIndex() {
+  const { setShowNotice } = useNotice();
   const [eLabelList, setELabelList] = useState<LabelItem[]>([]);
   const [newLabelMode, setNewLabelMode] = useState(false);
   const [editLabelMode, setEditLabelMode] = useState(false);
@@ -88,7 +91,20 @@ export default function ELabelInfoIndex() {
   const postAsyncELabelInfoFromAims = async () => {
     const data = await syncELabelDataFromAims();
     const res = data as SyncLabelDataFromAimsResponse;
-    console.log(res);
+    const reqInt = res.data?.Values?.ReqInt;
+    if (reqInt === 0) {
+      handleNotice("success", true, "同步成功");
+    } else {
+      handleNotice("error", true, `同步失敗，errorCode = ${reqInt}`);
+    }
+  };
+
+  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
+    setShowNotice({
+      type: type,
+      show: show,
+      messages: messages,
+    });
   };
 
   let timer: ReturnType<typeof setTimeout>;

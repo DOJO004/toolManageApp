@@ -1,7 +1,9 @@
 "use client";
 
 import { apiNewELabel } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
+import { AlertColor } from "@mui/material";
 import { FormEvent, useState } from "react";
+import { useNotice } from "../context/NoticeContext";
 import { PostELabelInfoResponse } from "./types";
 
 interface NewELabelInfoProps {
@@ -13,6 +15,7 @@ export default function NewELabelInfo({
   getELabelList,
   setNewLabelMode,
 }: NewELabelInfoProps) {
+  const { setShowNotice } = useNotice();
   const [newLabelInfo, setNewLabelInfo] = useState({
     LabelBrandId: "",
     LabelSn: "",
@@ -27,9 +30,13 @@ export default function NewELabelInfo({
     e.preventDefault();
     const data = await apiNewELabel(newLabelInfo);
     const res = data as PostELabelInfoResponse;
-    if (res?.data?.Values?.ReqInt === 0) {
+    const reqInt = res?.data?.Values?.ReqInt;
+    if (reqInt === 0) {
       getELabelList();
       cleanNewLabelInfo();
+      handleNotice("success", true, "新增成功");
+    } else {
+      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -47,6 +54,14 @@ export default function NewELabelInfo({
 
   const handleNewLabelInfo = (key: string, value: string) => {
     setNewLabelInfo((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
+    setShowNotice({
+      type: type,
+      show: show,
+      messages: messages,
+    });
   };
 
   return (
