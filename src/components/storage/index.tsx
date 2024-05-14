@@ -5,6 +5,7 @@ interface Props {
   storageList: StorageItem[];
   editIndex: number;
   editData: EditStorageItem;
+  editMode: boolean;
   setEditData: React.Dispatch<React.SetStateAction<EditStorageItem>>;
   patchStorage: () => void;
   deleteStorage: () => void;
@@ -14,6 +15,7 @@ export default function StorageIndex({
   storageList,
   editIndex,
   editData,
+  editMode,
   setEditData,
   patchStorage,
   deleteStorage,
@@ -31,7 +33,7 @@ export default function StorageIndex({
       </thead>
       <tbody>
         {storageList.map((item, index) =>
-          editIndex === index ? (
+          editMode && editIndex === index ? (
             <tr key={item.StorageId}>
               <td className="p-1">{item.StorageId}</td>
               <td className="p-1">

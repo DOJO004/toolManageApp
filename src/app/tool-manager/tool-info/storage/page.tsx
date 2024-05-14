@@ -1,5 +1,6 @@
 "use client";
 
+import { useNotice } from "@/components/context/NoticeContext";
 import StorageIndex from "@/components/storage";
 import StorageNew from "@/components/storage/new";
 import {
@@ -16,9 +17,11 @@ import {
   apiGetStorageList,
   apiPostStorageInfo,
 } from "@/scripts/Apis/storage/storageApi";
+import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function PatchStorageResponse() {
+  const { setShowNotice } = useNotice();
   const [storageList, setStorageList] = useState<StorageItem[]>([]);
   const [newStorage, setNewStorage] = useState<NewStorageItem>({
     StorageId: 0,
@@ -48,14 +51,18 @@ export default function PatchStorageResponse() {
     e.preventDefault();
     const data = await apiPostStorageInfo(newStorage);
     const res = data as NewStorageResponse;
+    const reqInt = res.data?.Values?.ReqInt;
     console.log(res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
+    if (reqInt === 0) {
       getStorageList();
       setNewStorage({
         StorageId: 0,
         Name: "",
       });
+      handleNotice("success", true, "新增成功");
+    } else {
+      handleNotice("error", true, `新增失敗。errorCode: ${reqInt}`);
     }
   };
 
@@ -77,6 +84,7 @@ export default function PatchStorageResponse() {
         StorageId: 0,
         Name: "",
       });
+      handleNotice("success", true, "修改成功");
     }
   };
 
@@ -89,6 +97,7 @@ export default function PatchStorageResponse() {
       if (reqInt === 0) {
         setEditMode(false);
         getStorageList();
+        handleNotice("success", true, "刪除成功");
       }
       console.log(res);
     }
@@ -103,6 +112,18 @@ export default function PatchStorageResponse() {
     setEditData({
       StorageId: item.StorageId,
       Name: item.Name,
+    });
+  };
+
+  const handleNotice = (
+    typeColor: AlertColor,
+    show: boolean,
+    messages: string
+  ) => {
+    setShowNotice({
+      type: typeColor,
+      show: show,
+      messages: messages,
     });
   };
 
@@ -134,6 +155,7 @@ export default function PatchStorageResponse() {
         <StorageIndex
           storageList={storageList}
           editIndex={editIndex}
+          editMode={editMode}
           editData={editData}
           setEditData={setEditData}
           patchStorage={patchStorage}
