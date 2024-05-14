@@ -1,5 +1,6 @@
 "use client";
 
+import { getPermission } from "@/scripts/Apis/mainApi";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -36,10 +37,10 @@ const Navbar = () => {
   };
 
   const handleCheckAdmin = () => {
-    const cookies = document.cookie.split(";");
-    console.log(cookies[2]?.split("=")[1]);
+    const admin = getPermission();
+    console.log("admin", admin);
 
-    if (cookies[2]?.split("=")[1] === "SuperAdmin") {
+    if (admin && admin === "SuperAdmin") {
       setCheckAdmin(true);
     }
   };

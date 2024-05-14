@@ -18,7 +18,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <div className="w-full md:flex">
       <Navbar />
       <div className="relative flex justify-center w-full h-full px-2 overflow-auto bg-gray-700 rounded-md ">
-        <div className="absolute z-10 top-5 right-5 ">
+        <div className="fixed z-10 top-5 right-5 ">
           <div
             className={`transition-all overflow-hidden duration-300 ease-in-out ${showNotice.show ? "h-12" : "h-0"}`}
           >

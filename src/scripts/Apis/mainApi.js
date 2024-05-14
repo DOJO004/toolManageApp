@@ -1,13 +1,38 @@
 // get user info
 export const getUserToken = () => {
-  const cookies = document.cookie.split(";");
-  return cookies[0]?.split("=")[1];
+  const cookies = document.cookie.split(";").map(cookie => cookie.trim());
+  const userTokenCookie = cookies.find(cookie => cookie.startsWith("userToken="));
+  console.log("user token = ", userTokenCookie);
+  
+  if (userTokenCookie) {
+    return userTokenCookie.split("=")[1];
+  }
+  
+  return null; // 如果找不到 userToken，返回 null
 };
 
+
 export const getLoginTime = () => {
-  const cookies = document.cookie.split(";");
-  return cookies[1]?.split("=")[1];
+  const cookies = document.cookie.split(";").map(cookie => cookie.trim());
+  const userLoginTime = cookies.find(cookie => cookie.startsWith("loginTime="));
+  
+  if (userLoginTime) {
+    return userLoginTime.split("=")[1];
+  }
+  
+  return null; // 如果找不到 userToken，返回 null
 };
+
+export const getPermission = () => {
+  const cookies = document.cookie.split(";").map(cookie => cookie.trim());
+  const userPermission = cookies.find(cookie => cookie.startsWith("permission="));
+  
+  if (userPermission) {
+    return userPermission.split("=")[1];
+  }
+  
+  return null; // 如果找不到 userToken，返回 null
+}
 
 export const setCookie = async (name, value, days) => {
   let expires = "";

@@ -1,4 +1,5 @@
 "use client";
+import { useNotice } from "@/components/context/NoticeContext";
 import SweetAlert from "@/components/sweetAlert";
 import ToolTypeIndex from "@/components/toolInfo/toolType";
 import { NewToolType } from "@/components/toolInfo/toolType/new";
@@ -15,9 +16,11 @@ import {
   apiGetToolTypeList,
   apiNewToolType,
 } from "@/scripts/Apis/toolType/toolTypeApi";
+import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
+  const { setShowNotice } = useNotice();
   const [toolTypeList, setToolTypeList] = useState<ToolTypeItem[]>([]);
   const [newToolType, setNewToolType] = useState<ToolTypeItem>({
     Id: "",
@@ -66,7 +69,7 @@ export default function Page() {
     console.log(res);
 
     if (reqInt === 0) {
-      SweetAlert(reqInt, "新增成功");
+      handleNotice("success", true, "新增成功");
       setNewToolType({
         Id: "",
         Name: "",
@@ -76,7 +79,7 @@ export default function Page() {
         inputToolTypeId.focus();
       }
     } else {
-      SweetAlert(reqInt, "新增失敗");
+      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -87,9 +90,9 @@ export default function Page() {
     if (reqInt === 0) {
       setEditToolTypeMode(false);
       getToolTypeList();
-      SweetAlert(reqInt, "更新成功");
+      handleNotice("success", true, "更新成功");
     } else {
-      SweetAlert(reqInt, "更新失敗");
+      handleNotice("error", true, `更新失敗，errorcode = ${reqInt}`);
     }
   };
 
@@ -102,6 +105,13 @@ export default function Page() {
       if (res.data.Values.ReqInt === 0) {
         getToolTypeList();
         setEditToolTypeMode(false);
+        handleNotice("success", true, "刪除成功");
+      } else {
+        handleNotice(
+          "error",
+          true,
+          `刪除失敗，errorcode = ${res.data.Values.ReqInt}`
+        );
       }
     }
   };
@@ -141,6 +151,18 @@ export default function Page() {
     setEditToolType({
       Id: item.Id,
       Name: item.Name,
+    });
+  };
+
+  const handleNotice = (
+    typeColor: AlertColor,
+    show: boolean,
+    messages: string
+  ) => {
+    setShowNotice({
+      type: typeColor,
+      show: show,
+      messages: messages,
     });
   };
 
