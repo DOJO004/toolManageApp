@@ -1,5 +1,6 @@
 "use client";
 
+import { useNotice } from "@/components/context/NoticeContext";
 import {
   GetStorageListResponse,
   StorageItem,
@@ -23,9 +24,11 @@ import {
   apiGetToolStockCountList,
   apiNewToolStock,
 } from "@/scripts/Apis/toolStock/toolStock";
+import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
+  const { setShowNotice } = useNotice();
   const [toolStockList, setToolStockList] = useState<StockToolCountItem[]>([]);
   const [newToolStockMode, setNewToolStockMode] = useState(false);
   const [toolSpecList, setToolSpecList] = useState<ToolSpecItem[]>([]);
@@ -96,8 +99,9 @@ export default function Page() {
     if (reqInt === 0) {
       getToolStockList();
       cleanNewToolStock();
+      handleNotice("success", true, "新增成功");
     } else {
-      console.log(`ReqInt = ${reqInt}`);
+      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -192,6 +196,14 @@ export default function Page() {
       default:
         return "";
     }
+  };
+
+  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
+    setShowNotice({
+      type: type,
+      show: show,
+      messages: messages,
+    });
   };
 
   useEffect(() => {
