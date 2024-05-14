@@ -1,3 +1,4 @@
+import { useNotice } from "@/components/context/NoticeContext";
 import { LabelItem } from "@/components/elabelInfo/types";
 import {
   apiBindELabelInfo,
@@ -5,6 +6,7 @@ import {
 } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
 import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
 import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
+import { AlertColor } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
@@ -19,6 +21,7 @@ import { GetELabelListResponse } from "../types";
 import { BindToolDataItem, PostBindToolResponse } from "./types";
 
 export default function BindToolIndex() {
+  const { setShowNotice } = useNotice();
   const [bindToolData, setBindToolData] = useState<BindToolDataItem>({
     ReceiptorId: "",
     LabelId: "",
@@ -98,15 +101,15 @@ export default function BindToolIndex() {
     e.preventDefault();
     const data = await apiBindELabelInfo(bindToolData);
     const res = data as PostBindToolResponse;
-    console.log("bind tool", res);
-    const reqInt = res.data.Values.ReqInt;
+    const reqInt = res.data?.Values?.ReqInt;
     if (reqInt === 0) {
       getELabelList();
       getToolList();
       cleanBindToolData();
       cleanSelectData();
+      handleNotice("success", true, "綁定成功");
     } else {
-      SweetAlert(reqInt, "綁定失敗，請重新在試。");
+      handleNotice("error", true, `綁定失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -196,6 +199,14 @@ export default function BindToolIndex() {
       imageWidth: 500,
       imageHeight: 300,
       imageAlt: "Custom image",
+    });
+  };
+
+  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
+    setShowNotice({
+      type: type,
+      show: show,
+      messages: messages,
     });
   };
 

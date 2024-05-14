@@ -1,5 +1,6 @@
 "use client";
 
+import { useNotice } from "@/components/context/NoticeContext";
 import SweetAlert from "@/components/sweetAlert";
 import UserInfoIndex from "@/components/userInfo";
 import {
@@ -28,9 +29,11 @@ import {
   ApiPatchUserInfo,
   ApiPostUserInfo,
 } from "@/scripts/Apis/userInfo/userInfoApi";
+import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
+  const { setShowNotice } = useNotice();
   const [userInfoList, setUserInfoList] = useState<UserAccountItem[]>([]);
   const [userInfo, setUserInfo] = useState<NewUserInfo>({
     UserAccount: "",
@@ -126,8 +129,9 @@ export default function Page() {
         PermissionData: [],
       });
       setFocusInput(false);
+      handleNotice("success", true, "新增成功");
     } else {
-      SweetAlert(reqInt, "新增失敗。");
+      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
     console.log(data);
   };
@@ -159,8 +163,9 @@ export default function Page() {
       setEditUserMode(false);
       setEditUserIndex(-1);
       setEditUserinfo({} as EditUserInfo);
+      handleNotice("success", true, "更新成功");
     } else {
-      console.log("ReqInt = ", reqInt);
+      handleNotice("error", true, `更新失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -171,15 +176,14 @@ export default function Page() {
     const res = data as DeleteUserResponse;
     const reqInt = res?.data?.Values?.ReqInt;
 
-    console.log(res);
-
     if (reqInt === 0) {
       getUserInfoList();
       setEditUserMode(false);
       setEditUserIndex(-1);
       setEditUserinfo({} as EditUserInfo);
+      handleNotice("success", true, "刪除成功");
     } else {
-      console.log("ReqInt = ", reqInt);
+      handleNotice("error", true, `刪除失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -201,6 +205,14 @@ export default function Page() {
   const handelNewUserMode = () => {
     setNewUserMode(!newUserMode);
     setEditUserMode(false);
+  };
+
+  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
+    setShowNotice({
+      type: type,
+      show: show,
+      messages: messages,
+    });
   };
 
   // const confirmPassword = async () => {

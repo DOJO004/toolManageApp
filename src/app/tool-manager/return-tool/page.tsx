@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { toolStockStatusInfo } from "./action";
 
+import { useNotice } from "@/components/context/NoticeContext";
 import ReturnToolFrom from "@/components/returnTool/retrunToolForm";
 import {
   GetBindLabelListResponse,
@@ -23,7 +24,9 @@ import {
 } from "@/scripts/Apis/repairAndScrap/repairAndScrap";
 import { apiGetStorageList } from "@/scripts/Apis/storage/storageApi";
 import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
+import { AlertColor } from "@mui/material";
 export default function Page() {
+  const { setShowNotice } = useNotice();
   const [bindLabelList, setBindLabelList] = useState<LabelBindItem[]>([]);
   const [handleToolReturnIndex, setHandleToolReturnIndex] =
     useState<number>(-1);
@@ -95,28 +98,29 @@ export default function Page() {
     if (reqInt === 0 && returnType === "return") {
       getBindLabelList();
       setReturnType("");
+      handleNotice("success", true, "歸還成功");
     } else if (reqInt === 0 && returnType === "repair") {
       postRepairTool();
     } else if (reqInt === 0 && returnType === "scrap") {
       postScrapTool();
     } else {
-      console.log(`ReqInt = ${reqInt}`);
+      handleNotice("error", true, `歸還失敗，errorCode = ${reqInt}`);
     }
   };
 
   const postRepairTool = async () => {
-    const confirm = window.confirm("確定要修復嗎?");
+    const confirm = window.confirm("確定要送修嗎?");
     if (!confirm) {
       return;
     }
     const res: any = await apiRepairTool(returnData);
     const reqInt = res.data?.Values?.ReqInt;
-    console.log("repair tool", res);
     if (reqInt === 0) {
       getBindLabelList();
       setReturnType("");
+      handleNotice("success", true, "送修成功");
     } else {
-      console.log(`ReqInt = ${reqInt}`);
+      handleNotice("error", true, `送修失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -127,12 +131,12 @@ export default function Page() {
     }
     const res: any = await apiScrapTool(returnData);
     const reqInt = res.data?.Values?.ReqInt;
-    console.log("scrap tool", res);
     if (reqInt === 0) {
       getBindLabelList();
       setReturnType("");
+      handleNotice("success", true, "報廢成功");
     } else {
-      console.log(`ReqInt = ${reqInt}`);
+      handleNotice("error", true, `報廢失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -180,6 +184,14 @@ export default function Page() {
 
   const handleReturnData = (value: string, name: string) => {
     setReturnData({ ...returnData, [name]: value });
+  };
+
+  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
+    setShowNotice({
+      type: type,
+      show: show,
+      messages: messages,
+    });
   };
 
   useEffect(() => {
