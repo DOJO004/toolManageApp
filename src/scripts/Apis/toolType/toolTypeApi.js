@@ -1,5 +1,5 @@
 import { apiInstance } from "@/scripts/toolInfoApi";
-import { getLoginTime, getUserToken } from "../mainApi";
+import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 
 export async function apiGetToolTypeList() {
   try {
@@ -21,7 +21,7 @@ export async function apiNewToolType(toolType) {
     ],
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: getPermission(),
   };
   try {
     const res = await apiInstance.post("user_operate/AddToolTypeInfo", body);
@@ -40,7 +40,7 @@ export async function apiEditToolType(toolType) {
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: getPermission(),
   };
   try {
     const res = await apiInstance.post("user_operate/ModifyToolTypeInfo", body);
@@ -56,7 +56,7 @@ export async function apiDeleteToolType(Id) {
     DisabledToolTypeIds: [Id],
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: getPermission(),
   };
   try {
     const res = await apiInstance.post(

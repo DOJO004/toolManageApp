@@ -1,4 +1,5 @@
 "use client";
+import { useNotice } from "@/components/context/NoticeContext";
 import SweetAlert from "@/components/sweetAlert";
 import ToolSpecIndex from "@/components/toolInfo/toolSpec";
 import { NewToolSpec } from "@/components/toolInfo/toolSpec/new";
@@ -21,9 +22,11 @@ import {
   apiNewToolSpec,
 } from "@/scripts/Apis/toolSpec/toolSpecApi";
 import { apiGetToolTypeList } from "@/scripts/Apis/toolType/toolTypeApi";
+import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
+  const { setShowNotice } = useNotice();
   const [toolSpecList, setToolSpecList] = useState([
     {
       ToolSpecId: "",
@@ -124,8 +127,9 @@ export default function Page() {
     if (reqInt === 0) {
       setEditToolSpecMode(false);
       getToolSpecList();
+      handleNotice("success", true, "修改成功");
     } else {
-      console.log(reqInt);
+      handleNotice("error", true, `修改失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -134,11 +138,15 @@ export default function Page() {
     if (confirm) {
       const data = await apiDeleteToolSpec(editToolSpec.ToolSpecId);
       const res = data as DeleteToolSpecResponse;
+      const reqInt = res?.data?.Values?.ReqInt;
       console.log("delete tool spec", res);
 
-      if (res?.data?.Values?.ReqInt === 0) {
+      if (reqInt === 0) {
         setEditToolSpecMode(false);
         getToolSpecList();
+        handleNotice("success", true, "刪除成功");
+      } else {
+        handleNotice("error", true, `刪除失敗，errorCode = ${reqInt}`);
       }
     }
   };
@@ -146,11 +154,15 @@ export default function Page() {
     e.preventDefault();
     const data = await apiNewToolSpec(toolSpec);
     const res = data as PostToolSpecResponse;
+    const reqInt = res?.data?.Values?.ReqInt;
     console.log("post new tool spec", res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
+    if (reqInt === 0) {
       getToolSpecList();
       cleanToolSpec();
+      handleNotice("success", true, "新增成功");
+    } else {
+      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -229,6 +241,18 @@ export default function Page() {
 
   const handleEditToolSpec = (key: string, value: string) => {
     setEditToolSpec({ ...editToolSpec, [key]: value });
+  };
+
+  const handleNotice = (
+    typeColor: AlertColor,
+    show: boolean,
+    messages: string
+  ) => {
+    setShowNotice({
+      type: typeColor,
+      show: show,
+      messages: messages,
+    });
   };
 
   useEffect(() => {
