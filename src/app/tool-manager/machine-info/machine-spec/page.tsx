@@ -1,5 +1,6 @@
 "use client";
 
+import { useNotice } from "@/components/context/NoticeContext";
 import MachineSpecIndex from "@/components/machineInfo/machineSpec";
 import NewMachineSpec from "@/components/machineInfo/machineSpec/new";
 import {
@@ -27,9 +28,11 @@ import {
 } from "@/scripts/Apis/machineSpec/machineSpec";
 import { apiGetMachineTypeList } from "@/scripts/Apis/machineType/machineType";
 import { apiGetProductLineTypeList } from "@/scripts/Apis/productLineType/productLineType";
+import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
+  const { setShowNotice } = useNotice();
   const [productLineList, setProductLineList] = useState<ProductLineItem[]>([]);
   const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
   const [machineSpecList, setMachineSpecList] = useState<MachineSpecItem[]>([]);
@@ -100,13 +103,13 @@ export default function Page() {
     const data = await apiNewMachineSpec(newMachineSpec);
     const res = data as PostMachineSpecResponse;
     const reqInt = res?.data?.Values?.ReqInt;
-    console.log("new machine spec", res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
+    if (reqInt === 0) {
       cleanNewMachineSpec();
       getMachineSpecList();
+      handleNotice("success", true, "新增成功");
     } else {
-      console.log(reqInt);
+      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -137,11 +140,13 @@ export default function Page() {
   const patchMachineSpec = async () => {
     const data = await apiEditMachineSpec(editMachineSpec);
     const res = data as PatchMachineSpecResponse;
-    console.log("patch machine spec", res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
+    const reqInt = res?.data?.Values?.ReqInt;
+    if (reqInt === 0) {
       getMachineSpecList();
       setEditMachineSpecMode(false);
+      handleNotice("success", true, "更新成功");
+    } else {
+      handleNotice("error", true, `更新失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -150,9 +155,13 @@ export default function Page() {
     if (confirm) {
       const data = await apiDeleteMachineSpec(editMachineSpec);
       const res = data as DeleteMachineSpecResponse;
-      if (res?.data?.Values?.ReqInt === 0) {
+      const reqInt = res?.data?.Values?.ReqInt;
+      if (reqInt === 0) {
         getMachineSpecList();
         setEditMachineSpecMode(false);
+        handleNotice("success", true, "刪除成功");
+      } else {
+        handleNotice("error", true, `刪除失敗，errorCode = ${reqInt}`);
       }
     }
   };
@@ -164,6 +173,14 @@ export default function Page() {
 
   const handleEditMachineSpec = (key: string, value: string) => {
     setEditMachineSpec((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
+    setShowNotice({
+      type: type,
+      show: show,
+      messages: messages,
+    });
   };
 
   let timer: ReturnType<typeof setTimeout>;
