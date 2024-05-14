@@ -1,5 +1,6 @@
 "use client";
 
+import { useNotice } from "@/components/context/NoticeContext";
 import MachineTypeIndex from "@/components/machineInfo/machineType";
 import NewMachineType from "@/components/machineInfo/machineType/new";
 import {
@@ -15,9 +16,11 @@ import {
   apiGetMachineTypeList,
   apiNewMachineType,
 } from "@/scripts/Apis/machineType/machineType";
+import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
+  const { setShowNotice } = useNotice();
   const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
   const [newMachineType, setNewMachineType] = useState<NewMachineTypeItem>({
     Id: "",
@@ -43,9 +46,13 @@ export default function Page() {
     e.preventDefault();
     const data = await apiNewMachineType(newMachineType);
     const res = data as PostMachineTypeResponse;
-    if (res?.data?.Values?.ReqInt === 0) {
+    const reqInt = res?.data?.Values?.ReqInt;
+    if (reqInt === 0) {
       cleanNewMachineType();
       getMachineTypeList();
+      handleNotice("success", true, "新增成功");
+    } else {
+      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -63,9 +70,13 @@ export default function Page() {
   const patchMachineType = async () => {
     const data = await apiEditMachineType(editMachineType);
     const res = data as GetMachineTypeListResponse;
-    if (res?.data?.Values?.ReqInt === 0) {
+    const reqInt = res.data?.Values?.ReqInt;
+    if (reqInt === 0) {
       setEditMachineTypeMode(false);
       getMachineTypeList();
+      handleNotice("success", true, "更新成功");
+    } else {
+      handleNotice("error", true, `更新失敗，errorCode = ${reqInt}`);
     }
   };
 
@@ -74,9 +85,13 @@ export default function Page() {
     if (confirm) {
       const data = await apiDeleteMachineType(editMachineType);
       const res = data as DeleteMachineTypeResponse;
-      if (res?.data?.Values?.ReqInt === 0) {
+      const reqInt = res.data?.Values?.ReqInt;
+      if (reqInt === 0) {
         setEditMachineTypeMode(false);
         getMachineTypeList();
+        handleNotice("success", true, "刪除成功");
+      } else {
+        handleNotice("error", true, `刪除失敗，errorCode = ${reqInt}`);
       }
     }
   };
@@ -110,6 +125,14 @@ export default function Page() {
 
     setEditMachineType(item);
     setEditMachineTypeModeIndex(index);
+  };
+
+  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
+    setShowNotice({
+      type: type,
+      show: show,
+      messages: messages,
+    });
   };
 
   useEffect(() => {
