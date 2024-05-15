@@ -24,6 +24,7 @@ export default function BindToolIndex() {
   const { setShowNotice } = useNotice();
   const [bindToolData, setBindToolData] = useState<BindToolDataItem>({
     ReceiptorId: "",
+    LabelCode: "",
     LabelId: "",
     LabelSn: "",
     ToolSn: "",
@@ -44,8 +45,10 @@ export default function BindToolIndex() {
       }
       const data = await apiGetELabelList();
       const res = data as GetELabelListResponse;
+      const reqInt = res?.data?.Values?.ReqInt;
+      console.log("get eLabelList", res);
 
-      if (res?.data?.Values?.ReqInt === 0) {
+      if (reqInt === 0) {
         setELabelList(filterUnbindLabel(res.data.Values.LabelList));
         return res.data.Values.LabelList;
       } else {
@@ -116,6 +119,7 @@ export default function BindToolIndex() {
   const cleanBindToolData = () => {
     setBindToolData({
       ReceiptorId: "",
+      LabelCode: "",
       LabelId: "",
       LabelSn: "",
       ToolSn: "",
@@ -170,19 +174,24 @@ export default function BindToolIndex() {
     }
   };
 
-  const handleClickBindData = (
-    key: string,
-    LabelId: string,
-    LabelSn: string,
-    ToolSn: string,
-    index: number
-  ) => {
-    if (key === "eLabel") {
+  const handleClickBindData = (params: {
+    key: string;
+    index: number;
+    LabelId?: string;
+    LabelCode?: string;
+    LabelSn?: string;
+    ToolSn?: string;
+  }) => {
+    const { key, index, LabelId, LabelCode, LabelSn, ToolSn } = params;
+    console.log(params);
+
+    if (key === "eLabel" && LabelId && LabelCode && LabelSn) {
       setBindToolData((prev) => ({ ...prev, LabelId: LabelId }));
       setBindToolData((prev) => ({ ...prev, LabelSn: LabelSn }));
+      setBindToolData((prev) => ({ ...prev, LabelCode: LabelCode }));
       setSelectLabel(index);
     }
-    if (key === "tool") {
+    if (key === "tool" && ToolSn) {
       setBindToolData((prev) => ({ ...prev, ToolSn: ToolSn }));
       setSelectToll(index);
     }
@@ -240,8 +249,11 @@ export default function BindToolIndex() {
                 list="labelCodeList"
                 className="w-full p-2 text-black rounded-md"
                 placeholder="標籤號碼"
-                value={bindToolData.LabelId}
-                onChange={(e) => handleInputBindData("LabelId", e.target.value)}
+                value={bindToolData.LabelCode}
+                onChange={(e) =>
+                  handleInputBindData("LabelCode", e.target.value)
+                }
+                readOnly
               />
               <datalist
                 id="labelCodeList"
@@ -258,6 +270,7 @@ export default function BindToolIndex() {
                 className="w-full p-2 text-black rounded-md"
                 value={bindToolData.LabelSn}
                 onChange={(e) => handleInputBindData("LabelSn", e.target.value)}
+                readOnly
               />
               <datalist
                 id="labelList"
@@ -274,6 +287,7 @@ export default function BindToolIndex() {
                 placeholder="刀具SN"
                 value={bindToolData.ToolSn}
                 onChange={(e) => handleInputBindData("ToolSn", e.target.value)}
+                readOnly
               />
               <datalist
                 id="toolSNList"
@@ -336,16 +350,18 @@ export default function BindToolIndex() {
                   key={item.LabelId}
                   className={`cursor-pointer hover:bg-gray-600 ${selectLabel === index ? "bg-gray-600" : ""}`}
                   onClick={() =>
-                    handleClickBindData(
-                      "eLabel",
-                      item.LabelId,
-                      item.LabelSn,
-                      "",
-                      index
-                    )
+                    handleClickBindData({
+                      key: "eLabel",
+                      index: index,
+                      LabelId: item.LabelId,
+                      LabelCode: item.AimsSpec.LabelCode,
+                      LabelSn: item.LabelSn,
+                    })
                   }
                 >
-                  <td className="p-1 whitespace-nowrap">{item.LabelId}</td>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.AimsSpec.LabelCode}
+                  </td>
                   <td className="p-1 whitespace-nowrap">{item.LabelSn}</td>
                 </tr>
               ))}
@@ -385,7 +401,11 @@ export default function BindToolIndex() {
                     key={item.ToolSn}
                     className={`cursor-pointer hover:bg-gray-600 ${selectTool === index ? "bg-gray-600" : ""}`}
                     onClick={() =>
-                      handleClickBindData("tool", "", "", item.ToolSn, index)
+                      handleClickBindData({
+                        key: "tool",
+                        ToolSn: item.ToolSn,
+                        index: index,
+                      })
                     }
                   >
                     <td className="p-1 whitespace-nowrap">

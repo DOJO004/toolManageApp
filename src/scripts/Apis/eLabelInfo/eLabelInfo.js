@@ -1,5 +1,5 @@
 import { apiInstance } from "../../eLabelInfoApi";
-import { getLoginTime, getUserToken } from "../mainApi";
+import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 
 export async function apiGetELabelList() {
   try {
@@ -92,7 +92,9 @@ export async function apiBindELabelInfo(data) {
     ToolSn: data.ToolSn,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [
+      getPermission()
+    ],
   };
   console.log("body", body);
   try {

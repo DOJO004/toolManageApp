@@ -1,15 +1,16 @@
 export interface BindToolDataItem {
-    ReceiptorId: string,
-    LabelId: string,
-    LabelSn: string,
-    ToolSn: string,
+  ReceiptorId: string;
+  LabelId: string;
+  LabelCode: string;
+  LabelSn: string;
+  ToolSn: string;
 }
-  
-export interface PostBindToolResponse{
+
+export interface PostBindToolResponse {
   data: {
-    RC: string,
+    RC: string;
     Values: {
-        ReqInt: number
-    }
-},
+      ReqInt: number;
+    };
+  };
 }
