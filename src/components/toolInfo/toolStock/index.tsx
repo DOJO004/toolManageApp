@@ -27,9 +27,7 @@ export default function ToolStockIndex({
                     <h4>
                       現有庫存 :
                       <span className="text-green-500">
-                        {item.CurrentStock +
-                          item.WarningCount +
-                          item.AlarmCount}
+                        {item.CurrentStock}
                       </span>
                     </h4>
                     <p>

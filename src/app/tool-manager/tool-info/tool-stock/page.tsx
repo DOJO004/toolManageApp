@@ -177,7 +177,7 @@ export default function Page() {
       case "Normal":
         return "text-green-500";
       case "NeedRepair":
-        return "text-amber-500";
+        return "text-red-500";
       case "Repairing":
         return "text-gray-400";
       case "Scrap":
