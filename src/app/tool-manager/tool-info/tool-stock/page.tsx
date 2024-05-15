@@ -176,6 +176,8 @@ export default function Page() {
     switch (status) {
       case "Normal":
         return "text-green-500";
+      case "NeedRepair":
+        return "text-amber-500";
       case "Repairing":
         return "text-gray-400";
       case "Scrap":
@@ -189,6 +191,8 @@ export default function Page() {
     switch (status) {
       case "Normal":
         return "正常";
+      case "NeedRepair":
+        return "需要維修";
       case "Repairing":
         return "維修中";
       case "Scrap":

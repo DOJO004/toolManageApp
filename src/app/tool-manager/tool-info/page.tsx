@@ -49,6 +49,8 @@ export default function Page() {
     switch (lifeStatus) {
       case "Normal":
         return "text-green-500";
+      case "NeedRepair":
+        return "text-amber-500";
       case "Repairing":
         return "text-amber-500";
       case "Scrap":
@@ -96,6 +98,8 @@ export default function Page() {
     switch (lifeStatus) {
       case "Normal":
         return "正常";
+      case "NeedRepair":
+        return "需要修整";
       case "Repairing":
         return "修理中";
       case "Scrap":
@@ -160,7 +164,8 @@ export default function Page() {
                       item.LifeStatus
                     )}`}
                   >
-                    {translateLifeStatus(item.LifeStatus)} /
+                    {translateLifeStatus(item.LifeStatus)}
+                    <span> / </span>
                     {item.LifeData.RepairCnt}
                   </td>
                   <td className="p-1 whitespace-nowrap">
