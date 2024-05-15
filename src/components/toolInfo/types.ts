@@ -19,6 +19,7 @@ export interface ToolStockItem {
   };
   LifeStatus: string;
   LifePercentage: number;
+  LastStorageId: number;
   SpecData: {
     BladeDiameter: number;
     BladeHeight: number;
@@ -37,10 +38,25 @@ export interface ToolStockItem {
     ProcessLength: number;
     RepairCnt: number;
   };
-  LoadingData: {
-    IsLoading: boolean;
-    MachineId: string;
-    AtcNo: number;
+  PositionData: {
+    PositionStatus: number;
+    StorageInfo: {
+      StorageNo: number;
+    };
+    LoadingInfo: {
+      MachineId: string;
+      AtcNo: number;
+      MachineSpec: {
+        MachineSn: string;
+        MachineName: string;
+      };
+    };
+  };
+  Receiver: {
+    AccountId: string;
+    UserAccount: string;
+    EmployeeId: string;
+    UserName: string;
   };
   LastModify: string;
 }
@@ -109,12 +125,6 @@ export interface ToolLoadingItem {
       MachineSn: string;
       MachineName: string;
     };
-  };
-  UserInfo: {
-    AccountId: string;
-    UserAccount: string;
-    EmployeeId: string;
-    UserName: string;
   };
   OperatorInfo: {
     AccountId: string;

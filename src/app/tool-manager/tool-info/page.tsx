@@ -50,7 +50,7 @@ export default function Page() {
       case "Normal":
         return "text-green-500";
       case "NeedRepair":
-        return "text-amber-500";
+        return "text-red-500";
       case "Repairing":
         return "text-amber-500";
       case "Scrap":
@@ -109,6 +109,19 @@ export default function Page() {
     }
   };
 
+  const handleToolPositionData = (positionStatus: number) => {
+    switch (positionStatus) {
+      case 0:
+        return "倉儲中";
+      case 1:
+        return "移出倉儲";
+      case 2:
+        return "裝載中";
+      default:
+        return "未知狀態";
+    }
+  };
+
   const formatTime = (milliseconds: number): string => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const hours = Math.floor(totalSeconds / 3600);
@@ -141,8 +154,8 @@ export default function Page() {
           <thead>
             <tr className="bg-indigo-500 ">
               <th className="p-1 whitespace-nowrap">刀具序號</th>
-              <th className="p-1 whitespace-nowrap">狀態/修整次數</th>
-              <th className="p-1 whitespace-nowrap">裝載狀態/設備</th>
+              <th className="p-1 whitespace-nowrap">狀態 / 修整次數</th>
+              <th className="p-1 whitespace-nowrap">裝載狀態 / 位置</th>
               <th className="p-1 whitespace-nowrap" title="公分表示">
                 累積加工長度 <span className="text-sm text-gray-300">cm</span>
               </th>
@@ -169,9 +182,14 @@ export default function Page() {
                     {item.LifeData.RepairCnt}
                   </td>
                   <td className="p-1 whitespace-nowrap">
-                    {item.LoadingData?.IsLoading
-                      ? `裝載中 / ${item.LoadingData.MachineId}`
-                      : "未裝載"}
+                    {handleToolPositionData(item.PositionData.PositionStatus)}
+                    <span> / </span>
+                    {/* 上機中的位置 */}
+                    {item.PositionData.LoadingInfo?.MachineSpec.MachineName}
+                    {/* 倉儲中的位置 */}
+                    <span title="倉儲編號">
+                      {item.PositionData.StorageInfo?.StorageNo}
+                    </span>
                   </td>
                   <td className="p-1 whitespace-nowrap">
                     {item.LifeData.ProcessLength / 10}

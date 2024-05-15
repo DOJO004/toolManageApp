@@ -14,6 +14,7 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
     cleanToolLogData();
     const data = await apiGetToolLoadingLogList(toolInfoData.ToolSn);
     const res = data as GetToolLoadingLogResponse;
+    console.log("get tool log data", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
       setToolLogData(res.data.Values.ToolMacLoadingOpsList);
@@ -43,7 +44,7 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
       case -1:
         return "報廢";
       default:
-        return "無法辨識此編號";
+        return "無法辨識此狀態";
     }
   };
 
@@ -58,26 +59,20 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
           <thead>
             <tr className="bg-indigo-500">
               <th className="p-1 text-xl whitespace-nowrap">設備序號</th>
-              <th className="p-1 text-xl whitespace-nowrap">動作</th>
+              <th className="p-1 text-xl whitespace-nowrap">狀態</th>
               <th className="p-1 text-xl whitespace-nowrap">刀庫號</th>
-              <th className="p-1 text-xl whitespace-nowrap">動作時間</th>
+              <th className="p-1 text-xl whitespace-nowrap">更新時間</th>
             </tr>
           </thead>
           <tbody>
             {toolLogData?.length > 0 ? (
               toolLogData.map((item) => (
-                <tr key={item.LogTime}>
+                <tr key={item.ToolSn}>
                   <td>
-                    {item.MachineLoading?.MachineId
-                      ? item.MachineLoading?.MachineId
-                      : " - "}
+                    {item.MachineLoading?.MachineSpec?.MachineName || " - "}
                   </td>
                   <td>{setOpActionsText(item.OpActions)}</td>
-                  <td>
-                    {item.MachineLoading?.AtcNo
-                      ? item.MachineLoading?.AtcNo
-                      : " - "}
-                  </td>
+                  <td>{item.StockInfo?.StorageNo || "-"}</td>
                   <td>{item.LogTime}</td>
                 </tr>
               ))
