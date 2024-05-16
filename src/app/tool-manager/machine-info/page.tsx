@@ -7,7 +7,7 @@ import {
 } from "@/components/machineInfo/types";
 import SweetAlert from "@/components/sweetAlert";
 import { apiGetMachineStatusList } from "@/scripts/Apis/dashboard/dashboard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 export default function Page() {
   const [machineInfoList, setMachineInfoList] = useState<MachineStatusItem[]>(
     []
@@ -15,6 +15,7 @@ export default function Page() {
   const [selectMachineInfo, setSelectMachineInfo] = useState<MachineStatusItem>(
     {} as MachineStatusItem
   );
+  const selectMachineInfoIndex = useRef(0);
   const [machineConnected, setMachineConnected] = useState<boolean>(false);
 
   const getMachineInfoList = async (count = 1) => {
@@ -30,7 +31,6 @@ export default function Page() {
 
       if (reqInt === 0) {
         setMachineInfoList(res.data.Values.MachineStatusList);
-        setSelectMachineInfo(res.data.Values.MachineStatusList[0]);
         setMachineConnected(res.data.Values.ModuleConnect.AcqModuleStatus);
         return res.data.Values.MachineStatusList;
       } else {
@@ -58,21 +58,81 @@ export default function Page() {
     }, 500);
   };
 
-  const handleSelectMachineInfo = (item: MachineStatusItem) => {
-    setSelectMachineInfo(item);
+  // 選擇設備
+  const handleSelectMachineInfo = (index: number) => {
+    selectMachineInfoIndex.current = index;
+    setSelectMachineInfo(machineInfoList[selectMachineInfoIndex.current]);
   };
 
   const handleStatusTime = (time: number) => {
     return Math.floor(time / 60000);
   };
 
+  //
+
+  // 設定運行狀態中文
+  const machineStatus = (status: string) => {
+    switch (status) {
+      case "Emergency":
+        return "緊急停止";
+      case "Running":
+        return "運行中";
+      case "Disconnect":
+        return "離線";
+      default:
+        return "未知狀態";
+    }
+  };
+
+  // 設定運行狀態文字顏色
+  const machineStatusColor = (status: string) => {
+    switch (status) {
+      case "Emergency":
+        return "text-red-500";
+      case "Running":
+        return "text-green-500";
+      case "Disconnect":
+        return "text-gray-500";
+      default:
+        return "text-gray-500";
+    }
+  };
+
+  // 設定運行狀態背景顏色
+  const machineStatusBgColor = (status: string) => {
+    switch (status) {
+      case "Emergency":
+        return "bg-red-500";
+      case "Running":
+        return "bg-green-500";
+      case "Disconnect":
+        return "bg-gray-500";
+      default:
+        return "bg-gray-500";
+    }
+  };
+
+  // 每三秒更新 machine info list
   useEffect(() => {
-    getMachineInfoList();
+    const interval = setInterval(() => {
+      getMachineInfoList();
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    setSelectMachineInfo(machineInfoList[selectMachineInfoIndex.current]);
+  }, [machineInfoList]);
+
   return (
     <div className="w-full p-2 my-2 = rounded-xl">
       <div className="gap-4 md:flex">
-        <MachineInfoPieChart selectMachineInfo={selectMachineInfo} />
+        <MachineInfoPieChart
+          selectMachineInfo={selectMachineInfo}
+          machineStatus={machineStatus}
+          machineStatusBgColor={machineStatusBgColor}
+        />
         <MachineLogInfo selectMachineInfo={selectMachineInfo} />
       </div>
       <div className="p-2 my-4 overflow-auto bg-gray-900 rounded-md ">
@@ -113,10 +173,10 @@ export default function Page() {
             </thead>
             <tbody>
               {machineInfoList.length > 0 ? (
-                machineInfoList.map((item) => (
+                machineInfoList.map((item, index) => (
                   <tr
                     key={item.MachineId}
-                    onClick={() => handleSelectMachineInfo(item)}
+                    onClick={() => handleSelectMachineInfo(index)}
                     className="cursor-pointer hover:bg-gray-600"
                   >
                     <td className="p-1 whitespace-nowrap">
@@ -130,9 +190,9 @@ export default function Page() {
                       {item.CurrentParameter.TotalFeedRate}
                     </td>
                     <td
-                      className={`p-1 whitespace-nowrap ${item.Status === "Disconnect" ? "text-gray-400" : ""}`}
+                      className={`p-1 whitespace-nowrap ${machineStatusColor(item.Status)}`}
                     >
-                      {item.Status === "Disconnect" ? "離線" : item.Status}
+                      {machineStatus(item.Status)}
                     </td>
                     <td className="p-1 whitespace-nowrap">
                       {item.StatusKeepTime === -1
@@ -143,7 +203,7 @@ export default function Page() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5}> no data...</td>
+                  <td colSpan={5}> loading...</td>
                 </tr>
               )}
             </tbody>

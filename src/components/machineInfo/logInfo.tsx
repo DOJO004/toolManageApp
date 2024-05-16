@@ -23,7 +23,7 @@ export default function MachineLogInfo({
             </tr>
           </thead>
           <tbody>
-            {selectMachineInfo.AtcLoadingList?.map((item) => (
+            {selectMachineInfo?.AtcLoadingList?.map((item) => (
               <tr key={item.ToolSn}>
                 <td>{item.AtcNo}</td>
                 <td>{item.ToolSn}</td>

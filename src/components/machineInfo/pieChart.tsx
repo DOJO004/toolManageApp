@@ -3,19 +3,27 @@ import { MachineStatusItem } from "./types";
 
 interface MachineInfoPieChartProps {
   selectMachineInfo: MachineStatusItem;
+  machineStatus: (status: string) => string;
+  machineStatusBgColor: (status: string) => string;
 }
 export default function MachineInfoPieChart({
   selectMachineInfo,
+  machineStatus,
+  machineStatusBgColor,
 }: MachineInfoPieChartProps) {
   console.log("selectMachineInfo", selectMachineInfo);
-  const machineActivation = (selectMachineInfo.Activation * 100).toFixed(2);
-  const processTimeInMs = selectMachineInfo.ProcessTime;
+  const machineActivation = (selectMachineInfo?.Activation * 100).toFixed(2);
+
+  // 設定時間
+  const processTimeInMs = selectMachineInfo?.ProcessTime;
   const hours = Math.floor(processTimeInMs / (1000 * 60 * 60));
   const minutes = Math.floor(
     (processTimeInMs % (1000 * 60 * 60)) / (1000 * 60)
   );
   const seconds = Math.floor((processTimeInMs % (1000 * 60)) / 1000);
   const machineProcessTime = `${hours}:${minutes}:${seconds}`;
+
+  // 設定圖表顏色
   const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${machineActivation}%, #B9E6B5 ${machineActivation}%, #B9E6B5)`;
 
   return (
@@ -24,16 +32,16 @@ export default function MachineInfoPieChart({
         <div className="flex justify-between border-b-2">
           <div>
             <p className="text-gray-300">
-              {selectMachineInfo.ProductLineData?.Name}
+              {selectMachineInfo?.ProductLineData?.Name}
             </p>
-            <h3>{selectMachineInfo.SerialNumber}</h3>
+            <h3>{selectMachineInfo?.SerialNumber}</h3>
             <p className="text-gray-300">
-              {selectMachineInfo.MacTypeData?.Name}
+              {selectMachineInfo?.MacTypeData?.Name}
             </p>
           </div>
           <div className="flex items-center gap-2">
             <Image src="/wi-fi.png" alt="wifi img" width={40} height={40} />
-            <p>{selectMachineInfo.MachineIP}</p>
+            <p>{selectMachineInfo?.MachineIP}</p>
           </div>
         </div>
 
@@ -62,9 +70,9 @@ export default function MachineInfoPieChart({
               <div>AtcNo / ToolSN</div>
             </div>
             <div
-              className={`w-full p-2 my-2 text-center rounded-md ${selectMachineInfo.Status === "Disconnect" ? "bg-gray-500" : "bg-green-500"}`}
+              className={`w-full p-2 my-2 text-center rounded-md ${machineStatusBgColor(selectMachineInfo?.Status)}`}
             >
-              {selectMachineInfo.Status}
+              {machineStatus(selectMachineInfo?.Status)}
             </div>
           </div>
         </div>
