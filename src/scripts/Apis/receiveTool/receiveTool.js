@@ -1,5 +1,5 @@
 import { apiInstance } from "@/scripts/eLabelInfoApi";
-import { getLoginTime, getUserToken } from "../mainApi";
+import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 
 export async function apiGetBindLabelList() {
   try {
@@ -15,10 +15,10 @@ export async function apiDeleteBindLabel(data) {
   const body = {
     RevertorId: data.RevertorId,
     LToolCode: data.LToolCode,
-    StorageId: data.StorageId,
+    StorageId: Number(data.StorageId),
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
   console.log("delete bind label body", body);
   try {

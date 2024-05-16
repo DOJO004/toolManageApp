@@ -32,8 +32,8 @@ export default function Page() {
     useState<number>(-1);
   const [userList, setUserList] = useState<any[]>([]);
   const [storageList, setStorageList] = useState<StorageItem[]>([]);
-  const [returnMode, setReturnMode] = useState<boolean>(false);
   const [returnType, setReturnType] = useState<string>("");
+  const [returnMode, setReturnMode] = useState<boolean>(false);
   const [returnData, setReturnData] = useState({
     RevertorId: "",
     LToolCode: 0,
@@ -68,75 +68,71 @@ export default function Page() {
     const res = data as any;
     console.log("user list ", res);
 
-    setUserList(res.data.Values.UserAccountList);
+    setUserList(res.data?.Values?.UserAccountList);
   };
 
   const getStorageList = async () => {
     const data = await apiGetStorageList();
     const res = data as GetStorageListResponse;
     const reqInt = res?.data?.Values?.ReqInt;
-    console.log(res);
+    console.log("storage list", res);
     if (reqInt === 0) {
       setStorageList(res.data.Values.StorageMenus);
     }
   };
-  const getUserOptions = () => {
-    const option: { [key: string]: string } = {};
-    userList.forEach((item) => {
-      option[item.AccountId] = item.UserName;
-    });
-    return option;
-  };
 
-  const postDisableLabelBindTool = async (e: FormEvent) => {
-    e.preventDefault();
+  const postDisableLabelBindTool = async (e?: FormEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
     const res: any = await apiDeleteBindLabel(returnData);
     const reqInt = res.data?.Values?.ReqInt;
     console.log("disable label bind tool", res);
     setReturnMode(false);
 
-    if (reqInt === 0 && returnType === "return") {
+    if (reqInt === 0) {
       getBindLabelList();
-      setReturnType("");
+      setHandleToolReturnIndex(-1);
       handleNotice("success", true, "歸還成功");
-    } else if (reqInt === 0 && returnType === "repair") {
-      postRepairTool();
-    } else if (reqInt === 0 && returnType === "scrap") {
-      postScrapTool();
     } else {
       handleNotice("error", true, `歸還失敗，errorCode = ${reqInt}`);
     }
+    return reqInt;
   };
 
-  const postRepairTool = async () => {
-    const confirm = window.confirm("確定要送修嗎?");
-    if (!confirm) {
-      return;
-    }
-    const res: any = await apiRepairTool(returnData);
-    const reqInt = res.data?.Values?.ReqInt;
-    if (reqInt === 0) {
-      getBindLabelList();
-      setReturnType("");
-      handleNotice("success", true, "送修成功");
+  const postRepairTool = async (e: FormEvent) => {
+    e.preventDefault();
+    const returnToolReqInt = await postDisableLabelBindTool();
+    if (returnToolReqInt === 0) {
+      const res: any = await apiRepairTool(returnData);
+      const reqInt = res.data?.Values?.ReqInt;
+      console.log("repair tool", res);
+
+      if (reqInt === 0) {
+        getBindLabelList();
+        handleNotice("success", true, "送修成功");
+      } else {
+        handleNotice("error", true, `送修失敗，errorCode = ${reqInt}`);
+      }
     } else {
-      handleNotice("error", true, `送修失敗，errorCode = ${reqInt}`);
+      handleNotice("error", true, `送修失敗，errorCode = ${returnToolReqInt}`);
     }
   };
 
-  const postScrapTool = async () => {
-    const confirm = window.confirm("確定要報廢嗎?");
-    if (!confirm) {
-      return;
-    }
-    const res: any = await apiScrapTool(returnData);
-    const reqInt = res.data?.Values?.ReqInt;
-    if (reqInt === 0) {
-      getBindLabelList();
-      setReturnType("");
-      handleNotice("success", true, "報廢成功");
+  const postScrapTool = async (e: FormEvent) => {
+    e.preventDefault();
+    const returnToolReqInt = await postDisableLabelBindTool();
+    if (returnToolReqInt === 0) {
+      const res: any = await apiScrapTool(returnData);
+      const reqInt = res.data?.Values?.ReqInt;
+      if (reqInt === 0) {
+        getBindLabelList();
+        handleNotice("success", true, "報廢成功");
+      } else {
+        handleNotice("error", true, `報廢失敗，errorCode = ${reqInt}`);
+      }
     } else {
-      handleNotice("error", true, `報廢失敗，errorCode = ${reqInt}`);
+      handleNotice("error", true, `報廢失敗，errorCode = ${returnToolReqInt}`);
     }
   };
 
@@ -156,7 +152,7 @@ export default function Page() {
             .toLowerCase()
             .includes(value.toLowerCase()) ||
           item.ToolSn.toLowerCase().includes(value.toLowerCase()) ||
-          item.ReceiptorInfo.UserName.toLowerCase().includes(
+          item.ReceiptorInfo?.UserName.toLowerCase().includes(
             value.toLowerCase()
           )
         );
@@ -182,7 +178,7 @@ export default function Page() {
     setReturnMode(true);
   };
 
-  const handleReturnData = (value: string, name: string) => {
+  const handleReturnData = (value: string | number, name: string) => {
     setReturnData({ ...returnData, [name]: value });
   };
 
@@ -200,8 +196,12 @@ export default function Page() {
     getStorageList();
   }, []);
 
+  useEffect(() => {
+    console.log(returnData);
+  }, [returnData]);
+
   return (
-    <div className="w-full p-2 mr-4 overflow-auto rounded-md">
+    <div className="relative w-full p-2 mr-4 overflow-auto rounded-md ">
       <div>
         <div className="my-4 ">
           <h3 className="text-center ">歸還刀具</h3>
@@ -216,13 +216,17 @@ export default function Page() {
         <div
           className={`absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 ${returnMode ? "block" : "hidden"}`}
         >
-          {returnType && (
+          {returnMode && (
             <ReturnToolFrom
+              returnType={returnType}
               postDisableLabelBindTool={postDisableLabelBindTool}
+              postRepairTool={postRepairTool}
+              postScrapTool={postScrapTool}
               returnData={returnData}
               userList={userList}
               storageList={storageList}
               handleReturnData={handleReturnData}
+              setReturnMode={setReturnMode}
             />
           )}
         </div>
@@ -233,7 +237,7 @@ export default function Page() {
                 <td className="p-2 whitespace-nowrap">標籤號碼</td>
                 <td className="p-2 whitespace-nowrap">刀具SN</td>
                 <td className="p-2 whitespace-nowrap">領取人</td>
-                <td className="p-2 whitespace-nowrap">目前狀態</td>
+                <td className="p-2 whitespace-nowrap">狀態 / 位置</td>
                 <td className="p-2 whitespace-nowrap">歸還</td>
               </tr>
             </thead>
@@ -249,7 +253,7 @@ export default function Page() {
                     </td>
 
                     <td className="p-1 whitespace-nowrap">
-                      {toolStockStatusInfo(item.ToolStatusInfo.ToolStatus)}
+                      {`${toolStockStatusInfo(item.ToolStatusInfo.ToolStatus)} / - `}
                     </td>
 
                     <td onClick={() => handleClickReturn(item)}>

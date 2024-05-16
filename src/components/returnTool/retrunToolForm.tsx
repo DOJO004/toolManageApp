@@ -1,27 +1,66 @@
-import { FormEvent } from "react";
+import React, { FormEvent } from "react";
 import { StorageItem } from "../storage/types";
 import { UserAccountItem } from "../userInfo/types";
 
 interface Props {
   postDisableLabelBindTool: (e: FormEvent) => void;
+  postRepairTool: (e: FormEvent) => void;
+  postScrapTool: (e: FormEvent) => void;
+  returnType: string;
   returnData: any;
   userList: UserAccountItem[];
   storageList: StorageItem[];
-  handleReturnData: (value: string, name: string) => void;
+  handleReturnData: (value: string | number, name: string) => void;
+  setReturnMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function ReturnToolFrom({
   postDisableLabelBindTool,
+  postRepairTool,
+  postScrapTool,
+  returnType,
   returnData,
   userList,
   storageList,
   handleReturnData,
+  setReturnMode,
 }: Props) {
+  const handleSubmitFunction = (type: string, e: FormEvent) => {
+    switch (type) {
+      case "repair":
+        return postRepairTool(e);
+      case "scrap":
+        return postScrapTool(e);
+      case "return":
+        return postDisableLabelBindTool(e);
+    }
+  };
+
+  const handleFromTitle = (type: string) => {
+    switch (type) {
+      case "repair":
+        return "送修";
+      case "scrap":
+        return "報廢";
+      case "return":
+        return "歸還";
+    }
+  };
   return (
     <form
-      className="p-4 bg-gray-500 rounded-md"
-      onSubmit={(e) => postDisableLabelBindTool(e)}
+      className="p-4 bg-gray-500 border rounded-md"
+      onSubmit={(e) => handleSubmitFunction(returnType, e)}
     >
-      <div>
+      <div className="flex justify-between">
+        <h3 className="mx-2 text-center">{`${handleFromTitle(returnType)}刀具`}</h3>
+        <div
+          className="p-1 rounded-full cursor-pointer hover:bg-gray-900"
+          onClick={() => setReturnMode(false)}
+        >
+          X
+        </div>
+      </div>
+
+      <div className="mt-4">
         <label htmlFor="Receiver">人員</label>
         <select
           name=""
