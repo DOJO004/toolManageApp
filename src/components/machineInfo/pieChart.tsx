@@ -6,12 +6,12 @@ interface MachineInfoPieChartProps {
   machineStatus: (status: string) => string;
   machineStatusBgColor: (status: string) => string;
 }
-export default function MachineInfoPieChart({
+
+const MachineInfoPieChart = ({
   selectMachineInfo,
   machineStatus,
   machineStatusBgColor,
-}: MachineInfoPieChartProps) {
-  console.log("selectMachineInfo", selectMachineInfo);
+}: MachineInfoPieChartProps) => {
   const machineActivation = (selectMachineInfo?.Activation * 100).toFixed(2);
 
   // 設定時間
@@ -25,6 +25,8 @@ export default function MachineInfoPieChart({
 
   // 設定圖表顏色
   const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${machineActivation}%, #B9E6B5 ${machineActivation}%, #B9E6B5)`;
+
+  // 進行深層比較
 
   return (
     <div className="w-full p-2 bg-gray-900 rounded-md">
@@ -60,23 +62,25 @@ export default function MachineInfoPieChart({
           </div>
           <div className="w-full ">
             <div className="p-2 my-2 bg-gray-800 rounded-md">
-              <div>總稼動時數(當日)</div>
+              <p>總稼動時數(當日)</p>
               <hr className="my-1" />
-              <div>{machineProcessTime}</div>
+              <p>{machineProcessTime}</p>
             </div>
             <div className="p-2 my-2 bg-gray-800 rounded-md">
-              <div>刀庫調用資訊</div>
+              <p>設備開機時數(當日)</p>
               <hr className="my-1" />
-              <div>AtcNo / ToolSN</div>
+              <p>Non</p>
             </div>
             <div
               className={`w-full p-2 my-2 text-center rounded-md ${machineStatusBgColor(selectMachineInfo?.Status)}`}
             >
-              {machineStatus(selectMachineInfo?.Status)}
+              <p>{machineStatus(selectMachineInfo?.Status)}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default MachineInfoPieChart;
