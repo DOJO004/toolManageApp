@@ -1,15 +1,20 @@
 "use client";
 
 import { getPermission } from "@/scripts/Apis/mainApi";
+import { ApiPostUserLogout } from "@/scripts/Apis/userInfo/userInfoApi";
+import { AlertColor } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { useNotice } from "../context/NoticeContext";
 import navbarItem from "./items";
 import MachineInfoMenu from "./machineInfoMenu/menu";
 import ToolStatusMenu from "./toolInfoMenu/menu";
 import UserInfoMenu from "./userInfoMenu/menu";
 
 const Navbar = () => {
+  const { setShowNotice } = useNotice();
   const [openMenu, setOpenMenu] = useState(false);
   const [checkAdmin, setCheckAdmin] = useState(false);
   const [clickItemName, setClickItemName] = useState("");
@@ -43,6 +48,45 @@ const Navbar = () => {
     if (admin && admin === "SuperAdmin") {
       setCheckAdmin(true);
     }
+  };
+
+  // 登出
+  const logout = async () => {
+    const confirm = await Swal.fire({
+      icon: "warning",
+      title: "登出",
+      text: "確定要登出嗎?",
+      showCancelButton: true,
+      confirmButtonText: "確定",
+      cancelButtonText: "取消",
+    });
+
+    if (confirm.isConfirmed) {
+      const res: any = await ApiPostUserLogout();
+      const reqInt = res?.data?.Values?.ReqInt;
+      if (reqInt === 0) {
+        window.location.href = "/";
+        deleteCookies(["userToken", "loginTime", "permission"]);
+        handleNotice("success", true, "登出成功");
+      } else {
+        handleNotice("error", true, `登出失敗，errorCode = ${reqInt}`);
+      }
+    }
+  };
+
+  // 清除 cookie
+  const deleteCookies = (names: string[]) => {
+    names.map((name) => {
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    });
+  };
+
+  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
+    setShowNotice({
+      type: type,
+      show: show,
+      messages: messages,
+    });
   };
 
   useEffect(() => {
@@ -109,6 +153,22 @@ const Navbar = () => {
               )}
             </li>
           ))}
+          <li
+            className="flex flex-col items-center justify-center w-full rounded-md cursor-pointer hover:bg-indigo-500"
+            onClick={() => logout()}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="30px"
+              viewBox="0 -960 960 960"
+              width="30px"
+              fill="#FFFFFF"
+              className="mx-auto"
+            >
+              <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
+            </svg>
+            <p>登出</p>
+          </li>
         </ul>
       </div>
       <div

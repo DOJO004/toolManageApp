@@ -12,6 +12,7 @@ import {
   PermissionInfoList,
   PermissionMenuItem,
 } from "@/components/userInfo/policeInfo/type";
+import ResetPasswordForm from "@/components/userInfo/resetPasswordForm";
 import {
   DeleteUserResponse,
   EditUserInfo,
@@ -28,6 +29,7 @@ import {
   ApiGetUserInfoList,
   ApiPatchUserInfo,
   ApiPostUserInfo,
+  ApiResetPassword,
 } from "@/scripts/Apis/userInfo/userInfoApi";
 import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
@@ -44,6 +46,11 @@ export default function Page() {
     EMailAddress: "",
     PermissionData: [],
   });
+  const [newPasswordData, setNewPasswordData] = useState({
+    AccountId: "",
+    NewPwd: "",
+  });
+  const [resetPasswordMode, setResetPasswordMode] = useState<boolean>(false);
 
   const [permissionList, setPermissionList] = useState<PermissionMenuItem[]>(
     []
@@ -109,6 +116,8 @@ export default function Page() {
 
     if (reqInt === 0) {
       setPermissionList(res.data.Values.PermissionMenus);
+    } else {
+      console.log("get permission false reqInt =", reqInt);
     }
   };
   const postUserInfo = async (e: FormEvent) => {
@@ -134,6 +143,20 @@ export default function Page() {
       handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
     console.log(data);
+  };
+
+  // 重設密碼
+
+  const resetPassword = async (e: FormEvent) => {
+    e.preventDefault();
+    const res: any = await ApiResetPassword(newPasswordData);
+    const reqInt = res?.data?.Values?.ReqInt;
+
+    if (reqInt === 0) {
+      handleNotice("success", true, "重設密碼成功");
+    } else {
+      handleNotice("error", true, `重設密碼失敗，errorCode = ${reqInt}`);
+    }
   };
 
   const handleSetUserInfo = (key: string, value: string) => {
@@ -215,6 +238,14 @@ export default function Page() {
     });
   };
 
+  const handleResetPassword = () => {
+    setResetPasswordMode(!resetPasswordMode);
+    setNewPasswordData((prev) => ({
+      ...prev,
+      AccountId: editUserInfo.AccountId,
+    }));
+  };
+
   // const confirmPassword = async () => {
   //   const { value: password } = await Swal.fire({
   //     title: "輸入密碼",
@@ -249,14 +280,11 @@ export default function Page() {
         </button>
       </div>
       <div
-        className={`my-4 transition-all overflow-hidden duration-300 ease-in-out ${
-          newUserMode ? "h-60" : "h-0"
+        className={`my-4 relative transition-all overflow-hidden duration-300 ease-in-out ${
+          newUserMode ? "h-72" : "h-0"
         }`}
       >
-        <div
-          className={`h-60 p-1 overflow-auto absolute right-0  bottom-3 border rounded-md bg-white  ${focusInput ? "block" : "hidden"}`}
-        >
-          {permissionList.map((item) => (
+        {/* {permissionList.map((item) => (
             <div key={item.Id} className="flex items-center hover:bg-gray-300">
               <input
                 type="checkbox"
@@ -271,8 +299,7 @@ export default function Page() {
                 {item.Name}
               </label>
             </div>
-          ))}
-        </div>
+          ))} */}
         <UserInfoNew
           setNewUserMode={setNewUserMode}
           departmentList={departmentList}
@@ -285,7 +312,14 @@ export default function Page() {
           handleCheckPermission={handleCheckPermission}
         />
       </div>
-      <div className="w-full overflow-auto bg-gray-900 rounded-md ">
+      <div className="relative w-full overflow-auto bg-gray-900 rounded-md ">
+        <ResetPasswordForm
+          resetPassword={resetPassword}
+          setResetPasswordMode={setResetPasswordMode}
+          newPasswordData={newPasswordData}
+          setNewPasswordData={setNewPasswordData}
+          resetPasswordMode={resetPasswordMode}
+        />
         <UserInfoIndex
           userInfoList={userInfoList}
           editUserMode={editUserMode}
@@ -296,6 +330,7 @@ export default function Page() {
           patchUserInfo={patchUserInfo}
           handleEditUser={handleEditUser}
           deleteUserInfo={deleteUserInfo}
+          handleResetPassword={handleResetPassword}
         />
       </div>
     </div>

@@ -31,6 +31,8 @@ export default function IndexPoliceInfo() {
     const res = data as PermissionInfoList;
     if (res?.data?.Values?.ReqInt === 0) {
       setPoliceInfoList(res.data.Values.PermissionMenus);
+    } else {
+      console.log("get permission false reqInt =", res?.data?.Values?.ReqInt);
     }
   };
 

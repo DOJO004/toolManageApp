@@ -22,8 +22,23 @@ export default function UserInfoNew({
   setFocusInput,
   focusInput,
 }: NewUserInfoProps) {
+  // test
+  const permissions = [
+    {
+      id: "1",
+      name: "管理員",
+    },
+    {
+      id: "2",
+      name: "主管",
+    },
+    {
+      id: "3",
+      name: "員工",
+    },
+  ];
   return (
-    <div className="p-4 bg-gray-500 rounded-md">
+    <div className="p-4 bg-gray-900 rounded-md">
       <div className="relative ">
         <h2 className="text-left ">新增使用者</h2>
         <button
@@ -118,6 +133,16 @@ export default function UserInfoNew({
                     : "選擇權限"}
                 </option>
               </select>
+              <ul className="absolute z-10 w-40 p-4 bg-gray-200 border rounded-md top-16 right-2">
+                {permissions.map((item) => (
+                  <li key={item.id} className="mr-auto w-fit">
+                    <input type="checkbox" id={item.name} />
+                    <label htmlFor={item.name} className="text-black">
+                      {item.name}
+                    </label>
+                  </li>
+                ))}
+              </ul>
               <div
                 className="absolute top-0 bottom-0 left-0 right-0"
                 onClick={() => setFocusInput(!focusInput)}

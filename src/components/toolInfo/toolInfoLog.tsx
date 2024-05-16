@@ -66,8 +66,8 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
           </thead>
           <tbody>
             {toolLogData?.length > 0 ? (
-              toolLogData.map((item) => (
-                <tr key={item.ToolSn}>
+              toolLogData.map((item, index) => (
+                <tr key={index}>
                   <td>
                     {item.MachineLoading?.MachineSpec?.MachineName || " - "}
                   </td>

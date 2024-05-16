@@ -10,8 +10,8 @@ interface Props {
   departmentList: DepartmentItem[];
   handleEditUser: (item: UserAccountItem, index: number) => void;
   patchUserInfo: () => void;
-
   deleteUserInfo: () => void;
+  handleResetPassword: () => void;
 }
 export default function UserInfoIndex({
   userInfoList,
@@ -23,16 +23,16 @@ export default function UserInfoIndex({
   handleEditUser,
   patchUserInfo,
   deleteUserInfo,
+  handleResetPassword,
 }: Props) {
   return (
     <table className="w-full">
       <thead>
         <tr>
-          <th className="p-1 bg-indigo-500 whitespace-nowrap">帳號 ID</th>
-          <th className="p-1 bg-indigo-500 whitespace-nowrap">使用者名稱</th>
+          <th className="p-1 bg-indigo-500 whitespace-nowrap">使用者帳號</th>
           <th className="p-1 bg-indigo-500 whitespace-nowrap">部門</th>
           <th className="p-1 bg-indigo-500 whitespace-nowrap">Email</th>
-
+          <th className="p-1 bg-indigo-500 whitespace-nowrap">權限</th>
           <th className="p-1 bg-indigo-500 whitespace-nowrap">最後更新</th>
           <th className="p-1 bg-indigo-500 whitespace-nowrap">編輯</th>
         </tr>
@@ -42,19 +42,6 @@ export default function UserInfoIndex({
           userInfoList.map((item, index) =>
             editUserMode && editUserIndex === index ? (
               <tr key={item.AccountId}>
-                <td className="p-1 whitespace-nowrap">
-                  <input
-                    type="text"
-                    className="p-2 text-center text-black rounded-md"
-                    value={editUserInfo.AccountId}
-                    onChange={(e) =>
-                      setEditUserinfo((prev) => ({
-                        ...prev,
-                        AccountId: e.target.value,
-                      }))
-                    }
-                  />
-                </td>
                 <td className="p-1 whitespace-nowrap">
                   <input
                     type="text"
@@ -103,8 +90,15 @@ export default function UserInfoIndex({
                     }
                   />
                 </td>
-
-                <td> - </td>
+                <td>權限</td>
+                <td>
+                  <button
+                    className="p-1 rounded-md hover:bg-indigo-500"
+                    onClick={() => handleResetPassword()}
+                  >
+                    密碼重設
+                  </button>
+                </td>
                 <td className="p-1 whitespace-nowrap">
                   <button onClick={() => patchUserInfo()}>完成</button>
                   <span> / </span>
@@ -113,13 +107,13 @@ export default function UserInfoIndex({
               </tr>
             ) : (
               <tr key={item.AccountId}>
-                <td className="p-1 whitespace-nowrap">{item.AccountId}</td>
                 <td className="p-1 whitespace-nowrap">{item.UserName}</td>
 
                 <td className="p-1 whitespace-nowrap">
                   {item.Department.Name}
                 </td>
                 <td className="p-1 whitespace-nowrap">{item.EMail}</td>
+                <td className="p-1 whitespace-nowrap">權限</td>
                 <td className="p-1 whitespace-nowrap">{item.LastModify}</td>
                 <td className="p-1 whitespace-nowrap">
                   <button

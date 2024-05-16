@@ -164,8 +164,8 @@ export default function Page() {
             </tr>
           </thead>
           <tbody>
-            {toolInfoList.length > 0 ? (
-              sortToolInfoList(toolInfoList).map((item) => (
+            {toolInfoList?.length > 0 ? (
+              sortToolInfoList(toolInfoList).map((item, index) => (
                 <tr
                   key={item.ToolSn}
                   className="cursor-pointer hover:bg-gray-600"
@@ -204,7 +204,7 @@ export default function Page() {
               ))
             ) : (
               <tr>
-                <td colSpan={6}>no data...</td>
+                <td colSpan={6}>loading...</td>
               </tr>
             )}
           </tbody>

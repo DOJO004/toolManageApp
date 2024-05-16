@@ -1,5 +1,5 @@
 import { apiInstance } from "../../userInfoApi";
-import { getLoginTime, getUserToken } from "../mainApi";
+import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 
 export const ApiUserLogin = async (data) => {
   const body = {
@@ -17,7 +17,23 @@ export const ApiUserLogin = async (data) => {
 
 export const ApiGetUserInfoList = async () => {
   try {
-    const res = await apiInstance.get("/account_get/GetUserAccountInfoList?Activated=1");
+    const res = await apiInstance.get(
+      "/account_get/GetUserAccountInfoList?Activated=1"
+    );
+    return res;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+};
+
+export const ApiPostUserLogout = async () => {
+  const body = {
+    Token: getUserToken(),
+    LoginTime: getLoginTime(),
+  };
+  try {
+    const res = await apiInstance.post("/user_operate/UserLogout", body);
     return res;
   } catch (error) {
     console.error("Error", error);
@@ -59,8 +75,7 @@ export const ApiPatchUserInfo = async (data) => {
     ModifyInfo: {
       ModifyPassword: {
         OgnPwd: data.OgnPwd || null,
-        UserPwd: data.OgnPwd || null
-        ,
+        UserPwd: data.OgnPwd || null,
       },
       UserName: data.UserName,
       DepartmentId: data.DepartmentId,
@@ -95,6 +110,27 @@ export const ApiDeleteUserInfo = async (id) => {
   try {
     const res = await apiInstance.post(
       "/user_operate/DisabledUserAccountInfo",
+      body
+    );
+    return res;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+};
+
+export const ApiResetPassword = async (data) => {
+  const body = {
+    AccountId: data.AccountId,
+    NewPwd: data.NewPwd,
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: [getPermission()],
+  };
+  console.log("resetPassword", body);
+  try {
+    const res = await apiInstance.post(
+      "/user_operate/SetNewUserPassword",
       body
     );
     return res;
