@@ -4,7 +4,7 @@ export interface GetToolStockListResponse {
       ReqInt: number;
       TotalPages: number;
       TotalRecords: number;
-      ToolStockList: ToolStockItem[];
+      StockToolList: ToolStockItem[];
     };
   };
 }

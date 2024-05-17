@@ -19,12 +19,12 @@ export default function RepairAndScrapIndex() {
   const getToolStockList = async () => {
     const data = await apiGetToolStockList();
     const res = data as GetToolStockInfoListResponse;
-    console.log(res);
+    console.log("get tool stock list", res);
     if (res?.data?.Values?.ReqInt === 0) {
-      const sortData = sortToolList(res.data.Values.ToolStockList);
+      const sortData = sortToolList(res.data.Values.StockToolList);
       const filterData = filterToolStatus(sortData);
       setToolStockList(filterData);
-      return res.data.Values.ToolStockList;
+      return res.data.Values.StockToolList;
     }
   };
 

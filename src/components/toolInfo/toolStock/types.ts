@@ -40,7 +40,7 @@ export interface GetToolStockInfoListResponse {
   data: {
     Values: {
       ReqInt: number;
-      ToolStockList: ToolStockListItem[];
+      StockToolList: ToolStockListItem[];
     };
   };
 }

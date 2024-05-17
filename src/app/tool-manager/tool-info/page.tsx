@@ -27,9 +27,9 @@ export default function Page() {
       console.log("get tool stock list", res);
 
       if (reqInt === 0) {
-        setToolInfoList(res.data.Values.ToolStockList);
-        setToolInfoData(res.data.Values.ToolStockList[0]);
-        return res.data.Values.ToolStockList;
+        setToolInfoList(res.data.Values.StockToolList);
+        setToolInfoData(res.data.Values.StockToolList[0]);
+        return res.data.Values.StockToolList;
       } else {
         console.log(`ReqInt = ${reqInt}`);
       }

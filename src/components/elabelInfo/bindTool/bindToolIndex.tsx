@@ -72,8 +72,8 @@ export default function BindToolIndex() {
       reqInt !== 0 ? getToolList(count + 1) : null;
 
       if (reqInt === 0) {
-        setToolList(filterToolStatus(res.data.Values.ToolStockList));
-        return res.data.Values.ToolStockList;
+        setToolList(filterToolStatus(res.data.Values.StockToolList));
+        return res.data.Values.StockToolList;
       }
     } catch (error) {
       console.error("Error", error);
