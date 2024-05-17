@@ -11,7 +11,7 @@ import UserInfoNew from "@/components/userInfo/new";
 import {
   PermissionInfoList,
   PermissionMenuItem,
-} from "@/components/userInfo/policeInfo/type";
+} from "@/components/userInfo/permissions/type";
 import ResetPasswordForm from "@/components/userInfo/resetPasswordForm";
 import {
   DeleteUserResponse,

@@ -13,7 +13,7 @@ import {
   PermissionMenuItem,
 } from "./type";
 
-export default function IndexPoliceInfo() {
+export default function PermissionInfoIndex() {
   const [policeInfoList, setPoliceInfoList] = useState<PermissionMenuItem[]>(
     []
   );

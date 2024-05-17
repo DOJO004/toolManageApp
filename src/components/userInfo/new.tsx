@@ -1,6 +1,6 @@
 import { FormEvent } from "react";
 import { DepartmentItem } from "./department/type";
-import { PermissionMenuItem } from "./policeInfo/type";
+import { PermissionMenuItem } from "./permissions/type";
 import type { NewUserInfo } from "./types";
 interface NewUserInfoProps {
   setNewUserMode: (value: boolean) => void;
