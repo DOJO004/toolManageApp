@@ -1,4 +1,8 @@
-import { getLoginTime, getUserToken } from "@/scripts/Apis/mainApi";
+import {
+  getLoginTime,
+  getPermission,
+  getUserToken,
+} from "@/scripts/Apis/mainApi";
 import { apiInstance } from "@/scripts/toolInfoApi";
 
 // 送修刀具
@@ -7,8 +11,9 @@ export async function apiRepairTool(data) {
     ToolSn: data.ToolSn,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
+  console.log("repair tool body", body);
   try {
     const res = await apiInstance.post(
       "/user_operate/RepairToolStockInfo",
@@ -27,8 +32,9 @@ export async function apiScrapTool(data) {
     ToolSn: data.ToolSn,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
+  console.log("scrap tool body", body);
   try {
     const res = await apiInstance.post(
       "/user_operate/ScrapToolStockInfo",
@@ -48,7 +54,7 @@ export async function apiRestockTool(data) {
     ToolSn: data.ToolSn,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
   try {
     const res = await apiInstance.post(

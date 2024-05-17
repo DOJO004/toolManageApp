@@ -1,38 +1,39 @@
 // get user info
 export const getUserToken = () => {
-  const cookies = document.cookie.split(";").map(cookie => cookie.trim());
-  const userTokenCookie = cookies.find(cookie => cookie.startsWith("userToken="));
-  console.log("user token = ", userTokenCookie);
-  
-  if (userTokenCookie) {
-    return userTokenCookie.split("=")[1];
+  if (typeof document !== "undefined") {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const userTokenCookie = cookies.find((cookie) =>
+      cookie.startsWith("userToken=")
+    );
+    const userToken = userTokenCookie.split("=")[1];
+    return userToken;
   }
-  
-  return null; // 如果找不到 userToken，返回 null
+  return "nLxVDJ2R";
 };
 
-
 export const getLoginTime = () => {
-  const cookies = document.cookie.split(";").map(cookie => cookie.trim());
-  const userLoginTime = cookies.find(cookie => cookie.startsWith("loginTime="));
-  
-  if (userLoginTime) {
-    return userLoginTime.split("=")[1];
+  if (typeof document !== "undefined") {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const userLoginTime = cookies.find((cookie) =>
+      cookie.startsWith("loginTime=")
+    );
+    const loginTime = userLoginTime.split("=")[1];
+    return loginTime;
   }
-  
-  return null; // 如果找不到 userToken，返回 null
+  return "2024-05-17 09:11:22";
 };
 
 export const getPermission = () => {
-  const cookies = document.cookie.split(";").map(cookie => cookie.trim());
-  const userPermission = cookies.find(cookie => cookie.startsWith("permission="));
-  
-  if (userPermission) {
-    return userPermission.split("=")[1];
+  if (typeof document !== "undefined") {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const userPermission = cookies.find((cookie) =>
+      cookie.startsWith("permission=")
+    );
+    const permission = userPermission.split("=")[1];
+    return permission;
   }
-  
-  return null; // 如果找不到 userToken，返回 null
-}
+  return "SuperAdmin";
+};
 
 export const setCookie = async (name, value, days) => {
   let expires = "";

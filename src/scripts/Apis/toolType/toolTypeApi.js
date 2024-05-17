@@ -21,8 +21,9 @@ export async function apiNewToolType(toolType) {
     ],
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: getPermission(),
+    NeedPermissions: [getPermission()],
   };
+  console.log("new tool type body =", body);
   try {
     const res = await apiInstance.post("user_operate/AddToolTypeInfo", body);
     return res;
@@ -40,7 +41,7 @@ export async function apiEditToolType(toolType) {
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: getPermission(),
+    NeedPermissions: [getPermission()],
   };
   try {
     const res = await apiInstance.post("user_operate/ModifyToolTypeInfo", body);
@@ -56,7 +57,7 @@ export async function apiDeleteToolType(Id) {
     DisabledToolTypeIds: [Id],
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: getPermission(),
+    NeedPermissions: [getPermission()],
   };
   try {
     const res = await apiInstance.post(

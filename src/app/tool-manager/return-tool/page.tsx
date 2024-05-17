@@ -125,6 +125,8 @@ export default function Page() {
     if (returnToolReqInt === 0) {
       const res: any = await apiScrapTool(returnData);
       const reqInt = res.data?.Values?.ReqInt;
+      console.log("scrap tool", res);
+
       if (reqInt === 0) {
         getBindLabelList();
         handleNotice("success", true, "報廢成功");

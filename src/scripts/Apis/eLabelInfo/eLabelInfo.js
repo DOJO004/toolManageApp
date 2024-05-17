@@ -1,7 +1,7 @@
 import { apiInstance } from "../../eLabelInfoApi";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 
-export async function apiGetELabelList() {
+export const apiGetELabelList = async () => {
   try {
     const res = await apiInstance.get("/label_get/GetLabelSpecInfoList");
     return res;
@@ -9,7 +9,7 @@ export async function apiGetELabelList() {
     console.error("Error", error);
     return error;
   }
-}
+};
 
 export async function apiNewELabel(eLabel) {
   const body = {
@@ -92,9 +92,7 @@ export async function apiBindELabelInfo(data) {
     ToolSn: data.ToolSn,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: [
-      getPermission()
-    ],
+    NeedPermissions: [getPermission()],
   };
   console.log("body", body);
   try {

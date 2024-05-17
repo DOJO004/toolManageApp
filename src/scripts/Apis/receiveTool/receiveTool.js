@@ -3,7 +3,9 @@ import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 
 export async function apiGetBindLabelList() {
   try {
-    const res = await apiInstance.get("/label_get/GetLabelToolBindInfoList?ActivateStatus=1");
+    const res = await apiInstance.get(
+      "/label_get/GetLabelToolBindInfoList?ActivateStatus=1"
+    );
     return res;
   } catch (error) {
     console.error("Error", error);
@@ -15,7 +17,7 @@ export async function apiDeleteBindLabel(data) {
   const body = {
     RevertorId: data.RevertorId,
     LToolCode: data.LToolCode,
-    StorageId: Number(data.StorageId),
+    StorageId: data.StorageId,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
     NeedPermissions: [getPermission()],

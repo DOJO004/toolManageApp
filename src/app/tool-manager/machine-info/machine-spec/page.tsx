@@ -90,7 +90,7 @@ export default function Page() {
   const getMachineSpecList = async () => {
     const data = await await apiGetMachineSpecList();
     const res = data as GetMachineSpecListResponse;
-    console.log(res);
+    console.log("get machine spec list", res);
 
     if (res?.data?.Values?.ReqInt === 0) {
       setMachineSpecList(res.data.Values.MachineeSpecList);
