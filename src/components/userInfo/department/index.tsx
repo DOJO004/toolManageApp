@@ -61,7 +61,7 @@ export default function IndexDepartment() {
         <h1 className="text-center ">部門資訊列表</h1>
         <button
           className="absolute top-0 right-0 p-1 border hover:bg-gray-500"
-          onClick={() => setNewDepartmentMode(true)}
+          onClick={() => setNewDepartmentMode(!newDepartmentMode)}
         >
           新增
         </button>
@@ -76,7 +76,7 @@ export default function IndexDepartment() {
           setNewDepartmentMode={setNewDepartmentMode}
         />
       </div>
-      <div className="w-full overflow-auto text-center bg-gray-500 rounded-md ">
+      <div className="w-full overflow-auto text-center bg-gray-900 rounded-md ">
         <table className="w-full ">
           <thead>
             <tr className="bg-indigo-500 ">

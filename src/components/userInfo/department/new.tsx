@@ -33,11 +33,11 @@ export default function NewDepartment({
     setNewDepartment((prev) => ({ ...prev, [key]: value }));
   };
   return (
-    <div className="p-4 bg-gray-500 rounded-md">
+    <div className="p-4 bg-gray-900 rounded-md">
       <div className="relative ">
         <h2>新增部門</h2>
         <button
-          className="absolute top-0 right-0 p-2 rounded-full hover:bg-gray-900"
+          className="absolute top-0 right-0 p-2 rounded-full hover:bg-gray-700"
           onClick={() => setNewDepartmentMode(false)}
         >
           X
