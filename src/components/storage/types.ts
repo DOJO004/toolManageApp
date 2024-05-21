@@ -26,16 +26,7 @@ export interface EditStorageItem {
   Name: string;
 }
 
-export interface StorageBasicResponse {
-  data: {
-    RC: string;
-    Values: {
-      ReqInt: number;
-    };
-  };
-}
-
-export interface NewStorageResponse {
+export interface BasicResponse {
   data: {
     RC: string;
     Values: {

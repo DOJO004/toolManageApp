@@ -52,10 +52,12 @@ export async function apiRestockTool(data) {
   const body = {
     RevertorId: data.RevertorId,
     ToolSn: data.ToolSn,
+    StorageId: data.StorageId,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
     NeedPermissions: [getPermission()],
   };
+  console.log("restock tool body", body);
   try {
     const res = await apiInstance.post(
       "/user_operate/RestorageToolStockInfo",

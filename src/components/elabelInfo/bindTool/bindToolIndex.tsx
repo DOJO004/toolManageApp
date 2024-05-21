@@ -38,11 +38,11 @@ export default function BindToolIndex() {
   const [selectTool, setSelectToll] = useState<number>(-1);
 
   const getELabelList = async (count = 1) => {
+    if (count > 3) {
+      SweetAlert(-99, "請求綁定標籤失敗，請重新整理頁面。");
+      return;
+    }
     try {
-      if (count === 3) {
-        SweetAlert(-99, "請求失敗，請重新整理頁面。");
-        throw new Error("Maximum retry count reached");
-      }
       const data = await apiGetELabelList();
       const res = data as GetELabelListResponse;
       const reqInt = res?.data?.Values?.ReqInt;
@@ -52,9 +52,10 @@ export default function BindToolIndex() {
         setELabelList(filterUnbindLabel(res.data.Values.LabelList));
         return res.data.Values.LabelList;
       } else {
-        getELabelList(count + 1);
+        console.log(`get e label list ReqInt = ${reqInt}`);
       }
     } catch (error: any) {
+      getELabelList(count + 1);
       console.error("Error", error);
     }
   };
@@ -203,7 +204,7 @@ export default function BindToolIndex() {
 
   const hintLabelCodeImage = () => {
     Swal.fire({
-      title: "Check out this way!",
+      title: "看這邊😀",
       imageUrl: "/label hint.png",
       imageWidth: 500,
       imageHeight: 300,

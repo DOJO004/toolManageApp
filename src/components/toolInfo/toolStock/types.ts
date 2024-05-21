@@ -67,6 +67,18 @@ export interface ToolStockListItem {
     ProcessLength: number;
     RepairCnt: number;
   };
+  MaxLife: {
+    ProcessCnt: number;
+    ProcessTime: number;
+    ProcessLength: number;
+    RepairCnt: number;
+  };
+  Receiver: {
+    AccountId: string;
+    UserAccount: string;
+    EmployeeId: string;
+    UserName: string;
+  };
   PositionData: {
     PositionStatus: number;
     StorageInfo: {

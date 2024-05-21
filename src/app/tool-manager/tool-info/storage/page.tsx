@@ -4,10 +4,10 @@ import { useNotice } from "@/components/context/NoticeContext";
 import StorageIndex from "@/components/storage";
 import StorageNew from "@/components/storage/new";
 import {
+  BasicResponse,
   EditStorageItem,
   GetStorageListResponse,
   NewStorageItem,
-  NewStorageResponse,
   StorageBasicResponse,
   StorageItem,
 } from "@/components/storage/types";
@@ -50,7 +50,7 @@ export default function PatchStorageResponse() {
   const postStorage = async (e: FormEvent) => {
     e.preventDefault();
     const data = await apiPostStorageInfo(newStorage);
-    const res = data as NewStorageResponse;
+    const res = data as BasicResponse;
     const reqInt = res.data?.Values?.ReqInt;
     console.log(res);
 
