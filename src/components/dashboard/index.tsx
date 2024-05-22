@@ -16,10 +16,33 @@ export default function DashboardIndex() {
   const getMachineInfoList = async () => {
     const data = await apiGetMachineStatusList();
     const res = data as GetMachineStatusInfoListResponse;
+    const reqInt = res?.data?.Values?.ReqInt;
     console.log(res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
+    if (reqInt === 0) {
       setMachineInfoList(res.data.Values.MachineStatusList);
+    }
+  };
+
+  const toolStatusColor = (status: string) => {
+    switch (status) {
+      case "Normal":
+        return "text-green-500";
+      case "NeedRepair":
+        return "text-red-500";
+    }
+  };
+
+  const progressColor = (progress: number) => {
+    const roundValue = (360 * progress) / 100;
+    console.log("roundValue = ", roundValue);
+
+    if (progress < 50) {
+      return `conic-gradient(from 0deg at 50% 50%, yellow 0deg ${roundValue}deg, gray ${roundValue}deg 360deg)`;
+    } else if (progress < 30) {
+      return `conic-gradient(from 0deg at 50% 50%, red 0deg ${roundValue}deg, gray ${roundValue}deg 360deg)`;
+    } else {
+      return `conic-gradient(from 0deg at 50% 50%, green 0deg ${roundValue}deg, gray ${roundValue}deg 360deg)`;
     }
   };
 
@@ -67,11 +90,16 @@ export default function DashboardIndex() {
                     key={tool.ToolSn}
                   >
                     <div
-                      className="flex items-center justify-center w-20 h-20 mx-auto rounded-full md:w-28 md:h-28"
+                      className="relative flex items-center justify-center w-20 h-20 mx-auto rounded-full md:w-28 md:h-28"
                       style={{
-                        background: chartColor,
+                        background: progressColor(tool.ToolLife.LifePercentage),
                       }}
                     >
+                      <p
+                        className={`absolute ${toolStatusColor(tool.ToolLife.LifeStatus)}`}
+                      >
+                        {tool.ToolLife.LifePercentage}%
+                      </p>
                       <div className="w-16 h-16 bg-gray-900 rounded-full md:w-24 md:h-24"></div>
                     </div>
                     <div className="p-2 mx-auto bg-green-500 border-2 border-gray-900 rounded-md w-fit">

@@ -71,6 +71,10 @@ export interface AtcLoadingItem {
   AtcNo: number;
   ToolSn: string;
   IsUsing: boolean;
+  ToolLife: {
+    LifeStatus: string;
+    LifePercentage: number;
+  };
 }
 
 export interface LoadingLogItem {
