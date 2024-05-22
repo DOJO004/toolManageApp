@@ -78,7 +78,7 @@ export default function NewMachineSpec({
           </div>
           <div className="relative my-4">
             <label className="absolute left-0 -top-6" htmlFor="serialNumber">
-              設備 SN 序號
+              設備 SN
             </label>
             <input
               id="serialNumber"

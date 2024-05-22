@@ -149,8 +149,8 @@ export default function Page() {
       }
       const searchResult = bindLabelList?.filter((item: LabelBindItem) => {
         return (
-          // search by LToolCode ToolSn and Receiver
-          item.LToolCode.toString()
+          // search by labelCode ToolSn and Receiver
+          item.LabelSpec.AimsSpec.LabelCode.toString()
             .toLowerCase()
             .includes(value.toLowerCase()) ||
           item.ToolSn.toLowerCase().includes(value.toLowerCase()) ||
@@ -247,7 +247,9 @@ export default function Page() {
               {bindLabelList.length > 0 ? (
                 bindLabelList.map((item: LabelBindItem, index: number) => (
                   <tr key={index} className="hover:bg-gray-500">
-                    <td className="p-1 whitespace-nowrap">{item.LToolCode}</td>
+                    <td className="p-1 whitespace-nowrap">
+                      {item.LabelSpec.AimsSpec.LabelCode}
+                    </td>
                     <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
 
                     <td className="p-1 whitespace-nowrap">

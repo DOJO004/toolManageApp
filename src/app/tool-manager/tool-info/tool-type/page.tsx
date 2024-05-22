@@ -209,7 +209,7 @@ export default function Page() {
             onChange={(e) => filterToolTypeList(e.target.value)}
           />
         </div>
-        <div className="mx-auto overflow-auto bg-gray-800 rounded-md ">
+        <div className="mx-auto overflow-auto bg-gray-900 rounded-md ">
           <ToolTypeIndex
             toolTypeList={toolTypeList}
             editToolTypeMode={editToolTypeMode}

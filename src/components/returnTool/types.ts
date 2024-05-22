@@ -27,6 +27,15 @@ export interface LabelBindItem {
     LabelId: string;
     LabelSn: string;
     Brand: string;
+    AimsSpec: {
+      LabelCode: string;
+      NfcRecord: string;
+      StationCode: string;
+      ArticleInfo: {
+        ArticleId: string;
+        ArticleName: string;
+      };
+    };
   };
   LastModify: string;
 }

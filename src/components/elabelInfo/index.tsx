@@ -1,15 +1,18 @@
 "use client";
 
 import {
+  apiEditELabel,
   apiGetELabelList,
   syncELabelDataFromAims,
 } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
 import { AlertColor } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNotice } from "../context/NoticeContext";
+import { BasicResponse } from "../storage/types";
 import SweetAlert from "../sweetAlert";
 import NewELabelInfo from "./new";
 import {
+  EditLabelData,
   GetELabelListResponse,
   LabelItem,
   SyncLabelDataFromAimsResponse,
@@ -21,19 +24,13 @@ export default function ELabelInfoIndex() {
   const [newLabelMode, setNewLabelMode] = useState(false);
   const [editLabelMode, setEditLabelMode] = useState(false);
   const [editLabelModeIndex, setEditLabelModeIndex] = useState(-1);
-  const [editLabelData, setEditLabelData] = useState({
-    LabelBrandId: "",
-    BindStatus: "",
-    LToolCode: 0,
-    ToolSn: "",
-    LastModify: "",
+  const [editLabelData, setEditLabelData] = useState<EditLabelData>({
     LabelId: "",
     LabelSn: "",
-    Brand: "",
     LabelCode: "",
     NfcRecord: "",
     StationCode: "",
-    ArticleID: "",
+    ArticleId: "",
     ArticleName: "",
   });
 
@@ -60,31 +57,52 @@ export default function ELabelInfoIndex() {
     }
   };
 
+  const patchELabelInfo = async () => {
+    const data = await apiEditELabel(editLabelData);
+    const res = data as BasicResponse;
+    const reqInt = res.data?.Values?.ReqInt;
+    console.log("patch eLabelInfo", res);
+
+    if (reqInt === 0) {
+      getELabelList();
+      cleanEditELabelData();
+    } else {
+      console.log(`ReqInt = ${reqInt}`);
+    }
+  };
+
+  const cleanEditELabelData = () => {
+    setEditLabelData({
+      LabelId: "",
+      LabelSn: "",
+      LabelCode: "",
+      NfcRecord: "",
+      StationCode: "",
+      ArticleId: "",
+      ArticleName: "",
+    });
+    setEditLabelMode(false);
+  };
+
   const handleNewLabelMode = () => {
     setNewLabelMode(!newLabelMode);
     setEditLabelMode(false);
   };
 
-  const handleEditLabeMode = (labeData: LabelItem, index: number) => {
-    console.log(labeData);
+  const handleEditLabeMode = (data: LabelItem, index: number) => {
+    console.log(data);
 
     setEditLabelMode(true);
     setNewLabelMode(false);
     setEditLabelModeIndex(index);
     setEditLabelData({
-      LabelBrandId: "",
-      BindStatus: labeData.BindStatus,
-      LToolCode: labeData.LabelBind?.LToolCode,
-      ToolSn: labeData.LabelBind?.ToolSn,
-      LastModify: labeData.LastModify,
-      LabelId: labeData.LabelId,
-      LabelSn: labeData.LabelSn,
-      Brand: labeData.Brand,
-      LabelCode: labeData.AimsSpec?.LabelCode,
-      NfcRecord: labeData.AimsSpec?.NfcRecord,
-      StationCode: labeData.AimsSpec?.StationCode,
-      ArticleID: labeData.AimsSpec?.ArticleInfo.ArticleID,
-      ArticleName: labeData.AimsSpec?.ArticleInfo.ArticleName,
+      LabelId: data.LabelId,
+      LabelSn: data.LabelSn,
+      LabelCode: data.AimsSpec.LabelCode,
+      NfcRecord: data.AimsSpec.NfcRecord,
+      StationCode: data.AimsSpec.StationCode,
+      ArticleId: data.AimsSpec.ArticleInfo.ArticleID,
+      ArticleName: data.AimsSpec.ArticleInfo.ArticleName,
     });
   };
 
@@ -105,6 +123,15 @@ export default function ELabelInfoIndex() {
       show: show,
       messages: messages,
     });
+  };
+
+  const showBindToolData = (data: LabelItem) => {
+    switch (data.BindStatus) {
+      case "Unbinding":
+        return "未綁定";
+      case "Standby":
+        return `已綁定 / ${data.LabelBind.ToolSn}`;
+    }
   };
 
   let timer: ReturnType<typeof setTimeout>;
@@ -174,25 +201,37 @@ export default function ELabelInfoIndex() {
                     editLabelMode && editLabelModeIndex === index ? (
                       <tr key={item.LabelId}>
                         <td>
-                          <input type="text" />
+                          <input
+                            type="text"
+                            className="text-center text-black rounded-md"
+                            value={editLabelData.LabelCode}
+                          />
                         </td>
                         <td>
-                          <input type="text" />
+                          <input
+                            type="text"
+                            className="text-center text-black rounded-md"
+                            value={editLabelData.LabelSn}
+                          />
                         </td>
                         <td>
-                          <input type="text" />
+                          <input
+                            type="text"
+                            className="text-center text-black rounded-md"
+                            value={editLabelData.StationCode}
+                          />
                         </td>
+                        <td>{showBindToolData(item)}</td>
+                        <td>-</td>
                         <td>
-                          <input type="text" />
-                        </td>
-                        <td>
-                          <input type="text" />
-                        </td>
-                        <td>
-                          <input type="text" />
-                        </td>
-                        <td>
-                          <input type="text" />
+                          <button
+                            className="p-1 hover:bg-indigo-500"
+                            onClick={() => patchELabelInfo()}
+                          >
+                            完成
+                          </button>
+                          <span> / </span>
+                          <button className="p-1 hover:bg-red-500">刪除</button>
                         </td>
                       </tr>
                     ) : (
@@ -200,11 +239,7 @@ export default function ELabelInfoIndex() {
                         <td className="p-1 ">{item.AimsSpec?.LabelCode}</td>
                         <td className="p-1 ">{item.LabelSn}</td>
                         <td className="p-1 ">{item.AimsSpec?.StationCode}</td>
-                        <td className="p-1 ">
-                          {item.BindStatus === "Standby"
-                            ? `已綁定 / ${item.LabelBind.ToolSn}`
-                            : "未綁定"}{" "}
-                        </td>
+                        <td className="p-1 ">{showBindToolData(item)}</td>
                         <td className="p-1 ">{item.LastModify}</td>
                         <td className="p-1 ">
                           <button

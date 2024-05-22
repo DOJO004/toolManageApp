@@ -83,7 +83,7 @@ export default function PermissionInfoIndex() {
       >
         <NewPoliceInfo setNewPoliceMode={setNewPoliceMode} />
       </div>
-      <div className="w-full overflow-auto text-center bg-gray-500 rounded-md">
+      <div className="w-full overflow-auto text-center bg-gray-900 rounded-md">
         <table className="w-full ">
           <thead>
             <tr>

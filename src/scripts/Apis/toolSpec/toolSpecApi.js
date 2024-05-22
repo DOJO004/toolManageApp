@@ -1,5 +1,5 @@
 import { apiInstance } from "@/scripts/toolInfoApi";
-import { getLoginTime, getUserToken } from "../mainApi";
+import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 
 export async function apiGetToolSpecList() {
   try {
@@ -77,8 +77,9 @@ export async function apiEditToolSpec(toolSpec) {
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
+  console.log("edit tool spec body", body);
   try {
     const res = await apiInstance.post("user_operate/ModifyToolSpecInfo", body);
     return res;

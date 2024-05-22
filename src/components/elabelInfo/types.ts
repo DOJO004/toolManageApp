@@ -30,6 +30,16 @@ export interface LabelItem {
   };
 }
 
+export interface EditLabelData {
+  LabelId: string;
+  LabelSn: string;
+  LabelCode: string;
+  NfcRecord: string;
+  StationCode: string;
+  ArticleId: string;
+  ArticleName: string;
+}
+
 export interface SyncLabelDataFromAimsResponse {
   data: {
     RC: string;

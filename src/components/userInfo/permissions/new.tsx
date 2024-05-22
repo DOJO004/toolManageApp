@@ -27,7 +27,7 @@ export default function NewPoliceInfo({
     setNewPolice({ ...newPolice, [key]: value });
   };
   return (
-    <div className="p-4 my-4 bg-gray-500 rounded-md">
+    <div className="p-4 my-4 bg-gray-900 rounded-md">
       <div className="relative ">
         <h2>新增權限</h2>
         <button

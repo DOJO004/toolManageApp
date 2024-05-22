@@ -79,7 +79,7 @@ export default function NewELabelInfo({
         <div className="grid items-center grid-cols-7 gap-2 my-4">
           <div className="relative ">
             <label htmlFor="LabelBrandID" className="absolute left-0 -top-6 ">
-              LabelBrandID
+              標籤品牌 ID
             </label>
             <input
               type="text"
@@ -94,7 +94,7 @@ export default function NewELabelInfo({
           </div>
           <div className="relative ">
             <label htmlFor="LabelSn" className="absolute left-0 -top-6 ">
-              LabelSN
+              標籤 SN
             </label>
             <input
               type="text"
@@ -107,7 +107,7 @@ export default function NewELabelInfo({
           </div>
           <div className="relative ">
             <label htmlFor="LabelCode" className="absolute left-0 -top-6 ">
-              LabelCode
+              標籤號碼
             </label>
             <input
               type="text"
@@ -134,7 +134,7 @@ export default function NewELabelInfo({
 
           <div className="relative ">
             <label htmlFor="StationCode" className="absolute left-0 -top-6 ">
-              StationCode
+              站號
             </label>
             <input
               type="text"

@@ -226,7 +226,7 @@ export default function Page() {
     setEditToolSpec({
       ToolSpecId: item.ToolSpecId,
       Name: item.Name,
-      ToolTypeId: item.ToolTypeData.Name,
+      ToolTypeId: item.ToolTypeData.Id,
       SafetyStock: item.SafetyStock,
       BladeDiameter: item.SpecData.BladeDiameter,
       BladeHeight: item.SpecData.BladeHeight,
