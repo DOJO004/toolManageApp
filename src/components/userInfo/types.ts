@@ -50,7 +50,7 @@ export interface NewUserInfo {
   DepartmentId: string;
   EmployeeId: string;
   EMailAddress: string;
-  PermissionData: string[];
+  PermissionIds: string[];
 }
 
 export interface NewUserResponse {

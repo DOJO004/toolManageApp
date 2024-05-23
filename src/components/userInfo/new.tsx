@@ -117,8 +117,8 @@ export default function UserInfoNew({
                 onClick={() => setFocusInput(!focusInput)}
               >
                 <option value="">
-                  {userInfo.PermissionData.length
-                    ? `已選擇 ${userInfo.PermissionData.length}`
+                  {userInfo.PermissionIds.length
+                    ? `已選擇 ${userInfo.PermissionIds.length}`
                     : "選擇權限"}
                 </option>
               </select>
@@ -127,7 +127,13 @@ export default function UserInfoNew({
               >
                 {permissionList.map((item) => (
                   <li key={item.Id} className="mr-auto w-fit hover:bg-gray-300">
-                    <input type="checkbox" id={item.Name} />
+                    <input
+                      type="checkbox"
+                      id={item.Name}
+                      onChange={() =>
+                        handleSetUserInfo("PermissionIds", item.Id)
+                      }
+                    />
                     <label
                       htmlFor={item.Name}
                       className="text-sm text-black cursor-pointer lg:text-base"

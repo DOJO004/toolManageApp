@@ -45,7 +45,6 @@ export default function UserInfoIndex({
             editUserMode && editUserIndex === index ? (
               <tr key={item.AccountId}>
                 <td className="p-1 whitespace-nowrap">
-                  \
                   <input
                     type="text"
                     className="p-2 text-center text-black rounded-md"

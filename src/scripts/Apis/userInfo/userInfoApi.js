@@ -42,6 +42,7 @@ export const ApiPostUserLogout = async () => {
 };
 
 export const ApiPostUserInfo = async (data) => {
+  console.log("api post user info ", data);
   const body = {
     AccountInfo: {
       UserAccount: data.UserAccount,

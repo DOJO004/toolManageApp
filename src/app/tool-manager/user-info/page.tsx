@@ -45,7 +45,7 @@ export default function Page() {
     DepartmentId: "",
     EmployeeId: "",
     EMailAddress: "",
-    PermissionData: [],
+    PermissionIds: [],
   });
   const [newPasswordData, setNewPasswordData] = useState({
     AccountId: "",
@@ -135,7 +135,7 @@ export default function Page() {
         DepartmentId: "",
         EmployeeId: "",
         EMailAddress: "",
-        PermissionData: [],
+        PermissionIds: [],
       });
       setFocusInput(false);
       handleNotice("success", true, "新增成功");
@@ -160,6 +160,13 @@ export default function Page() {
   };
 
   const handleSetUserInfo = (key: string, value: string) => {
+    if (key === "PermissionIds") {
+      setUserInfo((prev) => ({
+        ...prev,
+        [key]: [...prev.PermissionIds, value],
+      }));
+      return;
+    }
     setUserInfo((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -167,12 +174,12 @@ export default function Page() {
     if (checked) {
       setUserInfo((prev) => ({
         ...prev,
-        PermissionData: [...prev.PermissionData, permissionId],
+        PermissionData: [...prev.PermissionIds, permissionId],
       }));
     } else {
       setUserInfo((prev) => ({
         ...prev,
-        PermissionData: prev.PermissionData.filter((id) => id !== permissionId),
+        PermissionData: prev.PermissionIds.filter((id) => id !== permissionId),
       }));
     }
   };
