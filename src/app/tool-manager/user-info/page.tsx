@@ -154,6 +154,8 @@ export default function Page() {
 
     if (reqInt === 0) {
       handleNotice("success", true, "重設密碼成功");
+      setResetPasswordMode(false);
+      setEditUserMode(false);
     } else {
       handleNotice("error", true, `重設密碼失敗，errorCode = ${reqInt}`);
     }
