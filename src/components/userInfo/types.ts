@@ -35,12 +35,12 @@ export interface UserAccountItem {
 
 export interface EditUserInfo {
   AccountId: string;
-  OgnPwd: string;
-  UserPwd: string | null;
+  ModifyPassword: string;
   UserName: string;
   DepartmentId: string;
   EmployeeId: string;
   EMailAddress: string;
+  PermissionIds: string[];
 }
 
 export interface NewUserInfo {

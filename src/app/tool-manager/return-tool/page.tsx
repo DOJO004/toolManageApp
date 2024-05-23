@@ -253,11 +253,11 @@ export default function Page() {
                     <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
 
                     <td className="p-1 whitespace-nowrap">
-                      {item.ReceiptorInfo.UserName}
+                      {item.ReceiptorInfo?.UserName}
                     </td>
 
                     <td className="p-1 whitespace-nowrap">
-                      {`${toolStockStatusInfo(item.ToolStatusInfo.ToolStatus)} / - `}
+                      {`${toolStockStatusInfo(item.ToolStatusInfo?.ToolStatus)} / - `}
                     </td>
 
                     <td onClick={() => handleClickReturn(item)}>

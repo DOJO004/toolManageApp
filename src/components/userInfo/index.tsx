@@ -1,3 +1,4 @@
+import React from "react";
 import { DepartmentItem } from "./department/type";
 import { EditUserInfo, UserAccountItem } from "./types";
 
@@ -12,6 +13,7 @@ interface Props {
   patchUserInfo: () => void;
   deleteUserInfo: () => void;
   handleResetPassword: () => void;
+  setEditPermission: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function UserInfoIndex({
   userInfoList,
@@ -24,6 +26,7 @@ export default function UserInfoIndex({
   patchUserInfo,
   deleteUserInfo,
   handleResetPassword,
+  setEditPermission,
 }: Props) {
   return (
     <table className="w-full">
@@ -32,7 +35,6 @@ export default function UserInfoIndex({
           <th className="p-1 bg-indigo-500 whitespace-nowrap">使用者帳號</th>
           <th className="p-1 bg-indigo-500 whitespace-nowrap">部門</th>
           <th className="p-1 bg-indigo-500 whitespace-nowrap">Email</th>
-          <th className="p-1 bg-indigo-500 whitespace-nowrap">權限</th>
           <th className="p-1 bg-indigo-500 whitespace-nowrap">最後更新</th>
           <th className="p-1 bg-indigo-500 whitespace-nowrap">編輯</th>
         </tr>
@@ -43,6 +45,7 @@ export default function UserInfoIndex({
             editUserMode && editUserIndex === index ? (
               <tr key={item.AccountId}>
                 <td className="p-1 whitespace-nowrap">
+                  \
                   <input
                     type="text"
                     className="p-2 text-center text-black rounded-md"
@@ -90,13 +93,19 @@ export default function UserInfoIndex({
                     }
                   />
                 </td>
-                <td>權限</td>
                 <td>
                   <button
                     className="p-1 rounded-md hover:bg-indigo-500"
                     onClick={() => handleResetPassword()}
                   >
                     密碼重設
+                  </button>
+                  <span> / </span>
+                  <button
+                    className="p-1 rounded-md hover:bg-indigo-500"
+                    onClick={() => setEditPermission(true)}
+                  >
+                    修改權限
                   </button>
                 </td>
                 <td className="p-1 whitespace-nowrap">
@@ -113,7 +122,6 @@ export default function UserInfoIndex({
                   {item.Department.Name}
                 </td>
                 <td className="p-1 whitespace-nowrap">{item.EMail}</td>
-                <td className="p-1 whitespace-nowrap">權限</td>
                 <td className="p-1 whitespace-nowrap">{item.LastModify}</td>
                 <td className="p-1 whitespace-nowrap">
                   <button

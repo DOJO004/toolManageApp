@@ -73,14 +73,12 @@ export const ApiPatchUserInfo = async (data) => {
   const body = {
     AccountId: data.AccountId,
     ModifyInfo: {
-      ModifyPassword: {
-        OgnPwd: data.OgnPwd || null,
-        UserPwd: data.OgnPwd || null,
-      },
+      ModifyPassword: data.ModifyPassword,
       UserName: data.UserName,
       DepartmentId: data.DepartmentId,
       EmployeeId: data.EmployeeId,
       EMailAddress: data.EMailAddress,
+      PermissionIds: data.PermissionIds,
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),

@@ -8,6 +8,7 @@ import {
   DepartmentList,
 } from "@/components/userInfo/department/type";
 import UserInfoNew from "@/components/userInfo/new";
+import EditPermissionForm from "@/components/userInfo/permissions/editPermissionForm";
 import {
   PermissionInfoList,
   PermissionMenuItem,
@@ -56,15 +57,14 @@ export default function Page() {
     []
   );
   const [focusInput, setFocusInput] = useState<boolean>(false);
-
   const [editUserInfo, setEditUserinfo] = useState<EditUserInfo>(
     {} as EditUserInfo
   );
   const [departmentList, setDepartmentList] = useState<DepartmentItem[]>([]);
-
   const [newUserMode, setNewUserMode] = useState<boolean>(false);
   const [editUserMode, setEditUserMode] = useState<boolean>(false);
   const [editUserIndex, setEditUserIndex] = useState<number>(-1);
+  const [editPermission, setEditPermission] = useState(false);
 
   const getUserInfoList = async (count = 1) => {
     if (count >= 3) {
@@ -75,7 +75,7 @@ export default function Page() {
       const data = await ApiGetUserInfoList();
       const res = data as UserInfoList;
       const reqInt = res?.data?.Values?.ReqInt;
-      console.log(res);
+      console.log("user list", res);
 
       if (reqInt === 0) {
         setUserInfoList(res.data.Values.UserAccountList);
@@ -177,7 +177,8 @@ export default function Page() {
     }
   };
 
-  const patchUserInfo = async () => {
+  const patchUserInfo = async (e?: FormEvent) => {
+    e?.preventDefault();
     const data = await ApiPatchUserInfo(editUserInfo);
     const res = data as EditUserResponse;
     const reqInt = res?.data?.Values?.ReqInt;
@@ -211,17 +212,19 @@ export default function Page() {
   };
 
   const handleEditUser = (item: UserAccountItem, index: number) => {
+    console.log("edit item", item);
+
     setNewUserMode(false);
     setEditUserMode(true);
     setEditUserIndex(index);
     setEditUserinfo({
       AccountId: item.AccountId,
-      OgnPwd: "",
-      UserPwd: null,
+      ModifyPassword: "",
       UserName: item.UserName,
       DepartmentId: item.Department.Id,
       EmployeeId: item.EmployeeId,
       EMailAddress: item.EMail,
+      PermissionIds: item.PermissionList.map((item) => item.Id),
     });
   };
 
@@ -246,6 +249,22 @@ export default function Page() {
     }));
   };
 
+  const handleCheckboxChange = (
+    permission: PermissionMenuItem,
+    checked: boolean
+  ) => {
+    if (checked) {
+      setEditUserinfo((prev) => ({
+        ...prev,
+        PermissionIds: [...prev.PermissionIds, permission.Id],
+      }));
+    } else {
+      setEditUserinfo((prev) => ({
+        ...prev,
+        PermissionIds: prev.PermissionIds.filter((id) => id !== permission.Id),
+      }));
+    }
+  };
   // const confirmPassword = async () => {
   //   const { value: password } = await Swal.fire({
   //     title: "輸入密碼",
@@ -284,22 +303,6 @@ export default function Page() {
           newUserMode ? "h-72" : "h-0"
         }`}
       >
-        {/* {permissionList.map((item) => (
-            <div key={item.Id} className="flex items-center hover:bg-gray-300">
-              <input
-                type="checkbox"
-                value={item.Id}
-                id={item.Id}
-                className="mr-2"
-                onChange={(e) =>
-                  handleCheckPermission(e.target.checked, item.Id)
-                }
-              />
-              <label htmlFor={item.Id} className="text-black">
-                {item.Name}
-              </label>
-            </div>
-          ))} */}
         <UserInfoNew
           setNewUserMode={setNewUserMode}
           departmentList={departmentList}
@@ -320,6 +323,14 @@ export default function Page() {
           setNewPasswordData={setNewPasswordData}
           resetPasswordMode={resetPasswordMode}
         />
+        {editPermission && (
+          <EditPermissionForm
+            setEditPermission={setEditPermission}
+            permissionList={permissionList}
+            editUserInfo={editUserInfo}
+            setEditUserinfo={setEditUserinfo}
+          />
+        )}
         <UserInfoIndex
           userInfoList={userInfoList}
           editUserMode={editUserMode}
@@ -331,6 +342,7 @@ export default function Page() {
           handleEditUser={handleEditUser}
           deleteUserInfo={deleteUserInfo}
           handleResetPassword={handleResetPassword}
+          setEditPermission={setEditPermission}
         />
       </div>
     </div>

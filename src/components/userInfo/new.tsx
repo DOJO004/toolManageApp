@@ -21,22 +21,8 @@ export default function UserInfoNew({
   userInfo,
   setFocusInput,
   focusInput,
+  permissionList,
 }: NewUserInfoProps) {
-  // test
-  const permissions = [
-    {
-      id: "1",
-      name: "管理員",
-    },
-    {
-      id: "2",
-      name: "主管",
-    },
-    {
-      id: "3",
-      name: "員工",
-    },
-  ];
   return (
     <div className="p-4 bg-gray-900 rounded-md">
       <div className="relative ">
@@ -49,7 +35,7 @@ export default function UserInfoNew({
         </button>
       </div>
       <form onSubmit={(e) => postUserInfo(e)}>
-        <div className="flex gap-2 ">
+        <div className="grid grid-cols-7 gap-2 ">
           <div>
             <label htmlFor="UserAccount">帳號</label>
             <input
@@ -126,19 +112,27 @@ export default function UserInfoNew({
           <div className="relative">
             <div className="relative rounded-md ">
               <label htmlFor="">選擇權限</label>
-              <select className="p-2 text-black rounded-md min-w-40">
+              <select
+                className="w-full p-2 text-black rounded-md min-w-40"
+                onClick={() => setFocusInput(!focusInput)}
+              >
                 <option value="">
                   {userInfo.PermissionData.length
                     ? `已選擇 ${userInfo.PermissionData.length}`
                     : "選擇權限"}
                 </option>
               </select>
-              <ul className="absolute z-10 w-40 p-4 bg-gray-200 border rounded-md top-16 right-2">
-                {permissions.map((item) => (
-                  <li key={item.id} className="mr-auto w-fit">
-                    <input type="checkbox" id={item.name} />
-                    <label htmlFor={item.name} className="text-black">
-                      {item.name}
+              <ul
+                className={`absolute z-10 w-full p-4 h-40 overflow-auto bg-gray-200 border rounded-md top-16 right-0 ${focusInput ? "block" : "hidden"}`}
+              >
+                {permissionList.map((item) => (
+                  <li key={item.Id} className="mr-auto w-fit hover:bg-gray-300">
+                    <input type="checkbox" id={item.Name} />
+                    <label
+                      htmlFor={item.Name}
+                      className="text-sm text-black cursor-pointer lg:text-base"
+                    >
+                      {item.Name}
                     </label>
                   </li>
                 ))}
