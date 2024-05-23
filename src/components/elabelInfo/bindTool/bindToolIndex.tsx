@@ -355,13 +355,13 @@ export default function BindToolIndex() {
                       key: "eLabel",
                       index: index,
                       LabelId: item.LabelId,
-                      LabelCode: item.AimsSpec.LabelCode,
+                      LabelCode: item.AimsSpec?.LabelCode,
                       LabelSn: item.LabelSn,
                     })
                   }
                 >
                   <td className="p-1 whitespace-nowrap">
-                    {item.AimsSpec.LabelCode}
+                    {item.AimsSpec?.LabelCode}
                   </td>
                   <td className="p-1 whitespace-nowrap">{item.LabelSn}</td>
                 </tr>

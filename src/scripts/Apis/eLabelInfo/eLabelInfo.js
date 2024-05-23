@@ -56,8 +56,9 @@ export async function apiEditELabel(eLabel) {
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
+  console.log("edit e label body", body);
   try {
     const res = await apiInstance.post("/user_operate/ModifyLabelInfo", body);
     return res;

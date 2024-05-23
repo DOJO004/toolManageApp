@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  apiDeleteELabel,
   apiEditELabel,
   apiGetELabelList,
   syncELabelDataFromAims,
@@ -71,6 +72,23 @@ export default function ELabelInfoIndex() {
     }
   };
 
+  const deleteELabelInfo = async () => {
+    const confirm = window.confirm("確定要刪除嗎?");
+    if (!confirm) return;
+    try {
+      const data = await apiDeleteELabel(editLabelData);
+      const res = data as BasicResponse;
+      const reqInt = res.data?.Values?.ReqInt;
+      if (reqInt === 0) {
+        getELabelList();
+        cleanEditELabelData();
+      } else {
+        console.log(`ReqInt = ${reqInt}`);
+      }
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
   const cleanEditELabelData = () => {
     setEditLabelData({
       LabelId: "",
@@ -98,11 +116,11 @@ export default function ELabelInfoIndex() {
     setEditLabelData({
       LabelId: data.LabelId,
       LabelSn: data.LabelSn,
-      LabelCode: data.AimsSpec.LabelCode,
-      NfcRecord: data.AimsSpec.NfcRecord,
-      StationCode: data.AimsSpec.StationCode,
-      ArticleId: data.AimsSpec.ArticleInfo.ArticleID,
-      ArticleName: data.AimsSpec.ArticleInfo.ArticleName,
+      LabelCode: data.AimsSpec?.LabelCode || "",
+      NfcRecord: data.AimsSpec?.NfcRecord || "",
+      StationCode: data.AimsSpec?.StationCode || "",
+      ArticleId: data.AimsSpec?.ArticleInfo.ArticleID || "",
+      ArticleName: data.AimsSpec?.ArticleInfo.ArticleName || "",
     });
   };
 
@@ -200,18 +218,18 @@ export default function ELabelInfoIndex() {
                 ? eLabelList.map((item, index) =>
                     editLabelMode && editLabelModeIndex === index ? (
                       <tr key={item.LabelId}>
-                        <td>
-                          <input
-                            type="text"
-                            className="text-center text-black rounded-md"
-                            value={editLabelData.LabelCode}
-                          />
-                        </td>
+                        <td>{item.AimsSpec?.LabelCode}</td>
                         <td>
                           <input
                             type="text"
                             className="text-center text-black rounded-md"
                             value={editLabelData.LabelSn}
+                            onChange={(e) =>
+                              setEditLabelData((prev) => ({
+                                ...prev,
+                                LabelSn: e.target.value,
+                              }))
+                            }
                           />
                         </td>
                         <td>
@@ -219,6 +237,12 @@ export default function ELabelInfoIndex() {
                             type="text"
                             className="text-center text-black rounded-md"
                             value={editLabelData.StationCode}
+                            onChange={(e) =>
+                              setEditLabelData((prev) => ({
+                                ...prev,
+                                StationCode: e.target.value,
+                              }))
+                            }
                           />
                         </td>
                         <td>{showBindToolData(item)}</td>
@@ -231,7 +255,12 @@ export default function ELabelInfoIndex() {
                             完成
                           </button>
                           <span> / </span>
-                          <button className="p-1 hover:bg-red-500">刪除</button>
+                          <button
+                            className="p-1 hover:bg-red-500"
+                            onClick={() => deleteELabelInfo()}
+                          >
+                            刪除
+                          </button>
                         </td>
                       </tr>
                     ) : (
