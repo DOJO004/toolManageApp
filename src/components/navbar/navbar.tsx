@@ -18,6 +18,7 @@ const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [checkAdmin, setCheckAdmin] = useState(false);
   const [clickItemName, setClickItemName] = useState("");
+  const [userName, setUserName] = useState("");
 
   const handleNavbarMenu = (name: string) => {
     console.log("name = ", name);
@@ -89,8 +90,22 @@ const Navbar = () => {
     });
   };
 
+  // get user name
+  const getUserName = () => {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const userNameCookie = cookies.find((cookie) =>
+      cookie.startsWith("userName=")
+    );
+    const userName = userNameCookie?.split("=")[1];
+    if (!userName) {
+      return;
+    }
+    setUserName(userName);
+  };
+
   useEffect(() => {
     handleCheckAdmin();
+    getUserName();
   }, []);
 
   return (
@@ -169,6 +184,7 @@ const Navbar = () => {
             </svg>
             <p>登出</p>
           </li>
+          <li className="p-2 mt-4 border rounded-md">{userName}</li>
         </ul>
       </div>
       <div

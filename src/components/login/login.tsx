@@ -30,6 +30,7 @@ export default function Login() {
       setCookie("userToken", res.data.Values.Token, 30);
       setCookie("loginTime", res.data.Values.LoginTime, 30);
       setCookie("permission", res.data.Values.PermissionList, 30);
+      setCookie("userName", res.data.Values.UserInfo.UserName, 30);
       SweetAlert(reqInt, "登入成功");
       router.push("/tool-manager/tool-info");
     } else {
