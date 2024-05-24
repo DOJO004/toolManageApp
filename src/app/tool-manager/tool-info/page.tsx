@@ -87,7 +87,7 @@ export default function Page() {
           />
         </div>
         <table className="w-full">
-          <thead>
+          <thead className="sticky -top-2">
             <tr className="bg-indigo-500 ">
               <th className="p-1 whitespace-nowrap">刀具序號</th>
               <th className="p-1 whitespace-nowrap">狀態 / 修整次數</th>

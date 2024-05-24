@@ -28,7 +28,7 @@ export default function MachineLogInfo({
               <tr key={item.ToolSn}>
                 <td>{item.AtcNo}</td>
                 <td>{item.ToolSn}</td>
-                <td>Non</td>
+                <td>{item.ToolLife.LifePercentage}</td>
                 <td
                   className={item.IsUsing ? "text-green-500" : "text-gray-400"}
                 >

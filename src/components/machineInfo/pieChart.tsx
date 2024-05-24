@@ -12,6 +12,7 @@ const MachineInfoPieChart = ({
   machineStatus,
   machineStatusBgColor,
 }: MachineInfoPieChartProps) => {
+  // 稼動時數轉成百分比
   const machineActivation = (selectMachineInfo?.Activation * 100).toFixed(2);
 
   // 設定時間

@@ -163,7 +163,7 @@ export default function Page() {
               <tr>
                 <th className="p-1 whitespace-nowrap">設備 SN</th>
                 <th className="p-1 whitespace-nowrap">產線別</th>
-                <th className="p-1 whitespace-nowrap">轉速/進給倍率</th>
+                <th className="p-1 whitespace-nowrap">轉速/進給率</th>
                 <th className="p-1 whitespace-nowrap">運行狀態</th>
                 <th className="p-1 whitespace-nowrap">
                   狀態持續時間
