@@ -114,6 +114,17 @@ export interface ToolStatusItem {
   ToolSn: string;
   LifeStatus: string;
   LifePercentage: number;
+  PositionInfo: {
+    PositionStatus: number;
+    MachineSn: string;
+    StorageId: number;
+  };
+  LastOperator: {
+    AccountId: string;
+    UserAccount: string;
+    EmployeeId: string;
+    UserName: string;
+  };
   LastModify: string;
 }
 

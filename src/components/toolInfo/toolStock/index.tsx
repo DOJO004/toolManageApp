@@ -5,6 +5,7 @@ interface Props {
   sortToolStockList: (toolList: ToolStatusItem[]) => ToolStatusItem[];
   getToolStatusClass: (status: string) => void;
   translateToolStatus: (status: string) => string;
+  toolPositionInfo: (status: number) => string;
 }
 
 export default function ToolStockIndex({
@@ -12,6 +13,7 @@ export default function ToolStockIndex({
   sortToolStockList,
   getToolStatusClass,
   translateToolStatus,
+  toolPositionInfo,
 }: Props) {
   return (
     <>
@@ -55,8 +57,7 @@ export default function ToolStockIndex({
                     <th className="p-1 ">狀態</th>
                     <th className="p-1 ">生命指數</th>
                     <th className="p-1 ">最後更新</th>
-                    <th className="p-1 ">設備 SN</th>
-                    <th className="p-1 ">所在位置</th>
+                    <th className="p-1 ">設備 SN / 所在位置</th>
                     <th className="p-1 ">領用人 / 歸還人</th>
                   </tr>
                 </thead>
@@ -73,9 +74,15 @@ export default function ToolStockIndex({
                           </td>
                           <td className="p-1">{item.LifePercentage}</td>
                           <td className="p-1">{item.LastModify}</td>
-                          <td className="p-1"> - </td>
-                          <td className="p-1"> - </td>
-                          <td className="p-1"> - </td>
+                          <td className="p-1">
+                            {toolPositionInfo(item.PositionInfo.PositionStatus)}
+                            <span> / </span>
+                            {item.PositionInfo.MachineSn}
+                            {item.PositionInfo.StorageId === -1
+                              ? ""
+                              : item.PositionInfo.StorageId}
+                          </td>
+                          <td className="p-1">{item.LastOperator.UserName}</td>
                         </tr>
                       )
                     )

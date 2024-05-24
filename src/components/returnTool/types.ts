@@ -16,6 +16,12 @@ export interface LabelBindItem {
   ToolSn: string;
   ToolStatusInfo: {
     ToolStatus: number;
+    MachineLoading: {
+      MachineId: string;
+      MachineSn: string;
+      MachineName: string;
+      AtcNo: number;
+    };
   };
   ReceiptorInfo: {
     AccountId: string;

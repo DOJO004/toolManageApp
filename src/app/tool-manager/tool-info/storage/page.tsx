@@ -8,7 +8,6 @@ import {
   EditStorageItem,
   GetStorageListResponse,
   NewStorageItem,
-  StorageBasicResponse,
   StorageItem,
 } from "@/components/storage/types";
 import {
@@ -72,7 +71,7 @@ export default function PatchStorageResponse() {
 
   const patchStorage = async () => {
     const data = await apiEditSTorageInfo(editData);
-    const res = data as StorageBasicResponse;
+    const res = data as BasicResponse;
     const reqInt = res.data?.Values?.ReqInt;
     console.log(res);
 
@@ -92,7 +91,7 @@ export default function PatchStorageResponse() {
     const confirm = window.confirm("確定刪除嗎?");
     if (confirm) {
       const data = await apiDeleteStorageInfo(editData);
-      const res = data as StorageBasicResponse;
+      const res = data as BasicResponse;
       const reqInt = res.data?.Values?.ReqInt;
       if (reqInt === 0) {
         setEditMode(false);

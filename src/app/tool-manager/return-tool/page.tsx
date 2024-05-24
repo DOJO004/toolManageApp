@@ -257,7 +257,7 @@ export default function Page() {
                     </td>
 
                     <td className="p-1 whitespace-nowrap">
-                      {`${toolStockStatusInfo(item.ToolStatusInfo?.ToolStatus)} / - `}
+                      {`${toolStockStatusInfo(item.ToolStatusInfo?.ToolStatus)} / ${item.ToolStatusInfo.MachineLoading.MachineName} `}
                     </td>
 
                     <td onClick={() => handleClickReturn(item)}>
