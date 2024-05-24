@@ -42,6 +42,7 @@ export default function Page() {
     }
   };
 
+  // 搜尋
   let timer: ReturnType<typeof setTimeout>;
   const searchMachineInfo = async (value: string) => {
     clearTimeout(timer);
@@ -51,7 +52,12 @@ export default function Page() {
 
       if (data) {
         const filterData = data.filter((item) => {
-          return item.MachineId.toLowerCase().includes(value.toLowerCase());
+          return (
+            item.MachineId.toLowerCase().includes(value.toLowerCase()) ||
+            item.ProductLineData.Name.toLowerCase().includes(
+              value.toLowerCase()
+            )
+          );
         });
         setMachineInfoList(filterData);
       }
@@ -116,7 +122,7 @@ export default function Page() {
   useEffect(() => {
     const interval = setInterval(() => {
       getMachineInfoList();
-    }, 3000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -152,7 +158,7 @@ export default function Page() {
           </div>
           <input
             type="search"
-            className="p-2 text-black rounded-md w-96"
+            className="p-2 text-center text-black rounded-md w-96"
             placeholder="搜尋設備序號"
             onChange={(e) => searchMachineInfo(e.target.value)}
           />
@@ -169,6 +175,7 @@ export default function Page() {
                   狀態持續時間
                   <span className="text-sm text-gray-300 "> min</span>
                 </th>
+                <th>最後更新</th>
               </tr>
             </thead>
             <tbody>
@@ -199,6 +206,7 @@ export default function Page() {
                         ? "connection failed"
                         : handleStatusTime(item.StatusKeepTime)}
                     </td>
+                    <td>{item.LastModify}</td>
                   </tr>
                 ))
               ) : (
