@@ -1,11 +1,7 @@
 "use client";
 import MachineLogInfo from "@/components/machineInfo/logInfo";
 import MachineInfoPieChart from "@/components/machineInfo/pieChart";
-import {
-  GetMachineStatusInfoListResponse,
-  MachineStatusItem,
-} from "@/components/machineInfo/types";
-import SweetAlert from "@/components/sweetAlert";
+import { MachineStatusItem } from "@/components/machineInfo/types";
 import { apiGetMachineStatusList } from "@/scripts/Apis/dashboard/dashboard";
 import { useEffect, useRef, useState } from "react";
 export default function Page() {
@@ -17,51 +13,28 @@ export default function Page() {
   );
   const selectMachineInfoIndex = useRef(0);
   const [machineConnected, setMachineConnected] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
 
-  const getMachineInfoList = async (count = 1) => {
-    if (count >= 3) {
-      SweetAlert(-99, "請求失敗，請重新整理頁面。");
-      return;
-    }
-    try {
-      const data = await apiGetMachineStatusList();
-      const res = data as GetMachineStatusInfoListResponse;
-      const reqInt = res?.data?.Values?.ReqInt;
-      console.log("get machine info list", res);
-
-      if (reqInt === 0) {
-        setMachineInfoList(res.data.Values.MachineStatusList);
-        setMachineConnected(res.data.Values.ModuleConnect.AcqModuleStatus);
-        return res.data.Values.MachineStatusList;
-      } else {
-        console.log(`ReqInt = ${reqInt}`);
-      }
-    } catch (error) {
-      console.error("Error", error);
-      getMachineInfoList(count + 1);
+  // 取得設備列表
+  const getMachineInfoList = async () => {
+    if (searchValue) {
+      const filterData = (await apiGetMachineStatusList()).filter((item) => {
+        return (
+          item.SerialNumber.toLowerCase().includes(searchValue.toLowerCase()) ||
+          item.ProductLineData.Name.toLowerCase().includes(
+            searchValue.toLowerCase()
+          )
+        );
+      });
+      setMachineInfoList(filterData);
+    } else {
+      setMachineInfoList(await apiGetMachineStatusList());
     }
   };
 
-  // 搜尋
-  let timer: ReturnType<typeof setTimeout>;
-  const searchMachineInfo = async (value: string) => {
-    clearTimeout(timer);
-
-    timer = setTimeout(async () => {
-      const data = await getMachineInfoList();
-
-      if (data) {
-        const filterData = data.filter((item) => {
-          return (
-            item.MachineId.toLowerCase().includes(value.toLowerCase()) ||
-            item.ProductLineData.Name.toLowerCase().includes(
-              value.toLowerCase()
-            )
-          );
-        });
-        setMachineInfoList(filterData);
-      }
-    }, 500);
+  // setting search value
+  const handleSearchValue = (value: string) => {
+    setSearchValue(value);
   };
 
   // 選擇設備
@@ -118,14 +91,14 @@ export default function Page() {
     }
   };
 
-  // 每三秒更新 machine info list
+  // 每 10 秒更新 machine info list
   useEffect(() => {
+    getMachineInfoList();
     const interval = setInterval(() => {
       getMachineInfoList();
-    }, 10000);
-
+    }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [searchValue]);
 
   useEffect(() => {
     setSelectMachineInfo(machineInfoList[selectMachineInfoIndex.current]);
@@ -159,15 +132,15 @@ export default function Page() {
           <input
             type="search"
             className="p-2 text-center text-black rounded-md w-96"
-            placeholder="搜尋設備序號"
-            onChange={(e) => searchMachineInfo(e.target.value)}
+            placeholder="搜尋設備序號、產線"
+            onChange={(e) => handleSearchValue(e.target.value)}
           />
         </div>
         <div className="overflow-auto text-center rounded-t-md">
           <table className="w-full">
             <thead className="bg-indigo-500 ">
               <tr>
-                <th className="p-1 whitespace-nowrap">設備 SN</th>
+                <th className="p-1 whitespace-nowrap">設備序號</th>
                 <th className="p-1 whitespace-nowrap">產線別</th>
                 <th className="p-1 whitespace-nowrap">轉速/進給率</th>
                 <th className="p-1 whitespace-nowrap">運行狀態</th>
@@ -184,7 +157,7 @@ export default function Page() {
                   <tr
                     key={item.MachineId}
                     onClick={() => handleSelectMachineInfo(index)}
-                    className="cursor-pointer hover:bg-gray-600"
+                    className={`cursor-pointer hover:bg-gray-600 ${selectMachineInfoIndex.current === index ? "bg-gray-600" : ""}`}
                   >
                     <td className="p-1 whitespace-nowrap">
                       {item.SerialNumber}

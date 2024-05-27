@@ -138,6 +138,7 @@ export default function Page() {
     }
   };
 
+  // 搜尋
   let timer: ReturnType<typeof setTimeout>;
   const searchTool = (value: string) => {
     clearTimeout(timer);
@@ -149,12 +150,14 @@ export default function Page() {
       }
       const searchResult = bindLabelList?.filter((item: LabelBindItem) => {
         return (
-          // search by labelCode ToolSn and Receiver
           item.LabelSpec.AimsSpec.LabelCode.toString()
             .toLowerCase()
             .includes(value.toLowerCase()) ||
           item.ToolSn.toLowerCase().includes(value.toLowerCase()) ||
           item.ReceiptorInfo?.UserName.toLowerCase().includes(
+            value.toLowerCase()
+          ) ||
+          item.ToolStatusInfo.MachineLoading.MachineName.toLocaleLowerCase().includes(
             value.toLowerCase()
           )
         );
@@ -197,10 +200,6 @@ export default function Page() {
     getUserList();
     getStorageList();
   }, []);
-
-  useEffect(() => {
-    console.log(returnData);
-  }, [returnData]);
 
   return (
     <div className="relative w-full p-2 mr-4 overflow-auto rounded-md ">
