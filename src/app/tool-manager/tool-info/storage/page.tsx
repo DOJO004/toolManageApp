@@ -1,68 +1,62 @@
 "use client";
 
-import { useNotice } from "@/components/context/NoticeContext";
 import StorageIndex from "@/components/storage";
 import StorageNew from "@/components/storage/new";
-import {
-  BasicResponse,
-  EditStorageItem,
-  GetStorageListResponse,
-  NewStorageItem,
-  StorageItem,
-} from "@/components/storage/types";
 import {
   apiDeleteStorageInfo,
   apiEditSTorageInfo,
   apiGetStorageList,
   apiPostStorageInfo,
-} from "@/scripts/Apis/storage/storageApi";
-import { AlertColor } from "@mui/material";
+} from "@/scripts/Apis/toolInfo/toolInfo";
+import {
+  EditStorageItem,
+  NewStorageItem,
+  StorageMenuItem,
+} from "@/scripts/Apis/toolInfo/type";
+import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function PatchStorageResponse() {
-  const { setShowNotice } = useNotice();
-  const [storageList, setStorageList] = useState<StorageItem[]>([]);
-  const [newStorage, setNewStorage] = useState<NewStorageItem>({
-    StorageId: 0,
-    Name: "",
-  });
+  const handleNotice = useHandleNotice();
+  const [storageList, setStorageList] = useState<StorageMenuItem[]>([]);
+  const [newStorage, setNewStorage] = useState<NewStorageItem>(
+    {} as NewStorageItem
+  );
   const [newMode, setNewMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(-1);
-  const [editData, setEditData] = useState<EditStorageItem>(
+  const [editStorage, setEditStorage] = useState<EditStorageItem>(
     {} as EditStorageItem
   );
 
   const getStorageList = async () => {
-    const data = await apiGetStorageList();
-    const res = data as GetStorageListResponse;
-    const reqInt = res.data?.Values?.ReqInt;
-    console.log(res);
-
-    if (reqInt === 0) {
-      setStorageList(res.data.Values.StorageMenus);
-    } else {
-      console.log(reqInt);
-    }
+    setStorageList(await apiGetStorageList());
   };
 
   const postStorage = async (e: FormEvent) => {
     e.preventDefault();
-    const data = await apiPostStorageInfo(newStorage);
-    const res = data as BasicResponse;
-    const reqInt = res.data?.Values?.ReqInt;
-    console.log(res);
-
+    const reqInt = await apiPostStorageInfo(newStorage);
     if (reqInt === 0) {
       getStorageList();
-      setNewStorage({
-        StorageId: 0,
-        Name: "",
-      });
+      cleanNewStorage();
       handleNotice("success", true, "新增成功");
     } else {
       handleNotice("error", true, `新增失敗。errorCode: ${reqInt}`);
     }
+  };
+
+  const cleanNewStorage = () => {
+    setNewStorage({
+      StorageId: 0,
+      Name: "",
+    });
+  };
+
+  const cleanEditStorage = () => {
+    setEditStorage({
+      StorageId: 0,
+      Name: "",
+    });
   };
 
   const handleChangeNewStorage = (key: string, value: string | number) => {
@@ -70,19 +64,12 @@ export default function PatchStorageResponse() {
   };
 
   const patchStorage = async () => {
-    const data = await apiEditSTorageInfo(editData);
-    const res = data as BasicResponse;
-    const reqInt = res.data?.Values?.ReqInt;
-    console.log(res);
-
+    const reqInt = await apiEditSTorageInfo(editStorage);
     if (reqInt === 0) {
       getStorageList();
       setEditMode(false);
       setEditIndex(-1);
-      setEditData({
-        StorageId: 0,
-        Name: "",
-      });
+      cleanEditStorage();
       handleNotice("success", true, "修改成功");
     }
   };
@@ -90,39 +77,22 @@ export default function PatchStorageResponse() {
   const deleteStorage = async () => {
     const confirm = window.confirm("確定刪除嗎?");
     if (confirm) {
-      const data = await apiDeleteStorageInfo(editData);
-      const res = data as BasicResponse;
-      const reqInt = res.data?.Values?.ReqInt;
+      const reqInt = await apiDeleteStorageInfo(editStorage);
       if (reqInt === 0) {
         setEditMode(false);
         getStorageList();
         handleNotice("success", true, "刪除成功");
       }
-      console.log(res);
     }
   };
 
-  const handleEditMode = (item: StorageItem, index: number) => {
-    console.log(item);
-
+  const handleEditMode = (item: StorageMenuItem, index: number) => {
     setNewMode(false);
     setEditMode(true);
     setEditIndex(index);
-    setEditData({
+    setEditStorage({
       StorageId: item.StorageId,
       Name: item.Name,
-    });
-  };
-
-  const handleNotice = (
-    typeColor: AlertColor,
-    show: boolean,
-    messages: string
-  ) => {
-    setShowNotice({
-      type: typeColor,
-      show: show,
-      messages: messages,
     });
   };
 
@@ -155,8 +125,8 @@ export default function PatchStorageResponse() {
           storageList={storageList}
           editIndex={editIndex}
           editMode={editMode}
-          editData={editData}
-          setEditData={setEditData}
+          editStorage={editStorage}
+          setEditStorage={setEditStorage}
           patchStorage={patchStorage}
           deleteStorage={deleteStorage}
           handleEditMode={handleEditMode}

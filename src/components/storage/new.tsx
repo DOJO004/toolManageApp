@@ -20,7 +20,7 @@ export default function StorageNew({
           <div className="w-full">
             <label htmlFor="StorageId">ID</label>
             <input
-              type="text"
+              type="number"
               name="StorageId"
               className="w-full p-2 text-center text-black rounded-md "
               id="StorageId"

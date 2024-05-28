@@ -141,13 +141,13 @@ export interface NewToolStockItem {
 export interface GetStorageListResponse {
   RC: string;
   Values: {
-    StorageMenus: StorageItem[];
+    StorageMenus: StorageMenuItem[];
     TotalRecords: number;
     ReqInt: number;
   };
 }
 
-export interface StorageItem {
+export interface StorageMenuItem {
   TotalCount: number;
   LastModify: string;
   StorageId: number;

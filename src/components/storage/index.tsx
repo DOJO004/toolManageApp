@@ -4,9 +4,9 @@ import { EditStorageItem, StorageItem } from "./types";
 interface Props {
   storageList: StorageItem[];
   editIndex: number;
-  editData: EditStorageItem;
+  editStorage: EditStorageItem;
   editMode: boolean;
-  setEditData: React.Dispatch<React.SetStateAction<EditStorageItem>>;
+  setEditStorage: React.Dispatch<React.SetStateAction<EditStorageItem>>;
   patchStorage: () => void;
   deleteStorage: () => void;
   handleEditMode: (item: StorageItem, index: number) => void;
@@ -14,9 +14,9 @@ interface Props {
 export default function StorageIndex({
   storageList,
   editIndex,
-  editData,
+  editStorage,
   editMode,
-  setEditData,
+  setEditStorage,
   patchStorage,
   deleteStorage,
   handleEditMode,
@@ -39,11 +39,11 @@ export default function StorageIndex({
               <td className="p-1">
                 <input
                   type="text"
-                  value={editData.Name}
+                  value={editStorage.Name}
                   className="text-center text-black "
                   onChange={(e) =>
-                    setEditData({
-                      ...editData,
+                    setEditStorage({
+                      ...editStorage,
                       Name: e.target.value,
                     })
                   }

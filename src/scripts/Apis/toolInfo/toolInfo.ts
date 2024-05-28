@@ -2,11 +2,13 @@ import { apiInstance } from "@/scripts/toolInfoApi";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
   BaseResponse,
+  EditStorageItem,
   GetLoadingLogListResponse,
   GetStorageListResponse,
   GetToolSpecListResponse,
   GetToolStockCountListResponse,
   GetToolTypeListResponse,
+  NewStorageItem,
   NewToolSpecItem,
   NewToolStockItem,
   ToolTypeItem,
@@ -331,48 +333,57 @@ export async function apiGetStorageList() {
   }
 }
 
-export async function apiPostStorageInfo(data) {
+export async function apiPostStorageInfo(storage: NewStorageItem) {
   const body = {
     StockStorageInfos: [
       {
-        StorageId: data.StorageId,
-        Name: data.Name,
+        StorageId: storage.StorageId,
+        Name: storage.Name,
       },
     ],
   };
+  console.log("new storage body = ", body);
+
   try {
-    const res = apiInstance.post("/user_operate/AddStockStorageInfo", body);
-    return res;
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/AddStockStorageInfo",
+      body
+    );
+    console.log("add storage res = ", res);
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
   }
 }
 
-export async function apiEditSTorageInfo(data) {
+export async function apiEditSTorageInfo(storage: EditStorageItem) {
   const body = {
-    StorageId: data.StorageId,
-    Name: data.Name,
+    StorageId: storage.StorageId,
+    Name: storage.Name,
   };
   try {
-    const res = apiInstance.post("/user_operate/ModifyStockSotrageInfo", body);
-    return res;
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/ModifyStockSotrageInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
   }
 }
 
-export async function apiDeleteStorageInfo(data) {
+export async function apiDeleteStorageInfo(storage: EditStorageItem) {
   const body = {
-    StorageId: data.StorageId,
+    StorageId: storage.StorageId,
   };
   try {
-    const res = apiInstance.post(
+    const res = await apiInstance.post<BaseResponse>(
       "/user_operate/DisabledStockSotrageInfo",
       body
     );
-    return res;
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
