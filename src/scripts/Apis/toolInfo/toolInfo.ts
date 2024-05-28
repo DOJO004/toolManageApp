@@ -3,8 +3,11 @@ import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
   BaseResponse,
   GetLoadingLogListResponse,
+  GetToolSpecListResponse,
   GetToolTypeListResponse,
+  NewToolSpecItem,
   ToolTypeItem,
+  editToolSpecItem,
 } from "./type";
 
 export async function apiGetToolLoadingLogList(toolSn: string) {
@@ -110,6 +113,117 @@ export async function apiDeleteToolType(toolType: ToolTypeItem) {
       "user_operate/DisabledToolTypeInfo",
       body
     );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+// toolSpec
+export async function apiGetToolSpecList() {
+  try {
+    const res = await apiInstance.get<GetToolSpecListResponse>(
+      "tool_get/GetToolSpecInfoList"
+    );
+    const { Values } = res.data;
+    if (Values.ReqInt === 0) {
+      return Values.ToolSpecList;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error", error);
+    return [];
+  }
+}
+
+export async function apiNewToolSpec(toolSpec: NewToolSpecItem) {
+  const body = {
+    ToolsInfo: {
+      ToolSpecId: toolSpec.ToolSpecId,
+      Name: toolSpec.Name,
+      ToolTypeId: toolSpec.ToolTypeId,
+      SafetyStock: toolSpec.SafetyStock,
+      SpecData: {
+        BladeDiameter: toolSpec.BladeDiameter,
+        BladeHeight: toolSpec.BladeHeight,
+        TotalLength: toolSpec.TotalLength,
+        HandleDiameter: toolSpec.HandleDiameter,
+      },
+      MaxLife: {
+        ProcessCnt: toolSpec.ProcessCnt,
+        ProcessTime: toolSpec.ProcessTime,
+        ProcessLength: toolSpec.ProcessLength,
+        RepairCnt: toolSpec.RepairCnt,
+      },
+    },
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+  };
+  console.log("new tool spec body = ", body);
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "user_operate/AddToolSpecInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+export async function apiEditToolSpec(toolSpec: editToolSpecItem) {
+  const body = {
+    ToolSpecId: toolSpec.ToolSpecId,
+    ModifyDatas: {
+      Name: toolSpec.Name,
+      ToolTypeId: toolSpec.ToolTypeId,
+      SafetyStock: toolSpec.SafetyStock,
+      SpecData: {
+        BladeDiameter: toolSpec.BladeDiameter,
+        BladeHeight: toolSpec.BladeHeight,
+        TotalLength: toolSpec.TotalLength,
+        HandleDiameter: toolSpec.HandleDiameter,
+      },
+      MaxLife: {
+        ProcessCnt: toolSpec.ProcessCnt,
+        ProcessTime: toolSpec.ProcessTime,
+        ProcessLength: toolSpec.ProcessLength,
+        RepairCnt: toolSpec.RepairCnt,
+      },
+    },
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: [getPermission()],
+  };
+  console.log("edit tool spec body = ", body);
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "user_operate/ModifyToolSpecInfo",
+      body
+    );
+    console.log("edit tool spec res = ", res);
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+export async function apiDeleteToolSpec(editToolSpec: editToolSpecItem) {
+  const body = {
+    ToolSpecId: editToolSpec.ToolSpecId,
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: [getPermission()],
+  };
+  try {
+    const res = await apiInstance.post(
+      "user_operate/DisabledToolSpecInfo",
+      body
+    );
+    console.log("delete tool spec res = ", res);
     return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);

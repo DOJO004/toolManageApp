@@ -1,23 +1,20 @@
+import { NewToolSpecItem, ToolTypeItem } from "@/scripts/Apis/toolInfo/type";
 import React, { FormEvent } from "react";
-import { ToolTypeItem } from "../toolType/types";
-import { ToolSpecItem } from "./types";
 
 interface Props {
   setNewToolSpecMode: React.Dispatch<React.SetStateAction<boolean>>;
   postNewToolSpec: (e: FormEvent) => void;
-  toolSpec: ToolSpecItem;
-  setToolSpec: React.Dispatch<React.SetStateAction<ToolSpecItem>>;
+  newToolSpec: NewToolSpecItem;
   toolTypeList: ToolTypeItem[];
-  handelSetToolSpec: (key: string, value: string | number) => void;
+  handleNewToolSpec: (key: string, value: string | number) => void;
 }
 
 export function NewToolSpec({
   setNewToolSpecMode,
   postNewToolSpec,
-  toolSpec,
-  setToolSpec,
+  newToolSpec,
   toolTypeList,
-  handelSetToolSpec,
+  handleNewToolSpec,
 }: Props) {
   return (
     <div className="p-2 bg-gray-900 rounded-md">
@@ -42,16 +39,13 @@ export function NewToolSpec({
             </label>
             <select
               id="ID"
-              value={toolSpec.ToolTypeData.Id}
+              value={newToolSpec.ToolTypeId}
               className="w-full text-black rounded-md min-w-24"
-              onChange={(e) =>
-                setToolSpec((prev) => ({
-                  ...prev,
-                  ToolTypeData: { ...prev.ToolTypeData, Id: e.target.value },
-                }))
-              }
+              onChange={(e) => handleNewToolSpec("ToolTypeId", e.target.value)}
             >
-              <option value="">請選擇</option>
+              <option value="" className="text-gray-400 ">
+                請選擇
+              </option>
               {toolTypeList.map((item) => (
                 <option key={item.Id} value={item.Id} className="text-black ">
                   {item.Name}
@@ -68,8 +62,8 @@ export function NewToolSpec({
               type="text"
               className="w-full text-center text-black rounded-md min-w-24 "
               placeholder="刀具規格 ID"
-              value={toolSpec.ToolSpecId}
-              onChange={(e) => handelSetToolSpec("ToolSpecId", e.target.value)}
+              value={newToolSpec.ToolSpecId}
+              onChange={(e) => handleNewToolSpec("ToolSpecId", e.target.value)}
             />
           </div>
           <div className="">
@@ -81,8 +75,8 @@ export function NewToolSpec({
               type="text"
               className="w-full text-center text-black rounded-md min-w-24 "
               placeholder="刀具規格名稱"
-              value={toolSpec.Name}
-              onChange={(e) => handelSetToolSpec("Name", e.target.value)}
+              value={newToolSpec.Name}
+              onChange={(e) => handleNewToolSpec("Name", e.target.value)}
             />
           </div>
 
@@ -94,15 +88,9 @@ export function NewToolSpec({
               id="Φ"
               type="number"
               className="w-full text-center text-black rounded-md min-w-24 "
-              value={toolSpec.SpecData.BladeDiameter}
+              value={newToolSpec.BladeDiameter}
               onChange={(e) =>
-                setToolSpec((prev) => ({
-                  ...prev,
-                  SpecData: {
-                    ...prev.SpecData,
-                    BladeDiameter: Number(e.target.value),
-                  },
-                }))
+                handleNewToolSpec("BladeDiameter", e.target.value)
               }
             />
           </div>
@@ -114,16 +102,8 @@ export function NewToolSpec({
               id="height"
               type="number"
               className="w-full text-center text-black rounded-md min-w-24 "
-              value={toolSpec.SpecData.BladeHeight}
-              onChange={(e) =>
-                setToolSpec((prev) => ({
-                  ...prev,
-                  SpecData: {
-                    ...prev.SpecData,
-                    BladeHeight: Number(e.target.value),
-                  },
-                }))
-              }
+              value={newToolSpec.BladeHeight}
+              onChange={(e) => handleNewToolSpec("BladeHeight", e.target.value)}
             />
           </div>
           <div className="">
@@ -134,16 +114,8 @@ export function NewToolSpec({
               id="totalLength"
               type="number"
               className="w-full text-center text-black rounded-md min-w-24 "
-              value={toolSpec.SpecData.TotalLength}
-              onChange={(e) =>
-                setToolSpec((prev) => ({
-                  ...prev,
-                  SpecData: {
-                    ...prev.SpecData,
-                    TotalLength: Number(e.target.value),
-                  },
-                }))
-              }
+              value={newToolSpec.TotalLength}
+              onChange={(e) => handleNewToolSpec("TotalLength", e.target.value)}
             />
           </div>
           <div className="">
@@ -154,15 +126,9 @@ export function NewToolSpec({
               id="手柄Φ"
               type="number"
               className="w-full text-center text-black rounded-md min-w-24 "
-              value={toolSpec.SpecData.HandleDiameter}
+              value={newToolSpec.HandleDiameter}
               onChange={(e) =>
-                setToolSpec((prev) => ({
-                  ...prev,
-                  SpecData: {
-                    ...prev.SpecData,
-                    HandleDiameter: Number(e.target.value),
-                  },
-                }))
+                handleNewToolSpec("HandleDiameter", e.target.value)
               }
             />
           </div>
@@ -174,8 +140,8 @@ export function NewToolSpec({
               id="safetyStock"
               type="text"
               className="w-full text-center text-black rounded-md min-w-24 "
-              value={toolSpec.SafetyStock}
-              onChange={(e) => handelSetToolSpec("SafetyStock", e.target.value)}
+              value={newToolSpec.SafetyStock}
+              onChange={(e) => handleNewToolSpec("SafetyStock", e.target.value)}
             />
           </div>
 
@@ -187,16 +153,8 @@ export function NewToolSpec({
               id="RepairCnt"
               type="number"
               className="w-full text-center text-black rounded-md min-w-24 "
-              value={toolSpec.MaxLife.RepairCnt}
-              onChange={(e) =>
-                setToolSpec((prev) => ({
-                  ...prev,
-                  MaxLife: {
-                    ...prev.MaxLife,
-                    RepairCnt: Number(e.target.value),
-                  },
-                }))
-              }
+              value={newToolSpec.RepairCnt}
+              onChange={(e) => handleNewToolSpec("RepairCnt", e.target.value)}
             />
           </div>
           <div className="">
@@ -207,16 +165,8 @@ export function NewToolSpec({
               id="ProcessCnt"
               type="number"
               className="w-full text-center text-black rounded-md min-w-24 "
-              value={toolSpec.MaxLife.ProcessCnt}
-              onChange={(e) =>
-                setToolSpec((prev) => ({
-                  ...prev,
-                  MaxLife: {
-                    ...prev.MaxLife,
-                    ProcessCnt: Number(e.target.value),
-                  },
-                }))
-              }
+              value={newToolSpec.ProcessCnt}
+              onChange={(e) => handleNewToolSpec("ProcessCnt", e.target.value)}
             />
           </div>
           <div className="">
@@ -227,15 +177,9 @@ export function NewToolSpec({
               id="ProcessLength"
               type="number"
               className="w-full text-center text-black rounded-md min-w-24 "
-              value={toolSpec.MaxLife.ProcessLength}
+              value={newToolSpec.ProcessLength}
               onChange={(e) =>
-                setToolSpec((prev) => ({
-                  ...prev,
-                  MaxLife: {
-                    ...prev.MaxLife,
-                    ProcessLength: Number(e.target.value),
-                  },
-                }))
+                handleNewToolSpec("ProcessLength", e.target.value)
               }
             />
           </div>
@@ -247,16 +191,8 @@ export function NewToolSpec({
               id="ProcessTime"
               type="number"
               className="w-full text-center text-black rounded-md min-w-24 "
-              value={toolSpec.MaxLife.ProcessTime}
-              onChange={(e) =>
-                setToolSpec((prev) => ({
-                  ...prev,
-                  MaxLife: {
-                    ...prev.MaxLife,
-                    ProcessTime: Number(e.target.value),
-                  },
-                }))
-              }
+              value={newToolSpec.ProcessTime}
+              onChange={(e) => handleNewToolSpec("ProcessTime", e.target.value)}
             />
           </div>
         </div>

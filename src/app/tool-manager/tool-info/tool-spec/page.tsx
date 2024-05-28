@@ -1,77 +1,29 @@
 "use client";
-import { useNotice } from "@/components/context/NoticeContext";
-import SweetAlert from "@/components/sweetAlert";
 import ToolSpecIndex from "@/components/toolInfo/toolSpec";
 import { NewToolSpec } from "@/components/toolInfo/toolSpec/new";
-import {
-  DeleteToolSpecResponse,
-  GetToolSpecListResponse,
-  PatchToolSpecResponse,
-  PostToolSpecResponse,
-  ToolSpecItem,
-  editToolSpecItem,
-} from "@/components/toolInfo/toolSpec/types";
-import {
-  GetToolTypeListResponse,
-  ToolTypeItem,
-} from "@/components/toolInfo/toolType/types";
 import {
   apiDeleteToolSpec,
   apiEditToolSpec,
   apiGetToolSpecList,
+  apiGetToolTypeList,
   apiNewToolSpec,
-} from "@/scripts/Apis/toolSpec/toolSpecApi";
-import { apiGetToolTypeList } from "@/scripts/Apis/toolType/toolTypeApi";
-import { AlertColor } from "@mui/material";
+} from "@/scripts/Apis/toolInfo/toolInfo";
+import {
+  NewToolSpecItem,
+  ToolSpecItem,
+  ToolTypeItem,
+  editToolSpecItem,
+} from "@/scripts/Apis/toolInfo/type";
+import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
-  const { setShowNotice } = useNotice();
-  const [toolSpecList, setToolSpecList] = useState([
-    {
-      ToolSpecId: "",
-      Name: "",
-      ToolTypeData: {
-        Id: "",
-        Name: "",
-      },
-      SafetyStock: 0,
-      SpecData: {
-        BladeDiameter: 0,
-        BladeHeight: 0,
-        TotalLength: 0,
-        HandleDiameter: 0,
-      },
-      MaxLife: {
-        ProcessCnt: 0,
-        ProcessTime: 0,
-        ProcessLength: 0,
-        RepairCnt: 0,
-      },
-    },
-  ]);
+  const handleNotice = useHandleNotice();
+  const [toolSpecList, setToolSpecList] = useState<ToolSpecItem[]>([]);
   const [toolTypeList, setToolTypeList] = useState<ToolTypeItem[]>([]);
-  const [toolSpec, setToolSpec] = useState<ToolSpecItem>({
-    ToolSpecId: "",
-    Name: "",
-    ToolTypeData: {
-      Id: "",
-      Name: "",
-    },
-    SafetyStock: 0,
-    SpecData: {
-      BladeDiameter: 0,
-      BladeHeight: 0,
-      TotalLength: 0,
-      HandleDiameter: 0,
-    },
-    MaxLife: {
-      ProcessCnt: 0,
-      ProcessTime: 0,
-      ProcessLength: 0,
-      RepairCnt: 0,
-    },
-  });
+  const [newToolSpec, setNewToolSpec] = useState<NewToolSpecItem>(
+    {} as NewToolSpecItem
+  );
   const [newToolSpecMode, setNewToolSpecMode] = useState(false);
   const [editToolSpecMode, setEditToolSpecMode] = useState(false);
   const [editToolSpecModeIndex, setEditToolSpecModeIndex] = useState(-1);
@@ -92,38 +44,29 @@ export default function Page() {
   });
 
   const getToolTypeList = async () => {
-    const data = await apiGetToolTypeList();
-    const res = data as GetToolTypeListResponse;
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolTypeList(res.data.Values.ToolTypeMenus);
-    }
+    setToolTypeList(await apiGetToolTypeList());
   };
 
-  const getToolSpecList = async (count = 1) => {
-    if (count === 3) {
-      SweetAlert(-99, "請求失敗，請重新整理頁面。");
-    } else {
-      const data = await apiGetToolSpecList();
-      const res = data as GetToolSpecListResponse;
-      console.log("tool spec list ", res);
+  const getToolSpecList = async () => {
+    setToolSpecList(await apiGetToolSpecList());
+  };
 
-      if (res?.data?.Values?.ReqInt === 0) {
-        setToolSpecList(res.data.Values.ToolSpecList);
-        return res.data.Values.ToolSpecList;
-      } else {
-        getToolSpecList(count + 1);
-      }
+  const postNewToolSpec = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const reqInt = await apiNewToolSpec(newToolSpec);
+
+    if (reqInt === 0) {
+      getToolSpecList();
+      handleNotice("success", true, "新增成功");
+      cleanNewToolSpec();
+    } else {
+      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
   };
 
   const patchToolSpec = async () => {
-    const data = await apiEditToolSpec(editToolSpec);
-    const res = data as PatchToolSpecResponse;
-    const reqInt = res.data?.Values?.ReqInt;
-
-    console.log("patch tool spec", res);
-
+    const reqInt = await apiEditToolSpec(editToolSpec);
     if (reqInt === 0) {
       setEditToolSpecMode(false);
       getToolSpecList();
@@ -136,11 +79,7 @@ export default function Page() {
   const deleteToolSpec = async () => {
     const confirm = window.confirm(`確定要刪除 ${editToolSpec.ToolSpecId} 嗎?`);
     if (confirm) {
-      const data = await apiDeleteToolSpec(editToolSpec.ToolSpecId);
-      const res = data as DeleteToolSpecResponse;
-      const reqInt = res?.data?.Values?.ReqInt;
-      console.log("delete tool spec", res);
-
+      const reqInt = await apiDeleteToolSpec(editToolSpec);
       if (reqInt === 0) {
         setEditToolSpecMode(false);
         getToolSpecList();
@@ -150,48 +89,22 @@ export default function Page() {
       }
     }
   };
-  const postNewToolSpec = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await apiNewToolSpec(toolSpec);
-    const res = data as PostToolSpecResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
-    console.log("post new tool spec", res);
 
-    if (reqInt === 0) {
-      getToolSpecList();
-      cleanToolSpec();
-      handleNotice("success", true, "新增成功");
-    } else {
-      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
-    }
-  };
-
-  const cleanToolSpec = () => {
-    setToolSpec({
+  const cleanNewToolSpec = () => {
+    setNewToolSpec({
       ToolSpecId: "",
       Name: "",
-      ToolTypeData: {
-        Id: "",
-        Name: "",
-      },
+      ToolTypeId: "",
       SafetyStock: 0,
-      SpecData: {
-        BladeDiameter: 0,
-        BladeHeight: 0,
-        TotalLength: 0,
-        HandleDiameter: 0,
-      },
-      MaxLife: {
-        ProcessCnt: 0,
-        ProcessTime: 0,
-        ProcessLength: 0,
-        RepairCnt: 0,
-      },
+      BladeDiameter: 0,
+      BladeHeight: 0,
+      TotalLength: 0,
+      HandleDiameter: 0,
+      ProcessCnt: 0,
+      ProcessTime: 0,
+      ProcessLength: 0,
+      RepairCnt: 0,
     });
-  };
-
-  const handelSetToolSpec = (key: string, value: string | number) => {
-    setToolSpec((prev) => ({ ...prev, [key]: value }));
   };
 
   let timer: ReturnType<typeof setTimeout>;
@@ -199,7 +112,7 @@ export default function Page() {
     clearTimeout(timer);
 
     timer = setTimeout(async () => {
-      const toolSpecList = await getToolSpecList();
+      const toolSpecList = await apiGetToolSpecList();
       if (toolSpecList) {
         const filterData = toolSpecList?.filter((item) => {
           return (
@@ -215,6 +128,10 @@ export default function Page() {
   const handleNewToolSpecMode = () => {
     setNewToolSpecMode(!newToolSpecMode);
     setEditToolSpecMode(false);
+  };
+
+  const handleNewToolSpec = (key: string, value: string | number) => {
+    setNewToolSpec({ ...newToolSpec, [key]: value });
   };
 
   const handleEditToolSpecMode = (item: ToolSpecItem, index: number) => {
@@ -241,18 +158,6 @@ export default function Page() {
 
   const handleEditToolSpec = (key: string, value: string) => {
     setEditToolSpec({ ...editToolSpec, [key]: value });
-  };
-
-  const handleNotice = (
-    typeColor: AlertColor,
-    show: boolean,
-    messages: string
-  ) => {
-    setShowNotice({
-      type: typeColor,
-      show: show,
-      messages: messages,
-    });
   };
 
   useEffect(() => {
@@ -289,10 +194,9 @@ export default function Page() {
           <NewToolSpec
             setNewToolSpecMode={setNewToolSpecMode}
             postNewToolSpec={postNewToolSpec}
-            toolSpec={toolSpec}
-            setToolSpec={setToolSpec}
+            newToolSpec={newToolSpec}
+            handleNewToolSpec={handleNewToolSpec}
             toolTypeList={toolTypeList}
-            handelSetToolSpec={handelSetToolSpec}
           />
         </div>
         <div className="overflow-hidden text-center bg-gray-900 rounded-md ">
