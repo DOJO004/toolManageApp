@@ -90,3 +90,86 @@ export interface editToolSpecItem {
   ProcessLength: number;
   RepairCnt: number;
 }
+
+// toolStock
+export interface GetToolStockCountListResponse {
+  Values: {
+    ReqInt: number;
+    StockToolCountList: StockToolCountItem[];
+  };
+}
+
+export interface StockToolCountItem {
+  ToolSpecId: string;
+  ToolTypeData: {
+    Id: string;
+    Name: string;
+  };
+  ToolSpecName: string;
+  SafetyStock: number;
+  CurrentStock: number;
+  WarningCount: number;
+  AlarmCount: number;
+  ToolStatusList: ToolStatusItem[];
+}
+
+export interface ToolStatusItem {
+  ToolSn: string;
+  LifeStatus: string;
+  LifePercentage: number;
+  PositionInfo: {
+    PositionStatus: number;
+    MachineSn: string;
+    StorageId: number;
+  };
+  LastOperator: {
+    AccountId: string;
+    UserAccount: string;
+    EmployeeId: string;
+    UserName: string;
+  };
+  LastModify: string;
+}
+
+export interface NewToolStockItem {
+  StorageId: string;
+  ToolSpecId: string;
+  Qty: number;
+}
+
+// storage
+export interface GetStorageListResponse {
+  RC: string;
+  Values: {
+    StorageMenus: StorageItem[];
+    TotalRecords: number;
+    ReqInt: number;
+  };
+}
+
+export interface StorageItem {
+  TotalCount: number;
+  LastModify: string;
+  StorageId: number;
+  Name: string;
+}
+
+export interface NewStorageItem {
+  StorageId: number;
+  Name: string;
+}
+
+export interface EditStorageItem {
+  StorageId: number;
+  Name: string;
+}
+
+export interface BasicResponse {
+  data: {
+    RC: string;
+    Values: {
+      ReqInt: number;
+      MultiStorageIds: number[];
+    };
+  };
+}

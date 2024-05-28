@@ -1,101 +1,56 @@
 "use client";
 
 import { useNotice } from "@/components/context/NoticeContext";
-import {
-  GetStorageListResponse,
-  StorageItem,
-} from "@/components/storage/types";
-import SweetAlert from "@/components/sweetAlert";
-import {
-  GetToolSpecListResponse,
-  ToolSpecItem,
-} from "@/components/toolInfo/toolSpec/types";
+
 import ToolStockIndex from "@/components/toolInfo/toolStock";
 import NewToolStock from "@/components/toolInfo/toolStock/new";
 import {
-  GetToolStockCountListResponse,
-  PostToolStockResponse,
-  StockToolCountItem,
-  ToolStatusItem,
-} from "@/components/toolInfo/toolStock/types";
-import { apiGetStorageList } from "@/scripts/Apis/storage/storageApi";
-import { apiGetToolSpecList } from "@/scripts/Apis/toolSpec/toolSpecApi";
-import {
+  apiGetStorageList,
+  apiGetToolSpecList,
   apiGetToolStockCountList,
-  apiNewToolStock,
-} from "@/scripts/Apis/toolStock/toolStock";
+  apiPostToolStock,
+} from "@/scripts/Apis/toolInfo/toolInfo";
+import {
+  NewToolStockItem,
+  StockToolCountItem,
+  StorageItem,
+  ToolSpecItem,
+  ToolStatusItem,
+} from "@/scripts/Apis/toolInfo/type";
 import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
   const { setShowNotice } = useNotice();
   const [toolStockList, setToolStockList] = useState<StockToolCountItem[]>([]);
-  const [newToolStockMode, setNewToolStockMode] = useState(false);
-  const [toolSpecList, setToolSpecList] = useState<ToolSpecItem[]>([]);
-  const [toolStock, setToolStock] = useState({
-    StorageId: "",
-    ToolSpecId: "",
-    Qty: 0,
-  });
-
   const [storageList, setStorageList] = useState<StorageItem[]>([]);
-
-  const [selectToolStock, setSelectToolStock] = useState<
-    { name: string; checked: boolean }[]
-  >([]);
+  const [toolSpecList, setToolSpecList] = useState<ToolSpecItem[]>([]);
   const [toolSpecClass, setToolSpecClass] = useState<string[]>([]);
+  const [selectToolClass, setSelectToolClass] = useState<string[]>([]);
+  const [toolSpecClassMenu, setToolSpecClassMenu] = useState<boolean>(false);
 
-  const getToolStockList = async (count = 1) => {
-    if (count === 3) {
-      SweetAlert(-99, "請求失敗，請重新整理頁面。");
-    } else {
-      const data = await apiGetToolStockCountList();
-      const res = data as GetToolStockCountListResponse;
-      console.log("get tool stock list", res);
-      if (res?.data?.Values?.ReqInt === 0) {
-        setToolStockList(res.data.Values.StockToolCountList);
+  const [newToolStock, setNewToolStock] = useState<NewToolStockItem>(
+    {} as NewToolStockItem
+  );
+  const [newToolStockMode, setNewToolStockMode] = useState(false);
 
-        // 使用 Set 來過濾重複元素
-        const uniqueToolSpecNames = new Set<string>();
-        res.data.Values.StockToolCountList.forEach((item) => {
-          uniqueToolSpecNames.add(item.ToolSpecName);
-        });
-
-        // 將 Set 轉換為陣列，然後更新 toolSpecClass 狀態
-        setToolSpecClass(Array.from(uniqueToolSpecNames));
-      } else {
-        getToolStockList(count + 1);
-      }
-    }
+  const getToolStockList = async () => {
+    setToolStockList(await apiGetToolStockCountList());
+    setToolSpecClass(handleToolSpecClass(await apiGetToolStockCountList()));
   };
-  const getToolSpecList = async () => {
-    const data = await apiGetToolSpecList();
-    const res = data as GetToolSpecListResponse;
-    console.log("tool spec list ", res);
 
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolSpecList(res.data.Values.ToolSpecList);
-    }
+  const getToolSpecList = async () => {
+    setToolSpecList(await apiGetToolSpecList());
   };
 
   const getStorageList = async () => {
-    const data = await apiGetStorageList();
-    const res = data as GetStorageListResponse;
-    const reqInt = res.data?.Values?.ReqInt;
-    console.log("storage list ", res);
-
-    if (reqInt === 0) {
-      setStorageList(res.data.Values.StorageMenus);
-    }
+    setStorageList(await apiGetStorageList());
   };
 
   const postToolStock = async (e: FormEvent) => {
     e.preventDefault();
-    const data = await apiNewToolStock(toolStock);
-    const res = data as PostToolStockResponse;
-    const reqInt = res.data?.Values?.ReqInt;
 
-    console.log(res);
+    const reqInt = await apiPostToolStock(newToolStock);
     if (reqInt === 0) {
       getToolStockList();
       cleanNewToolStock();
@@ -105,42 +60,46 @@ export default function Page() {
     }
   };
 
+  const handleToolSpecClass = (toolStockList: StockToolCountItem[]) => {
+    return toolStockList.map((item) => item.ToolSpecName);
+  };
+
   const cleanNewToolStock = () => {
-    setToolStock({
+    setNewToolStock({
       StorageId: "",
       ToolSpecId: "",
       Qty: 0,
     });
   };
   const handleToolStock = (name: string, value: number | string) => {
-    setToolStock({
-      ...toolStock,
+    setNewToolStock({
+      ...newToolStock,
       [name]: value,
     });
   };
 
-  const handleCheckboxChange = (name: string, value: boolean) => {
-    if (value) {
-      setSelectToolStock((prev) => [...prev, { name: name, checked: value }]);
+  const handleSelectToolClass = (name: string, checked: boolean) => {
+    if (checked) {
+      setSelectToolClass([...selectToolClass, name]);
     } else {
-      setSelectToolStock((prev) => prev.filter((item) => item.name !== name));
+      setSelectToolClass(selectToolClass.filter((item) => item !== name));
     }
   };
 
   const filterToolStockList = async () => {
-    const data = await apiGetToolStockCountList();
-    const res = data as GetToolStockCountListResponse;
+    const toolStockCountList = await apiGetToolStockCountList();
 
-    if (selectToolStock.length === 0) {
-      setToolStockList(res.data.Values.StockToolCountList);
+    if (selectToolClass.length === 0) {
+      setToolStockList(toolStockCountList);
       return;
     }
 
-    if (res?.data?.Values?.ReqInt === 0) {
-      const filterData = res.data.Values.StockToolCountList.filter((item) =>
-        selectToolStock.map((obj) => obj.name).includes(item.ToolSpecName)
+    if (toolStockCountList.length > 0) {
+      setToolStockList(
+        toolStockCountList.filter((item) => {
+          return selectToolClass.includes(item.ToolSpecName);
+        })
       );
-      filterData.length > 0 ? setToolStockList(filterData) : null;
     }
   };
 
@@ -233,7 +192,7 @@ export default function Page() {
 
   useEffect(() => {
     filterToolStockList();
-  }, [selectToolStock]);
+  }, [selectToolClass]);
 
   return (
     <div className="relative w-full p-2 mx-auto text-center rounded-xl">
@@ -245,17 +204,39 @@ export default function Page() {
         >
           新增
         </button>
-        <div className="flex justify-center gap-2">
-          {toolSpecClass.map((name) => (
-            <div key={name}>
-              <input
-                type="checkbox"
-                id={name}
-                onChange={(e) => handleCheckboxChange(name, e.target.checked)}
-              />
-              <label htmlFor={name}>{name}</label>
-            </div>
-          ))}
+        <div className="flex justify-center gap-2"></div>
+        <div className="relative ">
+          <label
+            htmlFor=""
+            className="p-2 border border-gray-300 rounded-md cursor-pointer hover:border-white "
+            onClick={() => {
+              setToolSpecClassMenu(!toolSpecClassMenu);
+            }}
+          >
+            篩選刀具類型
+          </label>
+
+          <ul
+            className={`${toolSpecClassMenu ? "block" : "hidden"} bg-white w-fit  left-1/2  items-start flex flex-col p-4 rounded-md mt-2 absolute top-6  -translate-x-1/2 z-10`}
+          >
+            {toolSpecClass.map((name) => (
+              <li key={name} value={name}>
+                <input
+                  type="checkbox"
+                  id={name}
+                  onChange={(e) =>
+                    handleSelectToolClass(name, e.target.checked)
+                  }
+                />
+                <label
+                  htmlFor={name}
+                  className="text-black cursor-pointer hover:bg-gray-300"
+                >
+                  {name}
+                </label>
+              </li>
+            ))}
+          </ul>
         </div>
         {/* new */}
         <div
@@ -267,7 +248,7 @@ export default function Page() {
             getToolStockList={getToolStockList}
             setNewToolStockMode={setNewToolStockMode}
             postToolStock={postToolStock}
-            toolStock={toolStock}
+            newToolStock={newToolStock}
             toolSpecList={toolSpecList}
             handleToolStock={handleToolStock}
             storageList={storageList}

@@ -7,7 +7,7 @@ interface Props {
   getToolStockList: () => void;
   setNewToolStockMode: React.Dispatch<React.SetStateAction<boolean>>;
   postToolStock: (e: FormEvent) => void;
-  toolStock: NewToolStockItem;
+  newToolStock: NewToolStockItem;
   toolSpecList: ToolSpecItem[];
   handleToolStock: (key: string, value: string | number) => void;
   storageList: StorageItem[];
@@ -16,13 +16,13 @@ export default function NewToolStock({
   getToolStockList,
   setNewToolStockMode,
   postToolStock,
-  toolStock,
+  newToolStock,
   toolSpecList,
   handleToolStock,
   storageList,
 }: Props) {
   return (
-    <div className="w-full p-4 bg-gray-700 rounded-md">
+    <div className="w-full p-4 bg-gray-900 rounded-md">
       <div className="relative ">
         <h3 className="text-left ">新增刀具庫存</h3>
         <button
@@ -41,7 +41,7 @@ export default function NewToolStock({
             <select
               id="ToolSpecId"
               className="w-full p-1 text-center text-black rounded-md"
-              value={toolStock.ToolSpecId}
+              value={newToolStock.ToolSpecId}
               onChange={(e) => handleToolStock("ToolSpecId", e.target.value)}
             >
               <option value="" className="text-black ">
@@ -65,7 +65,7 @@ export default function NewToolStock({
             <input
               type="number"
               id="Qty"
-              value={toolStock.Qty}
+              value={newToolStock.Qty}
               className="w-full p-1 text-center text-black rounded-md"
               onChange={(e) => handleToolStock("Qty", e.target.value)}
             />
@@ -75,7 +75,7 @@ export default function NewToolStock({
             <select
               id="StorageId"
               className="w-full p-2 text-center text-black rounded-md"
-              value={toolStock.StorageId}
+              value={newToolStock.StorageId}
               onChange={(e) => handleToolStock("StorageId", e.target.value)}
             >
               <option value="">選擇倉儲</option>

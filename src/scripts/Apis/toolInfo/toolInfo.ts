@@ -3,9 +3,12 @@ import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
   BaseResponse,
   GetLoadingLogListResponse,
+  GetStorageListResponse,
   GetToolSpecListResponse,
+  GetToolStockCountListResponse,
   GetToolTypeListResponse,
   NewToolSpecItem,
+  NewToolStockItem,
   ToolTypeItem,
   editToolSpecItem,
 } from "./type";
@@ -225,6 +228,151 @@ export async function apiDeleteToolSpec(editToolSpec: editToolSpecItem) {
     );
     console.log("delete tool spec res = ", res);
     return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+// toolStock
+export async function apiGetToolStockList() {
+  try {
+    const res = await apiInstance.get("tool_get/GetToolStockInfoList");
+    console.log(`apiGetToolStockList`, res);
+    const { Values } = res.data;
+    if (Values.ReqInt === 0) {
+      return Values.StockToolList;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error", error);
+    return [];
+  }
+}
+
+export async function apiGetToolStockCountList() {
+  try {
+    const res = await apiInstance.get<GetToolStockCountListResponse>(
+      "/tool_get/GetToolStockCountList"
+    );
+    const { Values } = res.data;
+    if (Values.ReqInt === 0) {
+      return Values.StockToolCountList;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error", error);
+    return [];
+  }
+}
+
+export async function apiPostToolStock(toolStock: NewToolStockItem) {
+  const body = {
+    StorageId: toolStock.StorageId,
+    ToolStockInfos: [
+      {
+        ToolSpecId: toolStock.ToolSpecId,
+        Qty: toolStock.Qty,
+      },
+    ],
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: [getPermission()],
+  };
+  console.log("new tool stock body = ", body);
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "user_operate/AddToolStockInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+export async function apiDeleteToolStock(toolStock) {
+  const body = {
+    ToolStockId: toolStock.Id,
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+  };
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "user_operate/DisabledToolStockInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+// storage
+export async function apiGetStorageList() {
+  try {
+    const res = await apiInstance.get<GetStorageListResponse>(
+      "/tool_get/GetStockStorageInfoList"
+    );
+    const { Values } = res.data;
+    if (Values.ReqInt === 0) {
+      return Values.StorageMenus;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error", error);
+    return [];
+  }
+}
+
+export async function apiPostStorageInfo(data) {
+  const body = {
+    StockStorageInfos: [
+      {
+        StorageId: data.StorageId,
+        Name: data.Name,
+      },
+    ],
+  };
+  try {
+    const res = apiInstance.post("/user_operate/AddStockStorageInfo", body);
+    return res;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+export async function apiEditSTorageInfo(data) {
+  const body = {
+    StorageId: data.StorageId,
+    Name: data.Name,
+  };
+  try {
+    const res = apiInstance.post("/user_operate/ModifyStockSotrageInfo", body);
+    return res;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+export async function apiDeleteStorageInfo(data) {
+  const body = {
+    StorageId: data.StorageId,
+  };
+  try {
+    const res = apiInstance.post(
+      "/user_operate/DisabledStockSotrageInfo",
+      body
+    );
+    return res;
   } catch (error) {
     console.error("Error", error);
     return error;
