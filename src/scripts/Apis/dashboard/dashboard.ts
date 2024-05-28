@@ -20,6 +20,7 @@ export async function apiGetMachineStatusList(): Promise<MachineStatusItem[]> {
     const res = await apiInstance.get<ApiResponse>(
       `/machine_get/GetMachineStatusInfoList`
     );
+    console.log("apiGetMachineStatusList", res);
 
     // 解构响应数据中的 Values 属性
     const { Values } = res.data;

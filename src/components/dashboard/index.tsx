@@ -2,10 +2,7 @@
 import { apiGetMachineStatusList } from "@/scripts/Apis/dashboard/dashboard";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import {
-  GetMachineStatusInfoListResponse,
-  MachineStatusItem,
-} from "../machineInfo/types";
+import { MachineStatusItem } from "../machineInfo/types";
 
 export default function DashboardIndex() {
   const [machineInfoList, setMachineInfoList] = useState<MachineStatusItem[]>(
@@ -14,14 +11,7 @@ export default function DashboardIndex() {
   const chartColor = `conic-gradient(from 0deg at 50% 50%, #2bfc4e 0deg 50deg, gray 50deg 360deg)`;
 
   const getMachineInfoList = async () => {
-    const data = await apiGetMachineStatusList();
-    const res = data as GetMachineStatusInfoListResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
-    console.log(res);
-
-    if (reqInt === 0) {
-      setMachineInfoList(res.data.Values.MachineStatusList);
-    }
+    setMachineInfoList(await apiGetMachineStatusList());
   };
 
   const toolStatusColor = (status: string) => {
@@ -35,7 +25,6 @@ export default function DashboardIndex() {
 
   const progressColor = (progress: number) => {
     const roundValue = (360 * progress) / 100;
-    console.log("roundValue = ", roundValue);
 
     if (progress < 50) {
       return `conic-gradient(from 0deg at 50% 50%, yellow 0deg ${roundValue}deg, gray ${roundValue}deg 360deg)`;
@@ -48,7 +37,12 @@ export default function DashboardIndex() {
 
   useEffect(() => {
     getMachineInfoList();
+    const interval = setInterval(() => {
+      getMachineInfoList();
+    }, 10000);
+    return () => clearInterval(interval);
   }, []);
+
   return (
     <div className="w-full lg:grid-cols-2 lg:grid lg:gap-2 xl:grid-cols-3">
       {machineInfoList
@@ -60,7 +54,7 @@ export default function DashboardIndex() {
               <div className="flex justify-between w-full border-b-2">
                 <div>
                   <p className="">{item.ProductLineData.Name}</p>
-                  <p className="text-2xl font-bold md:text-4xl ">
+                  <p className="text-xl font-bold md:text-2xl ">
                     {item.SerialNumber}
                   </p>
                   <p className="text-sm text-gray-400 ">
@@ -69,15 +63,17 @@ export default function DashboardIndex() {
                 </div>
                 <div>
                   <div>
-                    <Image
-                      src="/wi-fi.png"
-                      alt="wi-fi"
-                      width={30}
-                      height={30}
-                      className="mx-auto scale-75"
-                    />
-                    <p>{item.MachineIP}</p>
-                    <p>
+                    <div className="flex items-center">
+                      <Image
+                        src="/wi-fi.png"
+                        alt="wi-fi"
+                        width={25}
+                        height={25}
+                        className="mx-auto scale-75"
+                      />
+                      <p className="text-sm ">{item.MachineIP}</p>
+                    </div>
+                    <p className="text-sm ">
                       {item.Status} / {(item.Activation * 100).toFixed(2)} %
                     </p>
                   </div>
