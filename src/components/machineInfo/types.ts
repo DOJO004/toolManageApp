@@ -52,6 +52,7 @@ export interface MachineStatusItem {
   };
   Status: string;
   StatusKeepTime: number;
+  TotalConnectTime: number;
   Activation: number;
   ProcessTime: number;
   CurrentParameter: {

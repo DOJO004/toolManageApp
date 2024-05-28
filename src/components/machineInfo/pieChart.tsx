@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { formatMilliseconds, formatPercent } from "./functions";
 import { MachineStatusItem } from "./types";
 
 interface MachineInfoPieChartProps {
@@ -13,16 +14,7 @@ const MachineInfoPieChart = ({
   machineStatusBgColor,
 }: MachineInfoPieChartProps) => {
   // 稼動時數轉成百分比
-  const machineActivation = (selectMachineInfo?.Activation * 100).toFixed(2);
-
-  // 設定時間
-  const processTimeInMs = selectMachineInfo?.ProcessTime;
-  const hours = Math.floor(processTimeInMs / (1000 * 60 * 60));
-  const minutes = Math.floor(
-    (processTimeInMs % (1000 * 60 * 60)) / (1000 * 60)
-  );
-  const seconds = Math.floor((processTimeInMs % (1000 * 60)) / 1000);
-  const machineProcessTime = `${hours}:${minutes}:${seconds}`;
+  const machineActivation = formatPercent(selectMachineInfo?.Activation);
 
   // 設定圖表顏色
   const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${machineActivation}%, #B9E6B5 ${machineActivation}%, #B9E6B5)`;
@@ -65,12 +57,12 @@ const MachineInfoPieChart = ({
             <div className="p-2 my-2 bg-gray-800 rounded-md">
               <p>總稼動時數(當日)</p>
               <hr className="my-1" />
-              <p>{machineProcessTime}</p>
+              <p>{formatMilliseconds(selectMachineInfo.ProcessTime)}</p>
             </div>
             <div className="p-2 my-2 bg-gray-800 rounded-md">
               <p>設備開機時數(當日)</p>
               <hr className="my-1" />
-              <p>Non</p>
+              <p>{formatMilliseconds(selectMachineInfo?.TotalConnectTime)}</p>
             </div>
             <div
               className={`w-full p-2 my-2 text-center rounded-md ${machineStatusBgColor(selectMachineInfo?.Status)}`}
