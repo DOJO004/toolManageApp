@@ -6,14 +6,7 @@ interface PieChartProps {
   formatTime: (time: number) => string;
 }
 const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
-  console.log(
-    toolInfoData?.LifeData?.ProcessTime,
-    toolInfoData?.MaxLife?.ProcessTime,
-    toolInfoData?.LifeData?.ProcessLength,
-    toolInfoData?.MaxLife?.ProcessLength
-  );
-
-  const toolLifePercent = toolInfoData.LifePercentage;
+  const toolLifePercent = toolInfoData?.LifePercentage;
 
   const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${toolLifePercent}%, #B9E6B5 ${toolLifePercent}%, #B9E6B5)`;
 

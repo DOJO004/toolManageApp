@@ -1,15 +1,29 @@
 import { apiInstance } from "@/scripts/toolInfoApi";
 import { getLoginTime, getUserToken } from "../mainApi";
 
-export async function apiGetToolStockList() {
+type GetToolStockListResponse = {
+  RC: string;
+  Values: {
+    StockToolList: any[];
+    ReqInt: number;
+  };
+};
+
+export async function apiGetToolStockList(): Promise<any[]> {
   try {
-    const res = await apiInstance.get(
+    const res = await apiInstance.get<GetToolStockListResponse>(
       "tool_get/GetToolStockInfoList?RecordsPerPage=999"
     );
-    return res;
+    console.log(`apiGetToolStockList`, res);
+    const { Values } = res.data;
+    if (Values.ReqInt === 0) {
+      return Values.StockToolList;
+    } else {
+      return [];
+    }
   } catch (error) {
     console.error("Error", error);
-    return error;
+    return [];
   }
 }
 

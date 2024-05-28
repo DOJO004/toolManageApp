@@ -2,7 +2,7 @@
 
 import { apiGetToolLoadingLogList } from "@/scripts/Apis/toolInfo/toolInfo";
 import { useEffect, useState } from "react";
-import { GetToolLoadingLogResponse, ToolLoadingItem } from "./types";
+import { ToolLoadingItem } from "./types";
 
 interface ToolInfoLogProps {
   toolInfoData: any;
@@ -12,13 +12,10 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
 
   const getToolLogData = async () => {
     cleanToolLogData();
-    const data = await apiGetToolLoadingLogList(toolInfoData.ToolSn);
-    const res = data as GetToolLoadingLogResponse;
-    console.log("get tool log data", res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolLogData(res.data.Values.ToolMacLoadingOpsList);
-    }
+    const toolLoadingLogList = await apiGetToolLoadingLogList(
+      toolInfoData?.ToolSn
+    );
+    setToolLogData(toolLoadingLogList);
   };
 
   const cleanToolLogData = () => {
@@ -58,7 +55,7 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
         <table className="w-full text-center ">
           <thead>
             <tr className="bg-indigo-500">
-              <th className="p-1 text-xl whitespace-nowrap">設備序號</th>
+              <th className="p-1 text-xl whitespace-nowrap">設備名稱</th>
               <th className="p-1 text-xl whitespace-nowrap">狀態</th>
               <th className="p-1 text-xl whitespace-nowrap">刀庫號</th>
               <th className="p-1 text-xl whitespace-nowrap">更新時間</th>

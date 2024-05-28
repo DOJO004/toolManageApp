@@ -1,5 +1,4 @@
 "use client";
-import SweetAlert from "@/components/sweetAlert";
 import PieChart from "@/components/toolInfo/piechart";
 import ToolInfoLog from "@/components/toolInfo/toolInfoLog";
 import {
@@ -11,10 +10,7 @@ import {
 } from "@/components/toolInfo/utils";
 import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
 import { useEffect, useState } from "react";
-import {
-  GetToolStockListResponse,
-  ToolStockItem,
-} from "../../../components/toolInfo/types";
+import { ToolStockItem } from "../../../components/toolInfo/types";
 
 export default function Page() {
   const [toolInfoList, setToolInfoList] = useState<ToolStockItem[]>([]);
@@ -22,33 +18,16 @@ export default function Page() {
     {} as ToolStockItem
   );
 
-  const getToolInfoList = async (count = 0) => {
-    if (count === 3) {
-      SweetAlert(-99, "請求失敗，請重新整理頁面。");
-      return;
-    }
-    try {
-      const data = await apiGetToolStockList();
-      const res = data as GetToolStockListResponse;
-      const reqInt = res?.data?.Values?.ReqInt;
-      console.log("get tool stock list", res);
-
-      if (reqInt === 0) {
-        setToolInfoList(res.data.Values.StockToolList);
-        setToolInfoData(res.data.Values.StockToolList[0]);
-        return res.data.Values.StockToolList;
-      } else {
-        console.log(`ReqInt = ${reqInt}`);
-      }
-    } catch (error) {
-      console.error("Error", error);
-      getToolInfoList(count + 1);
+  const getToolInfoList = async () => {
+    const toolStockList = await apiGetToolStockList();
+    if (toolStockList.length > 0) {
+      setToolInfoList(toolStockList);
+      setToolInfoData(toolStockList[0]);
     }
   };
 
   const handleGetToolInfoData = (data: any) => {
     console.log("get tool info data", data);
-
     setToolInfoData(data);
   };
 

@@ -1,5 +1,5 @@
+import { ToolTypeItem } from "@/scripts/Apis/toolInfo/type";
 import React from "react";
-import { ToolTypeItem } from "./types";
 
 interface Props {
   toolTypeList: ToolTypeItem[];
@@ -79,7 +79,7 @@ export default function ToolTypeIndex({
           )
         )
       ) : (
-        <div>no data...</div>
+        <div className="my-4 text-xl text-center">查無資料...</div>
       )}
     </>
   );
