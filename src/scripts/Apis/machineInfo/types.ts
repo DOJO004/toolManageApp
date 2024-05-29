@@ -5,7 +5,7 @@ export interface BaseResponse {
   };
 }
 
-// product line
+// productLine
 export interface GetProductLineListResponse {
   Values: {
     ProductLineList: ProductLineItem[];
@@ -31,4 +31,28 @@ export interface EditProductLineItem {
   Id: string;
   Name: string;
   DepartmentId: string;
+}
+
+// machineType
+export interface GetMachineTypeListResponse {
+  RC: string;
+  Values: {
+    MachineTypeList: MachineTypeItem[];
+    TotalRecords: number;
+    ReqInt: number;
+  };
+}
+
+export interface MachineTypeItem {
+  Id: string;
+  Name: string;
+}
+
+export interface NewMachineTypeItem {
+  Id: string;
+  Name: string;
+}
+export interface EditMachineTypeItem {
+  Id: string;
+  Name: string;
 }

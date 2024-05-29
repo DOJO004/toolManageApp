@@ -1,52 +1,41 @@
 "use client";
 
-import { useNotice } from "@/components/context/NoticeContext";
 import MachineTypeIndex from "@/components/machineInfo/machineType";
 import NewMachineType from "@/components/machineInfo/machineType/new";
-import {
-  DeleteMachineTypeResponse,
-  GetMachineTypeListResponse,
-  MachineTypeItem,
-  NewMachineTypeItem,
-  PostMachineTypeResponse,
-} from "@/components/machineInfo/machineType/types";
 import {
   apiDeleteMachineType,
   apiEditMachineType,
   apiGetMachineTypeList,
   apiNewMachineType,
-} from "@/scripts/Apis/machineType/machineType";
-import { AlertColor } from "@mui/material";
+} from "@/scripts/Apis/machineInfo/machineInfo";
+import {
+  EditMachineTypeItem,
+  MachineTypeItem,
+  NewMachineTypeItem,
+} from "@/scripts/Apis/machineInfo/types";
+import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
-  const { setShowNotice } = useNotice();
+  const handleNotice = useHandleNotice();
   const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
-  const [newMachineType, setNewMachineType] = useState<NewMachineTypeItem>({
-    Id: "",
-    Name: "",
-  });
+  const [newMachineType, setNewMachineType] = useState<NewMachineTypeItem>(
+    {} as NewMachineTypeItem
+  );
+  const [editMachineType, setEditMachineType] = useState<EditMachineTypeItem>(
+    {} as EditMachineTypeItem
+  );
   const [newMachineTypeMode, setNewMachineTypeMode] = useState(false);
   const [editMachineTypeMode, setEditMachineTypeMode] = useState(false);
   const [editMachineTypeModeIndex, setEditMachineTypeModeIndex] = useState(-1);
 
-  const [editMachineType, setEditMachineType] = useState<MachineTypeItem>(
-    {} as MachineTypeItem
-  );
   const getMachineTypeList = async () => {
-    const data = await apiGetMachineTypeList();
-    const res = data as GetMachineTypeListResponse;
-    if (res?.data?.Values?.ReqInt === 0) {
-      setMachineTypeList(res.data.Values.MachineTypeList);
-      return res.data.Values.MachineTypeList;
-    }
+    setMachineTypeList(await apiGetMachineTypeList());
   };
 
   const postMachineType = async (e: FormEvent) => {
     e.preventDefault();
-    const data = await apiNewMachineType(newMachineType);
-    const res = data as PostMachineTypeResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
+    const reqInt = await apiNewMachineType(newMachineType);
     if (reqInt === 0) {
       cleanNewMachineType();
       getMachineTypeList();
@@ -68,30 +57,26 @@ export default function Page() {
   };
 
   const patchMachineType = async () => {
-    const data = await apiEditMachineType(editMachineType);
-    const res = data as GetMachineTypeListResponse;
-    const reqInt = res.data?.Values?.ReqInt;
+    const reqInt = await apiEditMachineType(editMachineType);
     if (reqInt === 0) {
       setEditMachineTypeMode(false);
       getMachineTypeList();
       handleNotice("success", true, "更新成功");
     } else {
-      handleNotice("error", true, `更新失敗，errorCode = ${reqInt}`);
+      handleNotice("error", true, `更新失敗。errorCode = ${reqInt}`);
     }
   };
 
   const deleteMachineType = async () => {
     const confirm = window.confirm(`確定刪除 ${editMachineType.Name} 嗎?`);
     if (confirm) {
-      const data = await apiDeleteMachineType(editMachineType);
-      const res = data as DeleteMachineTypeResponse;
-      const reqInt = res.data?.Values?.ReqInt;
+      const reqInt = await apiDeleteMachineType(editMachineType);
       if (reqInt === 0) {
         setEditMachineTypeMode(false);
         getMachineTypeList();
         handleNotice("success", true, "刪除成功");
       } else {
-        handleNotice("error", true, `刪除失敗，errorCode = ${reqInt}`);
+        handleNotice("error", true, `刪除失敗。errorCode = ${reqInt}`);
       }
     }
   };
@@ -101,7 +86,7 @@ export default function Page() {
     clearTimeout(timer);
 
     timer = setTimeout(async () => {
-      const machineTypeList = await getMachineTypeList();
+      const machineTypeList = await apiGetMachineTypeList();
       if (machineTypeList) {
         const filterData = machineTypeList.filter((item) => {
           return (
@@ -125,14 +110,6 @@ export default function Page() {
 
     setEditMachineType(item);
     setEditMachineTypeModeIndex(index);
-  };
-
-  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
-    setShowNotice({
-      type: type,
-      show: show,
-      messages: messages,
-    });
   };
 
   useEffect(() => {

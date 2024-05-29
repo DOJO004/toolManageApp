@@ -1,8 +1,11 @@
 import { apiInstance } from "@/scripts/machineInfoApi.js";
 import {
   BaseResponse,
+  EditMachineTypeItem,
   EditProductLineItem,
+  GetMachineTypeListResponse,
   GetProductLineListResponse,
+  NewMachineTypeItem,
   NewProductLineItem,
   ProductLineItem,
 } from "./types";
@@ -82,6 +85,80 @@ export async function apiDeleteProductLineType(
   try {
     const res = await apiInstance.post<BaseResponse>(
       "/sync_operate/SyncDisabledProductLineInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+// machineType
+export async function apiGetMachineTypeList() {
+  try {
+    const res = await apiInstance.get<GetMachineTypeListResponse>(
+      "/machine_get/GetMachineTypeInfoList"
+    );
+    const { Values } = res.data;
+    if (Values.ReqInt === 0) {
+      return Values.MachineTypeList;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error", error);
+    return [];
+  }
+}
+
+export async function apiNewMachineType(machineType: NewMachineTypeItem) {
+  const body = {
+    MachineTypeList: [
+      {
+        Id: machineType.Id,
+        Name: machineType.Name,
+      },
+    ],
+  };
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "/sync_operate/SyncAddMachineTypeInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+export async function apiEditMachineType(machineType: EditMachineTypeItem) {
+  const body = {
+    Id: machineType.Id,
+    ModifyData: {
+      Name: machineType.Name,
+    },
+  };
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/ModifyMachineTypeInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+export async function apiDeleteMachineType(machineType: EditMachineTypeItem) {
+  const body = {
+    DisabledMachineTypeIds: [machineType.Id],
+  };
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/DisabledMachineTypeInfo",
       body
     );
     return res.data.Values.ReqInt;
