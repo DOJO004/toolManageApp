@@ -1,8 +1,16 @@
 "use client";
-
 import { useNotice } from "@/components/context/NoticeContext";
 import MachineSpecIndex from "@/components/machineInfo/machineSpec";
 import NewMachineSpec from "@/components/machineInfo/machineSpec/new";
+import {
+  DeleteMachineSpecResponse,
+  EditMachineSpecItem,
+  MachineSpecItem,
+  NewMachineSpecItem,
+  PatchMachineSpecResponse,
+} from "@/components/machineInfo/machineSpec/types";
+import { MachineTypeItem } from "@/components/machineInfo/machineType/types";
+import { ProductLineItem } from "@/components/machineInfo/productLine/types";
 import {
   apiDeleteMachineSpec,
   apiEditMachineSpec,
@@ -11,13 +19,6 @@ import {
   apiGetProductLineTypeList,
   apiNewMachineSpec,
 } from "@/scripts/Apis/machineInfo/machineInfo";
-import {
-  EditMachineSpecItem,
-  MachineSpecItem,
-  MachineTypeItem,
-  NewMachineSpecItem,
-  ProductLineItem,
-} from "@/scripts/Apis/machineInfo/types";
 import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -27,16 +28,39 @@ export default function Page() {
   const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
   const [machineSpecList, setMachineSpecList] = useState<MachineSpecItem[]>([]);
 
-  const [newMachineSpec, setNewMachineSpec] = useState<NewMachineSpecItem>(
-    {} as NewMachineSpecItem
-  );
+  const [newMachineSpec, setNewMachineSpec] = useState<NewMachineSpecItem>({
+    ProductLineId: "",
+    MachineTypeId: "",
+    SerialNumber: "",
+    Name: "",
+    MachineIP: "",
+    ReaderId: "",
+    Brand: "",
+    Series: "",
+    MT: "",
+    AxisIndex: 0,
+    AxisName: "",
+    IsSpindle: false,
+  });
 
   const [newMachineSpecMode, setNewMachineSpecMode] = useState(false);
   const [editMachineSpecMode, setEditMachineSpecMode] = useState(false);
   const [editMachineSpecModeIndex, setEditMachineSpecModeIndex] = useState(-1);
-  const [editMachineSpec, setEditMachineSpec] = useState<EditMachineSpecItem>(
-    {} as EditMachineSpecItem
-  );
+  const [editMachineSpec, setEditMachineSpec] = useState<EditMachineSpecItem>({
+    MachineId: "",
+    ProductLineId: "",
+    MachineTypeId: "",
+    SerialNumber: "",
+    Name: "",
+    MachineIP: "",
+    ReaderId: "",
+    Brand: "",
+    Series: "",
+    MT: "",
+    AxisIndex: 0,
+    AxisName: "",
+    IsSpindle: false,
+  });
 
   const getProductLineList = async () => {
     setProductLineList(await apiGetProductLineTypeList());
@@ -58,7 +82,7 @@ export default function Page() {
       getMachineSpecList();
       handleNotice("success", true, "新增成功");
     } else {
-      handleNotice("error", true, `新增失敗。errorCode = ${reqInt}`);
+      handleNotice("error", true, `新增失敗errorCode = ${reqInt}`);
     }
   };
 
@@ -87,26 +111,30 @@ export default function Page() {
   };
 
   const patchMachineSpec = async () => {
-    const reqInt = await apiEditMachineSpec(editMachineSpec);
+    const data = await apiEditMachineSpec(editMachineSpec);
+    const res = data as PatchMachineSpecResponse;
+    const reqInt = res?.data?.Values?.ReqInt;
     if (reqInt === 0) {
       getMachineSpecList();
       setEditMachineSpecMode(false);
       handleNotice("success", true, "更新成功");
     } else {
-      handleNotice("error", true, `更新失敗。errorCode = ${reqInt}`);
+      handleNotice("error", true, `更新失敗，errorCode = ${reqInt}`);
     }
   };
 
   const deleteMachineSpec = async () => {
     const confirm = window.confirm(`確定要刪除 ${editMachineSpec.Name} 嗎?`);
     if (confirm) {
-      const reqInt = await apiDeleteMachineSpec(editMachineSpec);
+      const data = await apiDeleteMachineSpec(editMachineSpec);
+      const res = data as DeleteMachineSpecResponse;
+      const reqInt = res?.data?.Values?.ReqInt;
       if (reqInt === 0) {
         getMachineSpecList();
         setEditMachineSpecMode(false);
         handleNotice("success", true, "刪除成功");
       } else {
-        handleNotice("error", true, `刪除失敗。errorCode = ${reqInt}`);
+        handleNotice("error", true, `刪除失敗，errorCode = ${reqInt}`);
       }
     }
   };
@@ -133,7 +161,7 @@ export default function Page() {
     clearTimeout(timer);
 
     timer = setTimeout(async () => {
-      const data = await apiGetMachineSpecList();
+      const data = await getMachineSpecList();
       if (data) {
         const filterData = data.filter((item) => {
           return (
@@ -198,9 +226,7 @@ export default function Page() {
         </div>
         {/* new */}
         <div
-          className={` overflow-hidden transition-all my-4 duration-300 ease-in-out ${
-            newMachineSpecMode ? "h-68" : "h-0"
-          }`}
+          className={` overflow-hidden transition-all my-4 duration-300 ease-in-out ${newMachineSpecMode ? "h-68" : "h-0"}`}
         >
           <NewMachineSpec
             setNewMachineSpecMode={setNewMachineSpecMode}

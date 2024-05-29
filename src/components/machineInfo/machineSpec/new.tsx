@@ -46,7 +46,9 @@ export default function NewMachineSpec({
                 handleNewMachineSpec("ProductLineId", e.target.value)
               }
             >
-              <option value="">選擇生產線</option>
+              <option value="" className="text-gray-300">
+                選擇生產線
+              </option>
               {productLineList.map((item) => (
                 <option key={item.Id} value={item.Id} className="text-black">
                   {item.Name}
@@ -66,7 +68,7 @@ export default function NewMachineSpec({
                 handleNewMachineSpec("MachineTypeId", e.target.value)
               }
             >
-              <option value="" className="text-black">
+              <option value="" className="text-gray-300">
                 選擇設備類型
               </option>
               {machineTypeList.map((item) => (
@@ -171,7 +173,7 @@ export default function NewMachineSpec({
               AxisIndex
             </label>
             <input
-              type="text"
+              type="number"
               id="axisIndex"
               className="w-full p-2 text-black rounded-md min-w-24"
               placeholder="AxisIndex"
