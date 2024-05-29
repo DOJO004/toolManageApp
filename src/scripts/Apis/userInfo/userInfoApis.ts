@@ -3,11 +3,13 @@ import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
   BaseResponse,
   EditDepartmentItem,
+  EditPermissionItemInfo,
   EditUserInfo,
   GetDepartmentListResponse,
   GetPermissionInfoListResponse,
   GetUserInfoListResponse,
   NewDepartmentItem,
+  NewPermissionItemInfo,
   NewUserInfo,
   ResetUserPasswordInfo,
 } from "./types";
@@ -258,7 +260,7 @@ export const apiGetPermissionsInfoList = async () => {
   }
 };
 
-export const apiNewPermissionsInfo = async (data) => {
+export const apiNewPermissionsInfo = async (data: NewPermissionItemInfo) => {
   const body = {
     PermissionInfos: [
       {
@@ -269,19 +271,21 @@ export const apiNewPermissionsInfo = async (data) => {
     ],
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
-  console.log("new police body", body);
   try {
-    const res = await apiInstance.post("/user_operate/AddPermissionInfo", body);
-    return res;
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/AddPermissionInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
   }
 };
 
-export const apiEditPermissionsInfo = async (data) => {
+export const apiEditPermissionsInfo = async (data: EditPermissionItemInfo) => {
   const body = {
     PermissionId: data.PermissionId,
     ModifyInfo: {
@@ -290,33 +294,35 @@ export const apiEditPermissionsInfo = async (data) => {
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
   try {
-    const res = await apiInstance.post(
+    const res = await apiInstance.post<BaseResponse>(
       "/user_operate/ModifyPermissionInfo",
       body
     );
-    return res;
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
   }
 };
 
-export const apiDeletePermissionsInfo = async (data) => {
+export const apiDeletePermissionsInfo = async (
+  data: EditPermissionItemInfo
+) => {
   const body = {
     PermissionId: data.PermissionId,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
   try {
-    const res = await apiInstance.post(
+    const res = await apiInstance.post<BaseResponse>(
       "/user_operate/DisabledPermissionInfo",
       body
     );
-    return res;
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
