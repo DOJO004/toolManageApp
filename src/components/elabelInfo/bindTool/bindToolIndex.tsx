@@ -4,7 +4,7 @@ import {
   apiBindELabelInfo,
   apiGetELabelList,
 } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
-import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
+import { apiGetToolStockList } from "@/scripts/Apis/toolInfo/toolInfo";
 import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
 import { AlertColor } from "@mui/material";
 import Image from "next/image";

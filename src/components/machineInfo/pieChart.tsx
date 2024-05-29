@@ -48,7 +48,7 @@ const MachineInfoPieChart = ({
             >
               <div className="absolute w-16 h-16 -translate-x-1/2 -translate-y-1/2 bg-gray-700 rounded-full lg:w-32 lg:h-32 md:w-24 md:h-24 left-1/2 top-1/2">
                 <p className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                  {machineActivation}%
+                  {machineActivation}
                 </p>
               </div>
             </div>
@@ -57,7 +57,7 @@ const MachineInfoPieChart = ({
             <div className="p-2 my-2 bg-gray-800 rounded-md">
               <p>總稼動時數(當日)</p>
               <hr className="my-1" />
-              <p>{formatMilliseconds(selectMachineInfo.ProcessTime)}</p>
+              <p>{formatMilliseconds(selectMachineInfo?.ProcessTime)}</p>
             </div>
             <div className="p-2 my-2 bg-gray-800 rounded-md">
               <p>設備開機時數(當日)</p>

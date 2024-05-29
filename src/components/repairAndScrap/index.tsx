@@ -4,17 +4,19 @@ import {
   apiRestockTool,
   apiScrapTool,
 } from "@/scripts/Apis/repairAndScrap/repairAndScrap";
-import { apiGetStorageList } from "@/scripts/Apis/storage/storageApi";
-import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
+import {
+  apiGetStorageList,
+  apiGetToolStockList,
+} from "@/scripts/Apis/toolInfo/toolInfo";
+import {
+  BasicResponse,
+  GetStorageListResponse,
+  StorageMenuItem,
+} from "@/scripts/Apis/toolInfo/type";
 import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
 import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 import { useNotice } from "../context/NoticeContext";
-import {
-  BasicResponse,
-  GetStorageListResponse,
-  StorageItem,
-} from "../storage/types";
 import {
   GetToolStockInfoListResponse,
   ToolStockListItem,
@@ -25,7 +27,7 @@ export default function RepairAndScrapIndex() {
   const { setShowNotice } = useNotice();
   const [toolStockList, setToolStockList] = useState<ToolStockListItem[]>([]);
   const [userList, setUserList] = useState<UserAccountItem[]>([]);
-  const [storageList, setStorageList] = useState<StorageItem[]>([]);
+  const [storageList, setStorageList] = useState<StorageMenuItem[]>([]);
   const [inputSearch, setInputSearch] = useState<string>("");
   const [reStorageMode, setReStorageMode] = useState(false);
   const [reStorageTool, setReStorageTool] = useState({

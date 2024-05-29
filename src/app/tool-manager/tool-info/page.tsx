@@ -8,7 +8,7 @@ import {
   sortToolInfoList,
   translateLifeStatus,
 } from "@/components/toolInfo/utils";
-import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
+import { apiGetToolStockList } from "@/scripts/Apis/toolInfo/toolInfo";
 import { useEffect, useState } from "react";
 import { ToolStockItem } from "../../../components/toolInfo/types";
 

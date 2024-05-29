@@ -1,17 +1,7 @@
 "use client";
 
-import { useNotice } from "@/components/context/NoticeContext";
 import ProductLineIndex from "@/components/machineInfo/productLine";
 import NewProductLine from "@/components/machineInfo/productLine/new";
-import {
-  DeleteProductLineResponse,
-  EditProductLineItem,
-  GetProductLineListResponse,
-  NewProductLineItem,
-  PatchProductLineResponse,
-  PostProductLineResponse,
-  ProductLineItem,
-} from "@/components/machineInfo/productLine/types";
 import {
   DepartmentItem,
   DepartmentList,
@@ -21,36 +11,32 @@ import {
   apiEditProductLineType,
   apiGetProductLineTypeList,
   apiNewProductLineType,
-} from "@/scripts/Apis/productLineType/productLineType";
+} from "@/scripts/Apis/machineInfo/machineInfo";
+import {
+  EditProductLineItem,
+  NewProductLineItem,
+  ProductLineItem,
+} from "@/scripts/Apis/machineInfo/types";
 import { ApiGetDepartmentList } from "@/scripts/Apis/userInfo/departmentApi";
-import { AlertColor } from "@mui/material";
+import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
-  const { setShowNotice } = useNotice();
+  const handleNotice = useHandleNotice();
   const [newProductLineMode, setNewProductLineMode] = useState(false);
   const [editProductLineMode, setEditProductLineMode] = useState(false);
   const [editProductLineIndex, setEditProductLineIndex] = useState(-1);
   const [productLineList, setProductLineList] = useState<ProductLineItem[]>([]);
-  const [newProductLine, setNewProductLine] = useState<NewProductLineItem>({
-    Id: "",
-    Name: "",
-    DepartmentId: "",
-  });
-  const [editProductLine, setEditProductLine] = useState<EditProductLineItem>({
-    Id: "",
-    Name: "",
-    DepartmentId: "",
-  });
+  const [newProductLine, setNewProductLine] = useState<NewProductLineItem>(
+    {} as NewProductLineItem
+  );
+  const [editProductLine, setEditProductLine] = useState<EditProductLineItem>(
+    {} as NewProductLineItem
+  );
   const [departmentList, setDepartmentList] = useState<DepartmentItem[]>([]);
 
   const getProductLineList = async () => {
-    const data = await apiGetProductLineTypeList();
-    const res = data as GetProductLineListResponse;
-    if (res?.data?.Values?.ReqInt === 0) {
-      setProductLineList(res.data.Values.ProductLineList);
-      return res.data.Values.ProductLineList;
-    }
+    setProductLineList(await apiGetProductLineTypeList());
   };
 
   const getDepartmentList = async () => {
@@ -64,9 +50,7 @@ export default function Page() {
 
   const postProductLine = async (e: FormEvent) => {
     e.preventDefault();
-    const data = await apiNewProductLineType(newProductLine);
-    const res = data as PostProductLineResponse;
-    const reqInt = res.data?.Values?.ReqInt;
+    const reqInt = await apiNewProductLineType(newProductLine);
     if (reqInt === 0) {
       getProductLineList();
       cleanProductLine();
@@ -89,30 +73,26 @@ export default function Page() {
   };
 
   const patchProductLine = async () => {
-    const data = await apiEditProductLineType(editProductLine);
-    const res = data as PatchProductLineResponse;
-    const reqInt = res.data?.Values?.ReqInt;
+    const reqInt = await apiEditProductLineType(editProductLine);
     if (reqInt === 0) {
       getProductLineList();
       setEditProductLineMode(false);
       handleNotice("success", true, "更新成功");
     } else {
-      handleNotice("error", true, `更新失敗，errorcode = ${reqInt}`);
+      handleNotice("error", true, `更新失敗。errorcode = ${reqInt}`);
     }
   };
 
   const deleteProductLine = async () => {
     const confirm = window.confirm(`確定刪除 ${editProductLine.Name} 嗎?`);
     if (confirm) {
-      const data = await apiDeleteProductLineType(editProductLine);
-      const res = data as DeleteProductLineResponse;
-      const reqInt = res.data?.Values?.ReqInt;
+      const reqInt = await apiDeleteProductLineType(editProductLine);
       if (reqInt === 0) {
         getProductLineList();
         setEditProductLineMode(false);
         handleNotice("success", true, "刪除成功");
       } else {
-        handleNotice("error", true, `刪除失敗，errorCode = ${reqInt}`);
+        handleNotice("error", true, `刪除失敗。errorCode = ${reqInt}`);
       }
     }
   };
@@ -122,9 +102,9 @@ export default function Page() {
     clearTimeout(timer);
 
     timer = setTimeout(async () => {
-      const productLineList = await getProductLineList();
-      if (productLineList) {
-        const filterData = productLineList.filter((item) => {
+      const data = await apiGetProductLineTypeList();
+      if (data) {
+        const filterData = data.filter((item) => {
           return (
             item.Name.toLowerCase().includes(value.toLowerCase()) ||
             item.Id.toLowerCase().includes(value.toLowerCase())
@@ -153,14 +133,6 @@ export default function Page() {
 
   const handelSetEditData = (name: string, value: string) => {
     setEditProductLine((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
-    setShowNotice({
-      type: type,
-      show: show,
-      messages: messages,
-    });
   };
 
   useEffect(() => {
