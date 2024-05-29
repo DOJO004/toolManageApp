@@ -1,4 +1,4 @@
-import { RepairAndScrapSkeletons } from "@/app/components/skeletons";
+import { RepairAndScrapSkeletons } from "@/components/skeletons";
 
 export default function Loading() {
   return (

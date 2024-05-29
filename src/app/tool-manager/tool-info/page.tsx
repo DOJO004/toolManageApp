@@ -1,13 +1,16 @@
 "use client";
-import PieChart from "@/app/components/toolInfo/piechart";
-import ToolInfoLog from "@/app/components/toolInfo/toolInfoLog";
-import { apiGetToolStockList } from "@/scripts/Apis/toolStock/toolStock";
-import { useEffect, useState } from "react";
+import PieChart from "@/components/toolInfo/piechart";
+import ToolInfoLog from "@/components/toolInfo/toolInfoLog";
 import {
-  GetToolInfoData,
-  GetToolStockListResponse,
-  ToolStockItem,
-} from "../../components/toolInfo/types";
+  formatTime,
+  getLifeStatusClassName,
+  handleToolPositionData,
+  sortToolInfoList,
+  translateLifeStatus,
+} from "@/components/toolInfo/utils";
+import { apiGetToolStockList } from "@/scripts/Apis/toolInfo/toolInfo";
+import { useEffect, useState } from "react";
+import { ToolStockItem } from "../../../components/toolInfo/types";
 
 export default function Page() {
   const [toolInfoList, setToolInfoList] = useState<ToolStockItem[]>([]);
@@ -16,53 +19,16 @@ export default function Page() {
   );
 
   const getToolInfoList = async () => {
-    const data = await apiGetToolStockList();
-    const res = data as GetToolStockListResponse;
-    console.log("get tool stock list", res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      setToolInfoList(res.data.Values.ToolStockList);
-      setToolInfoData(res.data.Values.ToolStockList[0]);
-      return res.data.Values.ToolStockList;
+    const toolStockList = await apiGetToolStockList();
+    if (toolStockList.length > 0) {
+      setToolInfoList(toolStockList);
+      setToolInfoData(toolStockList[0]);
     }
   };
 
-  const handleGetToolInfoData = (data: GetToolInfoData) => {
+  const handleGetToolInfoData = (data: any) => {
     console.log("get tool info data", data);
-
     setToolInfoData(data);
-  };
-
-  const getLifeStatusClassName = (lifeStatus: string) => {
-    switch (lifeStatus) {
-      case "Normal":
-        return "text-green-500";
-      case "Repairing":
-        return "text-amber-500";
-      case "Scrap":
-        return "text-gray-500";
-      default:
-        return "";
-    }
-  };
-
-  const sortToolInfoList = (toolInfoList: ToolStockItem[]) => {
-    const referenceTable: { [key: string]: number } = {
-      Normal: 1,
-      Repairing: 2,
-      Scrap: 3,
-    };
-
-    const sortData = toolInfoList.sort((a, b) => {
-      if (referenceTable[a.LifeStatus] > referenceTable[b.LifeStatus]) {
-        return 1;
-      }
-      if (referenceTable[a.LifeStatus] < referenceTable[b.LifeStatus]) {
-        return -1;
-      }
-      return 0;
-    });
-    return sortData;
   };
 
   let timer: ReturnType<typeof setTimeout>;
@@ -80,29 +46,16 @@ export default function Page() {
     }, 500);
   };
 
-  const translateLifeStatus = (lifeStatus: string) => {
-    switch (lifeStatus) {
-      case "Normal":
-        return "正常";
-      case "Repairing":
-        return "修理中";
-      case "Scrap":
-        return "報廢";
-      default:
-        return "";
-    }
-  };
-
   useEffect(() => {
     getToolInfoList();
   }, []);
   return (
-    <div className="w-full h-full p-2 bg-gray-900 rounded-lg ">
-      <div className="flex flex-col w-full md:flex-row">
-        <PieChart toolInfoData={toolInfoData} />
+    <div className="relative w-full h-full p-2 ">
+      <div className="flex gap-2 ">
+        <PieChart toolInfoData={toolInfoData} formatTime={formatTime} />
         <ToolInfoLog toolInfoData={toolInfoData} />
       </div>
-      <div className="p-2 overflow-auto text-center bg-gray-700 rounded-md h-[40rem] ">
+      <div className="p-2 overflow-auto text-center bg-gray-900 rounded-md h-[600px]">
         <div className="my-4">
           <h3 className="my-4">刀具狀態列表</h3>
           <input
@@ -113,19 +66,21 @@ export default function Page() {
           />
         </div>
         <table className="w-full">
-          <thead>
+          <thead className="sticky -top-2">
             <tr className="bg-indigo-500 ">
               <th className="p-1 whitespace-nowrap">刀具序號</th>
-              <th className="p-1 whitespace-nowrap">狀態/修整次數</th>
-              <th className="p-1 whitespace-nowrap">裝載狀態/設備</th>
-              <th className="p-1 whitespace-nowrap">累積加工長度</th>
+              <th className="p-1 whitespace-nowrap">狀態 / 修整次數</th>
+              <th className="p-1 whitespace-nowrap">裝載狀態 / 位置</th>
+              <th className="p-1 whitespace-nowrap" title="公分表示">
+                累積加工長度 <span className="text-sm text-gray-300">cm</span>
+              </th>
               <th className="p-1 whitespace-nowrap">累積加工時間</th>
               <th className="p-1 whitespace-nowrap">累積加工次數</th>
             </tr>
           </thead>
           <tbody>
-            {toolInfoList.length > 0 ? (
-              sortToolInfoList(toolInfoList).map((item) => (
+            {toolInfoList?.length > 0 ? (
+              sortToolInfoList(toolInfoList).map((item, index) => (
                 <tr
                   key={item.ToolSn}
                   className="cursor-pointer hover:bg-gray-600"
@@ -137,19 +92,25 @@ export default function Page() {
                       item.LifeStatus
                     )}`}
                   >
-                    {translateLifeStatus(item.LifeStatus)} /
+                    {translateLifeStatus(item.LifeStatus)}
+                    <span> / </span>
                     {item.LifeData.RepairCnt}
                   </td>
                   <td className="p-1 whitespace-nowrap">
-                    {item.LoadingData.IsLoading
-                      ? `裝載中 / ${item.LoadingData.MachineId}`
-                      : "未裝載"}
+                    {handleToolPositionData(item.PositionData.PositionStatus)}
+                    <span> / </span>
+                    {/* 上機中的位置 */}
+                    {item.PositionData.LoadingInfo?.MachineSpec.MachineName}
+                    {/* 倉儲中的位置 */}
+                    <span title="倉儲編號">
+                      {item.PositionData.StorageInfo?.StorageNo}
+                    </span>
                   </td>
                   <td className="p-1 whitespace-nowrap">
-                    {item.LifeData.ProcessLength}
+                    {item.LifeData.ProcessLength / 10}
                   </td>
                   <td className="p-1 whitespace-nowrap">
-                    {item.LifeData.ProcessTime}
+                    {formatTime(item.LifeData.ProcessTime)}
                   </td>
                   <td className="p-1 whitespace-nowrap">
                     {item.LifeData.ProcessCnt}
@@ -158,7 +119,7 @@ export default function Page() {
               ))
             ) : (
               <tr>
-                <td colSpan={6}>no data...</td>
+                <td colSpan={6}>loading...</td>
               </tr>
             )}
           </tbody>

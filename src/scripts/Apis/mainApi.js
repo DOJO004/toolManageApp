@@ -1,15 +1,41 @@
 // get user info
 export const getUserToken = () => {
-  const cookies = document.cookie.split(";");
-  return cookies[0]?.split("=")[1];
+  if (typeof document !== "undefined") {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const userTokenCookie = cookies.find((cookie) =>
+      cookie.startsWith("userToken=")
+    );
+    const userToken = userTokenCookie.split("=")[1];
+    return userToken;
+  }
+  return "nLxVDJ2R";
 };
 
 export const getLoginTime = () => {
-  const cookies = document.cookie.split(";");
-  return cookies[1]?.split("=")[1];
+  if (typeof document !== "undefined") {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const userLoginTime = cookies.find((cookie) =>
+      cookie.startsWith("loginTime=")
+    );
+    const loginTime = userLoginTime.split("=")[1];
+    return loginTime;
+  }
+  return "2024-05-17 09:11:22";
 };
 
-export const setCookie = (name, value, days) => {
+export const getPermission = () => {
+  if (typeof document !== "undefined") {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const userPermission = cookies.find((cookie) =>
+      cookie.startsWith("permission=")
+    );
+    const permission = userPermission.split("=")[1];
+    return permission;
+  }
+  return "SuperAdmin";
+};
+
+export const setCookie = async (name, value, days) => {
   let expires = "";
   if (days) {
     let date = new Date();
