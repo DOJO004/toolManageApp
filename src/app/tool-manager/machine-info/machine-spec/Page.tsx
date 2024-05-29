@@ -1,16 +1,6 @@
 "use client";
-import { useNotice } from "@/components/context/NoticeContext";
 import MachineSpecIndex from "@/components/machineInfo/machineSpec";
 import NewMachineSpec from "@/components/machineInfo/machineSpec/new";
-import {
-  DeleteMachineSpecResponse,
-  EditMachineSpecItem,
-  MachineSpecItem,
-  NewMachineSpecItem,
-  PatchMachineSpecResponse,
-} from "@/components/machineInfo/machineSpec/types";
-import { MachineTypeItem } from "@/components/machineInfo/machineType/types";
-import { ProductLineItem } from "@/components/machineInfo/productLine/types";
 import {
   apiDeleteMachineSpec,
   apiEditMachineSpec,
@@ -18,12 +8,19 @@ import {
   apiGetMachineTypeList,
   apiGetProductLineTypeList,
   apiNewMachineSpec,
-} from "@/scripts/Apis/machineInfo/machineInfo";
-import { AlertColor } from "@mui/material";
+} from "@/scripts/Apis/machineInfo/machineInfoApis";
+import {
+  EditMachineSpecItem,
+  MachineSpecItem,
+  MachineTypeItem,
+  NewMachineSpecItem,
+  ProductLineItem,
+} from "@/scripts/Apis/machineInfo/types";
+import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
-  const { setShowNotice } = useNotice();
+  const handleNotice = useHandleNotice();
   const [productLineList, setProductLineList] = useState<ProductLineItem[]>([]);
   const [machineTypeList, setMachineTypeList] = useState<MachineTypeItem[]>([]);
   const [machineSpecList, setMachineSpecList] = useState<MachineSpecItem[]>([]);
@@ -111,31 +108,28 @@ export default function Page() {
   };
 
   const patchMachineSpec = async () => {
-    const data = await apiEditMachineSpec(editMachineSpec);
-    const res = data as PatchMachineSpecResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
+    const reqInt = await apiEditMachineSpec(editMachineSpec);
     if (reqInt === 0) {
       getMachineSpecList();
       setEditMachineSpecMode(false);
       handleNotice("success", true, "更新成功");
     } else {
-      handleNotice("error", true, `更新失敗，errorCode = ${reqInt}`);
+      handleNotice("error", true, `更新失敗。errorCode = ${reqInt}`);
     }
   };
 
   const deleteMachineSpec = async () => {
     const confirm = window.confirm(`確定要刪除 ${editMachineSpec.Name} 嗎?`);
-    if (confirm) {
-      const data = await apiDeleteMachineSpec(editMachineSpec);
-      const res = data as DeleteMachineSpecResponse;
-      const reqInt = res?.data?.Values?.ReqInt;
-      if (reqInt === 0) {
-        getMachineSpecList();
-        setEditMachineSpecMode(false);
-        handleNotice("success", true, "刪除成功");
-      } else {
-        handleNotice("error", true, `刪除失敗，errorCode = ${reqInt}`);
-      }
+    if (!confirm) {
+      return;
+    }
+    const reqInt = await apiDeleteMachineSpec(editMachineSpec);
+    if (reqInt === 0) {
+      getMachineSpecList();
+      setEditMachineSpecMode(false);
+      handleNotice("success", true, "刪除成功");
+    } else {
+      handleNotice("error", true, `刪除失敗。errorCode = ${reqInt}`);
     }
   };
 
@@ -148,20 +142,12 @@ export default function Page() {
     setEditMachineSpec((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
-    setShowNotice({
-      type: type,
-      show: show,
-      messages: messages,
-    });
-  };
-
   let timer: ReturnType<typeof setTimeout>;
   const searchMachineSpec = (value: string) => {
     clearTimeout(timer);
 
     timer = setTimeout(async () => {
-      const data = await getMachineSpecList();
+      const data = await apiGetMachineSpecList();
       if (data) {
         const filterData = data.filter((item) => {
           return (

@@ -1,13 +1,15 @@
+import {
+  DepartmentItem,
+  NewUserInfo,
+  PermissionMenuItem,
+} from "@/scripts/Apis/userInfo/types";
 import { FormEvent } from "react";
-import { DepartmentItem } from "./department/type";
-import { PermissionMenuItem } from "./permissions/type";
-import type { NewUserInfo } from "./types";
 interface NewUserInfoProps {
   setNewUserMode: (value: boolean) => void;
   departmentList: DepartmentItem[];
   postUserInfo: (e: FormEvent) => void;
   handleSetUserInfo: (key: string, value: string) => void;
-  userInfo: NewUserInfo;
+  newUserInfo: NewUserInfo;
   setFocusInput: (value: boolean) => void;
   focusInput: boolean;
   permissionList: PermissionMenuItem[];
@@ -18,7 +20,7 @@ export default function UserInfoNew({
   departmentList,
   postUserInfo,
   handleSetUserInfo,
-  userInfo,
+  newUserInfo,
   setFocusInput,
   focusInput,
   permissionList,
@@ -42,7 +44,7 @@ export default function UserInfoNew({
               type="text"
               id="UserAccount"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.UserAccount}
+              value={newUserInfo.UserAccount}
               onChange={(e) => handleSetUserInfo("UserAccount", e.target.value)}
             />
           </div>
@@ -52,7 +54,7 @@ export default function UserInfoNew({
               type="password"
               id="Password"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.Password}
+              value={newUserInfo.Password}
               onChange={(e) => handleSetUserInfo("Password", e.target.value)}
             />
           </div>
@@ -62,7 +64,7 @@ export default function UserInfoNew({
               type="text"
               id="EmployeeId"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.EmployeeId}
+              value={newUserInfo.EmployeeId}
               onChange={(e) => handleSetUserInfo("EmployeeId", e.target.value)}
             />
           </div>
@@ -72,7 +74,7 @@ export default function UserInfoNew({
               type="text"
               id="UserName"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.UserName}
+              value={newUserInfo.UserName}
               onChange={(e) => handleSetUserInfo("UserName", e.target.value)}
             />
           </div>
@@ -81,7 +83,7 @@ export default function UserInfoNew({
             <select
               id="DepartmentId"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.DepartmentId}
+              value={newUserInfo.DepartmentId}
               onChange={(e) =>
                 handleSetUserInfo("DepartmentId", e.target.value)
               }
@@ -103,7 +105,7 @@ export default function UserInfoNew({
               type="email"
               id="EMailAddress"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.EMailAddress}
+              value={newUserInfo.EMailAddress}
               onChange={(e) =>
                 handleSetUserInfo("EMailAddress", e.target.value)
               }
@@ -117,8 +119,8 @@ export default function UserInfoNew({
                 onClick={() => setFocusInput(!focusInput)}
               >
                 <option value="">
-                  {userInfo.PermissionIds.length
-                    ? `已選擇 ${userInfo.PermissionIds.length}`
+                  {newUserInfo.PermissionIds?.length
+                    ? `已選擇 ${newUserInfo.PermissionIds?.length}`
                     : "選擇權限"}
                 </option>
               </select>

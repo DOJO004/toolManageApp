@@ -9,14 +9,13 @@ import {
   apiGetToolSpecList,
   apiGetToolStockCountList,
   apiPostToolStock,
-} from "@/scripts/Apis/toolInfo/toolInfo";
+} from "@/scripts/Apis/toolInfo/toolInfoApis";
 import {
   NewToolStockItem,
   StockToolCountItem,
-  StorageItem,
   ToolSpecItem,
   ToolStatusItem,
-} from "@/scripts/Apis/toolInfo/type";
+} from "@/scripts/Apis/toolInfo/types";
 import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 

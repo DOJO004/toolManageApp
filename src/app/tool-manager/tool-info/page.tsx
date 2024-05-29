@@ -8,7 +8,10 @@ import {
   sortToolInfoList,
   translateLifeStatus,
 } from "@/components/toolInfo/utils";
-import { apiGetToolStockList } from "@/scripts/Apis/toolInfo/toolInfo";
+import {
+  apiGetToolStockCountList,
+  apiGetToolStockList,
+} from "@/scripts/Apis/toolInfo/toolInfoApis";
 import { useEffect, useState } from "react";
 import { ToolStockItem } from "../../../components/toolInfo/types";
 
@@ -36,7 +39,7 @@ export default function Page() {
     clearTimeout(timer);
 
     timer = setTimeout(async () => {
-      const toolInfoList = await getToolInfoList();
+      const toolInfoList = await apiGetToolStockCountList();
       if (toolInfoList) {
         const filterData = sortToolInfoList(toolInfoList).filter((item) => {
           return item.ToolSn.toLowerCase().includes(value.toLowerCase());

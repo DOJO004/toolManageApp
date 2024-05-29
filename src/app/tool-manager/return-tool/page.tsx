@@ -23,7 +23,7 @@ import {
   apiScrapTool,
 } from "@/scripts/Apis/repairAndScrap/repairAndScrap";
 import { apiGetStorageList } from "@/scripts/Apis/storage/storageApi";
-import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
+import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApis";
 import { AlertColor } from "@mui/material";
 export default function Page() {
   const { setShowNotice } = useNotice();

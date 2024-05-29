@@ -1,13 +1,16 @@
 "use client";
 
 import {
+  DepartmentItem,
+  EditDepartmentItem,
+} from "@/scripts/Apis/userInfo/types";
+import {
   ApiDeleteDepartment,
   ApiGetDepartmentList,
   ApiPatchDepartment,
-} from "@/scripts/Apis/userInfo/departmentApi";
+} from "@/scripts/Apis/userInfo/userInfoApis";
 import React, { useEffect, useState } from "react";
 import NewDepartment from "./new";
-import { DepartmentItem, DepartmentList, EditDepartmentItem } from "./type";
 
 export default function IndexDepartment() {
   const [departmentList, setDepartmentList] = useState<DepartmentItem[]>([]);

@@ -1,8 +1,11 @@
 "use client";
 
-import { ApiPostDepartment } from "@/scripts/Apis/userInfo/departmentApi";
+import {
+  NewDepartmentItem,
+  PostDepartmentResponse,
+} from "@/scripts/Apis/userInfo/types";
+import { ApiPostDepartment } from "@/scripts/Apis/userInfo/userInfoApis";
 import { FormEvent, useState } from "react";
-import { NewDepartmentItem, PostDepartmentResponse } from "./type";
 
 interface NewDepartmentProps {
   getDepartmentList: () => void;

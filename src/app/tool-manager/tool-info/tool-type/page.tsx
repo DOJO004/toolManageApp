@@ -6,8 +6,8 @@ import {
   apiEditToolType,
   apiGetToolTypeList,
   apiNewToolType,
-} from "@/scripts/Apis/toolInfo/toolInfo";
-import { ToolTypeItem } from "@/scripts/Apis/toolInfo/type";
+} from "@/scripts/Apis/toolInfo/toolInfoApis";
+import { ToolTypeItem } from "@/scripts/Apis/toolInfo/types";
 import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { apiGetToolLoadingLogList } from "@/scripts/Apis/toolInfo/toolInfo";
+import { apiGetToolLoadingLogList } from "@/scripts/Apis/toolInfo/toolInfoApis";
 import { useEffect, useState } from "react";
 import { ToolLoadingItem } from "./types";
 

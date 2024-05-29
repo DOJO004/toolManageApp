@@ -1,7 +1,7 @@
 "use client";
 
 import { setCookie } from "@/scripts/Apis/mainApi";
-import { ApiUserLogin } from "@/scripts/Apis/userInfo/userInfoApi";
+import { ApiUserLogin } from "@/scripts/Apis/userInfo/userInfoApis";
 import CircularProgress from "@mui/joy/CircularProgress";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

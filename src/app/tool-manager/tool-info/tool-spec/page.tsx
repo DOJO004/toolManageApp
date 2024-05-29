@@ -7,13 +7,13 @@ import {
   apiGetToolSpecList,
   apiGetToolTypeList,
   apiNewToolSpec,
-} from "@/scripts/Apis/toolInfo/toolInfo";
+} from "@/scripts/Apis/toolInfo/toolInfoApis";
 import {
   NewToolSpecItem,
   ToolSpecItem,
   ToolTypeItem,
   editToolSpecItem,
-} from "@/scripts/Apis/toolInfo/type";
+} from "@/scripts/Apis/toolInfo/types";
 import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -114,7 +114,7 @@ export default function Page() {
     timer = setTimeout(async () => {
       const toolSpecList = await apiGetToolSpecList();
       if (toolSpecList) {
-        const filterData = toolSpecList?.filter((item) => {
+        const filterData = toolSpecList.filter((item) => {
           return (
             item.Name.toLowerCase().includes(value.toLowerCase()) ||
             item.ToolSpecId.toLowerCase().includes(value.toLowerCase())

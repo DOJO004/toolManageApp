@@ -10,7 +10,7 @@ import {
   apiGetMachineTypeList,
   apiGetProductLineTypeList,
   apiNewMachineSpec,
-} from "@/scripts/Apis/machineInfo/machineInfo";
+} from "@/scripts/Apis/machineInfo/machineInfoApis";
 import {
   EditMachineSpecItem,
   MachineSpecItem,

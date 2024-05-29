@@ -7,7 +7,7 @@ import {
   apiGetELabelList,
   apiNewELabel,
   syncELabelDataFromAims,
-} from "@/scripts/Apis/eLabelInfo/eLabelInfo";
+} from "@/scripts/Apis/eLabelInfo/eLabelInfoApis";
 import {
   EditLabelItem,
   LabelItem,

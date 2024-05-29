@@ -1,44 +1,34 @@
 "use client";
 
-import { useNotice } from "@/components/context/NoticeContext";
-import SweetAlert from "@/components/sweetAlert";
 import UserInfoIndex from "@/components/userInfo";
-import {
-  DepartmentItem,
-  DepartmentList,
-} from "@/components/userInfo/department/type";
 import UserInfoNew from "@/components/userInfo/new";
 import EditPermissionForm from "@/components/userInfo/permissions/editPermissionForm";
-import {
-  PermissionInfoList,
-  PermissionMenuItem,
-} from "@/components/userInfo/permissions/type";
 import ResetPasswordForm from "@/components/userInfo/resetPasswordForm";
 import {
-  DeleteUserResponse,
+  DepartmentItem,
   EditUserInfo,
-  EditUserResponse,
   NewUserInfo,
-  NewUserResponse,
+  PermissionMenuItem,
+  ResetUserPasswordInfo,
   UserAccountItem,
-  UserInfoList,
-} from "@/components/userInfo/types";
-import { ApiGetDepartmentList } from "@/scripts/Apis/userInfo/departmentApi";
-import { apiGetPermissionsInfoList } from "@/scripts/Apis/userInfo/policeApi";
+} from "@/scripts/Apis/userInfo/types";
+
 import {
   ApiDeleteUserInfo,
+  ApiGetDepartmentList,
   ApiGetUserInfoList,
   ApiPatchUserInfo,
   ApiPostUserInfo,
   ApiResetPassword,
-} from "@/scripts/Apis/userInfo/userInfoApi";
-import { AlertColor } from "@mui/material";
+  apiGetPermissionsInfoList,
+} from "@/scripts/Apis/userInfo/userInfoApis";
+import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
-  const { setShowNotice } = useNotice();
+  const handleNotice = useHandleNotice();
   const [userInfoList, setUserInfoList] = useState<UserAccountItem[]>([]);
-  const [userInfo, setUserInfo] = useState<NewUserInfo>({
+  const [newUserInfo, setNewUserInfo] = useState<NewUserInfo>({
     UserAccount: "",
     Password: "",
     UserName: "",
@@ -47,10 +37,9 @@ export default function Page() {
     EMailAddress: "",
     PermissionIds: [],
   });
-  const [newPasswordData, setNewPasswordData] = useState({
-    AccountId: "",
-    NewPwd: "",
-  });
+  const [newPasswordData, setNewPasswordData] = useState<ResetUserPasswordInfo>(
+    {} as ResetUserPasswordInfo
+  );
   const [resetPasswordMode, setResetPasswordMode] = useState<boolean>(false);
 
   const [permissionList, setPermissionList] = useState<PermissionMenuItem[]>(
@@ -66,92 +55,47 @@ export default function Page() {
   const [editUserIndex, setEditUserIndex] = useState<number>(-1);
   const [editPermission, setEditPermission] = useState(false);
 
-  const getUserInfoList = async (count = 1) => {
-    if (count >= 3) {
-      SweetAlert(-99, "請求失敗。");
-      return;
-    }
-    try {
-      const data = await ApiGetUserInfoList();
-      const res = data as UserInfoList;
-      const reqInt = res?.data?.Values?.ReqInt;
-      console.log("user list", res);
-
-      if (reqInt === 0) {
-        setUserInfoList(res.data.Values.UserAccountList);
-      } else {
-        console.log(`ReqInt = ${reqInt}`);
-      }
-    } catch (error) {
-      console.error("Error", error);
-      getUserInfoList(count + 1);
-    }
+  const getUserInfoList = async () => {
+    setUserInfoList(await ApiGetUserInfoList());
   };
 
-  const getDepartmentList = async (count = 1) => {
-    if (count === 3) {
-      SweetAlert(-99, "請求失敗。");
-    }
-    try {
-      const data = await ApiGetDepartmentList();
-      const res = data as DepartmentList;
-      const reqInt = res?.data?.Values?.ReqInt;
-      console.log("department", res);
-      if (reqInt === 0) {
-        setDepartmentList(res.data.Values.DepartmentMenus);
-      } else {
-        throw new Error(`ReqInt = ${reqInt}`);
-      }
-    } catch (error) {
-      getDepartmentList(count + 1);
-      console.error("Error", error);
-    }
+  const getDepartmentList = async () => {
+    setDepartmentList(await ApiGetDepartmentList());
   };
 
   const getPermissionList = async () => {
-    const data = await apiGetPermissionsInfoList();
-    const res = data as PermissionInfoList;
-    const reqInt = res?.data?.Values?.ReqInt;
-    console.log("permission", res);
-
-    if (reqInt === 0) {
-      setPermissionList(res.data.Values.PermissionMenus);
-    } else {
-      console.log("get permission false reqInt =", reqInt);
-    }
+    setPermissionList(await apiGetPermissionsInfoList());
   };
+
   const postUserInfo = async (e: FormEvent) => {
     e.preventDefault();
-    const data = await ApiPostUserInfo(userInfo);
-    const res = data as NewUserResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
-
+    const reqInt = await ApiPostUserInfo(newUserInfo);
     if (reqInt === 0) {
       getUserInfoList();
-      setUserInfo({
-        UserAccount: "",
-        Password: "",
-        UserName: "",
-        DepartmentId: "",
-        EmployeeId: "",
-        EMailAddress: "",
-        PermissionIds: [],
-      });
+      cleanNewUserInfo();
       setFocusInput(false);
       handleNotice("success", true, "新增成功");
     } else {
       handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
-    console.log(data);
+  };
+
+  const cleanNewUserInfo = () => {
+    setNewUserInfo({
+      UserAccount: "",
+      Password: "",
+      UserName: "",
+      DepartmentId: "",
+      EmployeeId: "",
+      EMailAddress: "",
+      PermissionIds: [],
+    });
   };
 
   // 重設密碼
-
   const resetPassword = async (e: FormEvent) => {
     e.preventDefault();
-    const res: any = await ApiResetPassword(newPasswordData);
-    const reqInt = res?.data?.Values?.ReqInt;
-
+    const reqInt = await ApiResetPassword(newPasswordData);
     if (reqInt === 0) {
       handleNotice("success", true, "重設密碼成功");
       setResetPasswordMode(false);
@@ -163,23 +107,24 @@ export default function Page() {
 
   const handleSetUserInfo = (key: string, value: string) => {
     if (key === "PermissionIds") {
-      setUserInfo((prev) => ({
+      setNewUserInfo((prev) => ({
         ...prev,
         [key]: [...prev.PermissionIds, value],
       }));
       return;
+    } else {
     }
-    setUserInfo((prev) => ({ ...prev, [key]: value }));
+    setNewUserInfo((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleCheckPermission = (checked: boolean, permissionId: string) => {
     if (checked) {
-      setUserInfo((prev) => ({
+      setNewUserInfo((prev) => ({
         ...prev,
         PermissionData: [...prev.PermissionIds, permissionId],
       }));
     } else {
-      setUserInfo((prev) => ({
+      setNewUserInfo((prev) => ({
         ...prev,
         PermissionData: prev.PermissionIds.filter((id) => id !== permissionId),
       }));
@@ -188,9 +133,7 @@ export default function Page() {
 
   const patchUserInfo = async (e?: FormEvent) => {
     e?.preventDefault();
-    const data = await ApiPatchUserInfo(editUserInfo);
-    const res = data as EditUserResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
+    const reqInt = await ApiPatchUserInfo(editUserInfo);
     if (reqInt === 0) {
       getUserInfoList();
       setEditUserMode(false);
@@ -205,10 +148,7 @@ export default function Page() {
   const deleteUserInfo = async () => {
     const confirm = window.confirm("確定要刪除嗎?");
     if (!confirm) return;
-    const data = await ApiDeleteUserInfo(editUserInfo.AccountId);
-    const res = data as DeleteUserResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
-
+    const reqInt = await ApiDeleteUserInfo(editUserInfo);
     if (reqInt === 0) {
       getUserInfoList();
       setEditUserMode(false);
@@ -221,7 +161,7 @@ export default function Page() {
   };
 
   const handleEditUser = (item: UserAccountItem, index: number) => {
-    console.log("edit item", item);
+    console.log("handle eidt user", item);
 
     setNewUserMode(false);
     setEditUserMode(true);
@@ -240,14 +180,6 @@ export default function Page() {
   const handelNewUserMode = () => {
     setNewUserMode(!newUserMode);
     setEditUserMode(false);
-  };
-
-  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
-    setShowNotice({
-      type: type,
-      show: show,
-      messages: messages,
-    });
   };
 
   const handleResetPassword = () => {
@@ -274,27 +206,12 @@ export default function Page() {
       }));
     }
   };
-  // const confirmPassword = async () => {
-  //   const { value: password } = await Swal.fire({
-  //     title: "輸入密碼",
-  //     input: "password",
-  //     inputLabel: "Password",
-  //     inputPlaceholder: "請輸入該使用者的密碼",
-  //   });
-  //   if (password) {
-  //     patchUserInfo(password);
-  //   }
-  // };
 
   useEffect(() => {
     getUserInfoList();
     getDepartmentList();
     getPermissionList();
   }, []);
-
-  useEffect(() => {
-    console.log(editUserInfo);
-  }, [editUserInfo]);
 
   return (
     <div className="relative w-full p-2 text-center ">
@@ -317,7 +234,7 @@ export default function Page() {
           departmentList={departmentList}
           postUserInfo={postUserInfo}
           handleSetUserInfo={handleSetUserInfo}
-          userInfo={userInfo}
+          newUserInfo={newUserInfo}
           setFocusInput={setFocusInput}
           focusInput={focusInput}
           permissionList={permissionList}

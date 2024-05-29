@@ -1,7 +1,7 @@
 "use client";
 
 import { getPermission } from "@/scripts/Apis/mainApi";
-import { ApiPostUserLogout } from "@/scripts/Apis/userInfo/userInfoApi";
+import { ApiPostUserLogout } from "@/scripts/Apis/userInfo/userInfoApis";
 import { AlertColor } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";

@@ -7,13 +7,13 @@ import {
 import {
   apiGetStorageList,
   apiGetToolStockList,
-} from "@/scripts/Apis/toolInfo/toolInfo";
+} from "@/scripts/Apis/toolInfo/toolInfoApis";
 import {
   BasicResponse,
   GetStorageListResponse,
   StorageMenuItem,
 } from "@/scripts/Apis/toolInfo/type";
-import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
+import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApis";
 import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 import { useNotice } from "../context/NoticeContext";

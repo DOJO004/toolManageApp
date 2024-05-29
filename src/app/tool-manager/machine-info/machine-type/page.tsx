@@ -7,7 +7,7 @@ import {
   apiEditMachineType,
   apiGetMachineTypeList,
   apiNewMachineType,
-} from "@/scripts/Apis/machineInfo/machineInfo";
+} from "@/scripts/Apis/machineInfo/machineInfoApis";
 import {
   EditMachineTypeItem,
   MachineTypeItem,

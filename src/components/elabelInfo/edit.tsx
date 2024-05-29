@@ -3,7 +3,7 @@
 import {
   apiDeleteELabel,
   apiEditELabel,
-} from "@/scripts/Apis/eLabelInfo/eLabelInfo";
+} from "@/scripts/Apis/eLabelInfo/eLabelInfoApis";
 import { FormEvent } from "react";
 import { DeleteELabelInfoResponse, PatchELabelInfoResponse } from "./types";
 

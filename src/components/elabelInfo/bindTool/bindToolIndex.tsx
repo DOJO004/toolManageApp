@@ -3,9 +3,9 @@ import { LabelItem } from "@/components/elabelInfo/types";
 import {
   apiBindELabelInfo,
   apiGetELabelList,
-} from "@/scripts/Apis/eLabelInfo/eLabelInfo";
-import { apiGetToolStockList } from "@/scripts/Apis/toolInfo/toolInfo";
-import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApi";
+} from "@/scripts/Apis/eLabelInfo/eLabelInfoApis";
+import { apiGetToolStockList } from "@/scripts/Apis/toolInfo/toolInfoApis";
+import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApis";
 import { AlertColor } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";

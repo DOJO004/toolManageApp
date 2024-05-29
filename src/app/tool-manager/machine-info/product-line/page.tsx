@@ -3,21 +3,18 @@
 import ProductLineIndex from "@/components/machineInfo/productLine";
 import NewProductLine from "@/components/machineInfo/productLine/new";
 import {
-  DepartmentItem,
-  DepartmentList,
-} from "@/components/userInfo/department/type";
-import {
   apiDeleteProductLineType,
   apiEditProductLineType,
   apiGetProductLineTypeList,
   apiNewProductLineType,
-} from "@/scripts/Apis/machineInfo/machineInfo";
+} from "@/scripts/Apis/machineInfo/machineInfoApis";
 import {
   EditProductLineItem,
   NewProductLineItem,
   ProductLineItem,
 } from "@/scripts/Apis/machineInfo/types";
-import { ApiGetDepartmentList } from "@/scripts/Apis/userInfo/departmentApi";
+import { DepartmentItem } from "@/scripts/Apis/userInfo/types";
+import { ApiGetDepartmentList } from "@/scripts/Apis/userInfo/userInfoApis";
 import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 

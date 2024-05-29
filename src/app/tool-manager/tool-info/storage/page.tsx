@@ -7,12 +7,12 @@ import {
   apiEditSTorageInfo,
   apiGetStorageList,
   apiPostStorageInfo,
-} from "@/scripts/Apis/toolInfo/toolInfo";
+} from "@/scripts/Apis/toolInfo/toolInfoApis";
 import {
   EditStorageItem,
   NewStorageItem,
   StorageMenuItem,
-} from "@/scripts/Apis/toolInfo/type";
+} from "@/scripts/Apis/toolInfo/types";
 import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 

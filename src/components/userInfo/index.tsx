@@ -1,6 +1,9 @@
+import {
+  DepartmentItem,
+  EditUserInfo,
+  UserAccountItem,
+} from "@/scripts/Apis/userInfo/types";
 import React from "react";
-import { DepartmentItem } from "./department/type";
-import { EditUserInfo, UserAccountItem } from "./types";
 
 interface Props {
   userInfoList: UserAccountItem[];
