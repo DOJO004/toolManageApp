@@ -1,69 +1,18 @@
-"use client";
+import { NewLabelItem } from "@/scripts/Apis/eLabelInfo/types";
+import { FormEvent } from "react";
 
-import { apiNewELabel } from "@/scripts/Apis/eLabelInfo/eLabelInfo";
-import { AlertColor } from "@mui/material";
-import { FormEvent, useState } from "react";
-import { useNotice } from "../context/NoticeContext";
-import { PostELabelInfoResponse } from "./types";
-
-interface NewELabelInfoProps {
-  getELabelList: () => void;
-  setNewLabelMode: React.Dispatch<React.SetStateAction<boolean>>;
+interface Props {
+  setNewLabelMode: (value: boolean) => void;
+  postNewLabelInfo: (e: FormEvent) => void;
+  newLabelInfo: NewLabelItem;
+  handleNewLabelInfo: (key: string, value: string) => void;
 }
-
 export default function NewELabelInfo({
-  getELabelList,
   setNewLabelMode,
-}: NewELabelInfoProps) {
-  const { setShowNotice } = useNotice();
-  const [newLabelInfo, setNewLabelInfo] = useState({
-    LabelBrandId: "",
-    LabelSn: "",
-    LabelCode: "",
-    NfcRecord: "",
-    StationCode: "",
-    ArticleID: "",
-    ArticleName: "",
-  });
-
-  const postNewLabelInfo = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await apiNewELabel(newLabelInfo);
-    const res = data as PostELabelInfoResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
-    if (reqInt === 0) {
-      getELabelList();
-      cleanNewLabelInfo();
-      handleNotice("success", true, "新增成功");
-    } else {
-      handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
-    }
-  };
-
-  const cleanNewLabelInfo = () => {
-    setNewLabelInfo({
-      LabelBrandId: "",
-      LabelSn: "",
-      LabelCode: "",
-      NfcRecord: "",
-      StationCode: "",
-      ArticleID: "",
-      ArticleName: "",
-    });
-  };
-
-  const handleNewLabelInfo = (key: string, value: string) => {
-    setNewLabelInfo((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
-    setShowNotice({
-      type: type,
-      show: show,
-      messages: messages,
-    });
-  };
-
+  postNewLabelInfo,
+  newLabelInfo,
+  handleNewLabelInfo,
+}: Props) {
   return (
     <div className="p-4 bg-gray-700 rounded-xl">
       <div className="relative ">

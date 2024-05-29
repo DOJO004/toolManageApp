@@ -1,17 +1,30 @@
 import { apiInstance } from "../../eLabelInfoApi";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
+import {
+  BaseResponse,
+  EditLabelItem,
+  GetELabelListResponse,
+  NewLabelItem,
+} from "./types";
 
+// ELabelList
 export const apiGetELabelList = async () => {
   try {
-    const res = await apiInstance.get("/label_get/GetLabelSpecInfoList");
-    return res;
+    const res = await apiInstance.get<GetELabelListResponse>(
+      "/label_get/GetLabelSpecInfoList"
+    );
+    if (res.data.Values.ReqInt === 0) {
+      return res.data.Values.LabelList;
+    } else {
+      return [];
+    }
   } catch (error) {
     console.error("Error", error);
-    return error;
+    return [];
   }
 };
 
-export async function apiNewELabel(eLabel) {
+export async function apiNewELabel(eLabel: NewLabelItem) {
   const body = {
     LabelBrandId: eLabel.LabelBrandId,
     LabelInfo: {
@@ -28,18 +41,21 @@ export async function apiNewELabel(eLabel) {
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
   try {
-    const res = await apiInstance.post("/user_operate/AddLabelInfo", body);
-    return res;
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/AddLabelInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
   }
 }
 
-export async function apiEditELabel(eLabel) {
+export async function apiEditELabel(eLabel: EditLabelItem) {
   const body = {
     LabelId: eLabel.LabelId,
     LabelInfo: {
@@ -49,7 +65,7 @@ export async function apiEditELabel(eLabel) {
         NfcRecord: eLabel.NfcRecord,
         StationCode: eLabel.StationCode,
         ArticleInfo: {
-          ArticleID: eLabel.ArticleID,
+          ArticleID: eLabel.ArticleId,
           ArticleName: eLabel.ArticleName,
         },
       },
@@ -58,32 +74,38 @@ export async function apiEditELabel(eLabel) {
     LoginTime: getLoginTime(),
     NeedPermissions: [getPermission()],
   };
-  console.log("edit e label body", body);
   try {
-    const res = await apiInstance.post("/user_operate/ModifyLabelInfo", body);
-    return res;
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/ModifyLabelInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
   }
 }
 
-export async function apiDeleteELabel(eLabel) {
+export async function apiDeleteELabel(eLabel: EditLabelItem) {
   const body = {
     LabelId: eLabel.LabelId,
     LabelSn: eLabel.LabelSn,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
   try {
-    const res = await apiInstance.post("/user_operate/DisabledLabelInfo", body);
-    return res;
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/DisabledLabelInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
   }
 }
+
 // 綁定刀具
 export async function apiBindELabelInfo(data) {
   const body = {
@@ -153,15 +175,15 @@ export async function syncELabelDataFromAims() {
   const body = {
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
 
   try {
-    const res = await apiInstance.post(
+    const res = await apiInstance.post<BaseResponse>(
       "/user_operate/ManualSyncLabelDataFromAims",
       body
     );
-    return res;
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
