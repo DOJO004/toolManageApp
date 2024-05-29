@@ -1,40 +1,21 @@
 "use client";
 
-import {
-  NewDepartmentItem,
-  PostDepartmentResponse,
-} from "@/scripts/Apis/userInfo/types";
-import { ApiPostDepartment } from "@/scripts/Apis/userInfo/userInfoApis";
-import { FormEvent, useState } from "react";
+import { NewDepartmentItem } from "@/scripts/Apis/userInfo/types";
+import { FormEvent } from "react";
 
 interface NewDepartmentProps {
-  getDepartmentList: () => void;
   setNewDepartmentMode: React.Dispatch<React.SetStateAction<boolean>>;
+  postDepartment: (e: FormEvent) => void;
+  newDepartment: NewDepartmentItem;
+  handleChange: (key: string, value: string) => void;
 }
 
 export default function NewDepartment({
-  getDepartmentList,
   setNewDepartmentMode,
+  postDepartment,
+  newDepartment,
+  handleChange,
 }: NewDepartmentProps) {
-  const [newDepartment, setNewDepartment] = useState<NewDepartmentItem>({
-    DepartmentId: "",
-    Name: "",
-  });
-
-  const postDepartment = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await ApiPostDepartment(newDepartment);
-    const res = data as PostDepartmentResponse;
-    console.log(res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      getDepartmentList();
-    }
-  };
-
-  const handleChange = (key: string, value: string) => {
-    setNewDepartment((prev) => ({ ...prev, [key]: value }));
-  };
   return (
     <div className="p-4 bg-gray-900 rounded-md">
       <div className="relative ">

@@ -2,10 +2,12 @@ import { apiInstance } from "../../userInfoApi";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
   BaseResponse,
+  EditDepartmentItem,
   EditUserInfo,
   GetDepartmentListResponse,
   GetPermissionInfoListResponse,
   GetUserInfoListResponse,
+  NewDepartmentItem,
   NewUserInfo,
   ResetUserPasswordInfo,
 } from "./types";
@@ -173,7 +175,7 @@ export const ApiGetDepartmentList = async () => {
   }
 };
 
-export const ApiPostDepartment = async (data) => {
+export const ApiPostDepartment = async (data: NewDepartmentItem) => {
   const body = {
     DepartmentInfos: [
       {
@@ -183,19 +185,22 @@ export const ApiPostDepartment = async (data) => {
     ],
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
   console.log("post department body", body);
   try {
-    const res = await apiInstance.post("/user_operate/AddDepartmentInfo", body);
-    return res;
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/AddDepartmentInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
   }
 };
 
-export const ApiPatchDepartment = async (data) => {
+export const ApiPatchDepartment = async (data: EditDepartmentItem) => {
   const body = {
     DepartmentId: data.DepartmentId,
     ModifyInfo: {
@@ -203,35 +208,33 @@ export const ApiPatchDepartment = async (data) => {
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
-  console.log("patch department body", body);
   try {
-    const res = await apiInstance.post(
+    const res = await apiInstance.post<BaseResponse>(
       "/user_operate/ModifyDepartmentInfo",
       body
     );
-    return res;
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
   }
 };
 
-export const ApiDeleteDepartment = async (id) => {
+export const ApiDeleteDepartment = async (data: EditDepartmentItem) => {
   const body = {
-    DepartmentId: id,
+    DepartmentId: data.DepartmentId,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
-  console.log("delete department body", body);
   try {
-    const res = await apiInstance.post(
+    const res = await apiInstance.post<BaseResponse>(
       "/user_operate/DisabledDepartmentInfo",
       body
     );
-    return res;
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
