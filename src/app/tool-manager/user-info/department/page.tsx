@@ -7,10 +7,10 @@ import {
   NewDepartmentItem,
 } from "@/scripts/Apis/userInfo/types";
 import {
-  ApiDeleteDepartment,
-  ApiGetDepartmentList,
-  ApiPatchDepartment,
-  ApiPostDepartment,
+  apiDeleteDepartment,
+  apiGetDepartmentList,
+  apiPatchDepartment,
+  apiPostDepartment,
 } from "@/scripts/Apis/userInfo/userInfoApis";
 import { useHandleNotice } from "@/scripts/notice";
 import React, { FormEvent, useEffect, useState } from "react";
@@ -33,12 +33,12 @@ export default function Page() {
   });
 
   const getDepartmentList = async () => {
-    setDepartmentList(await ApiGetDepartmentList());
+    setDepartmentList(await apiGetDepartmentList());
   };
 
   const postDepartment = async (e: FormEvent) => {
     e.preventDefault();
-    const ReqInt = await ApiPostDepartment(newDepartment);
+    const ReqInt = await apiPostDepartment(newDepartment);
     if (ReqInt === 0) {
       getDepartmentList();
       setNewDepartmentMode(false);
@@ -49,7 +49,7 @@ export default function Page() {
   };
 
   const patchDepartment = async () => {
-    const reqInt = await ApiPatchDepartment(editDepartment);
+    const reqInt = await apiPatchDepartment(editDepartment);
     if (reqInt === 0) {
       getDepartmentList();
       setEditDepartmentMode(false);
@@ -64,7 +64,7 @@ export default function Page() {
       `確定要刪除 ${editDepartment.DepartmentId} 嗎?`
     );
     if (!confirm) return;
-    const reqInt = await ApiDeleteDepartment(editDepartment);
+    const reqInt = await apiDeleteDepartment(editDepartment);
     if (reqInt === 0) {
       getDepartmentList();
       setEditDepartmentMode(false);

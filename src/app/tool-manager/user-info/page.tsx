@@ -12,16 +12,16 @@ import {
   ResetUserPasswordInfo,
   UserAccountItem,
 } from "@/scripts/Apis/userInfo/types";
-
 import {
-  ApiDeleteUserInfo,
-  ApiGetDepartmentList,
-  ApiGetUserInfoList,
-  ApiPatchUserInfo,
-  ApiPostUserInfo,
-  ApiResetPassword,
+  apiDeleteUserInfo,
+  apiGetDepartmentList,
   apiGetPermissionsInfoList,
+  apiGetUserInfoList,
+  apiPatchUserInfo,
+  apiPostUserInfo,
+  apiResetPassword,
 } from "@/scripts/Apis/userInfo/userInfoApis";
+
 import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -56,11 +56,11 @@ export default function Page() {
   const [editPermission, setEditPermission] = useState(false);
 
   const getUserInfoList = async () => {
-    setUserInfoList(await ApiGetUserInfoList());
+    setUserInfoList(await apiGetUserInfoList());
   };
 
   const getDepartmentList = async () => {
-    setDepartmentList(await ApiGetDepartmentList());
+    setDepartmentList(await apiGetDepartmentList());
   };
 
   const getPermissionList = async () => {
@@ -69,7 +69,7 @@ export default function Page() {
 
   const postUserInfo = async (e: FormEvent) => {
     e.preventDefault();
-    const reqInt = await ApiPostUserInfo(newUserInfo);
+    const reqInt = await apiPostUserInfo(newUserInfo);
     if (reqInt === 0) {
       getUserInfoList();
       cleanNewUserInfo();
@@ -95,7 +95,7 @@ export default function Page() {
   // 重設密碼
   const resetPassword = async (e: FormEvent) => {
     e.preventDefault();
-    const reqInt = await ApiResetPassword(newPasswordData);
+    const reqInt = await apiResetPassword(newPasswordData);
     if (reqInt === 0) {
       handleNotice("success", true, "重設密碼成功");
       setResetPasswordMode(false);
@@ -133,7 +133,7 @@ export default function Page() {
 
   const patchUserInfo = async (e?: FormEvent) => {
     e?.preventDefault();
-    const reqInt = await ApiPatchUserInfo(editUserInfo);
+    const reqInt = await apiPatchUserInfo(editUserInfo);
     if (reqInt === 0) {
       getUserInfoList();
       setEditUserMode(false);
@@ -148,7 +148,7 @@ export default function Page() {
   const deleteUserInfo = async () => {
     const confirm = window.confirm("確定要刪除嗎?");
     if (!confirm) return;
-    const reqInt = await ApiDeleteUserInfo(editUserInfo);
+    const reqInt = await apiDeleteUserInfo(editUserInfo);
     if (reqInt === 0) {
       getUserInfoList();
       setEditUserMode(false);
