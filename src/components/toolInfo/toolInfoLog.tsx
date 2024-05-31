@@ -1,11 +1,11 @@
 "use client";
 
 import { apiGetToolLoadingLogList } from "@/scripts/Apis/toolInfo/toolInfoApis";
+import { ToolLoadingItem, ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 import { useEffect, useState } from "react";
-import { ToolLoadingItem } from "./types";
 
 interface ToolInfoLogProps {
-  toolInfoData: any;
+  toolInfoData: ToolStockItem;
 }
 const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
   const [toolLogData, setToolLogData] = useState<ToolLoadingItem[]>([]);
@@ -15,6 +15,7 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
     const toolLoadingLogList = await apiGetToolLoadingLogList(
       toolInfoData?.ToolSn
     );
+    if (!toolLoadingLogList) return;
     setToolLogData(toolLoadingLogList);
   };
 

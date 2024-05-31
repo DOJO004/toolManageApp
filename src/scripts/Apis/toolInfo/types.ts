@@ -23,7 +23,7 @@ export interface ToolTypeItem {
 export interface GetLoadingLogListResponse {
   RC: string;
   Values: {
-    ToolMacLoadingOpsList: any[];
+    ToolMacLoadingOpsList: ToolLoadingItem[];
     ReqInt: number;
   };
 }
@@ -196,6 +196,29 @@ export interface NewToolStockItem {
   StorageId: string;
   ToolSpecId: string;
   Qty: number;
+}
+
+export interface ToolLoadingItem {
+  ToolSn: string;
+  OpActions: number;
+  MachineLoading: {
+    MachineId: string;
+    AtcNo: number;
+    MachineSpec: {
+      MachineSn: string;
+      MachineName: string;
+    };
+  };
+  StockInfo: {
+    StorageNo: number;
+  };
+  OperatorInfo: {
+    AccountId: string;
+    UserAccount: string;
+    EmployeeId: string;
+    UserName: string;
+  };
+  LogTime: string;
 }
 
 // storage

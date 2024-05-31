@@ -20,6 +20,7 @@ export default function Page() {
   const [toolInfoData, setToolInfoData] = useState<ToolStockItem>(
     {} as ToolStockItem
   );
+  const [toolInfoIndex, setToolInfoIndex] = useState<Number>(0);
 
   const getToolInfoList = async () => {
     const toolStockList = await apiGetToolStockList(null);
@@ -29,9 +30,10 @@ export default function Page() {
     }
   };
 
-  const handleGetToolInfoData = (data: any) => {
+  const handleGetToolInfoData = (data: any, index: number) => {
     console.log("get tool info data", data);
     setToolInfoData(data);
+    setToolInfoIndex(index);
   };
 
   let timer: ReturnType<typeof setTimeout>;
@@ -86,8 +88,8 @@ export default function Page() {
               sortToolInfoList(toolInfoList).map((item, index) => (
                 <tr
                   key={item.ToolSn}
-                  className="cursor-pointer hover:bg-gray-600"
-                  onClick={() => handleGetToolInfoData(item)}
+                  className={`cursor-pointer hover:bg-gray-600 ${toolInfoIndex === index ? "bg-gray-600" : ""}`}
+                  onClick={() => handleGetToolInfoData(item, index)}
                 >
                   <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
                   <td

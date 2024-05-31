@@ -13,6 +13,7 @@ import {
 import {
   NewToolStockItem,
   StockToolCountItem,
+  StorageMenuItem,
   ToolSpecItem,
   ToolStatusItem,
 } from "@/scripts/Apis/toolInfo/types";
@@ -22,7 +23,7 @@ import { FormEvent, useEffect, useState } from "react";
 export default function Page() {
   const { setShowNotice } = useNotice();
   const [toolStockList, setToolStockList] = useState<StockToolCountItem[]>([]);
-  const [storageList, setStorageList] = useState<StorageItem[]>([]);
+  const [storageList, setStorageList] = useState<StorageMenuItem[]>([]);
   const [toolSpecList, setToolSpecList] = useState<ToolSpecItem[]>([]);
   const [toolSpecClass, setToolSpecClass] = useState<string[]>([]);
   const [selectToolClass, setSelectToolClass] = useState<string[]>([]);
