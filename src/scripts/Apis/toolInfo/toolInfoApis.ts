@@ -1,4 +1,5 @@
 import { apiInstance } from "@/scripts/toolInfoApi";
+import { ReturnDataItem } from "../eLabelInfo/types";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
   BaseResponse,
@@ -7,13 +8,14 @@ import {
   GetStorageListResponse,
   GetToolSpecListResponse,
   GetToolStockCountListResponse,
+  GetToolStockListResponse,
   GetToolTypeListResponse,
   NewStorageItem,
   NewToolSpecItem,
   NewToolStockItem,
   ToolTypeItem,
   editToolSpecItem,
-} from "./type";
+} from "./types";
 
 export async function apiGetToolLoadingLogList(toolSn: string) {
   if (!toolSn) {
@@ -237,9 +239,12 @@ export async function apiDeleteToolSpec(editToolSpec: editToolSpecItem) {
 }
 
 // toolStock
-export async function apiGetToolStockList() {
+export async function apiGetToolStockList(status: number | null) {
+  const url = status
+    ? `tool_get/GetToolStockInfoList?RecordsPerPage=9999&Status=${status}`
+    : "tool_get/GetToolStockInfoList?RecordsPerPage=9999";
   try {
-    const res = await apiInstance.get("tool_get/GetToolStockInfoList");
+    const res = await apiInstance.get<GetToolStockListResponse>(url);
     console.log(`apiGetToolStockList`, res);
     const { Values } = res.data;
     if (Values.ReqInt === 0) {
@@ -287,25 +292,6 @@ export async function apiPostToolStock(toolStock: NewToolStockItem) {
   try {
     const res = await apiInstance.post<BaseResponse>(
       "user_operate/AddToolStockInfo",
-      body
-    );
-    return res.data.Values.ReqInt;
-  } catch (error) {
-    console.error("Error", error);
-    return error;
-  }
-}
-
-export async function apiDeleteToolStock(toolStock) {
-  const body = {
-    ToolStockId: toolStock.Id,
-    UserToken: getUserToken(),
-    LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
-  };
-  try {
-    const res = await apiInstance.post<BaseResponse>(
-      "user_operate/DisabledToolStockInfo",
       body
     );
     return res.data.Values.ReqInt;
@@ -381,6 +367,72 @@ export async function apiDeleteStorageInfo(storage: EditStorageItem) {
   try {
     const res = await apiInstance.post<BaseResponse>(
       "/user_operate/DisabledStockSotrageInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+// 送修刀具
+export async function apiRepairTool(data: ReturnDataItem) {
+  const body = {
+    ToolSn: data.ToolSn,
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: [getPermission()],
+  };
+  console.log("repair tool body", body);
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/RepairToolStockInfo",
+      body
+    );
+    console.log("repair tool res = ", res);
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+//報廢刀具
+export async function apiScrapTool(data: any) {
+  const body = {
+    ToolSn: data.ToolSn,
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: [getPermission()],
+  };
+  console.log("scrap tool body", body);
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/ScrapToolStockInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+    return error;
+  }
+}
+
+// 送修完畢重新入庫
+export async function apiRestockTool(data: ReturnDataItem) {
+  const body = {
+    RevertorId: data.RevertorId,
+    ToolSn: data.ToolSn,
+    StorageId: data.StorageId,
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: [getPermission()],
+  };
+  console.log("restock tool body", body);
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/RestorageToolStockInfo",
       body
     );
     return res.data.Values.ReqInt;

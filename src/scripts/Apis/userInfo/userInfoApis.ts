@@ -45,7 +45,7 @@ export const ApiUserLogout = async () => {
 };
 
 // userInfo
-export const ApiGetUserInfoList = async () => {
+export const apiGetUserInfoList = async () => {
   try {
     const res = await apiInstance.get<GetUserInfoListResponse>(
       "/account_get/GetUserAccountInfoList?Activated=1"
@@ -61,7 +61,7 @@ export const ApiGetUserInfoList = async () => {
   }
 };
 
-export const ApiPostUserInfo = async (data: NewUserInfo) => {
+export const apiPostUserInfo = async (data: NewUserInfo) => {
   const body = {
     AccountInfo: {
       UserAccount: data.UserAccount,
@@ -89,7 +89,7 @@ export const ApiPostUserInfo = async (data: NewUserInfo) => {
   }
 };
 
-export const ApiPatchUserInfo = async (data: EditUserInfo) => {
+export const apiPatchUserInfo = async (data: EditUserInfo) => {
   const body = {
     AccountId: data.AccountId,
     ModifyInfo: {
@@ -116,7 +116,7 @@ export const ApiPatchUserInfo = async (data: EditUserInfo) => {
   }
 };
 
-export const ApiDeleteUserInfo = async (userInfo: EditUserInfo) => {
+export const apiDeleteUserInfo = async (userInfo: EditUserInfo) => {
   const body = {
     AccountId: userInfo.AccountId,
     UserToken: getUserToken(),
@@ -139,7 +139,7 @@ export const ApiDeleteUserInfo = async (userInfo: EditUserInfo) => {
   }
 };
 
-export const ApiResetPassword = async (data: ResetUserPasswordInfo) => {
+export const apiResetPassword = async (data: ResetUserPasswordInfo) => {
   const body = {
     AccountId: data.AccountId,
     NewPwd: data.NewPwd,
@@ -161,7 +161,7 @@ export const ApiResetPassword = async (data: ResetUserPasswordInfo) => {
 };
 
 // department
-export const ApiGetDepartmentList = async () => {
+export const apiGetDepartmentList = async () => {
   try {
     const res = await apiInstance.get<GetDepartmentListResponse>(
       "/account_get/GetDepartmentInfoList"
@@ -177,7 +177,7 @@ export const ApiGetDepartmentList = async () => {
   }
 };
 
-export const ApiPostDepartment = async (data: NewDepartmentItem) => {
+export const apiPostDepartment = async (data: NewDepartmentItem) => {
   const body = {
     DepartmentInfos: [
       {
@@ -202,7 +202,7 @@ export const ApiPostDepartment = async (data: NewDepartmentItem) => {
   }
 };
 
-export const ApiPatchDepartment = async (data: EditDepartmentItem) => {
+export const apiPatchDepartment = async (data: EditDepartmentItem) => {
   const body = {
     DepartmentId: data.DepartmentId,
     ModifyInfo: {
@@ -224,7 +224,7 @@ export const ApiPatchDepartment = async (data: EditDepartmentItem) => {
   }
 };
 
-export const ApiDeleteDepartment = async (data: EditDepartmentItem) => {
+export const apiDeleteDepartment = async (data: EditDepartmentItem) => {
   const body = {
     DepartmentId: data.DepartmentId,
     UserToken: getUserToken(),

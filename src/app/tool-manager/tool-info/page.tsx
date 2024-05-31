@@ -12,8 +12,8 @@ import {
   apiGetToolStockCountList,
   apiGetToolStockList,
 } from "@/scripts/Apis/toolInfo/toolInfoApis";
+import { ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 import { useEffect, useState } from "react";
-import { ToolStockItem } from "../../../components/toolInfo/types";
 
 export default function Page() {
   const [toolInfoList, setToolInfoList] = useState<ToolStockItem[]>([]);
@@ -22,7 +22,7 @@ export default function Page() {
   );
 
   const getToolInfoList = async () => {
-    const toolStockList = await apiGetToolStockList();
+    const toolStockList = await apiGetToolStockList(null);
     if (toolStockList.length > 0) {
       setToolInfoList(toolStockList);
       setToolInfoData(toolStockList[0]);

@@ -92,6 +92,67 @@ export interface editToolSpecItem {
 }
 
 // toolStock
+export interface GetToolStockListResponse {
+  Values: {
+    ReqInt: number;
+    TotalPages: number;
+    TotalRecords: number;
+    StockToolList: ToolStockItem[];
+  };
+}
+
+export interface ToolStockItem {
+  ToolSn: string;
+  ToolSpecId: string;
+  ToolSpecName: string;
+  ToolTypeData: {
+    Id: string;
+    Name: string;
+  };
+  LifeStatus: string;
+  LifePercentage: number;
+  LastStorageId: number;
+  SpecData: {
+    BladeDiameter: number;
+    BladeHeight: number;
+    TotalLength: number;
+    HandleDiameter: number;
+  };
+  LifeData: {
+    ProcessCnt: number;
+    ProcessTime: number;
+    ProcessLength: number;
+    RepairCnt: number;
+  };
+  MaxLife: {
+    ProcessCnt: number;
+    ProcessTime: number;
+    ProcessLength: number;
+    RepairCnt: number;
+  };
+  PositionData: {
+    PositionStatus: number;
+    StorageInfo: {
+      StorageNo: number;
+    };
+    LoadingInfo: {
+      MachineId: string;
+      AtcNo: number;
+      MachineSpec: {
+        MachineSn: string;
+        MachineName: string;
+      };
+    };
+  };
+  Receiver: {
+    AccountId: string;
+    UserAccount: string;
+    EmployeeId: string;
+    UserName: string;
+  };
+  LastModify: string;
+}
+
 export interface GetToolStockCountListResponse {
   Values: {
     ReqInt: number;

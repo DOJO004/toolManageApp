@@ -3,91 +3,55 @@
 import { FormEvent, useEffect, useState } from "react";
 import { toolStockStatusInfo } from "./action";
 
-import { useNotice } from "@/components/context/NoticeContext";
 import ReturnToolFrom from "@/components/returnTool/retrunToolForm";
+
 import {
-  GetBindLabelListResponse,
-  LabelBindItem,
-} from "@/components/returnTool/types";
-import {
-  GetStorageListResponse,
-  StorageItem,
-} from "@/components/storage/types";
-import SweetAlert from "@/components/sweetAlert";
-import {
-  apiDeleteBindLabel,
+  apiDeleteLabelBindInfo,
   apiGetBindLabelList,
-} from "@/scripts/Apis/receiveTool/receiveTool";
+} from "@/scripts/Apis/eLabelInfo/eLabelInfoApis";
+import { LabelBindItem, ReturnDataItem } from "@/scripts/Apis/eLabelInfo/types";
+
 import {
+  apiGetStorageList,
   apiRepairTool,
   apiScrapTool,
-} from "@/scripts/Apis/repairAndScrap/repairAndScrap";
-import { apiGetStorageList } from "@/scripts/Apis/storage/storageApi";
-import { ApiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApis";
-import { AlertColor } from "@mui/material";
+} from "@/scripts/Apis/toolInfo/toolInfoApis";
+import { StorageMenuItem } from "@/scripts/Apis/toolInfo/types";
+import { apiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApis";
+import { useHandleNotice } from "@/scripts/notice";
 export default function Page() {
-  const { setShowNotice } = useNotice();
+  const handleNotice = useHandleNotice();
   const [bindLabelList, setBindLabelList] = useState<LabelBindItem[]>([]);
   const [handleToolReturnIndex, setHandleToolReturnIndex] =
     useState<number>(-1);
   const [userList, setUserList] = useState<any[]>([]);
-  const [storageList, setStorageList] = useState<StorageItem[]>([]);
+  const [storageList, setStorageList] = useState<StorageMenuItem[]>([]);
   const [returnType, setReturnType] = useState<string>("");
   const [returnMode, setReturnMode] = useState<boolean>(false);
-  const [returnData, setReturnData] = useState({
+  const [returnData, setReturnData] = useState<ReturnDataItem>({
     RevertorId: "",
     LToolCode: 0,
     StorageId: 0,
     ToolSn: "",
   });
 
-  const getBindLabelList = async (count = 1) => {
-    if (count === 3) {
-      SweetAlert(-99, "請求失敗，請重新整理頁面。");
-      throw new Error("Maximum retry count reached");
-    }
-    try {
-      const data = await apiGetBindLabelList();
-      const res = data as GetBindLabelListResponse;
-      const reqInt = res?.data?.Values?.ReqInt;
-      console.log("bindtooldata", res);
-      if (reqInt === 0) {
-        setBindLabelList(res.data.Values.LabelBindList);
-        return res.data.Values.LabelBindList;
-      } else {
-        console.log(`ReqInt = ${reqInt}`);
-      }
-    } catch (error) {
-      getBindLabelList(count + 1);
-      console.error("Error", error);
-    }
+  const getBindLabelList = async () => {
+    setBindLabelList(await apiGetBindLabelList());
   };
 
   const getUserList = async () => {
-    const data = await ApiGetUserInfoList();
-    const res = data as any;
-    console.log("user list ", res);
-
-    setUserList(res.data?.Values?.UserAccountList);
+    setUserList(await apiGetUserInfoList());
   };
 
   const getStorageList = async () => {
-    const data = await apiGetStorageList();
-    const res = data as GetStorageListResponse;
-    const reqInt = res?.data?.Values?.ReqInt;
-    console.log("storage list", res);
-    if (reqInt === 0) {
-      setStorageList(res.data.Values.StorageMenus);
-    }
+    setStorageList(await apiGetStorageList());
   };
 
   const postDisableLabelBindTool = async (e?: FormEvent) => {
     if (e) {
       e.preventDefault();
     }
-    const res: any = await apiDeleteBindLabel(returnData);
-    const reqInt = res.data?.Values?.ReqInt;
-    console.log("disable label bind tool", res);
+    const reqInt = await apiDeleteLabelBindInfo(returnData);
     setReturnMode(false);
 
     if (reqInt === 0) {
@@ -102,40 +66,36 @@ export default function Page() {
 
   const postRepairTool = async (e: FormEvent) => {
     e.preventDefault();
-    const returnToolReqInt = await postDisableLabelBindTool();
-    if (returnToolReqInt === 0) {
-      const res: any = await apiRepairTool(returnData);
-      const reqInt = res.data?.Values?.ReqInt;
-      console.log("repair tool", res);
-
-      if (reqInt === 0) {
-        getBindLabelList();
-        handleNotice("success", true, "送修成功");
-      } else {
-        handleNotice("error", true, `送修失敗，errorCode = ${reqInt}`);
-      }
+    // const returnToolReqInt = await postDisableLabelBindTool();
+    // if (returnToolReqInt === 0) {
+    const reqInt = await apiRepairTool(returnData);
+    if (reqInt === 0) {
+      getBindLabelList();
+      handleNotice("success", true, "送修成功");
+      setReturnMode(false);
     } else {
-      handleNotice("error", true, `送修失敗，errorCode = ${returnToolReqInt}`);
+      handleNotice("error", true, `送修失敗，errorCode = ${reqInt}`);
     }
+    // } else {
+    //   handleNotice("error", true, `送修失敗，errorCode = ${returnToolReqInt}`);
+    // }
   };
 
   const postScrapTool = async (e: FormEvent) => {
     e.preventDefault();
-    const returnToolReqInt = await postDisableLabelBindTool();
-    if (returnToolReqInt === 0) {
-      const res: any = await apiScrapTool(returnData);
-      const reqInt = res.data?.Values?.ReqInt;
-      console.log("scrap tool", res);
-
-      if (reqInt === 0) {
-        getBindLabelList();
-        handleNotice("success", true, "報廢成功");
-      } else {
-        handleNotice("error", true, `報廢失敗，errorCode = ${reqInt}`);
-      }
+    // const returnToolReqInt = await postDisableLabelBindTool();
+    // if (returnToolReqInt === 0) {
+    const reqInt = await apiScrapTool(returnData);
+    if (reqInt === 0) {
+      getBindLabelList();
+      setReturnMode(false);
+      handleNotice("success", true, "報廢成功");
     } else {
-      handleNotice("error", true, `報廢失敗，errorCode = ${returnToolReqInt}`);
+      handleNotice("error", true, `報廢失敗。errorCode = ${reqInt}`);
     }
+    // } else {
+    //   handleNotice("error", true, `報廢失敗。errorCode = ${returnToolReqInt}`);
+    // }
   };
 
   // 搜尋
@@ -143,7 +103,7 @@ export default function Page() {
   const searchTool = (value: string) => {
     clearTimeout(timer);
     timer = setTimeout(async () => {
-      const bindLabelList = await getBindLabelList();
+      const bindLabelList = await apiGetBindLabelList();
 
       if (!bindLabelList) {
         return;
@@ -187,14 +147,6 @@ export default function Page() {
     setReturnData({ ...returnData, [name]: value });
   };
 
-  const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
-    setShowNotice({
-      type: type,
-      show: show,
-      messages: messages,
-    });
-  };
-
   useEffect(() => {
     getBindLabelList();
     getUserList();
@@ -202,7 +154,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="relative w-full p-2 mr-4 overflow-auto rounded-md ">
+    <div className="relative w-full p-2 mr-4 overflow-auto rounded-md min-h-96">
       <div>
         <div className="my-4 ">
           <h3 className="text-center ">歸還刀具</h3>

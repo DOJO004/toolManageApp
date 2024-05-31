@@ -2,9 +2,12 @@ import { apiInstance } from "../../eLabelInfoApi";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
   BaseResponse,
+  BindToolDataItem,
   EditLabelItem,
+  GetBindLabelListResponse,
   GetELabelListResponse,
   NewLabelItem,
+  ReturnDataItem,
 } from "./types";
 
 // ELabelList
@@ -106,8 +109,28 @@ export async function apiDeleteELabel(eLabel: EditLabelItem) {
   }
 }
 
+//取得綁定的刀具
+export async function apiGetBindLabelList() {
+  try {
+    const res = await apiInstance.get<GetBindLabelListResponse>(
+      "/label_get/GetLabelToolBindInfoList?ActivateStatus=1"
+    );
+    console.log("api get bind label list = ", res);
+
+    const { Values } = res.data;
+    if (Values.ReqInt === 0) {
+      return Values.LabelBindList;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error", error);
+    return [];
+  }
+}
+
 // 綁定刀具
-export async function apiBindELabelInfo(data) {
+export async function apiBindELabelInfo(data: BindToolDataItem) {
   const body = {
     ReceiptorId: data.ReceiptorId,
     LabelId: data.LabelId,
@@ -119,11 +142,11 @@ export async function apiBindELabelInfo(data) {
   };
   console.log("body", body);
   try {
-    const res = await apiInstance.post(
+    const res = await apiInstance.post<BaseResponse>(
       "/user_operate/SelectLabelBindInfo",
       body
     );
-    return res;
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
@@ -131,19 +154,23 @@ export async function apiBindELabelInfo(data) {
 }
 
 // 解除綁定
-export async function apiDeleteLableBindInfo(label) {
+export async function apiDeleteLabelBindInfo(label: ReturnDataItem) {
   const body = {
+    RevertorId: label.RevertorId,
     LToolCode: label.LToolCode,
+    StorageId: label.StorageId,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
+  console.log("return tool body = ", body);
+
   try {
-    const res = await apiInstance.post(
+    const res = await apiInstance.post<BaseResponse>(
       "/user_operate/DisableLabelBindInfo",
       body
     );
-    return res;
+    return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
     return error;
@@ -156,7 +183,7 @@ export async function apiDeleteLabelBindByTool(tool) {
     ToolSn: tool.ToolSn,
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
-    NeedPermissions: ["Tag2Tool_R", "Tag2Tool_W"],
+    NeedPermissions: [getPermission()],
   };
   try {
     const res = await apiInstance.post(
