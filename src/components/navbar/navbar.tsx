@@ -29,7 +29,8 @@ const Navbar = () => {
       name === "領取刀具" ||
       name === "歸還刀具" ||
       name === "修整/報廢" ||
-      name === "電子標籤資訊"
+      name === "電子標籤資訊" ||
+      name === "通知設定"
     ) {
       setOpenMenu(false);
       return;

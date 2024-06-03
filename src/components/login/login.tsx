@@ -74,6 +74,7 @@ export default function Login() {
             alt="show password icon"
             className="absolute cursor-pointer right-3 top-10 hover:scale-110"
             onClick={() => setShowPassword((prev) => !prev)}
+            unoptimized
           />
         </div>
         <button className="w-full p-2 my-4 bg-indigo-500 rounded-md">
