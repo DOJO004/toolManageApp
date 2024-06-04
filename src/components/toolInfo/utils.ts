@@ -1,4 +1,4 @@
-import { ToolStockItem } from "./types";
+import { ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 
 export const getLifeStatusClassName = (lifeStatus: string) => {
   switch (lifeStatus) {

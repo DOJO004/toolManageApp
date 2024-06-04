@@ -1,7 +1,9 @@
+import {
+  MachineTypeItem,
+  NewMachineSpecItem,
+  ProductLineItem,
+} from "@/scripts/Apis/machineInfo/types";
 import React, { FormEvent, useEffect } from "react";
-import { MachineTypeItem } from "../machineType/types";
-import { ProductLineItem } from "../productLine/types";
-import { NewMachineSpecItem } from "./types";
 
 interface Props {
   setNewMachineSpecMode: React.Dispatch<React.SetStateAction<boolean>>;

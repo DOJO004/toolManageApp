@@ -1,5 +1,5 @@
+import { NewStorageItem } from "@/scripts/Apis/toolInfo/types";
 import { FormEvent } from "react";
-import { NewStorageItem } from "./types";
 
 interface Props {
   postStorage: (e: FormEvent) => void;

@@ -1,4 +1,4 @@
-import { ToolSpecItem, editToolSpecItem } from "./types";
+import { ToolSpecItem, editToolSpecItem } from "@/scripts/Apis/toolInfo/types";
 
 interface Props {
   toolSpecList: ToolSpecItem[];

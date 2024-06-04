@@ -1,7 +1,10 @@
+import {
+  EditMachineSpecItem,
+  MachineSpecItem,
+  MachineTypeItem,
+  ProductLineItem,
+} from "@/scripts/Apis/machineInfo/types";
 import React from "react";
-import { MachineTypeItem } from "../machineType/types";
-import { ProductLineItem } from "../productLine/types";
-import { EditMachineSpecItem, MachineSpecItem } from "./types";
 
 interface Props {
   machineSpecList: MachineSpecItem[];

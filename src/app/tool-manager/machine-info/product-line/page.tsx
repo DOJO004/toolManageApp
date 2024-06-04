@@ -14,7 +14,7 @@ import {
   ProductLineItem,
 } from "@/scripts/Apis/machineInfo/types";
 import { DepartmentItem } from "@/scripts/Apis/userInfo/types";
-import { ApiGetDepartmentList } from "@/scripts/Apis/userInfo/userInfoApis";
+import { apiGetDepartmentList } from "@/scripts/Apis/userInfo/userInfoApis";
 import { useHandleNotice } from "@/scripts/notice";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -37,12 +37,7 @@ export default function Page() {
   };
 
   const getDepartmentList = async () => {
-    const data = await ApiGetDepartmentList();
-    const res = data as DepartmentList;
-    console.log(res);
-    if (res?.data?.Values?.ReqInt === 0) {
-      setDepartmentList(res.data.Values.DepartmentMenus);
-    }
+    setDepartmentList(await apiGetDepartmentList());
   };
 
   const postProductLine = async (e: FormEvent) => {

@@ -1,5 +1,5 @@
+import { NewMachineTypeItem } from "@/scripts/Apis/machineInfo/types";
 import { FormEvent } from "react";
-import { NewMachineTypeItem } from "./types";
 
 interface Props {
   getMachineTypeList: () => void;

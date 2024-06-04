@@ -1,5 +1,5 @@
+import { ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 import Image from "next/image";
-import { ToolStockItem } from "./types";
 
 interface PieChartProps {
   toolInfoData: ToolStockItem;

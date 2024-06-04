@@ -1,5 +1,5 @@
+import { ToolTypeItem } from "@/scripts/Apis/toolInfo/types";
 import { FormEvent } from "react";
-import { ToolTypeItem } from "./types";
 
 interface NewToolTypeProps {
   postToolType: (e: FormEvent) => void;

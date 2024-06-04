@@ -1,5 +1,8 @@
-import { DepartmentItem } from "@/components/userInfo/department/type";
-import { EditProductLineItem, ProductLineItem } from "./types";
+import {
+  EditProductLineItem,
+  ProductLineItem,
+} from "@/scripts/Apis/machineInfo/types";
+import { DepartmentItem } from "@/scripts/Apis/userInfo/types";
 
 interface Props {
   productLineList: ProductLineItem[];

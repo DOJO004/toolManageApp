@@ -1,6 +1,6 @@
+import { NewProductLineItem } from "@/scripts/Apis/machineInfo/types";
+import { DepartmentItem } from "@/scripts/Apis/userInfo/types";
 import { FormEvent } from "react";
-import { DepartmentItem } from "../../userInfo/department/type";
-import { NewProductLineItem } from "./types";
 
 interface Props {
   getProductLineList: () => void;

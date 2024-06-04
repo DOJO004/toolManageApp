@@ -1,7 +1,9 @@
-import { StorageItem } from "@/components/storage/types";
+import {
+  NewToolStockItem,
+  StorageMenuItem,
+  ToolSpecItem,
+} from "@/scripts/Apis/toolInfo/types";
 import React, { FormEvent } from "react";
-import { ToolSpecItem } from "../toolSpec/types";
-import { NewToolStockItem } from "./types";
 
 interface Props {
   getToolStockList: () => void;
@@ -10,7 +12,7 @@ interface Props {
   newToolStock: NewToolStockItem;
   toolSpecList: ToolSpecItem[];
   handleToolStock: (key: string, value: string | number) => void;
-  storageList: StorageItem[];
+  storageList: StorageMenuItem[];
 }
 export default function NewToolStock({
   getToolStockList,

@@ -1,4 +1,4 @@
-import { MachineTypeItem } from "./types";
+import { MachineTypeItem } from "@/scripts/Apis/machineInfo/types";
 
 interface Props {
   machineTypeList: MachineTypeItem[];

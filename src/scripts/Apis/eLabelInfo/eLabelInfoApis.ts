@@ -177,26 +177,6 @@ export async function apiDeleteLabelBindInfo(label: ReturnDataItem) {
   }
 }
 
-// 停用標籤綁定指定庫存刀具
-export async function apiDeleteLabelBindByTool(tool) {
-  const body = {
-    ToolSn: tool.ToolSn,
-    UserToken: getUserToken(),
-    LoginTime: getLoginTime(),
-    NeedPermissions: [getPermission()],
-  };
-  try {
-    const res = await apiInstance.post(
-      "/user_operate/DisableLabelBindInfoByToolSn",
-      body
-    );
-    return res;
-  } catch (error) {
-    console.error("Error", error);
-    return error;
-  }
-}
-
 // 手動同步 AIMS 電子標籤
 export async function syncELabelDataFromAims() {
   const body = {
