@@ -1,4 +1,4 @@
-import { apiInstance } from "../../eLabelInfoApi";
+import { apiInstance } from "../eLabelInfoApi";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
   BaseResponse,

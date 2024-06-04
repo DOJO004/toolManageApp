@@ -1,4 +1,4 @@
-import { apiInstance } from "@/scripts/toolInfoApi";
+import { apiInstance } from "@/scripts/Apis/toolInfoApi";
 import { ReturnDataItem } from "../eLabelInfo/types";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
@@ -264,6 +264,8 @@ export async function apiGetToolStockCountList() {
       "/tool_get/GetToolStockCountList"
     );
     const { Values } = res.data;
+    console.log(`apiGetToolStockCountList`, res);
+
     if (Values.ReqInt === 0) {
       return Values.StockToolCountList;
     } else {

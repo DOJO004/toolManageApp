@@ -1,4 +1,4 @@
-import { apiInstance } from "@/scripts/machineInfoApi.js";
+import { apiInstance } from "@/scripts/Apis/machineInfoApi.js";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
   BaseResponse,

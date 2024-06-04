@@ -17,6 +17,12 @@ import {
   ToolSpecItem,
   ToolStatusItem,
 } from "@/scripts/Apis/toolInfo/types";
+import {
+  getToolStatusClass,
+  selectedButtonBackgroundColor,
+  toolPositionInfo,
+  translateToolStatus,
+} from "@/scripts/toolStockFunction";
 import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -26,9 +32,9 @@ export default function Page() {
   const [storageList, setStorageList] = useState<StorageMenuItem[]>([]);
   const [toolSpecList, setToolSpecList] = useState<ToolSpecItem[]>([]);
   const [toolSpecClass, setToolSpecClass] = useState<string[]>([]);
-  const [selectToolClass, setSelectToolClass] = useState<string[]>([]);
-  const [toolSpecClassMenu, setToolSpecClassMenu] = useState<boolean>(false);
-
+  const [selectToolClass, setSelectToolClass] = useState<string[]>([]); // 篩選的刀具類別
+  const [selectToolStatus, setSelectToolStatus] = useState<string[]>([]); // 篩選的刀具狀態
+  const [filterMode, setFilterMode] = useState(false);
   const [newToolStock, setNewToolStock] = useState<NewToolStockItem>(
     {} as NewToolStockItem
   );
@@ -78,29 +84,31 @@ export default function Page() {
     });
   };
 
-  const handleSelectToolClass = (name: string, checked: boolean) => {
-    if (checked) {
-      setSelectToolClass([...selectToolClass, name]);
-    } else {
-      setSelectToolClass(selectToolClass.filter((item) => item !== name));
-    }
-  };
-
   const filterToolStockList = async () => {
-    const toolStockCountList = await apiGetToolStockCountList();
+    let filteredData = await apiGetToolStockCountList();
 
-    if (selectToolClass.length === 0) {
-      setToolStockList(toolStockCountList);
-      return;
-    }
-
-    if (toolStockCountList.length > 0) {
-      setToolStockList(
-        toolStockCountList.filter((item) => {
-          return selectToolClass.includes(item.ToolSpecName);
-        })
+    // 依據 ToolSpecName 進行篩選
+    if (selectToolClass.length > 0) {
+      filteredData = filteredData.filter((item) =>
+        selectToolClass.includes(item.ToolSpecName)
       );
     }
+
+    // 依據 ToolStatusList.LifeStatus 進行篩選
+    if (selectToolStatus.length > 0) {
+      filteredData = filteredData
+        .map((item) => {
+          return {
+            ...item,
+            ToolStatusList: item.ToolStatusList.filter((tool) =>
+              selectToolStatus.includes(tool.LifeStatus)
+            ),
+          };
+        })
+        .filter((item) => item.ToolStatusList.length > 0); // 過濾掉 ToolStatusList 為空的項目
+    }
+
+    setToolStockList(filteredData);
   };
 
   const sortToolStockList = (toolList: ToolStatusItem[]) => {
@@ -131,57 +139,20 @@ export default function Page() {
     return sortData;
   };
 
-  const getToolStatusClass = (status: string) => {
-    switch (status) {
-      case "Normal":
-        return "text-green-500";
-      case "NeedRepair":
-        return "text-red-500";
-      case "Repairing":
-        return "text-gray-400";
-      case "Scrap":
-        return "text-gray-500";
-      default:
-        return "";
-    }
-  };
-
-  const translateToolStatus = (status: string) => {
-    switch (status) {
-      case "Normal":
-        return "正常";
-      case "NeedRepair":
-        return "需要維修";
-      case "Repairing":
-        return "維修中";
-      case "Scrap":
-        return "報廢";
-      default:
-        return "";
-    }
-  };
-
-  const toolPositionInfo = (status: number) => {
-    switch (status) {
-      case 0:
-        return "存放於倉儲中";
-      case 1:
-        return "已移出倉儲";
-      case 2:
-        return "裝載於設備中";
-      case -1:
-        return "未知狀態";
-      default:
-        return "無此狀態";
-    }
-  };
-
   const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
     setShowNotice({
       type: type,
       show: show,
       messages: messages,
     });
+  };
+
+  const handleFilterToolSpecClassMenu = (className: string) => {
+    setSelectToolClass([...selectToolClass, className]);
+  };
+
+  const handleFilterToolStatusName = (status: string) => {
+    setSelectToolStatus([...selectToolStatus, status]);
   };
 
   useEffect(() => {
@@ -192,7 +163,7 @@ export default function Page() {
 
   useEffect(() => {
     filterToolStockList();
-  }, [selectToolClass]);
+  }, [selectToolClass, selectToolStatus]);
 
   return (
     <div className="relative w-full p-2 mx-auto text-center rounded-xl">
@@ -206,37 +177,67 @@ export default function Page() {
         </button>
         <div className="flex justify-center gap-2"></div>
         <div className="relative ">
-          <label
-            htmlFor=""
-            className="p-2 border border-gray-300 rounded-md cursor-pointer hover:border-white "
-            onClick={() => {
-              setToolSpecClassMenu(!toolSpecClassMenu);
-            }}
+          <button
+            className="p-1 border rounded-md"
+            onClick={() => setFilterMode(!filterMode)}
           >
-            篩選刀具類型
-          </label>
-
-          <ul
-            className={`${toolSpecClassMenu ? "block" : "hidden"} bg-white w-fit  left-1/2  items-start flex flex-col p-4 rounded-md mt-2 absolute top-6  -translate-x-1/2 z-10`}
+            篩選
+          </button>
+          <div
+            className={`overflow-hidden transition-all rounded-md duration-300 flex flex-col m-4 gap-4 bg-gray-900 ${filterMode ? "h-60" : "h-0"}`}
           >
-            {toolSpecClass.map((name) => (
-              <li key={name} value={name}>
-                <input
-                  type="checkbox"
-                  id={name}
-                  onChange={(e) =>
-                    handleSelectToolClass(name, e.target.checked)
-                  }
-                />
-                <label
-                  htmlFor={name}
-                  className="text-black cursor-pointer hover:bg-gray-300"
+            <div className="grid items-center grid-cols-6 gap-2 m-4">
+              <label htmlFor="">篩選刀具類型 : </label>
+              <button
+                className="p-1 border border-gray-500 rounded-md hover:bg-indigo-500"
+                onClick={() => setSelectToolClass([])}
+              >
+                All
+              </button>
+              {toolSpecClass.map((name) => (
+                <button
+                  key={name}
+                  className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500 ${selectedButtonBackgroundColor(selectToolClass, name)}`}
+                  onClick={() => handleFilterToolSpecClassMenu(name)}
                 >
                   {name}
-                </label>
-              </li>
-            ))}
-          </ul>
+                </button>
+              ))}
+            </div>
+            <div className="grid items-center grid-cols-6 gap-2 m-4">
+              <label htmlFor="filterToolStatus">篩選刀具狀態 : </label>
+              <button
+                className="p-1 border border-gray-500 rounded-md hover:bg-indigo-500"
+                onClick={() => setSelectToolStatus([])}
+              >
+                All
+              </button>
+              <button
+                className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500  ${selectedButtonBackgroundColor(selectToolStatus, "Normal")}`}
+                onClick={() => handleFilterToolStatusName("Normal")}
+              >
+                正常
+              </button>
+              <button
+                className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500  ${selectedButtonBackgroundColor(selectToolStatus, "Repairing")}`}
+                onClick={() => handleFilterToolStatusName("Repairing")}
+              >
+                維修中
+              </button>
+              <button
+                className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500  ${selectedButtonBackgroundColor(selectToolStatus, "NeedRepair")}`}
+                onClick={() => handleFilterToolStatusName("NeedRepair")}
+              >
+                待修整
+              </button>
+              <button
+                className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500  ${selectedButtonBackgroundColor(selectToolStatus, "Scrap")}`}
+                onClick={() => handleFilterToolStatusName("Scrap")}
+              >
+                報廢
+              </button>
+            </div>
+          </div>
         </div>
         {/* new */}
         <div

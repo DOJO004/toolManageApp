@@ -182,6 +182,7 @@ export interface ToolStatusItem {
     PositionStatus: number;
     MachineSn: string;
     StorageId: number;
+    StorageName: string;
   };
   LastOperator: {
     AccountId: string;

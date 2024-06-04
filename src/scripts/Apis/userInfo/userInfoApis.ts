@@ -1,5 +1,5 @@
-import { apiInstance } from "../../userInfoApi";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
+import { apiInstance } from "../userInfoApi";
 import {
   BaseResponse,
   EditDepartmentItem,

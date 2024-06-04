@@ -1,5 +1,5 @@
 import { MachineStatusItem } from "@/components/machineInfo/types";
-import { apiInstance } from "@/scripts/machineInfoApi";
+import { apiInstance } from "@/scripts/Apis/machineInfoApi";
 
 interface MachineStatusInfo {
   MachineStatusList: MachineStatusItem[];
