@@ -108,7 +108,7 @@ export default function Page() {
                     {item.PositionData.LoadingInfo?.MachineSpec.MachineName}
                     {/* 倉儲中的位置 */}
                     <span title="倉儲編號">
-                      {item.PositionData.StorageInfo?.StorageNo}
+                      {item.PositionData.StorageInfo?.StorageName}
                     </span>
                   </td>
                   <td className="p-1 whitespace-nowrap">

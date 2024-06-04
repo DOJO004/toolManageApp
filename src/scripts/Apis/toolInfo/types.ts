@@ -134,6 +134,7 @@ export interface ToolStockItem {
     PositionStatus: number;
     StorageInfo: {
       StorageNo: number;
+      StorageName: string;
     };
     LoadingInfo: {
       MachineId: string;
