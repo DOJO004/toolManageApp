@@ -116,17 +116,24 @@ export default function Page() {
     clearTimeout(timer);
 
     timer = setTimeout(async () => {
-      const toolInfoList = await apiGetToolStockList(null);
-      if (toolInfoList) {
-        const filterData = sortToolInfoList(toolInfoList).filter((item) => {
-          return (
-            item.ToolSn.toLowerCase().includes(value.toLowerCase()) ||
-            item.LifeStatus.toLowerCase().includes(value.toLocaleLowerCase())
-          );
-        });
-        setToolInfoList(filterData);
+      if (value === "") {
+        setToolInfoList(await apiGetToolStockList(null));
+        cleanFilterData();
+        return;
       }
+      const filterData = sortToolInfoList(toolInfoList).filter((item) => {
+        return item.ToolSn.toLowerCase().includes(value.toLowerCase());
+      });
+      setToolInfoList(filterData);
     }, 500);
+  };
+
+  const cleanFilterData = () => {
+    setFilterData({
+      toolState: [],
+      activeState: [],
+      position: [],
+    });
   };
 
   useEffect(() => {
