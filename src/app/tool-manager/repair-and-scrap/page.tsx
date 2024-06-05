@@ -120,7 +120,7 @@ export default function Page() {
     getStorageList();
   }, []);
   return (
-    <div className="p-4 overflow-auto text-center ">
+    <div className="w-full p-4 overflow-auto text-center ">
       <form className="my-4" onSubmit={(e) => filterToolList(e)}>
         <h1>修整 / 報廢</h1>
         <input
