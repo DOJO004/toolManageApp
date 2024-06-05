@@ -6,6 +6,7 @@ import {
   EditMachineTypeItem,
   EditProductLineItem,
   GetMachineSpecListResponse,
+  GetMachineStatusInfoListResponse,
   GetMachineTypeListResponse,
   GetProductLineListResponse,
   NewMachineSpecItem,
@@ -13,6 +14,24 @@ import {
   NewProductLineItem,
   ProductLineItem,
 } from "./types";
+
+// machineInfo
+export async function apiGetMachineStatusList() {
+  try {
+    const res = await apiInstance.get<GetMachineStatusInfoListResponse>(
+      `/machine_get/GetMachineStatusInfoList`
+    );
+    console.log("apiGetMachineStatusList", res);
+    if (res.data.Values.ReqInt === 0) {
+      return res.data.Values;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error", error);
+    return null;
+  }
+}
 
 // productLine
 export async function apiGetProductLineTypeList(): Promise<ProductLineItem[]> {

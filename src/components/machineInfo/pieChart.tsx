@@ -1,6 +1,6 @@
+import { MachineStatusItem } from "@/scripts/Apis/machineInfo/types";
 import Image from "next/image";
 import { formatMilliseconds, formatPercent } from "./functions";
-import { MachineStatusItem } from "./types";
 
 interface MachineInfoPieChartProps {
   selectMachineInfo: MachineStatusItem;
@@ -17,9 +17,7 @@ const MachineInfoPieChart = ({
   const machineActivation = formatPercent(selectMachineInfo?.Activation);
 
   // 設定圖表顏色
-  const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${machineActivation}%, #B9E6B5 ${machineActivation}%, #B9E6B5)`;
-
-  // 進行深層比較
+  const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${machineActivation}%, #b8b8b8 ${machineActivation}%, #b8b8b8)`;
 
   return (
     <div className="w-full p-2 bg-gray-900 rounded-md">

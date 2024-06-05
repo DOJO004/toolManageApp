@@ -11,5 +11,5 @@ export function formatMilliseconds(milliseconds: number) {
 }
 
 export function formatPercent(number: number) {
-  return `${(number * 100).toFixed(2)}%`;
+  return (number * 100).toFixed(2);
 }

@@ -1,8 +1,8 @@
 "use client";
 import MachineLogInfo from "@/components/machineInfo/logInfo";
 import MachineInfoPieChart from "@/components/machineInfo/pieChart";
-import { MachineStatusItem } from "@/components/machineInfo/types";
-import { apiGetMachineStatusList } from "@/scripts/Apis/dashboard/dashboard";
+import { apiGetMachineStatusList } from "@/scripts/Apis/machineInfo/machineInfoApis";
+import { MachineStatusItem } from "@/scripts/Apis/machineInfo/types";
 import { useEffect, useRef, useState } from "react";
 export default function Page() {
   const [machineInfoList, setMachineInfoList] = useState<MachineStatusItem[]>(
@@ -17,18 +17,12 @@ export default function Page() {
 
   // 取得設備列表
   const getMachineInfoList = async () => {
-    if (searchValue) {
-      const filterData = (await apiGetMachineStatusList()).filter((item) => {
-        return (
-          item.SerialNumber.toLowerCase().includes(searchValue.toLowerCase()) ||
-          item.ProductLineData.Name.toLowerCase().includes(
-            searchValue.toLowerCase()
-          )
-        );
-      });
-      setMachineInfoList(filterData);
-    } else {
-      setMachineInfoList(await apiGetMachineStatusList());
+    const machineStatusValues = await apiGetMachineStatusList();
+    if (machineStatusValues) {
+      const { MachineStatusList: machineInfoList } = machineStatusValues;
+      const { ModuleConnect: moduleConnect } = machineStatusValues;
+      setMachineInfoList(machineInfoList);
+      setMachineConnected(moduleConnect.AcqModuleStatus);
     }
   };
 
