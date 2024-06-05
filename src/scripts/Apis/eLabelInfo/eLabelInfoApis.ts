@@ -158,7 +158,7 @@ export async function apiDeleteLabelBindInfo(label: ReturnDataItem) {
   const body = {
     RevertorId: label.RevertorId,
     LToolCode: label.LToolCode,
-    StorageId: label.StorageId,
+    StorageId: Number(label.StorageId),
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
     NeedPermissions: [getPermission()],

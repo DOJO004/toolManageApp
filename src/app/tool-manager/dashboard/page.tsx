@@ -1,6 +1,10 @@
 "use client";
-import { MachineStatusItem } from "@/components/machineInfo/types";
+import {
+  AtcLoadingItem,
+  MachineStatusItem,
+} from "@/components/machineInfo/types";
 import { apiGetMachineStatusList } from "@/scripts/Apis/machineInfo/machineInfoApis";
+import { toolStatusPieChartColor } from "@/scripts/Apis/toolInfo/functions";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -27,16 +31,14 @@ export default function Page() {
     }
   };
 
-  const progressColor = (progress: number) => {
-    const roundValue = (360 * progress) / 100;
+  const progressColor = (LifePercentage: number, lifeStatus: string) => {
+    return `conic-gradient(from 0deg at 50% 50%, ${toolStatusPieChartColor(lifeStatus)} 0deg ${LifePercentage}deg, gray ${LifePercentage}deg 360deg`;
+  };
 
-    if (progress < 50) {
-      return `conic-gradient(from 0deg at 50% 50%, yellow 0deg ${roundValue}deg, gray ${roundValue}deg 360deg)`;
-    } else if (progress < 30) {
-      return `conic-gradient(from 0deg at 50% 50%, red 0deg ${roundValue}deg, gray ${roundValue}deg 360deg)`;
-    } else {
-      return `conic-gradient(from 0deg at 50% 50%, green 0deg ${roundValue}deg, gray ${roundValue}deg 360deg)`;
-    }
+  const sortToolStatus = (data: AtcLoadingItem[]) => {
+    return data.sort(
+      (a, b) => a.ToolLife.LifePercentage - b.ToolLife.LifePercentage
+    );
   };
 
   useEffect(() => {
@@ -84,7 +86,7 @@ export default function Page() {
                 </div>
               </div>
               <div className="flex justify-center gap-2 mx-4 mt-10">
-                {item.AtcLoadingList.map((tool) => (
+                {sortToolStatus(item.AtcLoadingList).map((tool) => (
                   <div
                     className="flex flex-col justify-center "
                     key={tool.ToolSn}
@@ -92,7 +94,10 @@ export default function Page() {
                     <div
                       className="relative flex items-center justify-center w-20 h-20 mx-auto rounded-full md:w-28 md:h-28"
                       style={{
-                        background: progressColor(tool.ToolLife.LifePercentage),
+                        background: progressColor(
+                          tool.ToolLife.LifePercentage,
+                          tool.ToolLife.LifeStatus
+                        ),
                       }}
                     >
                       <p
