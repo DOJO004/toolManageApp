@@ -13,21 +13,6 @@ export const getToolStatusClass = (status: string) => {
   }
 };
 
-export const translateToolStatus = (status: string) => {
-  switch (status) {
-    case "Normal":
-      return "正常";
-    case "NeedRepair":
-      return "需要維修";
-    case "Repairing":
-      return "維修中";
-    case "Scrap":
-      return "報廢";
-    default:
-      return "";
-  }
-};
-
 export const toolPositionInfo = (status: number) => {
   switch (status) {
     case 0:

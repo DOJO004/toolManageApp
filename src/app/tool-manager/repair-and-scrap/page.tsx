@@ -1,5 +1,6 @@
 "use client";
 import { ReturnDataItem } from "@/scripts/Apis/eLabelInfo/types";
+import { toolLifeStatusTextColor } from "@/scripts/Apis/toolInfo/functions";
 import {
   apiGetStorageList,
   apiGetToolStockList,
@@ -90,19 +91,6 @@ export default function Page() {
     setReStorageTool((prev) => ({ ...prev, ToolSn: data.ToolSn }));
   };
 
-  const getLifeStatusClassName = (lifeStatus: string) => {
-    switch (lifeStatus) {
-      case "Normal":
-        return "text-green-500";
-      case "Repairing":
-        return "text-amber-500";
-      case "Scrap":
-        return "text-gray-500";
-      default:
-        return "";
-    }
-  };
-
   const showLifeStatusText = (lifeStatus: string) => {
     switch (lifeStatus) {
       case "Normal":
@@ -169,7 +157,7 @@ export default function Page() {
                     {item.LifePercentage}
                   </td>
                   <td
-                    className={`p-1 whitespace-nowrap ${getLifeStatusClassName(
+                    className={`p-1 whitespace-nowrap ${toolLifeStatusTextColor(
                       item.LifeStatus
                     )}`}
                   >

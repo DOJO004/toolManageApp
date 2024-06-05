@@ -2,12 +2,13 @@
 import PieChart from "@/components/toolInfo/piechart";
 import ToolInfoLog from "@/components/toolInfo/toolInfoLog";
 import {
+  formatMMToCM,
   formatTime,
-  getLifeStatusClassName,
   handleToolPositionData,
   sortToolInfoList,
+  toolLifeStatusTextColor,
   translateLifeStatus,
-} from "@/components/toolInfo/utils";
+} from "@/scripts/Apis/toolInfo/functions";
 import { apiGetToolStockList } from "@/scripts/Apis/toolInfo/toolInfoApis";
 import { ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 import { useEffect, useState } from "react";
@@ -53,12 +54,12 @@ export default function Page() {
   }, []);
   return (
     <div className="relative w-full h-full p-2 ">
-      <div className="flex gap-2 ">
+      <div className="grid grid-cols-2 gap-2">
         <PieChart toolInfoData={toolInfoData} formatTime={formatTime} />
         <ToolInfoLog toolInfoData={toolInfoData} />
       </div>
       <div className="p-2 overflow-auto text-center bg-gray-900 rounded-md h-[600px]">
-        <div className="my-4">
+        <div className="sticky my-4 bg-gray-900 -top-2">
           <h3 className="my-4">刀具狀態列表</h3>
           <input
             type="search"
@@ -66,66 +67,60 @@ export default function Page() {
             placeholder="搜尋刀具序號"
             onChange={(e) => searchTool(e.target.value)}
           />
+          <div className="grid grid-cols-6 mt-4 bg-indigo-500 ">
+            <p className="p-1 font-bold whitespace-nowrap">刀具序號</p>
+            <p className="p-1 font-bold whitespace-nowrap">狀態 / 修整次數</p>
+            <p className="p-1 font-bold whitespace-nowrap">裝載狀態 / 位置</p>
+            <p className="p-1 font-bold whitespace-nowrap" title="公分表示">
+              累積加工長度 <span className="text-sm text-gray-300">cm</span>
+            </p>
+            <p className="p-1 font-bold whitespace-nowrap">累積加工時間</p>
+            <p className="p-1 font-bold whitespace-nowrap">累積加工次數</p>
+          </div>
         </div>
-        <table className="w-full">
-          <thead className="sticky -top-2">
-            <tr className="bg-indigo-500 ">
-              <th className="p-1 whitespace-nowrap">刀具序號</th>
-              <th className="p-1 whitespace-nowrap">狀態 / 修整次數</th>
-              <th className="p-1 whitespace-nowrap">裝載狀態 / 位置</th>
-              <th className="p-1 whitespace-nowrap" title="公分表示">
-                累積加工長度 <span className="text-sm text-gray-300">cm</span>
-              </th>
-              <th className="p-1 whitespace-nowrap">累積加工時間</th>
-              <th className="p-1 whitespace-nowrap">累積加工次數</th>
-            </tr>
-          </thead>
-          <tbody>
-            {toolInfoList?.length > 0 ? (
-              sortToolInfoList(toolInfoList).map((item, index) => (
-                <tr
-                  key={item.ToolSn}
-                  className={`cursor-pointer hover:bg-gray-600 ${toolInfoIndex === index ? "bg-gray-600" : ""}`}
-                  onClick={() => handleGetToolInfoData(item, index)}
-                >
-                  <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
-                  <td
-                    className={`p-1 whitespace-nowrap ${getLifeStatusClassName(
-                      item.LifeStatus
-                    )}`}
-                  >
-                    {translateLifeStatus(item.LifeStatus)}
-                    <span> / </span>
-                    {item.LifeData.RepairCnt}
-                  </td>
-                  <td className="p-1 whitespace-nowrap">
-                    {handleToolPositionData(item.PositionData.PositionStatus)}
-                    <span> / </span>
-                    {/* 上機中的位置 */}
-                    {item.PositionData.LoadingInfo?.MachineSpec.MachineName}
-                    {/* 倉儲中的位置 */}
-                    <span title="倉儲編號">
-                      {item.PositionData.StorageInfo?.StorageName}
-                    </span>
-                  </td>
-                  <td className="p-1 whitespace-nowrap">
-                    {item.LifeData.ProcessLength / 10}
-                  </td>
-                  <td className="p-1 whitespace-nowrap">
-                    {formatTime(item.LifeData.ProcessTime)}
-                  </td>
-                  <td className="p-1 whitespace-nowrap">
-                    {item.LifeData.ProcessCnt}
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={6}>loading...</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        {toolInfoList?.length > 0 ? (
+          sortToolInfoList(toolInfoList).map((item, index) => (
+            <div
+              key={item.ToolSn}
+              className={`cursor-pointer grid grid-cols-6 hover:bg-gray-600 ${toolInfoIndex === index ? "bg-gray-600" : ""}`}
+              onClick={() => handleGetToolInfoData(item, index)}
+            >
+              <p className="p-1 whitespace-nowrap">{item.ToolSn}</p>
+              <p
+                className={`p-1 whitespace-nowrap ${toolLifeStatusTextColor(
+                  item.LifeStatus
+                )}`}
+              >
+                {translateLifeStatus(item.LifeStatus)}
+                <span> / </span>
+                {item.LifeData.RepairCnt}
+              </p>
+              <p className="p-1 whitespace-nowrap">
+                {handleToolPositionData(item.PositionData.PositionStatus)}
+                <span> / </span>
+                {/* 上機中的位置 */}
+                {item.PositionData.LoadingInfo?.MachineSpec.MachineName}
+                {/* 倉儲中的位置 */}
+                <span title="倉儲編號">
+                  {item.PositionData.StorageInfo?.StorageName}
+                </span>
+              </p>
+              <p className="p-1 whitespace-nowrap">
+                {formatMMToCM(item.LifeData.ProcessLength)}
+              </p>
+              <p className="p-1 whitespace-nowrap">
+                {formatTime(item.LifeData.ProcessTime)}
+              </p>
+              <p className="p-1 whitespace-nowrap">
+                {item.LifeData.ProcessCnt}
+              </p>
+            </div>
+          ))
+        ) : (
+          <div>
+            <p className="col-span-6 text-center">loading...</p>
+          </div>
+        )}
       </div>
     </div>
   );

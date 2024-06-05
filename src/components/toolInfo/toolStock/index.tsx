@@ -1,4 +1,8 @@
 import {
+  toolLifeStatusTextColor,
+  translateLifeStatus,
+} from "@/scripts/Apis/toolInfo/functions";
+import {
   StockToolCountItem,
   ToolStatusItem,
 } from "@/scripts/Apis/toolInfo/types";
@@ -7,7 +11,6 @@ interface Props {
   toolStockList: StockToolCountItem[];
   sortToolStockList: (toolList: ToolStatusItem[]) => ToolStatusItem[];
   getToolStatusClass: (status: string) => void;
-  translateToolStatus: (status: string) => string;
   toolPositionInfo: (status: number) => string;
 }
 
@@ -15,7 +18,6 @@ export default function ToolStockIndex({
   toolStockList,
   sortToolStockList,
   getToolStatusClass,
-  translateToolStatus,
   toolPositionInfo,
 }: Props) {
   return (
@@ -37,8 +39,8 @@ export default function ToolStockIndex({
                       </span>
                     </h4>
                     <p>
-                      危險 :
-                      <span className="text-amber-500">
+                      警告 :
+                      <span className="text-yellow-300">
                         {item.WarningCount}
                       </span>
                     </p>
@@ -71,9 +73,9 @@ export default function ToolStockIndex({
                       <tr key={item.ToolSn} className="even:bg-gray-700">
                         <td className="p-1 ">{item.ToolSn}</td>
                         <td
-                          className={`p-1 ${getToolStatusClass(item.LifeStatus)}`}
+                          className={`p-1 ${toolLifeStatusTextColor(item.LifeStatus)}`}
                         >
-                          {translateToolStatus(item.LifeStatus)}
+                          {translateLifeStatus(item.LifeStatus)}
                         </td>
                         <td className="p-1">{item.LifePercentage}</td>
                         <td className="p-1">{item.LastModify}</td>

@@ -21,7 +21,6 @@ import {
   getToolStatusClass,
   selectedButtonBackgroundColor,
   toolPositionInfo,
-  translateToolStatus,
 } from "@/scripts/toolStockFunction";
 import { AlertColor } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
@@ -149,11 +148,19 @@ export default function Page() {
   };
 
   const handleFilterToolSpecClassMenu = (className: string) => {
-    setSelectToolClass([...selectToolClass, className]);
+    if (selectToolClass.includes(className)) {
+      setSelectToolClass(selectToolClass.filter((item) => item !== className));
+    } else {
+      setSelectToolClass([...selectToolClass, className]);
+    }
   };
 
   const handleFilterToolStatusName = (status: string) => {
-    setSelectToolStatus([...selectToolStatus, status]);
+    if (selectToolStatus.includes(status)) {
+      setSelectToolStatus(selectToolStatus.filter((item) => item !== status));
+    } else {
+      setSelectToolStatus([...selectToolStatus, status]);
+    }
   };
 
   useEffect(() => {
@@ -263,7 +270,6 @@ export default function Page() {
           toolStockList={toolStockList}
           sortToolStockList={sortToolStockList}
           getToolStatusClass={getToolStatusClass}
-          translateToolStatus={translateToolStatus}
         />
       </div>
     </div>
