@@ -1,17 +1,18 @@
 import { MachineStatusItem } from "@/scripts/Apis/machineInfo/types";
 import Image from "next/image";
-import { formatMilliseconds, formatPercent } from "./functions";
+import {
+  formatMilliseconds,
+  formatPercent,
+  setMachineBackgroundColor,
+  translateMachineStatus,
+} from "./functions";
 
 interface MachineInfoPieChartProps {
   selectMachineInfo: MachineStatusItem;
-  machineStatus: (status: string) => string;
-  machineStatusBgColor: (status: string) => string;
 }
 
 const MachineInfoPieChart = ({
   selectMachineInfo,
-  machineStatus,
-  machineStatusBgColor,
 }: MachineInfoPieChartProps) => {
   // 稼動時數轉成百分比
   const machineActivation = formatPercent(selectMachineInfo?.Activation);
@@ -63,9 +64,9 @@ const MachineInfoPieChart = ({
               <p>{formatMilliseconds(selectMachineInfo?.TotalConnectTime)}</p>
             </div>
             <div
-              className={`w-full p-2 my-2 text-center rounded-md ${machineStatusBgColor(selectMachineInfo?.Status)}`}
+              className={`w-full p-2 my-2 text-center rounded-md ${setMachineBackgroundColor(selectMachineInfo?.Status)}`}
             >
-              <p>{machineStatus(selectMachineInfo?.Status)}</p>
+              <p>{translateMachineStatus(selectMachineInfo?.Status)}</p>
             </div>
           </div>
         </div>

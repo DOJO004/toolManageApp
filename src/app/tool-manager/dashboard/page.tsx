@@ -1,10 +1,18 @@
 "use client";
 import {
+  setMachineStatusTextColor,
+  translateMachineStatus,
+} from "@/components/machineInfo/functions";
+import {
   AtcLoadingItem,
   MachineStatusItem,
 } from "@/components/machineInfo/types";
 import { apiGetMachineStatusList } from "@/scripts/Apis/machineInfo/machineInfoApis";
-import { toolStatusPieChartColor } from "@/scripts/Apis/toolInfo/functions";
+import {
+  toolLifeStatusBackgroundColor,
+  toolLifeStatusTextColor,
+  toolStatusPieChartColor,
+} from "@/scripts/Apis/toolInfo/functions";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -12,22 +20,12 @@ export default function Page() {
   const [machineInfoList, setMachineInfoList] = useState<MachineStatusItem[]>(
     []
   );
-  const chartColor = `conic-gradient(from 0deg at 50% 50%, #2bfc4e 0deg 50deg, gray 50deg 360deg)`;
 
   const getMachineInfoList = async () => {
     const machineStatusValues = await apiGetMachineStatusList();
     if (machineStatusValues) {
       const { MachineStatusList: machineStatusList } = machineStatusValues;
       setMachineInfoList(machineStatusList);
-    }
-  };
-
-  const toolStatusColor = (status: string) => {
-    switch (status) {
-      case "Normal":
-        return "text-green-500";
-      case "NeedRepair":
-        return "text-red-500";
     }
   };
 
@@ -79,8 +77,11 @@ export default function Page() {
                       />
                       <p className="text-sm ">{item.MachineIP}</p>
                     </div>
-                    <p className="text-sm ">
-                      {item.Status} / {(item.Activation * 100).toFixed(2)} %
+                    <p
+                      className={`text-sm ${setMachineStatusTextColor(item.Status)}`}
+                    >
+                      {translateMachineStatus(item.Status)} /{" "}
+                      {(item.Activation * 100).toFixed(2)} %
                     </p>
                   </div>
                 </div>
@@ -101,13 +102,15 @@ export default function Page() {
                       }}
                     >
                       <p
-                        className={`absolute ${toolStatusColor(tool.ToolLife.LifeStatus)}`}
+                        className={`absolute ${toolLifeStatusTextColor(tool.ToolLife.LifeStatus)}`}
                       >
                         {tool.ToolLife.LifePercentage}%
                       </p>
                       <div className="w-16 h-16 bg-gray-900 rounded-full md:w-24 md:h-24"></div>
                     </div>
-                    <div className="p-2 mx-auto bg-green-500 border-2 border-gray-900 rounded-md w-fit">
+                    <div
+                      className={`p-2 mx-auto   rounded-md w-fit ${toolLifeStatusBackgroundColor(tool.ToolLife.LifeStatus)} `}
+                    >
                       <div className="text-center xl:text-xl " title="裝載位置">
                         {tool.AtcNo}
                       </div>

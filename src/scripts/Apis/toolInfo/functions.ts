@@ -20,6 +20,26 @@ export const toolLifeStatusTextColor = (lifeStatus: string) => {
   }
 };
 
+// toolLifeStatusBackgroundColor
+export const toolLifeStatusBackgroundColor = (lifeStatus: string) => {
+  switch (lifeStatus) {
+    case "Normal":
+      return "bg-green-600";
+    case "NeedRepair":
+      return "bg-red-600";
+    case "Alarm":
+      return "bg-red-600";
+    case "Repairing":
+      return "bg-amber-600";
+    case "Warning":
+      return "bg-yellow-500";
+    case "Scrap":
+      return "bg-gray-500";
+    default:
+      return "";
+  }
+};
+
 // toolStatusPieChartColor
 export const toolStatusPieChartColor = (lifeStatus: string) => {
   switch (lifeStatus) {

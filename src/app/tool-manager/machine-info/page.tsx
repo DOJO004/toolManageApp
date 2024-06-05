@@ -1,4 +1,8 @@
 "use client";
+import {
+  setMachineStatusTextColor,
+  translateMachineStatus,
+} from "@/components/machineInfo/functions";
 import MachineLogInfo from "@/components/machineInfo/logInfo";
 import MachineInfoPieChart from "@/components/machineInfo/pieChart";
 import { apiGetMachineStatusList } from "@/scripts/Apis/machineInfo/machineInfoApis";
@@ -41,50 +45,6 @@ export default function Page() {
     return Math.floor(time / 60000);
   };
 
-  //
-
-  // 設定運行狀態中文
-  const machineStatus = (status: string) => {
-    switch (status) {
-      case "Emergency":
-        return "緊急停止";
-      case "Running":
-        return "運行中";
-      case "Disconnect":
-        return "離線";
-      default:
-        return "未知狀態";
-    }
-  };
-
-  // 設定運行狀態文字顏色
-  const machineStatusColor = (status: string) => {
-    switch (status) {
-      case "Emergency":
-        return "text-red-500";
-      case "Running":
-        return "text-green-500";
-      case "Disconnect":
-        return "text-gray-500";
-      default:
-        return "text-gray-500";
-    }
-  };
-
-  // 設定運行狀態背景顏色
-  const machineStatusBgColor = (status: string) => {
-    switch (status) {
-      case "Emergency":
-        return "bg-red-500";
-      case "Running":
-        return "bg-green-500";
-      case "Disconnect":
-        return "bg-gray-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
-
   // 每 10 秒更新 machine info list
   useEffect(() => {
     getMachineInfoList();
@@ -101,11 +61,7 @@ export default function Page() {
   return (
     <div className="w-full p-2 my-2 = rounded-xl">
       <div className="gap-4 md:flex">
-        <MachineInfoPieChart
-          selectMachineInfo={selectMachineInfo}
-          machineStatus={machineStatus}
-          machineStatusBgColor={machineStatusBgColor}
-        />
+        <MachineInfoPieChart selectMachineInfo={selectMachineInfo} />
         <MachineLogInfo selectMachineInfo={selectMachineInfo} />
       </div>
       <div className="p-2 my-4 overflow-auto bg-gray-900 rounded-md ">
@@ -164,9 +120,9 @@ export default function Page() {
                       {item.CurrentParameter.TotalFeedRate}
                     </td>
                     <td
-                      className={`p-1 whitespace-nowrap ${machineStatusColor(item.Status)}`}
+                      className={`p-1 whitespace-nowrap ${setMachineStatusTextColor(item.Status)}`}
                     >
-                      {machineStatus(item.Status)}
+                      {translateMachineStatus(item.Status)}
                     </td>
                     <td className="p-1 whitespace-nowrap">
                       {item.StatusKeepTime === -1
