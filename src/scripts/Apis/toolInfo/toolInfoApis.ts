@@ -243,6 +243,8 @@ export async function apiGetToolStockList(status: number | null) {
   const url = status
     ? `tool_get/GetToolStockInfoList?RecordsPerPage=9999&Status=${status}`
     : "tool_get/GetToolStockInfoList?RecordsPerPage=9999";
+  console.log("get tool stock list url = ", url);
+
   try {
     const res = await apiInstance.get<GetToolStockListResponse>(url);
     console.log(`apiGetToolStockList`, res);

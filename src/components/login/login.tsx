@@ -1,6 +1,7 @@
 "use client";
 
 import { setCookie } from "@/scripts/Apis/mainApi";
+import { UserLoginInfo } from "@/scripts/Apis/userInfo/types";
 import { ApiUserLogin } from "@/scripts/Apis/userInfo/userInfoApis";
 import CircularProgress from "@mui/joy/CircularProgress";
 import Image from "next/image";
@@ -11,7 +12,7 @@ import { LoginResponse } from "./types";
 
 export default function Login() {
   const router = useRouter();
-  const [loginInfo, setLoginInfo] = useState({
+  const [loginInfo, setLoginInfo] = useState<UserLoginInfo>({
     UserAccount: "",
     UserPwd: "",
   });

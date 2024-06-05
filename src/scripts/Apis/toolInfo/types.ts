@@ -213,6 +213,7 @@ export interface ToolLoadingItem {
   };
   StockInfo: {
     StorageNo: number;
+    StorageName: string;
   };
   OperatorInfo: {
     AccountId: string;

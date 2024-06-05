@@ -63,6 +63,11 @@ export interface ResetUserPasswordInfo {
   NewPwd: string;
 }
 
+export interface UserLoginInfo {
+  UserAccount: string;
+  UserPwd: string;
+}
+
 // department
 export interface GetDepartmentListResponse {
   Values: {

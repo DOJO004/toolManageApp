@@ -70,7 +70,7 @@ const ToolInfoLog = ({ toolInfoData }: ToolInfoLogProps) => {
                     {item.MachineLoading?.MachineSpec?.MachineName || " - "}
                   </td>
                   <td>{setOpActionsText(item.OpActions)}</td>
-                  <td>{item.StockInfo?.StorageNo || "-"}</td>
+                  <td>{item.StockInfo?.StorageName || "-"}</td>
                   <td>{item.LogTime}</td>
                 </tr>
               ))

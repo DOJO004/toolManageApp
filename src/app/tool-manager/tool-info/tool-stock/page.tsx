@@ -67,6 +67,7 @@ export default function Page() {
   };
 
   const handleToolSpecClass = (toolStockList: StockToolCountItem[]) => {
+    if (toolStockList.length === 0) return [];
     return toolStockList.map((item) => item.ToolSpecName);
   };
 

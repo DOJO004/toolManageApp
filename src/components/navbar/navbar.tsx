@@ -1,7 +1,7 @@
 "use client";
 
 import { getPermission } from "@/scripts/Apis/mainApi";
-import { ApiPostUserLogout } from "@/scripts/Apis/userInfo/userInfoApis";
+import { ApiUserLogout } from "@/scripts/Apis/userInfo/userInfoApis";
 import { AlertColor } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
@@ -64,7 +64,7 @@ const Navbar = () => {
     });
 
     if (confirm.isConfirmed) {
-      const res: any = await ApiPostUserLogout();
+      const res: any = await ApiUserLogout();
       const reqInt = res?.data?.Values?.ReqInt;
       if (reqInt === 0) {
         window.location.href = "/";

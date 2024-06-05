@@ -1,4 +1,4 @@
-import { ToolTypeItem } from "@/scripts/Apis/toolInfo/type";
+import { ToolTypeItem } from "@/scripts/Apis/toolInfo/types";
 import React from "react";
 
 interface Props {

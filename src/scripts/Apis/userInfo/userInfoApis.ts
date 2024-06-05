@@ -12,10 +12,11 @@ import {
   NewPermissionItemInfo,
   NewUserInfo,
   ResetUserPasswordInfo,
+  UserLoginInfo,
 } from "./types";
 
 // userLogin
-export const ApiUserLogin = async (data) => {
+export const ApiUserLogin = async (data: UserLoginInfo) => {
   const body = {
     UserAccount: data.UserAccount,
     UserPwd: data.UserPwd,

@@ -1,5 +1,7 @@
-import { EditUserInfo } from "../types";
-import { PermissionMenuItem } from "./type";
+import {
+  EditUserInfo,
+  PermissionMenuItem,
+} from "@/scripts/Apis/userInfo/types";
 
 interface Props {
   setEditPermission: React.Dispatch<React.SetStateAction<boolean>>;

@@ -1,4 +1,4 @@
-import { NewToolSpecItem, ToolTypeItem } from "@/scripts/Apis/toolInfo/type";
+import { NewToolSpecItem, ToolTypeItem } from "@/scripts/Apis/toolInfo/types";
 import React, { FormEvent } from "react";
 
 interface Props {
