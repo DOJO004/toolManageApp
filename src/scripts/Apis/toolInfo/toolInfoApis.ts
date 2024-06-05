@@ -311,6 +311,8 @@ export async function apiGetStorageList() {
     const res = await apiInstance.get<GetStorageListResponse>(
       "/tool_get/GetStockStorageInfoList"
     );
+    console.log(`apiGetStorageList`, res);
+
     const { Values } = res.data;
     if (Values.ReqInt === 0) {
       return Values.StorageMenus;

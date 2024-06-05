@@ -260,3 +260,10 @@ export interface BasicResponse {
     };
   };
 }
+
+// toolInfo filterData
+export interface FilterData {
+  toolState: string[];
+  activeState: number[];
+  position: string[];
+}

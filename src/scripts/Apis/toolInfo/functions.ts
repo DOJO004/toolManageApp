@@ -82,13 +82,13 @@ export const translateLifeStatus = (lifeStatus: string) => {
 export const handleToolPositionData = (positionStatus: number) => {
   switch (positionStatus) {
     case 0:
-      return "倉儲中";
+      return "倉儲中 / ";
     case 1:
       return "移出倉儲";
     case 2:
-      return "裝載中";
+      return "裝載中 / ";
     default:
-      return "未知狀態";
+      return "-";
   }
 };
 

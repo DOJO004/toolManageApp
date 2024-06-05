@@ -197,6 +197,8 @@ export async function apiGetMachineSpecList() {
     const res = await apiInstance.get<GetMachineSpecListResponse>(
       "/machine_get/GetMachineSpecInfoList"
     );
+    console.log("apiGetMachineSpecList", res);
+
     const { Values } = res.data;
     if (Values.ReqInt === 0) {
       return Values.MachineeSpecList;
