@@ -267,3 +267,61 @@ export interface FilterData {
   activeState: number[];
   position: string[];
 }
+
+// notify
+
+export interface GetNotifyListResponse {
+  Values: {
+    NotifyParameterList: NotifyItem[];
+    TotalRecords: 1;
+    TotalPages: 1;
+    ReqInt: 0;
+  };
+}
+
+export interface NotifyItem {
+  ParameterNo: number;
+  ToolSpecInfo: {
+    Id: string;
+    Name: string;
+    ToolTypeInfo: {
+      Id: string;
+      Name: string;
+    };
+  };
+  NotifyActions: number[];
+  NotifyPercent: number;
+  LineTokenList: LineTokenItem[];
+  MailAddressList: MailAddressItem[];
+  LastModify: string;
+}
+
+export interface LineTokenItem {
+  TokenName: string;
+  Token: string;
+}
+export interface MailAddressItem {
+  Recipient: string;
+  MailAddress: string;
+}
+
+export interface NewNotifyItem {
+  ToolSpecId: string;
+  NotifyActions: number;
+  NotifyPercent: number;
+  TokenName: string;
+  Token: string;
+  Recipient: string;
+  MailAddress: string;
+}
+
+export interface EditNotifyItem {
+  ParameterNo: number;
+  ToolSpecId: string;
+  NotifyActions: number;
+  NotifyPercent: number;
+  TokenName: string;
+  Token: string;
+  Recipient: string;
+  MailAddress: string;
+}

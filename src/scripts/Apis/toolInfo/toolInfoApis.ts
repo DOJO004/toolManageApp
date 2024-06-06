@@ -3,13 +3,16 @@ import { ReturnDataItem } from "../eLabelInfo/types";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
 import {
   BaseResponse,
+  EditNotifyItem,
   EditStorageItem,
   GetLoadingLogListResponse,
+  GetNotifyListResponse,
   GetStorageListResponse,
   GetToolSpecListResponse,
   GetToolStockCountListResponse,
   GetToolStockListResponse,
   GetToolTypeListResponse,
+  NewNotifyItem,
   NewStorageItem,
   NewToolSpecItem,
   NewToolStockItem,
@@ -445,5 +448,113 @@ export async function apiRestockTool(data: ReturnDataItem) {
   } catch (error) {
     console.error("Error", error);
     return error;
+  }
+}
+
+// notify
+export async function apiGetNotifyList() {
+  try {
+    const res = await apiInstance.get<GetNotifyListResponse>(
+      "/tool_get/GetNotifyParameterList"
+    );
+    console.log(`apiGetNotifyList`, res);
+    if (res.data.Values.ReqInt === 0) {
+      return res.data.Values.NotifyParameterList;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error", error);
+    return [];
+  }
+}
+
+export async function apiNewNotify(data: NewNotifyItem) {
+  const body = {
+    NotifyParameter: {
+      ToolSpecId: data.ToolSpecId,
+      NotifyActions: [data.NotifyActions],
+      NotifyPercent: Number(data.NotifyPercent),
+      LineTokenList: [
+        {
+          TokenName: data.TokenName,
+          Token: data.Token,
+        },
+      ],
+      MailAddressList: [
+        {
+          Recipient: data.Recipient,
+          MailAddress: data.MailAddress,
+        },
+      ],
+    },
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: [getPermission()],
+  };
+  console.log(`apiNewNotify body =`, body);
+
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/AddNotifyParameterInfo",
+      body
+    );
+    console.log(`apiNewNotify`, res);
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+
+export async function apiEditNotify(data: EditNotifyItem) {
+  const body = {
+    ParameterNo: data.ParameterNo,
+    ModifyDatas: {
+      ToolSpecId: data.ToolSpecId,
+      NotifyActions: [data.NotifyActions],
+      NotifyPercent: data.NotifyPercent,
+      LineTokenList: [
+        {
+          TokenName: data.TokenName,
+          Token: data.Token,
+        },
+      ],
+      MailAddressList: [
+        {
+          Recipient: data.Recipient,
+          MailAddress: data.MailAddress,
+        },
+      ],
+    },
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: [getPermission()],
+  };
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/ModifyNotifyParameterInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+
+export async function apiDeleteNotify(data: EditNotifyItem) {
+  const body = {
+    ParameterNo: data.ParameterNo,
+    UserToken: getUserToken(),
+    LoginTime: getLoginTime(),
+    NeedPermissions: [getPermission()],
+  };
+  try {
+    const res = await apiInstance.post<BaseResponse>(
+      "/user_operate/DisabledNotifyParameterInfo",
+      body
+    );
+    return res.data.Values.ReqInt;
+  } catch (error) {
+    console.error("Error", error);
   }
 }
