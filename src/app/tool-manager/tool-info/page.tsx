@@ -162,7 +162,12 @@ export default function Page() {
                 onChange={(e) => searchTool(e.target.value)}
               />
               <button onClick={() => setFilterMode(!filterMode)}>
-                <Image src="/filter.svg" alt="filter" width={20} height={20} />
+                <Image
+                  src="/icons/filter.svg"
+                  alt="filter"
+                  width={20}
+                  height={20}
+                />
               </button>
             </div>
             {/* filter */}

@@ -88,8 +88,14 @@ export default function Page() {
 
   return (
     <div className="w-full min-h-screen p-4">
-      <h1>設定</h1>
-      <div className="mt-4 border-b-2">
+      <h1 className="text-center">設定</h1>
+      <div className="flex items-center mt-4 border-b-2">
+        <Image
+          src="/icons/notification.svg"
+          alt="notification svg"
+          width={24}
+          height={24}
+        />
         <p>通知設定</p>
       </div>
       <div className="flex gap-2 my-2">

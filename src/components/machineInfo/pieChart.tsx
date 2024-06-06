@@ -34,7 +34,12 @@ const MachineInfoPieChart = ({
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Image src="/wi-fi.png" alt="wifi img" width={40} height={40} />
+            <Image
+              src="/icons/wifi.svg"
+              alt="wifi img"
+              width={24}
+              height={24}
+            />
             <p>{selectMachineInfo?.MachineIP}</p>
           </div>
         </div>

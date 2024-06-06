@@ -107,7 +107,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full p-4">
       <div className="relative ">
         <h1 className="text-center ">權限資訊</h1>
         <button

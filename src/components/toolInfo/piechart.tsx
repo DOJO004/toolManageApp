@@ -22,18 +22,20 @@ const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
           <h3 className="font-bold ">{toolInfoData?.ToolSn} </h3>
           <h4 className="mb-4 text-gray-300">{toolInfoData?.ToolSpecName}</h4>
         </div>
-        <div title="修整次數 / 最大修整次數" className="flex items-start">
-          <Image
-            src={"/hammer.png"}
-            alt="hammer"
-            width={20}
-            height={20}
-            className="mx-2"
-          />
-          <p>
-            {toolInfoData?.LifeData?.RepairCnt} /{" "}
-            {toolInfoData?.MaxLife?.RepairCnt}
-          </p>
+        <div title="修整次數 / 最大修整次數">
+          <div className="flex items-center">
+            <Image
+              src={"/icons/repair.svg"}
+              alt="repair svg"
+              width={20}
+              height={20}
+              className="mx-2"
+            />
+            <p>
+              {toolInfoData?.LifeData?.RepairCnt} /{" "}
+              {toolInfoData?.MaxLife?.RepairCnt}
+            </p>
+          </div>
         </div>
       </div>
       <div className="flex">

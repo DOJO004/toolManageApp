@@ -160,14 +160,14 @@ export default function Page() {
   return (
     <div className="relative p-2 ">
       <div className="sticky p-2 my-4 bg-gray-900 rounded-md top-4 ">
-        <h3 className="font-bold text-left ">領取刀具</h3>
+        <h3 className="text-center ">領取刀具</h3>
         <form onSubmit={(e) => postBindTool(e)}>
           <div className="grid grid-cols-4 gap-2 ">
             <div className="relative ">
               <div className="flex items-end ">
                 <label htmlFor="labelCode">標籤號碼</label>
                 <Image
-                  src={"/bulb.png"}
+                  src={"/icons/bulb.svg"}
                   width={30}
                   height={30}
                   alt="hit"

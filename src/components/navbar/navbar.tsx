@@ -173,16 +173,13 @@ const Navbar = () => {
             className="flex flex-col items-center justify-center w-full rounded-md cursor-pointer hover:bg-indigo-500"
             onClick={() => logout()}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="30px"
-              viewBox="0 -960 960 960"
-              width="30px"
-              fill="#FFFFFF"
+            <Image
+              src="/icons/logout.svg"
+              alt="logout image"
+              width={30}
+              height={30}
               className="mx-auto"
-            >
-              <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
-            </svg>
+            />
             <p>登出</p>
           </li>
           <li className="p-2 mt-4 border rounded-md">{userName}</li>
