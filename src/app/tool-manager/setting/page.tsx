@@ -1,12 +1,14 @@
 "use client";
+import NewNotifyForm from "@/components/setting/newNotifyForm";
 import {
+  apiDeleteNotify,
+  apiEditNotify,
   apiGetNotifyList,
   apiGetToolSpecList,
   apiNewNotify,
 } from "@/scripts/Apis/toolInfo/toolInfoApis";
 import {
-  EditNotifyItem,
-  NewNotifyItem,
+  NotifyDataItem,
   NotifyItem,
   ToolSpecItem,
 } from "@/scripts/Apis/toolInfo/types";
@@ -18,7 +20,8 @@ export default function Page() {
   const handleNotice = useHandleNotice();
   const [toolSpecList, setToolSpecList] = useState<ToolSpecItem[]>([]);
   const [notifyList, setNotifyList] = useState<NotifyItem[]>([]);
-  const [newNotify, setNewNotify] = useState<NewNotifyItem>({
+  const [notifyData, setNotifyData] = useState<NotifyDataItem>({
+    ParameterNo: 0,
     ToolSpecId: "",
     NotifyActions: [],
     NotifyPercent: 0,
@@ -26,11 +29,9 @@ export default function Page() {
     MailAddressList: [],
   });
   const [newNotifyMode, setNewNotifyMode] = useState(false);
-  const [editNotify, setEditNotify] = useState<EditNotifyItem>(
-    {} as EditNotifyItem
-  );
   const [lineForms, setLineForms] = useState<number[]>([]);
   const [emailForms, setEmailForms] = useState<number[]>([]);
+  const [editNotifyMode, setEditNotifyMode] = useState(false);
 
   const getNotifyList = async () => {
     setNotifyList(await apiGetNotifyList());
@@ -41,26 +42,52 @@ export default function Page() {
 
   const postNotify = async (e: FormEvent) => {
     e.preventDefault();
-    const reqInt = await apiNewNotify(newNotify);
+    const reqInt = await apiNewNotify(notifyData);
     if (reqInt === 0) {
       getNotifyList();
-      cleanNewNotify();
+      cleanNotify();
       handleNotice("success", true, "新增通知成功");
     } else {
       handleNotice("error", true, `新增失敗。error ${reqInt}`);
     }
   };
 
+  const patchNotify = async () => {
+    const reqInt = await apiEditNotify(notifyData);
+    if (reqInt === 0) {
+      getNotifyList();
+      cleanNotify();
+      setEditNotifyMode(false);
+      handleNotice("success", true, "修改成功");
+    } else {
+      handleNotice("error", true, `修改失敗。error ${reqInt}`);
+    }
+  };
+
+  const deleteNotify = async () => {
+    const confirm = window.confirm("確定要刪除嗎?");
+    if (!confirm) return;
+    const reqInt = await apiDeleteNotify(notifyData);
+    if (reqInt === 0) {
+      getNotifyList();
+      cleanNotify();
+      setEditNotifyMode(false);
+      handleNotice("success", true, "刪除成功");
+    } else {
+      handleNotice("error", true, `刪除失敗。error ${reqInt}`);
+    }
+  };
+
   const addLineForm = () => {
     setLineForms([...lineForms, lineForms.length]);
-    setNewNotify((prevState) => ({
+    setNotifyData((prevState) => ({
       ...prevState,
       LineTokenList: [...prevState.LineTokenList, { TokenName: "", Token: "" }],
     }));
-    if (newNotify.NotifyActions.includes(0)) {
+    if (notifyData.NotifyActions.includes(0)) {
       return;
     } else {
-      setNewNotify((prevState) => ({
+      setNotifyData((prevState) => ({
         ...prevState,
         NotifyActions: [...prevState.NotifyActions, 0],
       }));
@@ -69,52 +96,86 @@ export default function Page() {
 
   const addEmailForm = () => {
     setEmailForms([...emailForms, emailForms.length]);
-    setNewNotify((prevState) => ({
+    setNotifyData((prevState) => ({
       ...prevState,
       MailAddressList: [
         ...prevState.MailAddressList,
         { Recipient: "", MailAddress: "" },
       ],
     }));
-    if (newNotify.NotifyActions.includes(1)) {
+    if (notifyData.NotifyActions.includes(1)) {
       return;
     } else {
-      setNewNotify((prevState) => ({
+      setNotifyData((prevState) => ({
         ...prevState,
         NotifyActions: [...prevState.NotifyActions, 1],
       }));
     }
   };
 
+  const removeLineForm = (index: number) => {
+    setLineForms((prev: number[]) => prev.filter((i) => i !== index));
+    setNotifyData((prevState) => ({
+      ...prevState,
+      LineTokenList: prevState.LineTokenList.filter((_, i) => i !== index),
+    }));
+  };
+
+  const removeEmailForm = (index: number) => {
+    setEmailForms((prev: number[]) => prev.filter((i) => i !== index));
+    setNotifyData((prevState) => ({
+      ...prevState,
+      MailAddressList: prevState.MailAddressList.filter((_, i) => i !== index),
+    }));
+  };
+
   const handleLineFormChange = (index: number, key: string, value: string) => {
-    const updatedLineTokenList = [...newNotify.LineTokenList];
+    const updatedLineTokenList = [...notifyData.LineTokenList];
     updatedLineTokenList[index] = {
       ...updatedLineTokenList[index],
       [key]: value,
     };
-    setNewNotify({ ...newNotify, LineTokenList: updatedLineTokenList });
+    setNotifyData({ ...notifyData, LineTokenList: updatedLineTokenList });
   };
 
   const handleEmailFormChange = (index: number, key: string, value: string) => {
-    const updatedMailAddressList = [...newNotify.MailAddressList];
+    const updatedMailAddressList = [...notifyData.MailAddressList];
     updatedMailAddressList[index] = {
       ...updatedMailAddressList[index],
       [key]: value,
     };
-    setNewNotify({ ...newNotify, MailAddressList: updatedMailAddressList });
+    setNotifyData({ ...notifyData, MailAddressList: updatedMailAddressList });
   };
 
-  const handleNewNotify = (key: string, value: string | number) => {
-    setNewNotify((prev) => ({
+  const handleNotifyData = (key: string, value: string | number) => {
+    setNotifyData((prev) => ({
       ...prev,
       [key]: value,
     }));
   };
 
-  const handleNewNotifyMode = (typeNumber: number) => {};
+  const handleNewNotifyMode = () => {
+    cleanNotify();
+    setNewNotifyMode(!newNotifyMode);
+    setEditNotifyMode(false);
+  };
 
-  const cleanNewNotify = () => {
-    setNewNotify({
+  const handleEditNotify = (notify: NotifyItem) => {
+    setNotifyData({
+      ParameterNo: notify.ParameterNo,
+      ToolSpecId: notify.ToolSpecInfo.Id,
+      NotifyActions: notify.NotifyActions,
+      NotifyPercent: notify.NotifyPercent,
+      LineTokenList: notify.LineTokenList,
+      MailAddressList: notify.MailAddressList,
+    });
+    setEditNotifyMode(true);
+    setNewNotifyMode(false);
+  };
+
+  const cleanNotify = () => {
+    setNotifyData({
+      ParameterNo: 0,
       ToolSpecId: "",
       NotifyActions: [],
       NotifyPercent: 0,
@@ -140,69 +201,109 @@ export default function Page() {
         />
         <p>通知設定</p>
       </div>
-      <button className="flex p-1 mt-4 border rounded-md ">
-        <Image src="/icons/add.svg" alt="add" width={24} height={24} />
-        <label htmlFor="">新增</label>
-      </button>
-      <div
-        className={`transition-all duration-300 ease-in-out overflow-hidden h-auto`}
+      <button
+        className="flex p-1 mt-4 border rounded-md hover:bg-indigo-500"
+        onClick={() => handleNewNotifyMode()}
       >
-        <div className="items-center p-4 mt-4 bg-gray-900 rounded-md ">
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label htmlFor="toolSpec">刀具規格</label>
-              <select
-                id="toolSpec"
-                value={newNotify.ToolSpecId}
-                className="w-full p-1 text-center text-black rounded-md"
-                onChange={(e) => handleNewNotify("ToolSpecId", e.target.value)}
-              >
-                <option value="" className="text-gray-300">
-                  選擇刀具規格
-                </option>
-                {toolSpecList.map((item) => (
-                  <option
-                    key={item.ToolSpecId}
-                    value={item.ToolSpecId}
-                    className="text-black"
-                  >
-                    {item.Name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="notifyPercent">通知百分比</label>
-              <input
-                id="notifyPercent"
-                type="number"
-                placeholder="輸入百分比"
-                className="w-full p-1 text-center text-black rounded-md"
-                value={newNotify.NotifyPercent}
-                onChange={(e) =>
-                  handleNewNotify("NotifyPercent", e.target.value)
-                }
+        <Image src="/icons/add.svg" alt="add" width={24} height={24} />
+        新增
+      </button>
+      <div className={`overflow-hidden ${newNotifyMode ? "h-auto" : "h-0"}`}>
+        <NewNotifyForm
+          postNotify={postNotify}
+          notifyData={notifyData}
+          handleNotifyData={handleNotifyData}
+          toolSpecList={toolSpecList}
+          addLineForm={addLineForm}
+          addEmailForm={addEmailForm}
+          lineForms={lineForms}
+          emailForms={emailForms}
+          handleEmailFormChange={handleEmailFormChange}
+          handleLineFormChange={handleLineFormChange}
+          removeEmailForm={removeEmailForm}
+          removeLineForm={removeLineForm}
+        />
+      </div>
+      <div className="mt-4 overflow-auto text-center bg-gray-900 rounded-md min-h-96">
+        {/* edit start */}
+        <div
+          className={`overflow-hidden relative ${editNotifyMode ? "h-auto" : "h-0"}`}
+        >
+          <div className="p-4 my-4">
+            <button
+              className="absolute top-2 right-2 hover:scale-110 "
+              onClick={() => setEditNotifyMode(false)}
+            >
+              <Image
+                src="/icons/close.svg"
+                alt="cancel"
+                width={24}
+                height={24}
               />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-2 mt-4">
-            <div>
-              <button
-                className="flex items-center p-1 border rounded-md hover:bg-indigo-500 "
-                onClick={() => addLineForm()}
-              >
-                <Image
-                  src={"/icons/add.svg"}
-                  alt="add"
-                  width={24}
-                  height={24}
+            </button>
+            <button
+              className="absolute top-2 left-2 hover:scale-110"
+              onClick={() => deleteNotify()}
+            >
+              <Image
+                src={"/icons/delete.svg"}
+                alt="delete"
+                width={24}
+                height={24}
+              />
+            </button>
+            <div className="flex gap-2">
+              <div className="w-full">
+                <label htmlFor="toolSpec">刀具規格</label>
+                <select
+                  name=""
+                  id="toolSpec"
+                  value={notifyData.ToolSpecId}
+                  onChange={(e) =>
+                    handleNotifyData("ToolSpecId", e.target.value)
+                  }
+                  className="w-full p-1 text-center text-black rounded-md"
+                >
+                  {toolSpecList.map((item) => (
+                    <option
+                      value={item.ToolSpecId}
+                      key={item.ToolSpecId}
+                      className="text-center text-black "
+                    >
+                      {item.Name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="w-full">
+                <label htmlFor="notifyPercent">通知百分比</label>
+                <input
+                  type="number"
+                  id="notifyPercent"
+                  value={notifyData.NotifyPercent}
+                  onChange={(e) =>
+                    handleNotifyData("NotifyPercent", e.target.value)
+                  }
+                  className="w-full p-1 text-center text-black rounded-md"
                 />
-                Line
-              </button>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mt-4">
+              <div>
+                <button
+                  className="flex items-center p-1 mx-auto border rounded-md hover:bg-indigo-500"
+                  onClick={() => addLineForm()}
+                >
+                  <Image
+                    src={"/icons/add.svg"}
+                    alt="add"
+                    width={24}
+                    height={24}
+                  />
+                  Line
+                </button>
 
-              {
-                // line form list
-                lineForms.map((index) => (
+                {notifyData.LineTokenList?.map((item, index) => (
                   <div
                     key={index}
                     className="relative p-4 mt-2 border rounded-md"
@@ -213,7 +314,7 @@ export default function Page() {
                         type="text"
                         id={`lineName${index}`}
                         className="w-full p-1 text-center text-black rounded-md"
-                        value={newNotify.LineTokenList[index]?.TokenName || ""}
+                        value={item.TokenName}
                         onChange={(e) =>
                           handleLineFormChange(
                             index,
@@ -229,7 +330,7 @@ export default function Page() {
                         type="text"
                         id={`lineToken${index}`}
                         className="w-full p-1 text-center text-black rounded-md"
-                        value={newNotify.LineTokenList[index]?.Token || ""}
+                        value={item.Token}
                         onChange={(e) =>
                           handleLineFormChange(index, "Token", e.target.value)
                         }
@@ -238,37 +339,32 @@ export default function Page() {
 
                     <button
                       className="absolute top-2 right-2 hover:scale-110"
-                      onClick={() =>
-                        setLineForms((prev) => prev.filter((i) => i !== index))
-                      }
+                      onClick={() => removeLineForm(index)}
                     >
                       <Image
-                        src={"/icons/delete.svg"}
+                        src={"/icons/close.svg"}
                         alt="delete"
                         width={24}
                         height={24}
                       />
                     </button>
                   </div>
-                ))
-              }
-            </div>
-            <div>
-              <button
-                className="flex items-center p-1 border rounded-md hover:bg-indigo-500"
-                onClick={() => addEmailForm()}
-              >
-                <Image
-                  src={"/icons/add.svg"}
-                  alt="add"
-                  width={24}
-                  height={24}
-                />
-                Email
-              </button>
-              {
-                // mail form list
-                emailForms.map((index) => (
+                ))}
+              </div>
+              <div>
+                <button
+                  className="flex items-center p-1 mx-auto border rounded-md hover:bg-indigo-500"
+                  onClick={() => addEmailForm()}
+                >
+                  <Image
+                    src={"/icons/add.svg"}
+                    alt="add"
+                    width={24}
+                    height={24}
+                  />
+                  Email
+                </button>
+                {notifyData.MailAddressList?.map((item, index) => (
                   <div
                     key={index}
                     className="relative p-4 mt-2 border rounded-md"
@@ -279,9 +375,7 @@ export default function Page() {
                         type="text"
                         id="mailName"
                         className="w-full p-1 text-center text-black rounded-md"
-                        value={
-                          newNotify.MailAddressList[index]?.Recipient || ""
-                        }
+                        value={item.Recipient}
                         onChange={(e) =>
                           handleEmailFormChange(
                             index,
@@ -297,9 +391,7 @@ export default function Page() {
                         type="email"
                         id={`mailAddress${index}`}
                         className="w-full p-1 text-center text-black rounded-md"
-                        value={
-                          newNotify.MailAddressList[index]?.MailAddress || ""
-                        }
+                        value={item.MailAddress}
                         onChange={(e) =>
                           handleEmailFormChange(
                             index,
@@ -311,31 +403,28 @@ export default function Page() {
                     </div>
                     <button
                       className="absolute top-2 right-2 hover:scale-110"
-                      onClick={() =>
-                        setEmailForms((prev) => prev.filter((i) => i !== index))
-                      }
+                      onClick={() => removeEmailForm(index)}
                     >
                       <Image
-                        src={"/icons/delete.svg"}
+                        src={"/icons/close.svg"}
                         alt="delete"
                         width={24}
                         height={24}
                       />
                     </button>
                   </div>
-                ))
-              }
+                ))}
+              </div>
             </div>
+            <button
+              className="w-full p-1 mt-4 bg-indigo-500 rounded-md"
+              onClick={() => patchNotify()}
+            >
+              儲存
+            </button>
           </div>
-          <button
-            className="w-full p-1 mt-4 bg-indigo-500 rounded-md"
-            onClick={(e) => postNotify(e)}
-          >
-            新增
-          </button>
         </div>
-      </div>
-      <div className="mt-4 overflow-auto text-center bg-gray-900 rounded-md min-h-96">
+        {/* edit end */}
         <table className="w-full ">
           <thead>
             <tr className="bg-indigo-500">
@@ -352,11 +441,18 @@ export default function Page() {
                   <td className="p-1">{item.ToolSpecInfo.Name}</td>
                   <td className="p-1">{item.NotifyPercent} %</td>
                   <td className="p-1">
-                    {item.NotifyActions.includes(0) ? "Line" : ""}
-                    {item.NotifyActions.includes(1) ? "Email" : ""}
+                    <p className="inline mx-2">
+                      {item.NotifyActions.includes(0) ? "Line" : ""}
+                    </p>
+                    <p className="inline mx-2">
+                      {item.NotifyActions.includes(1) ? "Email" : ""}
+                    </p>
                   </td>
                   <td className="p-1">
-                    <button className="p-1 rounded-md hover:bg-indigo-500">
+                    <button
+                      className="p-1 rounded-md hover:bg-indigo-500"
+                      onClick={() => handleEditNotify(item)}
+                    >
                       編輯
                     </button>
                   </td>

@@ -305,21 +305,11 @@ export interface MailAddressItem {
   MailAddress: string;
 }
 
-export interface NewNotifyItem {
+export interface NotifyDataItem {
+  ParameterNo: number;
   ToolSpecId: string;
   NotifyActions: number[];
   NotifyPercent: number;
   LineTokenList: LineTokenItem[];
   MailAddressList: MailAddressItem[];
-}
-
-export interface EditNotifyItem {
-  ParameterNo: number;
-  ToolSpecId: string;
-  NotifyActions: number;
-  NotifyPercent: number;
-  TokenName: string;
-  Token: string;
-  Recipient: string;
-  MailAddress: string;
 }

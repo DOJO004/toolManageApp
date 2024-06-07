@@ -16,6 +16,7 @@ import {
   NewStorageItem,
   NewToolSpecItem,
   NewToolStockItem,
+  NotifyDataItem,
   ToolTypeItem,
   editToolSpecItem,
 } from "./types";
@@ -496,35 +497,29 @@ export async function apiNewNotify(data: NewNotifyItem) {
   }
 }
 
-export async function apiEditNotify(data: EditNotifyItem) {
+export async function apiEditNotify(data: NotifyDataItem) {
   const body = {
     ParameterNo: data.ParameterNo,
     ModifyDatas: {
       ToolSpecId: data.ToolSpecId,
-      NotifyActions: [data.NotifyActions],
-      NotifyPercent: data.NotifyPercent,
-      LineTokenList: [
-        {
-          TokenName: data.TokenName,
-          Token: data.Token,
-        },
-      ],
-      MailAddressList: [
-        {
-          Recipient: data.Recipient,
-          MailAddress: data.MailAddress,
-        },
-      ],
+      NotifyActions: data.NotifyActions,
+      NotifyPercent: Number(data.NotifyPercent),
+      LineTokenList: data.LineTokenList,
+      MailAddressList: data.MailAddressList,
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),
     NeedPermissions: [getPermission()],
   };
+  console.log(`apiEditNotify body =`, body);
+
   try {
     const res = await apiInstance.post<BaseResponse>(
       "/user_operate/ModifyNotifyParameterInfo",
       body
     );
+    console.log(`apiEditNotify`, res);
+
     return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
@@ -543,6 +538,8 @@ export async function apiDeleteNotify(data: EditNotifyItem) {
       "/user_operate/DisabledNotifyParameterInfo",
       body
     );
+    console.log(`apiDeleteNotify`, res);
+
     return res.data.Values.ReqInt;
   } catch (error) {
     console.error("Error", error);
