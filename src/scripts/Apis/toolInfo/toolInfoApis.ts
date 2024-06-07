@@ -473,20 +473,10 @@ export async function apiNewNotify(data: NewNotifyItem) {
   const body = {
     NotifyParameter: {
       ToolSpecId: data.ToolSpecId,
-      NotifyActions: [data.NotifyActions],
+      NotifyActions: data.NotifyActions,
       NotifyPercent: Number(data.NotifyPercent),
-      LineTokenList: [
-        {
-          TokenName: data.TokenName,
-          Token: data.Token,
-        },
-      ],
-      MailAddressList: [
-        {
-          Recipient: data.Recipient,
-          MailAddress: data.MailAddress,
-        },
-      ],
+      LineTokenList: data.LineTokenList,
+      MailAddressList: data.MailAddressList,
     },
     UserToken: getUserToken(),
     LoginTime: getLoginTime(),

@@ -307,12 +307,10 @@ export interface MailAddressItem {
 
 export interface NewNotifyItem {
   ToolSpecId: string;
-  NotifyActions: number;
+  NotifyActions: number[];
   NotifyPercent: number;
-  TokenName: string;
-  Token: string;
-  Recipient: string;
-  MailAddress: string;
+  LineTokenList: LineTokenItem[];
+  MailAddressList: MailAddressItem[];
 }
 
 export interface EditNotifyItem {
