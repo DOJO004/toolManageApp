@@ -1,6 +1,6 @@
 import { NotifyDataItem, ToolSpecItem } from "@/scripts/Apis/toolInfo/types";
 import Image from "next/image";
-import { FormEvent } from "react";
+import React, { FormEvent } from "react";
 
 interface Props {
   postNotify: (e: FormEvent) => void;
@@ -15,6 +15,7 @@ interface Props {
   handleLineFormChange: (index: number, key: string, value: string) => void;
   removeLineForm: (index: number) => void;
   removeEmailForm: (index: number) => void;
+  setNewNotifyMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function NewNotifyForm({
@@ -30,9 +31,17 @@ export default function NewNotifyForm({
   handleLineFormChange,
   removeLineForm,
   removeEmailForm,
+  setNewNotifyMode,
 }: Props) {
   return (
-    <div className="items-center p-4 mt-4 text-center bg-gray-900 rounded-md ">
+    <div className="relative items-center p-4 mt-4 text-center bg-gray-900 rounded-md ">
+      <h2>新增通知</h2>
+      <button
+        className="absolute top-2 right-2 hover:scale-110"
+        onClick={() => setNewNotifyMode(false)}
+      >
+        <Image src={"/icons/close.svg"} alt="cancel" width={24} height={24} />
+      </button>
       <div className="grid grid-cols-2 gap-2">
         <div>
           <label htmlFor="toolSpec">刀具規格</label>
