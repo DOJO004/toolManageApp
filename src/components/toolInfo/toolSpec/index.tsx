@@ -143,9 +143,10 @@ export default function ToolSpecIndex({
                   </td>
                   <td className="p-1 ">
                     <input
-                      type="number"
+                      type="text"
                       className="w-24 text-center text-black rounded-md"
                       value={editToolSpec.ProcessTime}
+                      placeholder="hh:mm:ss"
                       onChange={(e) =>
                         handleEditToolSpec("ProcessTime", e.target.value)
                       }

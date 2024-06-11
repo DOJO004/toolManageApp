@@ -93,7 +93,10 @@ export const handleToolPositionData = (positionStatus: number) => {
 };
 
 // ms to hh:mm:ss
-export const formatTime = (milliseconds: number): string => {
+export const formatTime = (milliseconds: number | string): string => {
+  if (typeof milliseconds === "string") {
+    milliseconds = parseInt(milliseconds);
+  }
   const totalSeconds = Math.floor(milliseconds / 1000);
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);

@@ -1,6 +1,7 @@
 "use client";
 import ToolSpecIndex from "@/components/toolInfo/toolSpec";
 import { NewToolSpec } from "@/components/toolInfo/toolSpec/new";
+import { formatTime } from "@/scripts/Apis/toolInfo/functions";
 import {
   apiDeleteToolSpec,
   apiEditToolSpec,
@@ -38,7 +39,7 @@ export default function Page() {
     TotalLength: 0,
     HandleDiameter: 0,
     ProcessCnt: 0,
-    ProcessTime: 0,
+    ProcessTime: "",
     ProcessLength: 0,
     RepairCnt: 0,
   });
@@ -150,7 +151,7 @@ export default function Page() {
       TotalLength: item.SpecData.TotalLength,
       HandleDiameter: item.SpecData.HandleDiameter,
       ProcessCnt: item.MaxLife.ProcessCnt,
-      ProcessTime: item.MaxLife.ProcessTime,
+      ProcessTime: formatTime(item.MaxLife.ProcessTime),
       ProcessLength: item.MaxLife.ProcessLength,
       RepairCnt: item.MaxLife.RepairCnt,
     });

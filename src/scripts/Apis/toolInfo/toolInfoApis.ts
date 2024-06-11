@@ -201,7 +201,7 @@ export async function apiEditToolSpec(toolSpec: editToolSpecItem) {
       },
       MaxLife: {
         ProcessCnt: toolSpec.ProcessCnt,
-        ProcessTime: toolSpec.ProcessTime,
+        ProcessTime: parseTime(toolSpec.ProcessTime),
         ProcessLength: toolSpec.ProcessLength,
         RepairCnt: toolSpec.RepairCnt,
       },
