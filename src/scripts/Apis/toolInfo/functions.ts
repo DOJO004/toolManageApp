@@ -102,6 +102,13 @@ export const formatTime = (milliseconds: number): string => {
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 };
 
+// hh:mm:ss to ms
+export const parseTime = (time: string): number => {
+  const [hours, minutes, seconds] = time.split(":").map(Number);
+  console.log(hours, minutes, seconds);
+  return hours * 3600000 + minutes * 60000 + seconds * 1000;
+};
+
 export const sortToolInfoList = (toolInfoList: ToolStockItem[]) => {
   const referenceTable: { [key: string]: number } = {
     Normal: 1,

@@ -71,7 +71,7 @@ export interface NewToolSpecItem {
   TotalLength: number;
   HandleDiameter: number;
   ProcessCnt: number;
-  ProcessTime: number;
+  ProcessTime: string;
   ProcessLength: number;
   RepairCnt: number;
 }

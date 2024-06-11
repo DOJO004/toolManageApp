@@ -1,3 +1,4 @@
+import { formatTime } from "@/scripts/Apis/toolInfo/functions";
 import { ToolSpecItem, editToolSpecItem } from "@/scripts/Apis/toolInfo/types";
 
 interface Props {
@@ -193,7 +194,7 @@ export default function ToolSpecIndex({
                     {item.MaxLife.ProcessLength}
                   </td>
                   <td className="p-1 whitespace-nowrap ">
-                    {item.MaxLife.ProcessTime}
+                    {formatTime(item.MaxLife.ProcessTime)}
                   </td>
                   <td className="p-1 whitespace-nowrap ">
                     <button

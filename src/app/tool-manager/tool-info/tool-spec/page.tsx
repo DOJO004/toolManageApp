@@ -101,7 +101,7 @@ export default function Page() {
       TotalLength: 0,
       HandleDiameter: 0,
       ProcessCnt: 0,
-      ProcessTime: 0,
+      ProcessTime: "",
       ProcessLength: 0,
       RepairCnt: 0,
     });
@@ -188,7 +188,7 @@ export default function Page() {
         {/* new */}
         <div
           className={` transition-all duration-300 my-2  ease-in-out rounded-md overflow-hidden  ${
-            newToolSpecMode ? "h-48" : "h-0"
+            newToolSpecMode ? "h-auto" : "h-0"
           }`}
         >
           <NewToolSpec

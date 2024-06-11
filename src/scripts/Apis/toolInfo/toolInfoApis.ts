@@ -1,9 +1,9 @@
 import { apiInstance } from "@/scripts/Apis/toolInfoApi";
 import { ReturnDataItem } from "../eLabelInfo/types";
 import { getLoginTime, getPermission, getUserToken } from "../mainApi";
+import { parseTime } from "./functions";
 import {
   BaseResponse,
-  EditNotifyItem,
   EditStorageItem,
   GetLoadingLogListResponse,
   GetNotifyListResponse,
@@ -12,7 +12,6 @@ import {
   GetToolStockCountListResponse,
   GetToolStockListResponse,
   GetToolTypeListResponse,
-  NewNotifyItem,
   NewStorageItem,
   NewToolSpecItem,
   NewToolStockItem,
@@ -138,6 +137,8 @@ export async function apiGetToolSpecList() {
       "tool_get/GetToolSpecInfoList"
     );
     const { Values } = res.data;
+    console.log("apiGetToolSpecList", res);
+
     if (Values.ReqInt === 0) {
       return Values.ToolSpecList;
     } else {
@@ -164,7 +165,7 @@ export async function apiNewToolSpec(toolSpec: NewToolSpecItem) {
       },
       MaxLife: {
         ProcessCnt: toolSpec.ProcessCnt,
-        ProcessTime: toolSpec.ProcessTime,
+        ProcessTime: parseTime(toolSpec.ProcessTime),
         ProcessLength: toolSpec.ProcessLength,
         RepairCnt: toolSpec.RepairCnt,
       },
@@ -470,7 +471,7 @@ export async function apiGetNotifyList() {
   }
 }
 
-export async function apiNewNotify(data: NewNotifyItem) {
+export async function apiNewNotify(data: NotifyDataItem) {
   const body = {
     NotifyParameter: {
       ToolSpecId: data.ToolSpecId,
@@ -526,7 +527,7 @@ export async function apiEditNotify(data: NotifyDataItem) {
   }
 }
 
-export async function apiDeleteNotify(data: EditNotifyItem) {
+export async function apiDeleteNotify(data: NotifyDataItem) {
   const body = {
     ParameterNo: data.ParameterNo,
     UserToken: getUserToken(),
