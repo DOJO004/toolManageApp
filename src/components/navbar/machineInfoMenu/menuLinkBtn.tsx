@@ -39,7 +39,7 @@ const MenuLinkBtn = ({
           <Link
             key={index}
             href={item.path}
-            className={`m-2 p-1 rounded-md cursor-pointer md:flex hover:bg-indigo-500 ${index === showMenuIndex ? "bg-indigo-600" : ""}`}
+            className={`m-2 p-1 rounded-md cursor-pointer items-center md:flex hover:bg-indigo-500 ${index === showMenuIndex ? "bg-indigo-600" : ""}`}
             onClick={() => handleShowMenuIndex(index)}
           >
             <Image

@@ -12,19 +12,19 @@ const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
   const menuItem = [
     {
       href: "/tool-manager/user-info",
-      src: "/overView.png",
+      src: "/icons/list.svg",
       alt: "user info overview",
       name: "總覽",
     },
     {
       href: "/tool-manager/user-info/department",
-      src: "/department_icon.png",
+      src: "/icons/department.svg",
       alt: "department icon",
       name: "部門資訊",
     },
     {
       href: "/tool-manager/user-info/permissions",
-      src: "/police_icon.png",
+      src: "/icons/permissions.svg",
       alt: "police_icon",
       name: "權限資訊",
     },
@@ -50,7 +50,7 @@ const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
           <Link
             key={index}
             href={item.href}
-            className={`m-2 cursor-pointer p-1 rounded-md md:flex hover:bg-indigo-500 ${showMenuIndex === index ? "bg-indigo-600" : ""}`}
+            className={`m-2 cursor-pointer p-1 rounded-md items-center  md:flex hover:bg-indigo-500 ${showMenuIndex === index ? "bg-indigo-600" : ""}`}
             onClick={() => handleShowMenuIndex(index)}
           >
             <Image
