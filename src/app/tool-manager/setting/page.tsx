@@ -26,6 +26,7 @@ export default function Page() {
     ToolSpecId: "",
     NotifyActions: [],
     NotifyPercent: 0,
+    NotifyInterval: 0,
     LineTokenList: [],
     MailAddressList: [],
   });
@@ -166,6 +167,7 @@ export default function Page() {
       ParameterNo: notify.ParameterNo,
       ToolSpecId: notify.ToolSpecInfo.Id,
       NotifyActions: notify.NotifyActions,
+      NotifyInterval: notify.NotifyInterval,
       NotifyPercent: notify.NotifyPercent,
       LineTokenList: notify.LineTokenList,
       MailAddressList: notify.MailAddressList,
@@ -179,6 +181,7 @@ export default function Page() {
       ParameterNo: 0,
       ToolSpecId: "",
       NotifyActions: [],
+      NotifyInterval: 0,
       NotifyPercent: 0,
       LineTokenList: [],
       MailAddressList: [],
@@ -248,6 +251,7 @@ export default function Page() {
               <th className="p-1">刀具規格</th>
               <th className="p-1">通知百分比</th>
               <th className="p-1">通知方式</th>
+              <th className="p-1">通知頻率</th>
               <th className="p-1">編輯</th>
             </tr>
           </thead>
@@ -257,6 +261,7 @@ export default function Page() {
                 <tr key={item.ParameterNo}>
                   <td className="p-1">{item.ToolSpecInfo.Name}</td>
                   <td className="p-1">{item.NotifyPercent} %</td>
+                  <td className="p-1">{item.NotifyInterval}</td>
                   <td className="p-1">
                     {item.NotifyActions.includes(0) ? "Line" : ""}{" "}
                     {item.NotifyActions.includes(1) ? "Email" : ""}

@@ -477,6 +477,7 @@ export async function apiNewNotify(data: NotifyDataItem) {
       ToolSpecId: data.ToolSpecId,
       NotifyActions: data.NotifyActions,
       NotifyPercent: Number(data.NotifyPercent),
+      NotifyInterval: data.NotifyInterval,
       LineTokenList: data.LineTokenList,
       MailAddressList: data.MailAddressList,
     },

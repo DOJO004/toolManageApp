@@ -42,7 +42,7 @@ export default function NewNotifyForm({
       >
         <Image src={"/icons/close.svg"} alt="cancel" width={24} height={24} />
       </button>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         <div>
           <label htmlFor="toolSpec">刀具規格</label>
           <select
@@ -74,6 +74,19 @@ export default function NewNotifyForm({
             className="w-full p-1 text-center text-black rounded-md"
             value={notifyData.NotifyPercent}
             onChange={(e) => handleNotifyData("NotifyPercent", e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="notifyInterval">
+            通知間隔
+            <span className="text-sm">min</span>
+          </label>
+          <input
+            type="number"
+            placeholder="輸入間隔"
+            className="w-full p-1 text-center text-black rounded-md"
+            value={notifyData.NotifyInterval}
+            onChange={(e) => handleNotifyData("NotifyInterval", e.target.value)}
           />
         </div>
       </div>
