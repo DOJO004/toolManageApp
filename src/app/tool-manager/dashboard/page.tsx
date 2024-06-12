@@ -69,7 +69,7 @@ export default function Page() {
                   <div>
                     <div className="flex items-center">
                       <Image
-                        src="/wi-fi.png"
+                        src="/icons/wifi.svg"
                         alt="wi-fi"
                         width={25}
                         height={25}

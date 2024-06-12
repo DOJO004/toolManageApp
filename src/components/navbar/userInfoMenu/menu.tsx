@@ -25,7 +25,7 @@ const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
     {
       href: "/tool-manager/user-info/permissions",
       src: "/icons/permissions.svg",
-      alt: "police_icon",
+      alt: "permissions svg",
       name: "權限資訊",
     },
   ];
@@ -39,12 +39,7 @@ const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
           className="block ml-auto w-fit"
           onClick={() => setOpenMenu(false)}
         >
-          <Image
-            src="/arrow_back_icon.png"
-            alt="back icon"
-            width={20}
-            height={20}
-          />
+          <Image src="/icons/back.svg" alt="back icon" width={20} height={20} />
         </button>
         {menuItem.map((item, index) => (
           <Link

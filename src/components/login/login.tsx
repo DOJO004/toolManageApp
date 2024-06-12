@@ -69,11 +69,15 @@ export default function Login() {
             onChange={(e) => handleLoginInfo("UserPwd", e.target.value)}
           />
           <Image
-            src={showPassword ? "/visible.png" : "/hide.png"}
+            src={
+              showPassword
+                ? "/icons/visibility.svg"
+                : "/icons/visibility_off.svg"
+            }
             width={20}
             height={20}
             alt="show password icon"
-            className="absolute cursor-pointer right-3 top-10 hover:scale-110"
+            className="absolute cursor-pointer right-3 top-9 hover:scale-110"
             onClick={() => setShowPassword((prev) => !prev)}
             unoptimized
           />
