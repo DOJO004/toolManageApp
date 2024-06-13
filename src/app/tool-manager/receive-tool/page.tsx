@@ -257,52 +257,51 @@ export default function Page() {
       </div>
       {/* label */}
       <div className="flex gap-4 ">
-        <div className="w-full px-2 overflow-auto text-center bg-gray-900 rounded-md max-h-[700px] ">
-          <form className="w-full my-4" onSubmit={(e) => searchUnbindLabel(e)}>
-            <h3 className="my-4">未綁定標籤</h3>
-            <input
-              type="search"
-              className="w-full p-2 text-black rounded-md "
-              placeholder="搜尋標籤"
-              value={inputUnbindLabel}
-              onChange={(e) => setInputUnbindLabel(e.target.value)}
-            />
-          </form>
+        <div className="w-full p-4 overflow-auto text-center bg-gray-900 rounded-md max-h-[700px] ">
+          <div className="sticky -top-4">
+            <h3>未綁定標籤</h3>
+            <form
+              className="flex items-center justify-center w-full gap-2 mt-4"
+              onSubmit={(e) => searchUnbindLabel(e)}
+            >
+              <input
+                type="search"
+                className="w-full p-2 text-black rounded-md "
+                placeholder="搜尋標籤"
+                value={inputUnbindLabel}
+                onChange={(e) => setInputUnbindLabel(e.target.value)}
+              />
+            </form>
 
-          <table className="w-full">
-            <thead>
-              <tr className="bg-indigo-500">
-                <th className="p-1 whitespace-nowrap">標籤號碼</th>
-                <th className="p-1 whitespace-nowrap">標籤SN</th>
-              </tr>
-            </thead>
-            <tbody>
-              {eLabeList.map((item, index) => (
-                <tr
-                  key={item.LabelId}
-                  className={`cursor-pointer hover:bg-gray-600 ${selectLabel === index ? "bg-gray-600" : ""}`}
-                  onClick={() =>
-                    handleClickBindData({
-                      key: "eLabel",
-                      index: index,
-                      LabelId: item.LabelId,
-                      LabelCode: item.AimsSpec?.LabelCode,
-                      LabelSn: item.LabelSn,
-                    })
-                  }
-                >
-                  <td className="p-1 whitespace-nowrap">
-                    {item.AimsSpec?.LabelCode}
-                  </td>
-                  <td className="p-1 whitespace-nowrap">{item.LabelSn}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            <div className="grid grid-cols-2 mt-4 bg-indigo-500">
+              <p className="p-1 whitespace-nowrap">標籤號碼</p>
+              <p className="p-1 whitespace-nowrap">標籤SN</p>
+            </div>
+          </div>
+          {eLabeList.map((item, index) => (
+            <div
+              key={item.LabelId}
+              className={`cursor-pointer hover:bg-gray-600 grid grid-cols-2 ${selectLabel === index ? "bg-gray-600" : ""}`}
+              onClick={() =>
+                handleClickBindData({
+                  key: "eLabel",
+                  index: index,
+                  LabelId: item.LabelId,
+                  LabelCode: item.AimsSpec?.LabelCode,
+                  LabelSn: item.LabelSn,
+                })
+              }
+            >
+              <p className="p-1 whitespace-nowrap">
+                {item.AimsSpec?.LabelCode}
+              </p>
+              <p className="p-1 whitespace-nowrap">{item.LabelSn}</p>
+            </div>
+          ))}
         </div>
         {/* tool */}
-        <div className="w-full px-2 overflow-auto text-center bg-gray-900 rounded-md max-h-[700px]">
-          <div className="sticky top-0 py-4 bg-gray-900">
+        <div className="w-full p-4 overflow-auto text-center bg-gray-900 rounded-md max-h-[700px]">
+          <div className="sticky bg-gray-900 -top-4">
             <h3>未綁定刀具</h3>
             <form
               className="flex items-center justify-center w-full gap-2 mt-4"
@@ -317,53 +316,46 @@ export default function Page() {
                 onChange={(e) => setInputUnbindTool(e.target.value)}
               />
             </form>
+            <div className="grid grid-cols-3 mt-4 bg-indigo-500">
+              <p className="p-1 whitespace-nowrap">刀具類型</p>
+              <p className="p-1 whitespace-nowrap">刀具規格</p>
+              <p className="p-1 whitespace-nowrap">刀具 SN</p>
+            </div>
           </div>
-          <table className="w-full">
-            <thead>
-              <tr className="bg-indigo-500">
-                <th className="p-1 whitespace-nowrap">刀具類型</th>
-                <th className="p-1 whitespace-nowrap">刀具規格</th>
-                <th className="p-1 whitespace-nowrap">刀具 SN</th>
-              </tr>
-            </thead>
-            <tbody>
-              {toolList.length > 0 ? (
-                toolList.map((item: ToolStockItem, index) => (
-                  <tr
-                    key={item.ToolSn}
-                    className={`cursor-pointer hover:bg-gray-600 ${selectTool === index ? "bg-gray-600" : ""}`}
-                    onClick={() =>
-                      handleClickBindData({
-                        key: "tool",
-                        ToolSn: item.ToolSn,
-                        index: index,
-                      })
-                    }
-                  >
-                    <td className="p-1 whitespace-nowrap">
-                      {item.ToolTypeData.Name}
-                    </td>
-                    <td className="p-1 whitespace-nowrap">
-                      {item.ToolSpecName}
-                    </td>
-                    <td className="p-1 whitespace-nowrap">{item.ToolSn}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={3}>
-                    無此刀具... <br />
-                    <Link
-                      href="/tool-manager/tool-info/tool-stock"
-                      className="text-blue-500 hover:text-blue-600"
-                    >
-                      新增庫存?
-                    </Link>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+
+          {toolList.length > 0 ? (
+            toolList.map((item: ToolStockItem, index) => (
+              <div
+                key={item.ToolSn}
+                className={`cursor-pointer  grid grid-cols-3 hover:bg-gray-600 ${selectTool === index ? "bg-gray-600" : ""}`}
+                onClick={() =>
+                  handleClickBindData({
+                    key: "tool",
+                    ToolSn: item.ToolSn,
+                    index: index,
+                  })
+                }
+              >
+                <p className="p-1 whitespace-nowrap">
+                  {item.ToolTypeData.Name}
+                </p>
+                <p className="p-1 whitespace-nowrap">{item.ToolSpecName}</p>
+                <p className="p-1 whitespace-nowrap">{item.ToolSn}</p>
+              </div>
+            ))
+          ) : (
+            <div>
+              <p>
+                無此刀具... <br />
+                <Link
+                  href="/tool-manager/tool-info/tool-stock"
+                  className="text-blue-500 hover:text-blue-600"
+                >
+                  新增庫存?
+                </Link>
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
