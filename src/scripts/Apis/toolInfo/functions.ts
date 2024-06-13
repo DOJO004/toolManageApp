@@ -92,6 +92,30 @@ export const handleToolPositionData = (positionStatus: number) => {
   }
 };
 
+// toolLogInfo
+export const setOpActionsText = (opActions: number) => {
+  switch (opActions) {
+    case 0:
+      return "入庫";
+    case 1:
+      return "重新入庫";
+    case 2:
+      return "出庫";
+    case 3:
+      return "修整";
+    case 4:
+      return "裝載";
+    case 5:
+      return "卸載";
+    case -99:
+      return "強制失敗";
+    case -1:
+      return "報廢";
+    default:
+      return "無法辨識此狀態";
+  }
+};
+
 // ms to hh:mm:ss
 export const formatTime = (milliseconds: number | string): string => {
   if (typeof milliseconds === "string") {

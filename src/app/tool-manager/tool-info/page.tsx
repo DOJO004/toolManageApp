@@ -175,7 +175,7 @@ export default function Page() {
               className={`transition-all duration-300 ease-in-out my-4 overflow-hidden ${filterMode ? "h-32" : "h-0"}`}
             >
               <div className="flex items-center justify-center gap-2 my-2">
-                <label htmlFor="">狀態:</label>
+                <p>狀態:</p>
                 <ul className="flex gap-2">
                   <li
                     className={`cursor-pointer p-1 border rounded-md ${filterData.toolState.includes("Normal") ? "bg-indigo-500" : ""}`}
@@ -214,7 +214,7 @@ export default function Page() {
                 </ul>
               </div>
               <div className="flex items-center justify-center gap-2 my-2">
-                <label htmlFor="">裝載狀態:</label>
+                <p>裝載狀態:</p>
                 <ul className="flex gap-2">
                   <li
                     className={`p-1 border rounded-md cursor-pointer ${filterData.activeState.includes(0) ? "bg-indigo-500" : ""}`}
@@ -237,7 +237,7 @@ export default function Page() {
                 </ul>
               </div>
               <div className="flex items-center justify-center gap-2 my-2">
-                <label htmlFor="">位置:</label>
+                <p>位置:</p>
                 <ul className="flex gap-2">
                   {positionList.map((item) => (
                     <li

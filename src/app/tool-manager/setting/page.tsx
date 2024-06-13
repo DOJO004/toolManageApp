@@ -250,8 +250,8 @@ export default function Page() {
             <tr className="bg-indigo-500">
               <th className="p-1">刀具規格</th>
               <th className="p-1">通知百分比</th>
-              <th className="p-1">通知方式</th>
               <th className="p-1">通知頻率</th>
+              <th className="p-1">通知方式</th>
               <th className="p-1">編輯</th>
             </tr>
           </thead>
