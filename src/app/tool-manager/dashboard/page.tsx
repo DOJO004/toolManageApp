@@ -86,7 +86,7 @@ export default function Page() {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center gap-2 mx-4 mt-10">
+              <div className="flex justify-center gap-2 mx-4 my-4">
                 {sortToolStatus(item.AtcLoadingList).map((tool) => (
                   <div
                     className="flex flex-col justify-center "
@@ -109,9 +109,12 @@ export default function Page() {
                       <div className="w-16 h-16 bg-gray-900 rounded-full md:w-24 md:h-24"></div>
                     </div>
                     <div
-                      className={`p-2 mx-auto   rounded-md w-fit ${toolLifeStatusBackgroundColor(tool.ToolLife.LifeStatus)} `}
+                      className={`p-2 mx-auto relative   rounded-md w-fit ${toolLifeStatusBackgroundColor(tool.ToolLife.LifeStatus)} `}
                     >
-                      <div className="text-center xl:text-xl " title="裝載位置">
+                      <div
+                        className="absolute w-6 h-6 text-center bg-gray-700 rounded-full -top-3 -right-2 "
+                        title="裝載位置"
+                      >
                         {tool.AtcNo}
                       </div>
                       <div className="text-center xl:text-xl" title="刀具 SN">
