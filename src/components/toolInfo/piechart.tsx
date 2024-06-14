@@ -38,7 +38,7 @@ const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
           </div>
         </div>
       </div>
-      <div className="flex">
+      <div className="flex justify-center">
         <div className="relative h-24 w-72 md:h-32 lg:h-48">
           <div
             className="w-24 h-24 mx-auto rounded-full md:absolute md:-translate-x-1/2 md:-translate-y-1/2 lg:w-40 lg:h-40 md:w-32 md:h-32 md:left-1/2 md:top-1/2"
