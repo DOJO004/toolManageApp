@@ -1,4 +1,7 @@
 "use client";
+import Form from "@/components/receiveTool/form";
+import UnBindLabel from "@/components/receiveTool/unbindLabel";
+import UnbindTool from "@/components/receiveTool/unbindTool";
 import {
   apiBindELabelInfo,
   apiGetELabelList,
@@ -9,8 +12,6 @@ import { ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 import { UserAccountItem } from "@/scripts/Apis/userInfo/types";
 import { apiGetUserInfoList } from "@/scripts/Apis/userInfo/userInfoApis";
 import { useHandleNotice } from "@/scripts/notice";
-import Image from "next/image";
-import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -161,202 +162,33 @@ export default function Page() {
     <div className="relative p-2 ">
       <div className="sticky p-2 my-4 bg-gray-900 rounded-md top-4 ">
         <h3 className="text-center ">領取刀具</h3>
-        <form onSubmit={(e) => postBindTool(e)}>
-          <div className="grid grid-cols-4 gap-2 ">
-            <div className="relative ">
-              <div className="flex items-end ">
-                <label htmlFor="labelCode">標籤號碼</label>
-                <Image
-                  src={"/icons/bulb.svg"}
-                  width={30}
-                  height={30}
-                  alt="hit"
-                  onClick={() => hintLabelCodeImage()}
-                  className="p-1 mx-1 bg-gray-500 rounded-full cursor-pointer hover:bg-yellow-400"
-                />
-              </div>
-              <input
-                id="labelCode"
-                type="text"
-                list="labelCodeList"
-                className="w-full p-2 text-black rounded-md"
-                placeholder="標籤號碼"
-                value={bindToolData.LabelCode}
-                onChange={(e) =>
-                  handleInputBindData("LabelCode", e.target.value)
-                }
-                readOnly
-              />
-              <datalist
-                id="labelCodeList"
-                className="absolute top-0 left-0 "
-              ></datalist>
-            </div>
-            <div className="relative ">
-              <label htmlFor="eLabelSN">電子標籤SN</label>
-              <input
-                type="text"
-                id="eLabelSN"
-                list="labelList"
-                placeholder="電子標籤SN"
-                className="w-full p-2 text-black rounded-md"
-                value={bindToolData.LabelSn}
-                onChange={(e) => handleInputBindData("LabelSn", e.target.value)}
-                readOnly
-              />
-              <datalist
-                id="labelList"
-                className="absolute top-0 left-0 "
-              ></datalist>
-            </div>
-            <div className="relative ">
-              <label htmlFor="toolSN">刀具SN</label>
-              <input
-                id="toolSN"
-                type="text"
-                list="toolSNList"
-                className="w-full p-2 text-black rounded-md"
-                placeholder="刀具SN"
-                value={bindToolData.ToolSn}
-                onChange={(e) => handleInputBindData("ToolSn", e.target.value)}
-                readOnly
-              />
-              <datalist
-                id="toolSNList"
-                className="absolute top-0 left-0 "
-              ></datalist>
-            </div>
-            <div>
-              <label htmlFor="receiver">領取人</label>
-              <select
-                value={bindToolData.ReceiptorId}
-                className="w-full p-2 text-black rounded-md"
-                onChange={(e) =>
-                  handleInputBindData("ReceiptorId", e.target.value)
-                }
-              >
-                <option value="" className="text-gray-400">
-                  選擇領取人
-                </option>
-                {userList.map((item) => (
-                  <option
-                    key={item.AccountId}
-                    value={item.AccountId}
-                    className="text-black"
-                  >
-                    {item.UserName}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <button className="w-full p-1 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
-            綁定標籤
-          </button>
-        </form>
+        <Form
+          postBindTool={postBindTool}
+          bindToolData={bindToolData}
+          hintLabelCodeImage={hintLabelCodeImage}
+          handleInputBindData={handleInputBindData}
+          userList={userList}
+        />
       </div>
       {/* label */}
       <div className="flex gap-4 ">
-        <div className="w-full p-4 overflow-auto text-center bg-gray-900 rounded-md max-h-[700px] ">
-          <div className="sticky -top-4">
-            <h3>未綁定標籤</h3>
-            <form
-              className="flex items-center justify-center w-full gap-2 mt-4"
-              onSubmit={(e) => searchUnbindLabel(e)}
-            >
-              <input
-                type="search"
-                className="w-full p-2 text-black rounded-md "
-                placeholder="搜尋標籤"
-                value={inputUnbindLabel}
-                onChange={(e) => setInputUnbindLabel(e.target.value)}
-              />
-            </form>
-
-            <div className="grid grid-cols-2 mt-4 bg-indigo-500">
-              <p className="p-1 whitespace-nowrap">標籤號碼</p>
-              <p className="p-1 whitespace-nowrap">標籤SN</p>
-            </div>
-          </div>
-          {eLabeList.map((item, index) => (
-            <div
-              key={item.LabelId}
-              className={`cursor-pointer hover:bg-gray-600 grid grid-cols-2 ${selectLabel === index ? "bg-gray-600" : ""}`}
-              onClick={() =>
-                handleClickBindData({
-                  key: "eLabel",
-                  index: index,
-                  LabelId: item.LabelId,
-                  LabelCode: item.AimsSpec?.LabelCode,
-                  LabelSn: item.LabelSn,
-                })
-              }
-            >
-              <p className="p-1 whitespace-nowrap">
-                {item.AimsSpec?.LabelCode}
-              </p>
-              <p className="p-1 whitespace-nowrap">{item.LabelSn}</p>
-            </div>
-          ))}
-        </div>
+        <UnBindLabel
+          searchUnbindLabel={searchUnbindLabel}
+          inputUnbindLabel={inputUnbindLabel}
+          setInputUnbindLabel={setInputUnbindLabel}
+          eLabeList={eLabeList}
+          selectLabel={selectLabel}
+          handleClickBindData={handleClickBindData}
+        />
         {/* tool */}
-        <div className="w-full p-4 overflow-auto text-center bg-gray-900 rounded-md max-h-[700px]">
-          <div className="sticky bg-gray-900 -top-4">
-            <h3>未綁定刀具</h3>
-            <form
-              className="flex items-center justify-center w-full gap-2 mt-4"
-              onSubmit={(e) => searchUnbindTool(e)}
-            >
-              <input
-                type="search"
-                id="search"
-                className="w-full p-2 text-black rounded-md"
-                placeholder="搜尋刀具"
-                value={inputUnbindTool}
-                onChange={(e) => setInputUnbindTool(e.target.value)}
-              />
-            </form>
-            <div className="grid grid-cols-3 mt-4 bg-indigo-500">
-              <p className="p-1 whitespace-nowrap">刀具類型</p>
-              <p className="p-1 whitespace-nowrap">刀具規格</p>
-              <p className="p-1 whitespace-nowrap">刀具 SN</p>
-            </div>
-          </div>
-
-          {toolList.length > 0 ? (
-            toolList.map((item: ToolStockItem, index) => (
-              <div
-                key={item.ToolSn}
-                className={`cursor-pointer  grid grid-cols-3 hover:bg-gray-600 ${selectTool === index ? "bg-gray-600" : ""}`}
-                onClick={() =>
-                  handleClickBindData({
-                    key: "tool",
-                    ToolSn: item.ToolSn,
-                    index: index,
-                  })
-                }
-              >
-                <p className="p-1 whitespace-nowrap">
-                  {item.ToolTypeData.Name}
-                </p>
-                <p className="p-1 whitespace-nowrap">{item.ToolSpecName}</p>
-                <p className="p-1 whitespace-nowrap">{item.ToolSn}</p>
-              </div>
-            ))
-          ) : (
-            <div>
-              <p>
-                無此刀具... <br />
-                <Link
-                  href="/tool-manager/tool-info/tool-stock"
-                  className="text-blue-500 hover:text-blue-600"
-                >
-                  新增庫存?
-                </Link>
-              </p>
-            </div>
-          )}
-        </div>
+        <UnbindTool
+          searchUnbindTool={searchUnbindTool}
+          inputUnbindTool={inputUnbindTool}
+          setInputUnbindTool={setInputUnbindTool}
+          toolList={toolList}
+          selectTool={selectTool}
+          handleClickBindData={handleClickBindData}
+        />
       </div>
     </div>
   );
