@@ -281,7 +281,6 @@ export interface GetNotifyListResponse {
 
 export interface NotifyItem {
   ParameterNo: number;
-  NotifyInterval: number;
   ToolSpecInfo: {
     Id: string;
     Name: string;
@@ -311,7 +310,6 @@ export interface NotifyDataItem {
   ToolSpecId: string;
   NotifyActions: number[];
   NotifyPercent: number;
-  NotifyInterval: number;
   LineTokenList: LineTokenItem[];
   MailAddressList: MailAddressItem[];
 }

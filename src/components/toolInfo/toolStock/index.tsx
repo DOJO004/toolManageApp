@@ -39,7 +39,7 @@ export default function ToolStockIndex({
                       </span>
                     </h4>
                     <p>
-                      警告 :
+                      警報 :
                       <span className="text-yellow-300">
                         {item.WarningCount}
                       </span>
