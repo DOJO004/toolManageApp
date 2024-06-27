@@ -23,6 +23,7 @@ import {
   toolPositionInfo,
 } from "@/scripts/toolStockFunction";
 import { AlertColor } from "@mui/material";
+import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
@@ -176,7 +177,20 @@ export default function Page() {
   return (
     <div className="relative w-full p-2 mx-auto text-center rounded-xl">
       <div className="relative ">
-        <h2 className="my-4">刀具庫存</h2>
+        <div className="flex items-center justify-center gap-2">
+          <h2 className="my-4">刀具庫存</h2>
+          <button
+            onClick={() => setFilterMode(!filterMode)}
+            className="p-1 rounded-full hover:bg-gray-900 h-fit"
+          >
+            <Image
+              src={"/icons/filter.svg"}
+              alt="filter icon"
+              width={30}
+              height={30}
+            />
+          </button>
+        </div>
         <button
           className="absolute top-0 right-0 p-1 border rounded-md hover:bg-gray-600"
           onClick={() => setNewToolStockMode(!newToolStockMode)}
@@ -185,12 +199,6 @@ export default function Page() {
         </button>
         <div className="flex justify-center gap-2"></div>
         <div className="relative ">
-          <button
-            className="p-1 border rounded-md"
-            onClick={() => setFilterMode(!filterMode)}
-          >
-            篩選
-          </button>
           <div
             className={`overflow-hidden transition-all rounded-md duration-300 flex flex-col m-4 gap-4 bg-gray-900 ${filterMode ? "h-60" : "h-0"}`}
           >
