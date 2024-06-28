@@ -27,9 +27,10 @@ export async function apiGetToolLoadingLogList(toolSn: string) {
   try {
     const today = new Date();
     const formattedDate = today.toISOString().split("T")[0]; // 格式化為 YYYY-MM-DD
+    console.log("formattedDate", formattedDate);
 
     const res = await apiInstance.get<GetLoadingLogListResponse>(
-      `http://10.45.34.126:8082/tool_get/GetStockToolTrackOpLogList?ToolSn=${toolSn}&StartTime=2023-08-23&EndTime=${formattedDate}&DescendOrder=true`
+      `http://10.45.34.126:8082/tool_get/GetStockToolTrackOpLogList?ToolSn=${toolSn}&StartTime=2023-08-23&EndTime=${formattedDate} 23:59:59&DescendOrder=true`
     );
     console.log("apiGetToolLoadingLogList", res);
 
