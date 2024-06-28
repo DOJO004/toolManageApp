@@ -1,4 +1,5 @@
 import {
+  formatMMToCM,
   toolLifeStatusTextColor,
   toolStatusPieChartColor,
 } from "@/scripts/Apis/toolInfo/functions";
@@ -64,7 +65,7 @@ const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
               <div>
                 <p className="my-2 md:whitespace-nowrap">累積加工長度：</p>
                 <h4 className="flex items-end">
-                  {toolInfoData?.LifeData?.ProcessLength / 10}
+                  {formatMMToCM(toolInfoData?.LifeData?.ProcessLength)}
                   <span className="text-sm text-gray-300"> cm</span>
                 </h4>
               </div>

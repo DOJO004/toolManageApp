@@ -28,6 +28,7 @@ export default function PatchStorageResponse() {
   const [editStorage, setEditStorage] = useState<EditStorageItem>(
     {} as EditStorageItem
   );
+  const [isPending, setIsPending] = useState(false);
 
   const getStorageList = async () => {
     setStorageList(await apiGetStorageList());
@@ -35,6 +36,7 @@ export default function PatchStorageResponse() {
 
   const postStorage = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
     const reqInt = await apiPostStorageInfo(newStorage);
     if (reqInt === 0) {
       getStorageList();
@@ -43,6 +45,7 @@ export default function PatchStorageResponse() {
     } else {
       handleNotice("error", true, `新增失敗。errorCode: ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const cleanNewStorage = () => {
@@ -118,6 +121,7 @@ export default function PatchStorageResponse() {
           postStorage={postStorage}
           newStorage={newStorage}
           handleChangeNewStorage={handleChangeNewStorage}
+          isPending={isPending}
         />
       </div>
       <div className="my-4 overflow-hidden bg-gray-900 rounded-md ">
