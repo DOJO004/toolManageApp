@@ -20,6 +20,13 @@ export default function ToolStockIndex({
   getToolStatusClass,
   toolPositionInfo,
 }: Props) {
+  const sortTime = (data: ToolStatusItem[]) => {
+    return data.sort(
+      (a, b) =>
+        new Date(a.LastModify).getTime() - new Date(b.LastModify).getTime()
+    );
+  };
+
   return (
     <>
       {toolStockList?.length > 0 ? (

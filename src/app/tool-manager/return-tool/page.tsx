@@ -203,7 +203,10 @@ export default function Page() {
                 </p>
 
                 <p className="p-1 whitespace-nowrap">
-                  {`${toolStockStatusInfo(item.ToolStatusInfo?.ToolStatus)} / ${item.ToolStatusInfo.MachineLoading.MachineName} `}
+                  {toolStockStatusInfo(item.ToolStatusInfo?.ToolStatus)}
+                  {item.ToolStatusInfo.MachineLoading?.MachineName
+                    ? ` / ${item.ToolStatusInfo.MachineLoading?.MachineName}`
+                    : ""}
                 </p>
 
                 <p onClick={() => handleClickReturn(item)}>

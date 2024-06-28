@@ -1,4 +1,5 @@
 "use client";
+import DefaultSkeleton from "@/components/skeletons/default";
 import PieChart from "@/components/toolInfo/piechart";
 import ToolInfoLog from "@/components/toolInfo/toolInfoLog";
 import { apiGetMachineSpecList } from "@/scripts/Apis/machineInfo/machineInfoApis";
@@ -154,14 +155,17 @@ export default function Page() {
         <div className="sticky my-4 bg-gray-900 -top-2">
           <h3 className="my-4">刀具狀態列表</h3>
           <div>
-            <div className="flex justify-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               <input
                 type="search"
                 className="p-2 text-black rounded-md w-96"
                 placeholder="搜尋刀具序號"
                 onChange={(e) => searchTool(e.target.value)}
               />
-              <button onClick={() => setFilterMode(!filterMode)}>
+              <button
+                className={`hover:bg-gray-500 rounded-full h-fit p-1 ${filterMode ? "bg-gray-500" : ""}`}
+                onClick={() => setFilterMode(!filterMode)}
+              >
                 <Image
                   src="/icons/filter.svg"
                   alt="filter"
@@ -301,9 +305,7 @@ export default function Page() {
             </div>
           ))
         ) : (
-          <div>
-            <p className="col-span-6 text-center">loading...</p>
-          </div>
+          <DefaultSkeleton />
         )}
       </div>
     </div>
