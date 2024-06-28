@@ -31,6 +31,7 @@ export default function Page() {
   const [inputUnbindLabel, setInputUnbindLabel] = useState<string>("");
   const [selectLabel, setSelectLabel] = useState<number>(-1);
   const [selectTool, setSelectToll] = useState<number>(-1);
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   const getELabelList = async () => {
     setELabelList(filterUnbindLabel(await apiGetELabelList()));
@@ -46,6 +47,7 @@ export default function Page() {
 
   const postBindTool = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
     const reqInt = await apiBindELabelInfo(bindToolData);
     if (reqInt === 0) {
       getELabelList();
@@ -56,6 +58,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `綁定失敗。errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const cleanBindToolData = () => {
@@ -168,6 +171,7 @@ export default function Page() {
           hintLabelCodeImage={hintLabelCodeImage}
           handleInputBindData={handleInputBindData}
           userList={userList}
+          isPending={isPending}
         />
       </div>
       {/* label */}

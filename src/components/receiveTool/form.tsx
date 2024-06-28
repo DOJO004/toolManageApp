@@ -2,6 +2,7 @@ import { BindToolDataItem } from "@/scripts/Apis/eLabelInfo/types";
 import { UserAccountItem } from "@/scripts/Apis/userInfo/types";
 import Image from "next/image";
 import { FormEvent } from "react";
+import SubmitButton from "../buttons";
 
 interface Props {
   postBindTool: (e: FormEvent) => void;
@@ -9,6 +10,7 @@ interface Props {
   bindToolData: BindToolDataItem;
   handleInputBindData: (key: string, value: string) => void;
   userList: UserAccountItem[];
+  isPending: boolean;
 }
 
 export default function Form({
@@ -17,6 +19,7 @@ export default function Form({
   bindToolData,
   handleInputBindData,
   userList,
+  isPending,
 }: Props) {
   return (
     <form onSubmit={(e) => postBindTool(e)}>
@@ -104,9 +107,12 @@ export default function Form({
           </select>
         </div>
       </div>
-      <button className="w-full p-1 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
-        綁定標籤
-      </button>
+      <SubmitButton
+        name="綁定標籤"
+        classNames="w-full p-1 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600"
+        onclick={() => {}}
+        isPending={isPending}
+      />
     </form>
   );
 }
