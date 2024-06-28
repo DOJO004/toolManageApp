@@ -11,6 +11,11 @@ import {
 } from "@/scripts/Apis/eLabelInfo/eLabelInfoApis";
 import { LabelBindItem, ReturnDataItem } from "@/scripts/Apis/eLabelInfo/types";
 
+import DefaultSkeleton from "@/components/skeletons/default";
+import {
+  toolLifeStatusTextColor,
+  translateLifeStatus,
+} from "@/scripts/Apis/toolInfo/functions";
 import {
   apiGetStorageList,
   apiRepairTool,
@@ -181,9 +186,10 @@ export default function Page() {
             className="flex p-2 mx-auto my-2 text-black rounded-md w-96 "
             onChange={(e) => searchTool(e.target.value)}
           />
-          <div className="grid grid-cols-5 font-bold text-center bg-indigo-500">
+          <div className="grid grid-cols-6 font-bold text-center bg-indigo-500">
             <p className="p-2">標籤號碼</p>
             <p className="p-2">刀具SN</p>
+            <p className="p-2">刀具狀態</p>
             <p className="p-2">領取人</p>
             <p className="p-2">狀態 / 位置</p>
             <p className="p-2">歸還</p>
@@ -192,11 +198,16 @@ export default function Page() {
         <div className="overflow-auto text-center bg-gray-900 rounded-md">
           {bindLabelList.length > 0 ? (
             bindLabelList.map((item: LabelBindItem, index: number) => (
-              <div key={index} className="grid grid-cols-5 hover:bg-gray-500">
+              <div key={index} className="grid grid-cols-6 hover:bg-gray-500">
                 <p className="p-1 whitespace-nowrap">
                   {item.LabelSpec.AimsSpec.LabelCode}
                 </p>
                 <p className="p-1 whitespace-nowrap">{item.ToolSn}</p>
+                <p
+                  className={`p-1 whitespace-nowrap ${toolLifeStatusTextColor(item.ToolStatusInfo.ToolLifeStatus)}`}
+                >
+                  {translateLifeStatus(item.ToolStatusInfo.ToolLifeStatus)}
+                </p>
 
                 <p className="p-1 whitespace-nowrap">
                   {item.ReceiptorInfo?.UserName}
@@ -243,8 +254,8 @@ export default function Page() {
               </div>
             ))
           ) : (
-            <div>
-              <p className="p-2">no data...</p>
+            <div className="p-4">
+              <DefaultSkeleton />
             </div>
           )}
         </div>

@@ -79,6 +79,7 @@ export interface LabelBindItem {
   ToolSn: string;
   ToolStatusInfo: {
     ToolStatus: number;
+    ToolLifeStatus: string;
     MachineLoading: {
       MachineId: string;
       MachineSn: string;

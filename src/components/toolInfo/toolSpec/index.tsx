@@ -26,6 +26,7 @@ export default function ToolSpecIndex({
     <table className="w-full ">
       <thead className="bg-indigo-500 border-b-2">
         <tr>
+          <td className="p-1 whitespace-nowrap ">刀具類型</td>
           <td className="p-1 whitespace-nowrap ">ID</td>
           <td className="p-1 whitespace-nowrap ">名稱</td>
           <td className="p-1 whitespace-nowrap ">Φ</td>
@@ -50,6 +51,7 @@ export default function ToolSpecIndex({
             <tr key={item.ToolSpecId} className="text-center hover:bg-gray-700">
               {editToolSpecMode && editToolSpecModeIndex === index ? (
                 <>
+                  <td className="p-1 ">{item.ToolTypeData.Name}</td>
                   <td className="p-1 ">{item.ToolSpecId}</td>
                   <td className="p-1 ">
                     <input
@@ -170,6 +172,9 @@ export default function ToolSpecIndex({
                 </>
               ) : (
                 <>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.ToolTypeData.Name}
+                  </td>
                   <td className="p-1 whitespace-nowrap ">{item.ToolSpecId}</td>
                   <td className="p-1 whitespace-nowrap ">{item.Name}</td>
                   <td className="p-1 whitespace-nowrap ">
