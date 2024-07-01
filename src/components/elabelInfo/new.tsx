@@ -1,17 +1,20 @@
 import { NewLabelItem } from "@/scripts/Apis/eLabelInfo/types";
 import { FormEvent } from "react";
+import SubmitButton from "../buttons";
 
 interface Props {
   setNewLabelMode: (value: boolean) => void;
   postNewLabelInfo: (e: FormEvent) => void;
   newLabelInfo: NewLabelItem;
   handleNewLabelInfo: (key: string, value: string) => void;
+  isPending: boolean;
 }
 export default function NewELabelInfo({
   setNewLabelMode,
   postNewLabelInfo,
   newLabelInfo,
   handleNewLabelInfo,
+  isPending,
 }: Props) {
   return (
     <div className="p-4 bg-gray-700 rounded-xl">
@@ -127,9 +130,12 @@ export default function NewELabelInfo({
             />
           </div>
         </div>
-        <button className="w-full p-2 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full p-2 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

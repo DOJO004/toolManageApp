@@ -58,6 +58,7 @@ export default function Page() {
     AxisName: "",
     IsSpindle: false,
   });
+  const [isPending, setIsPending] = useState(false);
 
   const getProductLineList = async () => {
     setProductLineList(await apiGetProductLineTypeList());
@@ -73,6 +74,7 @@ export default function Page() {
 
   const postMachineSpec = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
     const reqInt = await apiNewMachineSpec(newMachineSpec);
     if (reqInt === 0) {
       cleanNewMachineSpec();
@@ -81,6 +83,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `新增失敗errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const cleanNewMachineSpec = () => {
@@ -108,6 +111,7 @@ export default function Page() {
   };
 
   const patchMachineSpec = async () => {
+    setIsPending(true);
     const reqInt = await apiEditMachineSpec(editMachineSpec);
     if (reqInt === 0) {
       getMachineSpecList();
@@ -116,6 +120,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `更新失敗。errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const deleteMachineSpec = async () => {
@@ -221,6 +226,7 @@ export default function Page() {
             handleNewMachineSpec={handleNewMachineSpec}
             productLineList={productLineList}
             machineTypeList={machineTypeList}
+            isPending={isPending}
           />
         </div>
 
@@ -236,6 +242,7 @@ export default function Page() {
             patchMachineSpec={patchMachineSpec}
             deleteMachineSpec={deleteMachineSpec}
             clickEditMachineSpec={clickEditMachineSpec}
+            isPending={isPending}
           />
         </div>
       </div>

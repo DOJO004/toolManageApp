@@ -28,6 +28,7 @@ export default function Page() {
   const [newMachineTypeMode, setNewMachineTypeMode] = useState(false);
   const [editMachineTypeMode, setEditMachineTypeMode] = useState(false);
   const [editMachineTypeModeIndex, setEditMachineTypeModeIndex] = useState(-1);
+  const [isPending, setIsPending] = useState(false);
 
   const getMachineTypeList = async () => {
     setMachineTypeList(await apiGetMachineTypeList());
@@ -35,6 +36,7 @@ export default function Page() {
 
   const postMachineType = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
     const reqInt = await apiNewMachineType(newMachineType);
     if (reqInt === 0) {
       cleanNewMachineType();
@@ -43,6 +45,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const cleanNewMachineType = () => {
@@ -57,6 +60,7 @@ export default function Page() {
   };
 
   const patchMachineType = async () => {
+    setIsPending(true);
     const reqInt = await apiEditMachineType(editMachineType);
     if (reqInt === 0) {
       setEditMachineTypeMode(false);
@@ -65,6 +69,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `更新失敗。errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const deleteMachineType = async () => {
@@ -147,6 +152,7 @@ export default function Page() {
             postMachineType={postMachineType}
             newMachineType={newMachineType}
             handleNewMachineType={handleNewMachineType}
+            isPending={isPending}
           />
         </div>
         <div className="mt-2 overflow-hidden bg-gray-900 rounded-md">
@@ -159,6 +165,7 @@ export default function Page() {
             patchMachineType={patchMachineType}
             deleteMachineType={deleteMachineType}
             handleClickEditMachineType={handleClickEditMachineType}
+            isPending={isPending}
           />
         </div>
       </div>

@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/buttons";
 import { NewMachineTypeItem } from "@/scripts/Apis/machineInfo/types";
 import { FormEvent } from "react";
 
@@ -7,6 +8,7 @@ interface Props {
   postMachineType: (e: FormEvent) => void;
   newMachineType: NewMachineTypeItem;
   handleNewMachineType: (key: string, value: string) => void;
+  isPending: boolean;
 }
 
 export default function NewMachineType({
@@ -15,6 +17,7 @@ export default function NewMachineType({
   postMachineType,
   newMachineType,
   handleNewMachineType,
+  isPending,
 }: Props) {
   return (
     <div className="p-4 my-4 bg-gray-900 rounded-md">
@@ -56,9 +59,12 @@ export default function NewMachineType({
             />
           </div>
         </div>
-        <button className="w-full p-1 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full p-1 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

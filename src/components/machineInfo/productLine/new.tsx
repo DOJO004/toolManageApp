@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/buttons";
 import { NewProductLineItem } from "@/scripts/Apis/machineInfo/types";
 import { DepartmentItem } from "@/scripts/Apis/userInfo/types";
 import { FormEvent } from "react";
@@ -9,6 +10,7 @@ interface Props {
   postProductLine: (e: FormEvent) => void;
   newProductLine: NewProductLineItem;
   handleNewProductLine: (key: string, value: string) => void;
+  isPending: boolean;
 }
 
 export default function NewProductLine({
@@ -18,6 +20,7 @@ export default function NewProductLine({
   postProductLine,
   newProductLine,
   handleNewProductLine,
+  isPending,
 }: Props) {
   return (
     <div className="relative p-4 bg-gray-900 rounded-xl">
@@ -79,9 +82,12 @@ export default function NewProductLine({
             </select>
           </div>
         </div>
-        <button className="w-full p-1 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full p-1 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

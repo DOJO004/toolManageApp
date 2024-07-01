@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/buttons";
 import { MachineTypeItem } from "@/scripts/Apis/machineInfo/types";
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
   patchMachineType: () => void;
   deleteMachineType: () => void;
   handleClickEditMachineType: (item: MachineTypeItem, index: number) => void;
+  isPending: boolean;
 }
 
 export default function MachineTypeIndex({
@@ -20,6 +22,7 @@ export default function MachineTypeIndex({
   patchMachineType,
   deleteMachineType,
   handleClickEditMachineType,
+  isPending,
 }: Props) {
   return (
     <table className="w-full">
@@ -52,12 +55,12 @@ export default function MachineTypeIndex({
                   />
                 </td>
                 <td>
-                  <button
-                    className="p-1 bg-green-500 rounded-md hover:bg-green-600"
-                    onClick={() => patchMachineType()}
-                  >
-                    完成
-                  </button>
+                  <SubmitButton
+                    name="完成"
+                    classNames="p-1 bg-green-500 rounded-md hover:bg-green-600"
+                    onclick={() => patchMachineType()}
+                    isPending={isPending}
+                  />
                   <span> / </span>
                   <button
                     className="p-1 bg-red-500 rounded-md hover:bg-red-900"
@@ -73,7 +76,7 @@ export default function MachineTypeIndex({
                 <td className="p-1 whitespace-nowrap">{item.Name}</td>
                 <td className="p-1 whitespace-nowrap">
                   <button
-                    className="p-1 hover:bg-gray-900"
+                    className="p-1 hover:bg-indigo-500"
                     onClick={() => handleClickEditMachineType(item, index)}
                   >
                     編輯

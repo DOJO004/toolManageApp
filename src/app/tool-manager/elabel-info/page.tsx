@@ -1,5 +1,6 @@
 "use client";
 
+import SubmitButton from "@/components/buttons";
 import NewELabelInfo from "@/components/elabelInfo/new";
 import {
   apiDeleteELabel,
@@ -29,6 +30,8 @@ export default function Page() {
   const [newLabelMode, setNewLabelMode] = useState(false);
   const [editLabelMode, setEditLabelMode] = useState(false);
   const [editLabelModeIndex, setEditLabelModeIndex] = useState(-1);
+  const [isPending, setIsPending] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   const getELabelList = async () => {
     setELabelList(await apiGetELabelList());
@@ -36,6 +39,7 @@ export default function Page() {
 
   const postNewLabelInfo = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
     const reqInt = await apiNewELabel(newLabelInfo);
     if (reqInt === 0) {
       getELabelList();
@@ -44,6 +48,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `新增失敗。errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const cleanNewLabelInfo = () => {
@@ -63,6 +68,7 @@ export default function Page() {
   };
 
   const patchELabelInfo = async () => {
+    setIsPending(true);
     const reqInt = await apiEditELabel(editLabelData);
     if (reqInt === 0) {
       getELabelList();
@@ -71,6 +77,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `編輯失敗。errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const deleteELabelInfo = async () => {
@@ -116,18 +123,20 @@ export default function Page() {
       LabelCode: data.AimsSpec?.LabelCode || "",
       NfcRecord: data.AimsSpec?.NfcRecord || "",
       StationCode: data.AimsSpec?.StationCode || "",
-      ArticleId: data.AimsSpec?.ArticleInfo.ArticleID || "",
+      ArticleId: data.AimsSpec?.ArticleInfo.ArticleId || "",
       ArticleName: data.AimsSpec?.ArticleInfo.ArticleName || "",
     });
   };
 
   const postAsyncELabelInfoFromAims = async () => {
+    setIsSyncing(true);
     const reqInt = await syncELabelDataFromAims();
     if (reqInt === 0) {
       handleNotice("success", true, "同步成功");
     } else {
       handleNotice("error", true, `同步失敗。errorCode = ${reqInt}`);
     }
+    setIsSyncing(false);
   };
 
   const showBindToolData = (data: LabelItem) => {
@@ -189,6 +198,7 @@ export default function Page() {
               postNewLabelInfo={postNewLabelInfo}
               newLabelInfo={newLabelInfo}
               handleNewLabelInfo={handleNewLabelInfo}
+              isPending={isPending}
             />
           </div>
           <div className="p-4 mt-2 overflow-auto bg-gray-900 rounded-xl">
@@ -238,12 +248,12 @@ export default function Page() {
                           <td>{showBindToolData(item)}</td>
                           <td>-</td>
                           <td>
-                            <button
-                              className="p-1 hover:bg-indigo-500"
-                              onClick={() => patchELabelInfo()}
-                            >
-                              完成
-                            </button>
+                            <SubmitButton
+                              name="確認"
+                              classNames="p-1 rounded-md hover:bg-indigo-600"
+                              onclick={() => patchELabelInfo()}
+                              isPending={isPending}
+                            />
                             <span> / </span>
                             <button
                               className="p-1 hover:bg-red-500"
@@ -275,12 +285,12 @@ export default function Page() {
               </tbody>
             </table>
             <div className="mt-4">
-              <button
-                className="p-1 bg-indigo-500 rounded-md hover:bg-indigo-600"
-                onClick={() => postAsyncELabelInfoFromAims()}
-              >
-                同步AIMS電子標籤
-              </button>
+              <SubmitButton
+                name="同步AIMS電子標籤"
+                classNames="p-1 bg-indigo-500 rounded-md hover:bg-indigo-600"
+                onclick={() => postAsyncELabelInfoFromAims()}
+                isPending={isSyncing}
+              />
             </div>
           </div>
         </div>

@@ -29,7 +29,7 @@ export interface LabelItem {
     NfcRecord: string;
     StationCode: string;
     ArticleInfo: {
-      ArticleID: string;
+      ArticleId: string;
       ArticleName: string;
     };
   };

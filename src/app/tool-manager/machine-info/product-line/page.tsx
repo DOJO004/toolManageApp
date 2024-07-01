@@ -31,6 +31,7 @@ export default function Page() {
     {} as NewProductLineItem
   );
   const [departmentList, setDepartmentList] = useState<DepartmentItem[]>([]);
+  const [isPending, setIsPending] = useState(false);
 
   const getProductLineList = async () => {
     setProductLineList(await apiGetProductLineTypeList());
@@ -42,6 +43,7 @@ export default function Page() {
 
   const postProductLine = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
     const reqInt = await apiNewProductLineType(newProductLine);
     if (reqInt === 0) {
       getProductLineList();
@@ -50,6 +52,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const cleanProductLine = () => {
@@ -65,6 +68,7 @@ export default function Page() {
   };
 
   const patchProductLine = async () => {
+    setIsPending(true);
     const reqInt = await apiEditProductLineType(editProductLine);
     if (reqInt === 0) {
       getProductLineList();
@@ -73,6 +77,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `更新失敗。errorcode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const deleteProductLine = async () => {
@@ -162,6 +167,7 @@ export default function Page() {
             postProductLine={postProductLine}
             newProductLine={newProductLine}
             handleNewProductLine={handleNewProductLine}
+            isPending={isPending}
           />
         </div>
         <div className="w-full mt-2 overflow-auto bg-gray-900 rounded-md">
@@ -175,6 +181,7 @@ export default function Page() {
             patchProductLine={patchProductLine}
             deleteProductLine={deleteProductLine}
             handleClickEditProductLine={handleClickEditProductLine}
+            isPending={isPending}
           />
         </div>
       </div>

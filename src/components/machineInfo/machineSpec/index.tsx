@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/buttons";
 import {
   EditMachineSpecItem,
   MachineSpecItem,
@@ -17,6 +18,7 @@ interface Props {
   patchMachineSpec: () => void;
   deleteMachineSpec: () => void;
   clickEditMachineSpec: (item: MachineSpecItem, index: number) => void;
+  isPending: boolean;
 }
 export default function MachineSpecIndex({
   machineSpecList,
@@ -29,6 +31,7 @@ export default function MachineSpecIndex({
   patchMachineSpec,
   deleteMachineSpec,
   clickEditMachineSpec,
+  isPending,
 }: Props) {
   return (
     <table className="w-full ">
@@ -150,12 +153,12 @@ export default function MachineSpecIndex({
                     />
                   </td>
                   <td className="p-1 whitespace-nowrap">
-                    <button
-                      className="p-1 bg-green-500 rounded-md hover:bg-green-600"
-                      onClick={() => patchMachineSpec()}
-                    >
-                      完成
-                    </button>
+                    <SubmitButton
+                      name="完成"
+                      classNames="bg-green-500 hover:bg-green-600"
+                      onclick={() => patchMachineSpec()}
+                      isPending={isPending}
+                    />
                     <span> / </span>
                     <button
                       className="p-1 bg-red-500 rounded-md hover:bg-red-600"

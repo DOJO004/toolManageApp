@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/buttons";
 import {
   MachineTypeItem,
   NewMachineSpecItem,
@@ -12,6 +13,7 @@ interface Props {
   handleNewMachineSpec: (key: string, value: string | number | boolean) => void;
   productLineList: ProductLineItem[];
   machineTypeList: MachineTypeItem[];
+  isPending: boolean;
 }
 
 export default function NewMachineSpec({
@@ -21,6 +23,7 @@ export default function NewMachineSpec({
   handleNewMachineSpec,
   productLineList,
   machineTypeList,
+  isPending,
 }: Props) {
   useEffect(() => {}, []);
   return (
@@ -210,9 +213,12 @@ export default function NewMachineSpec({
             <label htmlFor="isSpindle">IsSpindle</label>
           </div>
         </div>
-        <button className="w-full p-1 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full p-1 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );
