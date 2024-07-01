@@ -213,14 +213,17 @@ export default function Page() {
                   {item.ReceiptorInfo?.UserName}
                 </p>
 
-                <p className="p-1 whitespace-nowrap">
+                <p className="p-1 truncate whitespace-nowrap ">
                   {toolStockStatusInfo(item.ToolStatusInfo?.ToolStatus)}
                   {item.ToolStatusInfo.MachineLoading?.MachineName
                     ? ` / ${item.ToolStatusInfo.MachineLoading?.MachineName}`
                     : ""}
                 </p>
 
-                <p onClick={() => handleClickReturn(item)}>
+                <p
+                  className="grid grid-cols-3 gap-2"
+                  onClick={() => handleClickReturn(item)}
+                >
                   {handleToolReturnIndex === index ? (
                     <>
                       <button
@@ -244,7 +247,7 @@ export default function Page() {
                     </>
                   ) : (
                     <button
-                      className="p-1 whitespace-nowrap hover:bg-indigo-600"
+                      className="col-span-3 p-1 mx-auto whitespace-nowrap w-fit hover:bg-indigo-600"
                       onClick={() => handleToolReturn(index)}
                     >
                       歸還

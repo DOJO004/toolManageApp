@@ -25,6 +25,7 @@ export default function Page() {
     Id: "",
     Name: "",
   });
+  const [isPending, setIsPending] = useState(false);
 
   const getToolTypeList = async () => {
     setToolTypeList(await apiGetToolTypeList());
@@ -32,6 +33,7 @@ export default function Page() {
 
   const postToolType = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
 
     const reqInt = await apiNewToolType(newToolType);
 
@@ -42,6 +44,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `新增失敗。errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const cleanNewToolType = () => {
@@ -52,6 +55,7 @@ export default function Page() {
   };
 
   const patchToolType = async () => {
+    setIsPending(true);
     const reqInt = await apiEditToolType(editToolType);
     if (reqInt === 0) {
       setEditToolTypeMode(false);
@@ -60,6 +64,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `更新失敗，errorcode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const deleteToolType = async (item: ToolTypeItem) => {
@@ -144,6 +149,7 @@ export default function Page() {
               postToolType={postToolType}
               newToolType={newToolType}
               setNewToolType={setNewToolType}
+              isPending={isPending}
             />
           </div>
           {/* search */}
@@ -164,6 +170,7 @@ export default function Page() {
             patchToolType={patchToolType}
             deleteToolType={deleteToolType}
             handleClickEditToolType={handleClickEditToolType}
+            isPending={isPending}
           />
         </div>
       </div>

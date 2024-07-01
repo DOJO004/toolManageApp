@@ -43,6 +43,7 @@ export default function Page() {
     ProcessLength: 0,
     RepairCnt: 0,
   });
+  const [isPending, setIsPending] = useState(false);
 
   const getToolTypeList = async () => {
     setToolTypeList(await apiGetToolTypeList());
@@ -54,6 +55,7 @@ export default function Page() {
 
   const postNewToolSpec = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
 
     const reqInt = await apiNewToolSpec(newToolSpec);
 
@@ -64,9 +66,11 @@ export default function Page() {
     } else {
       handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const patchToolSpec = async () => {
+    setIsPending(true);
     const reqInt = await apiEditToolSpec(editToolSpec);
     if (reqInt === 0) {
       setEditToolSpecMode(false);
@@ -75,6 +79,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `修改失敗，errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const deleteToolSpec = async () => {
@@ -198,6 +203,7 @@ export default function Page() {
             newToolSpec={newToolSpec}
             handleNewToolSpec={handleNewToolSpec}
             toolTypeList={toolTypeList}
+            isPending={isPending}
           />
         </div>
         <div className="overflow-hidden text-center bg-gray-900 rounded-md ">
@@ -210,6 +216,7 @@ export default function Page() {
             patchToolSpec={patchToolSpec}
             deleteToolSpec={deleteToolSpec}
             handleEditToolSpecMode={handleEditToolSpecMode}
+            isPending={isPending}
           />
         </div>
       </div>

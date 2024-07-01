@@ -39,6 +39,7 @@ export default function Page() {
     {} as NewToolStockItem
   );
   const [newToolStockMode, setNewToolStockMode] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const getToolStockList = async () => {
     setToolStockList(await apiGetToolStockCountList());
@@ -55,6 +56,7 @@ export default function Page() {
 
   const postToolStock = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
 
     const reqInt = await apiPostToolStock(newToolStock);
     if (reqInt === 0) {
@@ -64,6 +66,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const handleToolSpecClass = (toolStockList: StockToolCountItem[]) => {
@@ -269,6 +272,7 @@ export default function Page() {
             toolSpecList={toolSpecList}
             handleToolStock={handleToolStock}
             storageList={storageList}
+            isPending={isPending}
           />
         </div>
       </div>

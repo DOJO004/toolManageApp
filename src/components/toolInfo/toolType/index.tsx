@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/buttons";
 import { ToolTypeItem } from "@/scripts/Apis/toolInfo/types";
 import React from "react";
 
@@ -10,6 +11,7 @@ interface Props {
   patchToolType: () => void;
   deleteToolType: (item: ToolTypeItem) => void;
   handleClickEditToolType: (item: ToolTypeItem, index: number) => void;
+  isPending: boolean;
 }
 
 export default function ToolTypeIndex({
@@ -21,6 +23,7 @@ export default function ToolTypeIndex({
   patchToolType,
   deleteToolType,
   handleClickEditToolType,
+  isPending,
 }: Props) {
   return (
     <>
@@ -50,12 +53,12 @@ export default function ToolTypeIndex({
                 />
               </p>
               <p className="p-1">
-                <span
-                  className="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
-                  onClick={() => patchToolType()}
-                >
-                  完成
-                </span>
+                <SubmitButton
+                  name="完成"
+                  classNames="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
+                  onclick={() => patchToolType()}
+                  isPending={isPending}
+                />
                 <span className="mx-2">/</span>
                 <span
                   className="p-1 bg-red-500 rounded-md cursor-pointer hover:bg-red-600"

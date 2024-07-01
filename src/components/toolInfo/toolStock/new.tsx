@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/buttons";
 import {
   NewToolStockItem,
   StorageMenuItem,
@@ -13,6 +14,7 @@ interface Props {
   toolSpecList: ToolSpecItem[];
   handleToolStock: (key: string, value: string | number) => void;
   storageList: StorageMenuItem[];
+  isPending: boolean;
 }
 export default function NewToolStock({
   getToolStockList,
@@ -22,6 +24,7 @@ export default function NewToolStock({
   toolSpecList,
   handleToolStock,
   storageList,
+  isPending,
 }: Props) {
   return (
     <div className="w-full p-4 bg-gray-900 rounded-md">
@@ -93,9 +96,12 @@ export default function NewToolStock({
             </select>
           </div>
         </div>
-        <button className="w-full p-1 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full p-1 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

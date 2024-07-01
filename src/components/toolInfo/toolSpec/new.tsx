@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/buttons";
 import { NewToolSpecItem, ToolTypeItem } from "@/scripts/Apis/toolInfo/types";
 import React, { FormEvent } from "react";
 
@@ -7,6 +8,7 @@ interface Props {
   newToolSpec: NewToolSpecItem;
   toolTypeList: ToolTypeItem[];
   handleNewToolSpec: (key: string, value: string | number) => void;
+  isPending: boolean;
 }
 
 export function NewToolSpec({
@@ -15,6 +17,7 @@ export function NewToolSpec({
   newToolSpec,
   toolTypeList,
   handleNewToolSpec,
+  isPending,
 }: Props) {
   return (
     <div className="p-2 bg-gray-900 rounded-md">
@@ -197,9 +200,12 @@ export function NewToolSpec({
             />
           </div>
         </div>
-        <button className="w-full my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          送出
-        </button>
+        <SubmitButton
+          name="送出"
+          classNames="w-full my-4 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={(e) => postNewToolSpec(e)}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

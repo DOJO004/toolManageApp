@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/buttons";
 import { formatTime } from "@/scripts/Apis/toolInfo/functions";
 import { ToolSpecItem, editToolSpecItem } from "@/scripts/Apis/toolInfo/types";
 
@@ -10,6 +11,7 @@ interface Props {
   patchToolSpec: () => void;
   deleteToolSpec: () => void;
   handleEditToolSpecMode: (item: ToolSpecItem, index: number) => void;
+  isPending: boolean;
 }
 
 export default function ToolSpecIndex({
@@ -21,6 +23,7 @@ export default function ToolSpecIndex({
   patchToolSpec,
   deleteToolSpec,
   handleEditToolSpecMode,
+  isPending,
 }: Props) {
   return (
     <table className="w-full ">
@@ -155,12 +158,12 @@ export default function ToolSpecIndex({
                     />
                   </td>
                   <td className="p-1 whitespace-nowrap">
-                    <span
-                      className="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
-                      onClick={() => patchToolSpec()}
-                    >
-                      完成
-                    </span>
+                    <SubmitButton
+                      name="完成"
+                      classNames="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
+                      onclick={() => patchToolSpec()}
+                      isPending={isPending}
+                    />
                     <span> / </span>
                     <span
                       className="p-1 bg-red-500 rounded-md cursor-pointer hover:bg-red-600"
