@@ -33,6 +33,7 @@ export default function Page() {
   const [lineForms, setLineForms] = useState<number[]>([]);
   const [emailForms, setEmailForms] = useState<number[]>([]);
   const [editNotifyMode, setEditNotifyMode] = useState(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   const getNotifyList = async () => {
     setNotifyList(await apiGetNotifyList());
@@ -43,6 +44,7 @@ export default function Page() {
 
   const postNotify = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
     const reqInt = await apiNewNotify(notifyData);
     if (reqInt === 0) {
       getNotifyList();
@@ -51,9 +53,11 @@ export default function Page() {
     } else {
       handleNotice("error", true, `新增失敗。error ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const patchNotify = async () => {
+    setIsPending(true);
     const reqInt = await apiEditNotify(notifyData);
     if (reqInt === 0) {
       getNotifyList();
@@ -63,6 +67,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `修改失敗。error ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const deleteNotify = async () => {
@@ -224,6 +229,7 @@ export default function Page() {
           removeEmailForm={removeEmailForm}
           removeLineForm={removeLineForm}
           setNewNotifyMode={setNewNotifyMode}
+          isPending={isPending}
         />
       </div>
       <div className="mt-4 overflow-auto text-center bg-gray-900 rounded-md min-h-96">
@@ -241,6 +247,7 @@ export default function Page() {
           patchNotify={patchNotify}
           handleLineFormChange={handleLineFormChange}
           handleEmailFormChange={handleEmailFormChange}
+          isPending={isPending}
         />
         <table className="w-full ">
           <thead>

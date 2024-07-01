@@ -1,5 +1,6 @@
 "use client";
 
+import SubmitButton from "@/components/buttons";
 import { NewDepartmentItem } from "@/scripts/Apis/userInfo/types";
 import { FormEvent } from "react";
 
@@ -8,6 +9,7 @@ interface NewDepartmentProps {
   postDepartment: (e: FormEvent) => void;
   newDepartment: NewDepartmentItem;
   handleChange: (key: string, value: string) => void;
+  isPending: boolean;
 }
 
 export default function NewDepartment({
@@ -15,6 +17,7 @@ export default function NewDepartment({
   postDepartment,
   newDepartment,
   handleChange,
+  isPending,
 }: NewDepartmentProps) {
   return (
     <div className="p-4 bg-gray-900 rounded-md">
@@ -50,9 +53,12 @@ export default function NewDepartment({
             />
           </div>
         </div>
-        <button className="w-full bg-indigo-500 rounded-md hover:bg-indigo-600">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

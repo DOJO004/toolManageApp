@@ -1,3 +1,4 @@
+import SubmitButton from "@/components/buttons";
 import { NewPermissionItemInfo } from "@/scripts/Apis/userInfo/types";
 import { FormEvent } from "react";
 
@@ -6,6 +7,7 @@ interface Props {
   postPermissionInfo: (e: FormEvent) => void;
   newPermission: NewPermissionItemInfo;
   handleNewPermissionChange: (key: string, value: string) => void;
+  isPending: boolean;
 }
 
 export default function NewPermissionInfo({
@@ -13,6 +15,7 @@ export default function NewPermissionInfo({
   postPermissionInfo,
   newPermission,
   handleNewPermissionChange,
+  isPending,
 }: Props) {
   return (
     <div className="p-4 my-4 bg-gray-900 rounded-md">
@@ -73,9 +76,12 @@ export default function NewPermissionInfo({
             </select>
           </div>
         </div>
-        <button className="w-full p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          送出
-        </button>
+        <SubmitButton
+          name="送出"
+          classNames="w-full p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

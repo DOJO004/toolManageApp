@@ -1,5 +1,6 @@
 import { NotifyDataItem, ToolSpecItem } from "@/scripts/Apis/toolInfo/types";
 import Image from "next/image";
+import SubmitButton from "../buttons";
 
 interface Props {
   editNotifyMode: boolean;
@@ -15,6 +16,7 @@ interface Props {
   patchNotify: () => void;
   handleLineFormChange: (index: number, key: string, value: string) => void;
   handleEmailFormChange: (index: number, key: string, value: string) => void;
+  isPending: boolean;
 }
 export default function EditNotifyForm({
   editNotifyMode,
@@ -30,6 +32,7 @@ export default function EditNotifyForm({
   patchNotify,
   handleLineFormChange,
   handleEmailFormChange,
+  isPending,
 }: Props) {
   return (
     <div
@@ -192,12 +195,12 @@ export default function EditNotifyForm({
             ))}
           </div>
         </div>
-        <button
-          className="w-full p-1 mt-4 bg-indigo-500 rounded-md"
-          onClick={() => patchNotify()}
-        >
-          儲存
-        </button>
+        <SubmitButton
+          name="儲存"
+          classNames="w-full p-1 mt-4 bg-indigo-500 rounded-md"
+          onclick={(e) => patchNotify()}
+          isPending={isPending}
+        />
       </div>
     </div>
   );

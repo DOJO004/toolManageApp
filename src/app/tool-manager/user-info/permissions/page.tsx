@@ -1,5 +1,6 @@
 "use client";
 
+import SubmitButton from "@/components/buttons";
 import NewPermissionInfo from "@/components/userInfo/permissions/new";
 import {
   EditPermissionItemInfo,
@@ -36,6 +37,7 @@ export default function Page() {
       Name: "",
       PermissionType: 0,
     });
+  const [isPending, setIsPending] = useState(false);
 
   const getPermissionsInfoList = async () => {
     setPermissionInfoList(await apiGetPermissionsInfoList());
@@ -43,6 +45,7 @@ export default function Page() {
 
   const postPermissionInfo = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
     const reqInt = await apiNewPermissionsInfo(newPermissionInfo);
     if (reqInt === 0) {
       getPermissionsInfoList();
@@ -51,9 +54,11 @@ export default function Page() {
     } else {
       handleShowNotice("error", true, `新增失敗 ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const patchPermissionsInfo = async () => {
+    setIsPending(true);
     const reqInt = await apiEditPermissionsInfo(editPermissionInfo);
     if (reqInt === 0) {
       getPermissionsInfoList();
@@ -62,6 +67,7 @@ export default function Page() {
     } else {
       handleShowNotice("error", true, `修改失敗 ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const deletePermissionsInfo = async () => {
@@ -127,6 +133,7 @@ export default function Page() {
           postPermissionInfo={postPermissionInfo}
           newPermission={newPermissionInfo}
           handleNewPermissionChange={handleChange}
+          isPending={isPending}
         />
       </div>
       <div className="w-full overflow-auto text-center bg-gray-900 rounded-md">
@@ -154,9 +161,17 @@ export default function Page() {
                   </td>
                   <td> - </td>
                   <td>
-                    <button onClick={() => patchPermissionsInfo()}>完成</button>{" "}
-                    /{" "}
-                    <button onClick={() => deletePermissionsInfo()}>
+                    <SubmitButton
+                      name="確認"
+                      classNames=" p-1 my-4 bg-green-500 rounded-md hover:bg-green-600"
+                      onclick={() => patchPermissionsInfo()}
+                      isPending={isPending}
+                    />
+                    <span> / </span>
+                    <button
+                      className="p-1 my-4 bg-red-500 rounded-md  hover:bg-red-600"
+                      onClick={() => deletePermissionsInfo()}
+                    >
                       刪除
                     </button>
                   </td>

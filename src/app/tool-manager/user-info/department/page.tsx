@@ -1,5 +1,6 @@
 "use client";
 
+import SubmitButton from "@/components/buttons";
 import NewDepartment from "@/components/userInfo/department/new";
 import {
   DepartmentItem,
@@ -31,6 +32,7 @@ export default function Page() {
     DepartmentId: "",
     Name: "",
   });
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   const getDepartmentList = async () => {
     setDepartmentList(await apiGetDepartmentList());
@@ -38,6 +40,7 @@ export default function Page() {
 
   const postDepartment = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
     const ReqInt = await apiPostDepartment(newDepartment);
     if (ReqInt === 0) {
       getDepartmentList();
@@ -46,9 +49,11 @@ export default function Page() {
     } else {
       handleShowNotice("error", true, `新增失敗。error code:${ReqInt}`);
     }
+    setIsPending(false);
   };
 
   const patchDepartment = async () => {
+    setIsPending(true);
     const reqInt = await apiPatchDepartment(editDepartment);
     if (reqInt === 0) {
       getDepartmentList();
@@ -57,6 +62,7 @@ export default function Page() {
     } else {
       handleShowNotice("error", true, `修改失敗。error code:${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const deleteDepartment = async () => {
@@ -111,6 +117,7 @@ export default function Page() {
           postDepartment={postDepartment}
           newDepartment={newDepartment}
           handleChange={handleChange}
+          isPending={isPending}
         />
       </div>
       <div className="w-full overflow-auto text-center bg-gray-900 rounded-md ">
@@ -145,11 +152,17 @@ export default function Page() {
                         </td>
                         <td> - </td>
                         <td>
-                          <button onClick={() => patchDepartment()}>
-                            完成
-                          </button>
-                          /
-                          <button onClick={() => deleteDepartment()}>
+                          <SubmitButton
+                            name="確認"
+                            classNames="p-1 bg-green-500 rounded-md hover:bg-green-600"
+                            onclick={() => patchDepartment()}
+                            isPending={isPending}
+                          />
+                          <span> / </span>
+                          <button
+                            className="p-1 bg-red-500 rounded-md hover:bg-red-600"
+                            onClick={() => deleteDepartment()}
+                          >
                             刪除
                           </button>
                         </td>

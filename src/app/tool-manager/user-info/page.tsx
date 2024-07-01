@@ -54,6 +54,7 @@ export default function Page() {
   const [editUserMode, setEditUserMode] = useState<boolean>(false);
   const [editUserIndex, setEditUserIndex] = useState<number>(-1);
   const [editPermission, setEditPermission] = useState(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   const getUserInfoList = async () => {
     setUserInfoList(await apiGetUserInfoList());
@@ -69,6 +70,7 @@ export default function Page() {
 
   const postUserInfo = async (e: FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
     const reqInt = await apiPostUserInfo(newUserInfo);
     if (reqInt === 0) {
       getUserInfoList();
@@ -78,6 +80,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `新增失敗，errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const cleanNewUserInfo = () => {
@@ -133,6 +136,7 @@ export default function Page() {
 
   const patchUserInfo = async (e?: FormEvent) => {
     e?.preventDefault();
+    setIsPending(true);
     const reqInt = await apiPatchUserInfo(editUserInfo);
     if (reqInt === 0) {
       getUserInfoList();
@@ -143,6 +147,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `更新失敗，errorCode = ${reqInt}`);
     }
+    setIsPending(false);
   };
 
   const deleteUserInfo = async () => {
@@ -239,6 +244,7 @@ export default function Page() {
           focusInput={focusInput}
           permissionList={permissionList}
           handleCheckPermission={handleCheckPermission}
+          isPending={isPending}
         />
       </div>
       <div className="relative w-full overflow-auto bg-gray-900 rounded-md ">
@@ -269,6 +275,7 @@ export default function Page() {
           deleteUserInfo={deleteUserInfo}
           handleResetPassword={handleResetPassword}
           setEditPermission={setEditPermission}
+          isPending={isPending}
         />
       </div>
     </div>

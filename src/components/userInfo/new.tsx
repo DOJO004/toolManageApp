@@ -4,6 +4,7 @@ import {
   PermissionMenuItem,
 } from "@/scripts/Apis/userInfo/types";
 import { FormEvent } from "react";
+import SubmitButton from "../buttons";
 interface NewUserInfoProps {
   setNewUserMode: (value: boolean) => void;
   departmentList: DepartmentItem[];
@@ -14,6 +15,7 @@ interface NewUserInfoProps {
   focusInput: boolean;
   permissionList: PermissionMenuItem[];
   handleCheckPermission: (checked: boolean, permissionId: string) => void;
+  isPending: boolean;
 }
 export default function UserInfoNew({
   setNewUserMode,
@@ -24,6 +26,7 @@ export default function UserInfoNew({
   setFocusInput,
   focusInput,
   permissionList,
+  isPending,
 }: NewUserInfoProps) {
   return (
     <div className="p-4 bg-gray-900 rounded-md">
@@ -152,9 +155,12 @@ export default function UserInfoNew({
             </div>
           </div>
         </div>
-        <button className="w-full p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

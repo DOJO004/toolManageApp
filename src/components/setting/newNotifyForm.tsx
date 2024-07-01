@@ -1,6 +1,7 @@
 import { NotifyDataItem, ToolSpecItem } from "@/scripts/Apis/toolInfo/types";
 import Image from "next/image";
 import React, { FormEvent } from "react";
+import SubmitButton from "../buttons";
 
 interface Props {
   postNotify: (e: FormEvent) => void;
@@ -16,6 +17,7 @@ interface Props {
   removeLineForm: (index: number) => void;
   removeEmailForm: (index: number) => void;
   setNewNotifyMode: React.Dispatch<React.SetStateAction<boolean>>;
+  isPending: boolean;
 }
 
 export default function NewNotifyForm({
@@ -32,6 +34,7 @@ export default function NewNotifyForm({
   removeLineForm,
   removeEmailForm,
   setNewNotifyMode,
+  isPending,
 }: Props) {
   return (
     <div className="relative items-center p-4 mt-4 text-center bg-gray-900 rounded-md ">
@@ -187,12 +190,12 @@ export default function NewNotifyForm({
           }
         </div>
       </div>
-      <button
-        className="w-full p-1 mt-4 bg-indigo-500 rounded-md"
-        onClick={(e) => postNotify(e)}
-      >
-        新增
-      </button>
+      <SubmitButton
+        name="新增"
+        classNames="w-full p-1 mt-4 bg-indigo-500 rounded-md"
+        onclick={(e) => postNotify(e)}
+        isPending={isPending}
+      />
     </div>
   );
 }
