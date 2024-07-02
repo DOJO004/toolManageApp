@@ -3,10 +3,10 @@
 import { setCookie } from "@/scripts/Apis/mainApi";
 import { UserLoginInfo } from "@/scripts/Apis/userInfo/types";
 import { ApiUserLogin } from "@/scripts/Apis/userInfo/userInfoApis";
-import CircularProgress from "@mui/joy/CircularProgress";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import SubmitButton from "../buttons";
 import SweetAlert from "../sweetAlert";
 import { LoginResponse } from "./types";
 
@@ -82,9 +82,12 @@ export default function Login() {
             unoptimized
           />
         </div>
-        <button className="w-full p-2 my-4 bg-indigo-500 rounded-md">
-          {waitLogin ? <CircularProgress variant="solid" size="sm" /> : "登入"}
-        </button>
+        <SubmitButton
+          name="登入"
+          classNames="w-full p-2 my-4 bg-indigo-500 rounded-md"
+          onclick={() => {}}
+          isPending={waitLogin}
+        />
       </form>
     </div>
   );
