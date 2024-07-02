@@ -20,98 +20,77 @@ export default function ToolStockIndex({
   getToolStatusClass,
   toolPositionInfo,
 }: Props) {
-  const sortTime = (data: ToolStatusItem[]) => {
-    return data.sort(
-      (a, b) =>
-        new Date(a.LastModify).getTime() - new Date(b.LastModify).getTime()
-    );
-  };
-
   return (
-    <>
-      {toolStockList?.length > 0 ? (
-        toolStockList.map((item: StockToolCountItem, index: number) => (
-          <div className="relative h-full mt-8 " key={item.ToolSpecId}>
-            <div className="sticky top-0 w-full px-4 bg-gray-900 rounded-md">
-              <div className="flex justify-between ">
-                <h3 className="p-1 my-2 font-bold text-left ">
+    <div className="overflow-auto h-svh">
+      {toolStockList.length > 0 ? (
+        toolStockList.map((item) => (
+          <div key={item.ToolSpecId} className="p-4 bg-gray-900 rounded-md">
+            <div className="sticky top-0 bg-gray-900 rounded-md ">
+              <div className="flex items-center justify-between">
+                <h3 className="p-1 my-2 font-bold text-left">
                   {item.ToolSpecName}
                 </h3>
-                <div className="flex items-center">
-                  <div className="flex items-center gap-2">
-                    <h4>
-                      現有庫存：
-                      <span className="text-green-500">
-                        {item.CurrentStock}
-                      </span>
-                    </h4>
-                    <p>
-                      警告：
-                      <span className="text-yellow-300">
-                        {item.WarningCount}
-                      </span>
-                    </p>
-                    <p>
-                      警報：
-                      <span className="text-red-500">{item.AlarmCount}</span>
-                    </p>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <p>
+                    現有庫存：
+                    <span className="text-green-500">{item.CurrentStock}</span>
+                  </p>
+                  <p>
+                    警告：
+                    <span className="text-yellow-300">{item.WarningCount}</span>
+                  </p>
+                  <p>
+                    警報：
+                    <span className="text-red-500">{item.AlarmCount}</span>
+                  </p>
                 </div>
               </div>
-              <p className="text-right text-gray-400 ">
+              <p className="text-right text-gray-400">
                 安全庫存 :{item.SafetyStock}
               </p>
+              <div className="grid items-center grid-cols-6 bg-indigo-500 rounded-md">
+                <p className="p-1 font-bold">刀具 SN</p>
+                <p className="p-1 font-bold">狀態</p>
+                <p className="p-1 font-bold">生命指數</p>
+                <p className="p-1 font-bold">最後更新</p>
+                <p className="p-1 font-bold">設備 SN / 所在位置</p>
+                <p className="p-1 font-bold">領用人 / 歸還人</p>
+              </div>
             </div>
-            <table className="w-full">
-              <thead>
-                <tr className="bg-indigo-500">
-                  <th className="p-1 ">刀具 SN</th>
-                  <th className="p-1 ">狀態</th>
-                  <th className="p-1 ">生命指數</th>
-                  <th className="p-1 ">最後更新</th>
-                  <th className="p-1 ">設備 SN / 所在位置</th>
-                  <th className="p-1 ">領用人 / 歸還人</th>
-                </tr>
-              </thead>
-              <tbody>
-                {item.ToolStatusList.length > 0 ? (
-                  sortToolStockList(item.ToolStatusList).map(
-                    (item: ToolStatusItem) => (
-                      <tr key={item.ToolSn} className="even:bg-gray-700">
-                        <td className="p-1 ">{item.ToolSn}</td>
-                        <td
-                          className={`p-1 ${toolLifeStatusTextColor(item.LifeStatus)}`}
-                        >
-                          {translateLifeStatus(item.LifeStatus)}
-                        </td>
-                        <td className="p-1">{item.LifePercentage}</td>
-                        <td className="p-1">{item.LastModify}</td>
-                        <td className="p-1">
-                          {toolPositionInfo(item.PositionInfo.PositionStatus)}
-                          <span> / </span>
-                          {item.PositionInfo.MachineSn}
-                          {item.PositionInfo.StorageId === -1
-                            ? ""
-                            : item.PositionInfo.StorageName}
-                        </td>
-                        <td className="p-1">{item.LastOperator.UserName}</td>
-                      </tr>
-                    )
-                  )
-                ) : (
-                  <tr>
-                    <td colSpan={7} className="p-1 text-center">
-                      暫無數據
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+            <div>
+              {item.ToolStatusList.length > 0 ? (
+                sortToolStockList(item.ToolStatusList).map((toolStatus) => (
+                  <div
+                    key={toolStatus.ToolSn}
+                    className="grid items-center grid-cols-6 even:bg-gray-700"
+                  >
+                    <p className="p-1">{toolStatus.ToolSn}</p>
+                    <p
+                      className={`p-1 ${toolLifeStatusTextColor(toolStatus.LifeStatus)}`}
+                    >
+                      {translateLifeStatus(toolStatus.LifeStatus)}
+                    </p>
+                    <p className="p-1">{toolStatus.LifePercentage}</p>
+                    <p className="p-1">{toolStatus.LastModify}</p>
+                    <p className="p-1">
+                      {toolPositionInfo(toolStatus.PositionInfo.PositionStatus)}
+                      {toolStatus.PositionInfo.MachineSn &&
+                        ` / ${toolStatus.PositionInfo.MachineSn}`}
+                      {toolStatus.PositionInfo.StorageId !== -1 &&
+                        ` ${toolStatus.PositionInfo.StorageName}`}
+                    </p>
+                    <p className="p-1">{toolStatus.LastOperator.UserName}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="p-1 text-center">暫無數據</p>
+              )}
+            </div>
           </div>
         ))
       ) : (
         <p className="my-4 text-center">no data...</p>
       )}
-    </>
+    </div>
   );
 }
