@@ -40,19 +40,19 @@ export default function ToolStockIndex({
                 <div className="flex items-center">
                   <div className="flex items-center gap-2">
                     <h4>
-                      現有庫存 :
+                      現有庫存：
                       <span className="text-green-500">
                         {item.CurrentStock}
                       </span>
                     </h4>
                     <p>
-                      警報 :
+                      警告：
                       <span className="text-yellow-300">
                         {item.WarningCount}
                       </span>
                     </p>
                     <p>
-                      警告 :
+                      警報：
                       <span className="text-red-500">{item.AlarmCount}</span>
                     </p>
                   </div>

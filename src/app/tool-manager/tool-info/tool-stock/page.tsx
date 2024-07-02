@@ -119,9 +119,11 @@ export default function Page() {
     const sortToolStatus = toolList.sort((a, b) => {
       // 定义 LifeStatus 的排序优先顺序
       const statusOrder: { [key: string]: number } = {
-        Normal: 1,
-        Repairing: 2,
-        Scrap: 3,
+        Normal: 3,
+        Repairing: 4,
+        Scrap: 5,
+        Alarm: 1,
+        Warning: 2,
       };
 
       // 比较 LifeStatus 的优先顺序
