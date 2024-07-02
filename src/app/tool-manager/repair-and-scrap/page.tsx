@@ -1,4 +1,5 @@
 "use client";
+import DefaultSkeleton from "@/components/skeletons/default";
 import { ReturnDataItem } from "@/scripts/Apis/eLabelInfo/types";
 import { toolLifeStatusTextColor } from "@/scripts/Apis/toolInfo/functions";
 import {
@@ -196,7 +197,9 @@ export default function Page() {
               ))
             ) : (
               <tr>
-                <td colSpan={12}>no data...</td>
+                <td colSpan={9}>
+                  <DefaultSkeleton />
+                </td>
               </tr>
             )}
           </tbody>

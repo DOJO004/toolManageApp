@@ -41,7 +41,7 @@ export default function Page() {
   });
 
   const getBindLabelList = async () => {
-    setBindLabelList(await apiGetBindLabelList());
+    setBindLabelList(sortBindLabelList(await apiGetBindLabelList()));
   };
 
   const getUserList = async () => {
@@ -101,6 +101,22 @@ export default function Page() {
     // } else {
     //   handleNotice("error", true, `報廢失敗。errorCode = ${returnToolReqInt}`);
     // }
+  };
+
+  //sort bind label list
+  const sortBindLabelList = (data: LabelBindItem[]) => {
+    const toolStatusMap: { [key: string]: number } = {
+      Alert: 1,
+      Alarm: 2,
+      Warning: 3,
+      Normal: 4,
+    };
+    return data.sort((a, b) => {
+      return (
+        toolStatusMap[a.ToolStatusInfo.ToolLifeStatus] -
+        toolStatusMap[b.ToolStatusInfo.ToolLifeStatus]
+      );
+    });
   };
 
   // 搜尋
