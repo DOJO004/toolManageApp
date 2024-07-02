@@ -116,31 +116,28 @@ export default function Page() {
   };
 
   const sortToolStockList = (toolList: ToolStatusItem[]) => {
-    const sortData = toolList.sort((a, b) => {
-      // 定義 LifeStatus 的排序優先順序
+    const sortToolStatus = toolList.sort((a, b) => {
+      // 定义 LifeStatus 的排序优先顺序
       const statusOrder: { [key: string]: number } = {
         Normal: 1,
         Repairing: 2,
         Scrap: 3,
       };
 
-      // 比較 LifeStatus 的優先順序
+      // 比较 LifeStatus 的优先顺序
       const statusComparison =
         statusOrder[a.LifeStatus] - statusOrder[b.LifeStatus];
       if (statusComparison !== 0) {
         return statusComparison;
       }
 
-      // 如果 LifeStatus 相同，則按照其他屬性進行排序，例如 ToolSn
-      if (a.ToolSn < b.ToolSn) {
-        return -1;
-      }
-      if (a.ToolSn > b.ToolSn) {
-        return 1;
-      }
-      return 0;
+      // 如果 LifeStatus 相同，则按照 lastModify 排序
+      const dateA = new Date(a.LastModify);
+      const dateB = new Date(b.LastModify);
+      return dateB.getTime() - dateA.getTime();
     });
-    return sortData;
+
+    return sortToolStatus;
   };
 
   const handleNotice = (type: AlertColor, show: boolean, messages: string) => {
