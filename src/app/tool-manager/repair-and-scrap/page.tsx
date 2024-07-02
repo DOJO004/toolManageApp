@@ -30,7 +30,9 @@ export default function Page() {
   });
 
   const getToolStockList = async () => {
-    setToolStockList(filterToolStatus(await apiGetToolStockList(-4)));
+    setToolStockList(
+      sortLastModifyTime(filterToolStatus(await apiGetToolStockList(-4)))
+    );
   };
 
   const getUserList = async () => {
@@ -70,6 +72,13 @@ export default function Page() {
   const filterToolStatus = (data: ToolStockItem[]) => {
     return data.filter(
       (item) => item.LifeStatus === "Repairing" || item.LifeStatus === "Scrap"
+    );
+  };
+
+  const sortLastModifyTime = (data: ToolStockItem[]) => {
+    return data.sort(
+      (a, b) =>
+        new Date(b.LastModify).getTime() - new Date(a.LastModify).getTime()
     );
   };
 
