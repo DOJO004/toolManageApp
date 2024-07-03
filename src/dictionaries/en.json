@@ -1,0 +1,14 @@
+{
+    "root":{
+        "welcome":"Welcome",
+        "name":"CLMS"
+    },
+    "login":{
+        "tittle":"Login",
+        "account":"Account",
+        "account_placeholder":"Enter your account",
+        "password":"Password",
+        "password_placeholder":"Enter your password",
+        "login":"Login"
+    }
+}

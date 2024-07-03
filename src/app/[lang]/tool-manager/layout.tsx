@@ -2,7 +2,7 @@
 import { NoticeProvider, useNotice } from "@/components/context/NoticeContext";
 import Alert from "@mui/material/Alert";
 import { useEffect } from "react";
-import Navbar from "../../components/navbar/navbar";
+import Navbar from "../../../components/navbar/navbar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { showNotice, setShowNotice } = useNotice();

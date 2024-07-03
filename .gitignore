@@ -40,4 +40,6 @@ dist
 out
 .next
 __test__
-toolmanager-docker.tar
+
+#docker image
+tool-manager-docker.tar

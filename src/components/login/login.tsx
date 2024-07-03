@@ -1,16 +1,19 @@
 "use client";
 
+import { LangContext } from "@/app/[lang]/layout";
 import { setCookie } from "@/scripts/Apis/mainApi";
 import { UserLoginInfo } from "@/scripts/Apis/userInfo/types";
 import { ApiUserLogin } from "@/scripts/Apis/userInfo/userInfoApis";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import SubmitButton from "../buttons";
 import SweetAlert from "../sweetAlert";
 import { LoginResponse } from "./types";
 
 export default function Login() {
+  const dict = useContext(LangContext);
+
   const router = useRouter();
   const [loginInfo, setLoginInfo] = useState<UserLoginInfo>({
     UserAccount: "",
@@ -43,27 +46,30 @@ export default function Login() {
   const handleLoginInfo = (key: string, value: string) => {
     setLoginInfo((prev) => ({ ...prev, [key]: value }));
   };
+
+  if (!dict) return <div>Loading...</div>;
+
   return (
     <div className="p-2 bg-gray-500 rounded-md">
-      <h1>登入</h1>
+      <h1>{dict.login.tittle}</h1>
       <form onSubmit={(e) => postLoginInfo(e)}>
         <div className="my-4">
-          <label htmlFor="UserAccount">帳號</label>
+          <label htmlFor="UserAccount">{dict.login.account}</label>
           <input
             type="text"
             id="UserAccount"
             className="w-full p-2 text-black rounded-md "
-            placeholder="請輸入帳號"
+            placeholder={dict.login.account_placeholder}
             value={loginInfo.UserAccount}
             onChange={(e) => handleLoginInfo("UserAccount", e.target.value)}
           />
         </div>
         <div className="relative my-4">
-          <label htmlFor="Password">密碼</label>
+          <label htmlFor="Password">{dict.login.password}</label>
           <input
             type={showPassword ? "text" : "password"}
             id="Password"
-            placeholder="請輸入密碼"
+            placeholder={dict.login.password_placeholder}
             className="w-full p-2 text-black rounded-md "
             value={loginInfo.UserPwd}
             onChange={(e) => handleLoginInfo("UserPwd", e.target.value)}
@@ -83,7 +89,7 @@ export default function Login() {
           />
         </div>
         <SubmitButton
-          name="登入"
+          name={dict.login.login}
           classNames="w-full p-2 my-4 bg-indigo-500 rounded-md"
           onclick={() => {}}
           isPending={waitLogin}
