@@ -1,15 +1,18 @@
+import SubmitButton from "@/components/buttons";
+import { ToolTypeItem } from "@/scripts/Apis/toolInfo/types";
 import { FormEvent } from "react";
-import { ToolTypeItem } from "./types";
 
 interface NewToolTypeProps {
   postToolType: (e: FormEvent) => void;
   newToolType: ToolTypeItem;
   setNewToolType: React.Dispatch<React.SetStateAction<ToolTypeItem>>;
+  isPending: boolean;
 }
 export function NewToolType({
   postToolType,
   newToolType,
   setNewToolType,
+  isPending,
 }: NewToolTypeProps) {
   return (
     <div className="w-full p-2 bg-gray-900 rounded-md ">
@@ -55,9 +58,12 @@ export function NewToolType({
             />
           </div>
         </div>
-        <button className="w-full my-2 bg-indigo-500 hover:bg-indigo-600">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full my-2 bg-indigo-500 hover:bg-indigo-600"
+          onclick={() => postToolType}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

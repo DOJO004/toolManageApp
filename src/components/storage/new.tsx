@@ -1,16 +1,19 @@
+import { NewStorageItem } from "@/scripts/Apis/toolInfo/types";
 import { FormEvent } from "react";
-import { NewStorageItem } from "./types";
+import SubmitButton from "../buttons";
 
 interface Props {
   postStorage: (e: FormEvent) => void;
   newStorage: NewStorageItem;
   handleChangeNewStorage: (key: string, value: string) => void;
+  isPending: boolean;
 }
 
 export default function StorageNew({
   postStorage,
   newStorage,
   handleChangeNewStorage,
+  isPending,
 }: Props) {
   return (
     <div className="p-4 bg-gray-900 rounded-md">
@@ -42,9 +45,12 @@ export default function StorageNew({
             />
           </div>
         </div>
-        <button className="w-full p-2 mt-4 bg-indigo-500 rounded-md ">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full p-2 mt-4 bg-indigo-500 rounded-md"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

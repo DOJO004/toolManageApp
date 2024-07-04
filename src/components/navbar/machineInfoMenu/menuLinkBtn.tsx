@@ -29,7 +29,7 @@ const MenuLinkBtn = ({
           onClick={() => setOpenMenu(false)}
         >
           <Image
-            src="/arrow_back_icon.png"
+            src="/images/icons/back.svg"
             alt="back icon"
             width={20}
             height={20}
@@ -39,14 +39,14 @@ const MenuLinkBtn = ({
           <Link
             key={index}
             href={item.path}
-            className={`m-2 p-1 rounded-md cursor-pointer md:flex hover:bg-indigo-500 ${index === showMenuIndex ? "bg-indigo-600" : ""}`}
+            className={`m-2 p-1 rounded-md cursor-pointer items-center md:flex hover:bg-indigo-500 ${index === showMenuIndex ? "bg-indigo-600" : ""}`}
             onClick={() => handleShowMenuIndex(index)}
           >
             <Image
               src={item.src}
               alt={item.alt}
-              width={30}
-              height={30}
+              width={25}
+              height={25}
               className="mr-2"
             />
             <div className="hidden truncate md:block">{item.name}</div>

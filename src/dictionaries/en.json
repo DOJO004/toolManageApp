@@ -1,0 +1,108 @@
+{
+    "root":{
+        "welcome":"Welcome",
+        "name":"CLMS"
+    },
+    "login":{
+        "tittle":"Login",
+        "account":"Account",
+        "account_placeholder":"Enter your account",
+        "password":"Password",
+        "password_placeholder":"Enter your password",
+        "login":"Login",
+        "login_success":"Login success",
+        "login_fail":"Login fail"
+    },
+    "navbar":{
+       "dashboard":{
+           "title":"Dashboard"
+       },
+       "return_tool":{
+           "title":"Return Tool"
+       },
+       "receive_tool":{
+           "title":"Receive Tool"
+       },
+       "repair_and_scrap":{
+           "title":"Repair and Scrap"
+       },
+       "tool_info":{
+           "title":"Tool Info",
+           "submenu":{
+               "overview":"Overview",
+               "storage_list":"Storage List",
+               "tool_type":"Tool Type",
+               "tool_spec":"Tool Spec",
+               "tool_stock":"Tool Stock"
+           }           
+       },
+       "machine_info":{
+           "title":"Machine Info",
+           "submenu":{
+               "overview":"Overview",
+               "product_line":"Product Line",
+               "machine_type":"Machine Type",
+               "machine_spec":"Machine Spec"
+           }
+       },
+       "label_info":{
+           "title":"Label Info"
+       },
+       "user_info":{
+           "title":"User Info",
+              "submenu":{
+                  "overview":"Overview",
+                  "department":"Department",
+                  "permissions":"Permissions"
+              }
+       },
+       "setting":{
+           "title":"Setting"
+       },
+       "logout":{
+           "title":"Logout",
+           "description":"Are you sure you want to logout?",
+           "confirm":"Logout",
+           "cancel":"Cancel"
+       }
+    },
+    "tool_info":{
+        "title": "Tool Info List",
+        "tool_sn": "Tool SN",
+        "status": "Status",
+        "repair_times": "Repair Times",
+        "max_repair_times": "Max Repair Times",
+        "loading": "Loading",
+        "location": "Location",
+        "process_length": "Process Length",
+        "process_time": "Process Time",
+        "process_count": "Process Count",
+        "search":{
+            "search_tool_placeholder": "Search Tool SN",
+            "status":{
+                "label":"Status",
+                "normal":"Normal",
+                "warning":"Warning",
+                "alarm":"Alarm",
+                "need_repair":"Need Repair",
+                "repairing":"Repairing"
+            },
+            "active_state":{
+                "label":"Active State",
+                "in_storage":"In Storage",
+                "move_out_storage":"Move Out Storage",
+                "in_use":"In Use"
+            },
+            "location":{
+                "label":"Location"
+            }
+        },
+        "tool_install_log":{
+            "title": "Tool Install Log",
+            "machine_name": "Machine Name",
+            "status": "Status",
+            "storage_name": "Storage Name",
+            "update_time": "Update Time"
+         }
+    }
+}   

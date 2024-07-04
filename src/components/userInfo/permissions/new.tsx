@@ -1,43 +1,34 @@
-"use client";
+import SubmitButton from "@/components/buttons";
+import { NewPermissionItemInfo } from "@/scripts/Apis/userInfo/types";
+import { FormEvent } from "react";
 
-import { apiNewPermissionsInfo } from "@/scripts/Apis/userInfo/policeApi";
-import React, { FormEvent, useState } from "react";
-import { NewPermissionItemInfo } from "./type";
-
-interface NewPoliceInfoProps {
-  setNewPoliceMode: React.Dispatch<React.SetStateAction<boolean>>;
+interface Props {
+  setNewPermissionMode: React.Dispatch<React.SetStateAction<boolean>>;
+  postPermissionInfo: (e: FormEvent) => void;
+  newPermission: NewPermissionItemInfo;
+  handleNewPermissionChange: (key: string, value: string) => void;
+  isPending: boolean;
 }
 
-export default function NewPoliceInfo({
-  setNewPoliceMode,
-}: NewPoliceInfoProps) {
-  const [newPolice, setNewPolice] = useState<NewPermissionItemInfo>({
-    PermissionId: "",
-    Name: "",
-    PermissionType: 1,
-  });
-
-  const postPoliceInfo = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await apiNewPermissionsInfo(newPolice);
-    console.log(data);
-  };
-
-  const handleChange = (key: string, value: string) => {
-    setNewPolice({ ...newPolice, [key]: value });
-  };
+export default function NewPermissionInfo({
+  setNewPermissionMode,
+  postPermissionInfo,
+  newPermission,
+  handleNewPermissionChange,
+  isPending,
+}: Props) {
   return (
     <div className="p-4 my-4 bg-gray-900 rounded-md">
       <div className="relative ">
         <h2>新增權限</h2>
         <button
           className="absolute top-0 right-0 p-2 rounded-full hover:bg-gray-900"
-          onClick={() => setNewPoliceMode(false)}
+          onClick={() => setNewPermissionMode(false)}
         >
           X
         </button>
       </div>
-      <form onSubmit={(e) => postPoliceInfo(e)}>
+      <form onSubmit={(e) => postPermissionInfo(e)}>
         <div className="flex gap-2 ">
           <div className="w-full ">
             <label htmlFor="PermissionId">ID</label>
@@ -45,8 +36,10 @@ export default function NewPoliceInfo({
               type="text"
               id="PermissionId"
               className="w-full p-2 text-black rounded-md "
-              value={newPolice.PermissionId}
-              onChange={(e) => handleChange("PermissionId", e.target.value)}
+              value={newPermission.PermissionId}
+              onChange={(e) =>
+                handleNewPermissionChange("PermissionId", e.target.value)
+              }
             />
           </div>
           <div className="w-full ">
@@ -55,8 +48,10 @@ export default function NewPoliceInfo({
               type="text"
               id="Name"
               className="w-full p-2 text-black rounded-md "
-              value={newPolice.Name}
-              onChange={(e) => handleChange("Name", e.target.value)}
+              value={newPermission.Name}
+              onChange={(e) =>
+                handleNewPermissionChange("Name", e.target.value)
+              }
             />
           </div>
           <div className="w-full ">
@@ -64,8 +59,10 @@ export default function NewPoliceInfo({
             <select
               id="PermissionType"
               className="w-full p-2 text-black rounded-md "
-              value={newPolice.PermissionType}
-              onChange={(e) => handleChange("PermissionType", e.target.value)}
+              value={newPermission.PermissionType}
+              onChange={(e) =>
+                handleNewPermissionChange("PermissionType", e.target.value)
+              }
             >
               <option value="1" className="text-black ">
                 讀取
@@ -79,9 +76,12 @@ export default function NewPoliceInfo({
             </select>
           </div>
         </div>
-        <button className="w-full p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          送出
-        </button>
+        <SubmitButton
+          name="送出"
+          classNames="w-full p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

@@ -1,6 +1,10 @@
+import {
+  DepartmentItem,
+  EditUserInfo,
+  UserAccountItem,
+} from "@/scripts/Apis/userInfo/types";
 import React from "react";
-import { DepartmentItem } from "./department/type";
-import { EditUserInfo, UserAccountItem } from "./types";
+import SubmitButton from "../buttons";
 
 interface Props {
   userInfoList: UserAccountItem[];
@@ -14,6 +18,7 @@ interface Props {
   deleteUserInfo: () => void;
   handleResetPassword: () => void;
   setEditPermission: React.Dispatch<React.SetStateAction<boolean>>;
+  isPending: boolean;
 }
 export default function UserInfoIndex({
   userInfoList,
@@ -27,6 +32,7 @@ export default function UserInfoIndex({
   deleteUserInfo,
   handleResetPassword,
   setEditPermission,
+  isPending,
 }: Props) {
   return (
     <table className="w-full">
@@ -108,9 +114,19 @@ export default function UserInfoIndex({
                   </button>
                 </td>
                 <td className="p-1 whitespace-nowrap">
-                  <button onClick={() => patchUserInfo()}>完成</button>
+                  <SubmitButton
+                    name="確認"
+                    classNames="p-1 bg-green-500 hover:bg-green-600"
+                    onclick={() => patchUserInfo()}
+                    isPending={isPending}
+                  />
                   <span> / </span>
-                  <button onClick={() => deleteUserInfo()}>刪除</button>
+                  <button
+                    className="p-1 bg-red-500 hover:bg-red-600"
+                    onClick={() => deleteUserInfo()}
+                  >
+                    刪除
+                  </button>
                 </td>
               </tr>
             ) : (

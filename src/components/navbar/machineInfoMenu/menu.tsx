@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+import { LangContext } from "@/app/[lang]/layout";
+import { useContext, useState } from "react";
 import MenuLinkBtn from "./menuLinkBtn";
 interface MachineInfoMenuProps {
   setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const MachineInfoMenu = ({ setOpenMenu }: MachineInfoMenuProps) => {
+  const dict = useContext(LangContext);
   const [showMenuIndex, setShowMenuIndex] = useState(0);
 
   const handleShowMenuIndex = (index: number) => {
@@ -12,32 +14,32 @@ const MachineInfoMenu = ({ setOpenMenu }: MachineInfoMenuProps) => {
   };
   const menuItem = [
     {
-      src: "/overView.png",
+      src: "/images/icons/list.svg",
       alt: "overView",
-      name: "總覽",
+      name: dict?.navbar.machine_info.submenu.overview,
       path: "/tool-manager/machine-info/",
     },
     {
-      src: "/productLine.png",
+      src: "/images/icons/productLIne.svg",
       alt: "productLineTypes",
-      name: "產線類型",
+      name: dict?.navbar.machine_info.submenu.product_line,
       path: "/tool-manager/machine-info/product-line/",
     },
     {
-      src: "/machineType.png",
+      src: "/images/icons/machineType.svg",
       alt: "machineTypes",
-      name: "設備類型",
+      name: dict?.navbar.machine_info.submenu.machine_type,
       path: "/tool-manager/machine-info/machine-type/",
     },
     {
-      src: "/spec.png",
-      alt: "toolStocks",
-      name: "設備規格",
+      src: "/images/icons/machineSpec.svg",
+      alt: "machineSpec",
+      name: dict?.navbar.machine_info.submenu.machine_spec,
       path: "/tool-manager/machine-info/machine-spec/",
     },
   ];
   return (
-    <div className="flex justify-center md:flex-col">
+    <div className="flex items-center justify-center md:flex-col">
       <MenuLinkBtn
         menuItem={menuItem}
         setOpenMenu={setOpenMenu}

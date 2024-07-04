@@ -1,37 +1,24 @@
 "use client";
 
-import { ApiPostDepartment } from "@/scripts/Apis/userInfo/departmentApi";
-import { FormEvent, useState } from "react";
-import { NewDepartmentItem, PostDepartmentResponse } from "./type";
+import SubmitButton from "@/components/buttons";
+import { NewDepartmentItem } from "@/scripts/Apis/userInfo/types";
+import { FormEvent } from "react";
 
 interface NewDepartmentProps {
-  getDepartmentList: () => void;
   setNewDepartmentMode: React.Dispatch<React.SetStateAction<boolean>>;
+  postDepartment: (e: FormEvent) => void;
+  newDepartment: NewDepartmentItem;
+  handleChange: (key: string, value: string) => void;
+  isPending: boolean;
 }
 
 export default function NewDepartment({
-  getDepartmentList,
   setNewDepartmentMode,
+  postDepartment,
+  newDepartment,
+  handleChange,
+  isPending,
 }: NewDepartmentProps) {
-  const [newDepartment, setNewDepartment] = useState<NewDepartmentItem>({
-    DepartmentId: "",
-    Name: "",
-  });
-
-  const postDepartment = async (e: FormEvent) => {
-    e.preventDefault();
-    const data = await ApiPostDepartment(newDepartment);
-    const res = data as PostDepartmentResponse;
-    console.log(res);
-
-    if (res?.data?.Values?.ReqInt === 0) {
-      getDepartmentList();
-    }
-  };
-
-  const handleChange = (key: string, value: string) => {
-    setNewDepartment((prev) => ({ ...prev, [key]: value }));
-  };
   return (
     <div className="p-4 bg-gray-900 rounded-md">
       <div className="relative ">
@@ -66,9 +53,12 @@ export default function NewDepartment({
             />
           </div>
         </div>
-        <button className="w-full bg-indigo-500 rounded-md hover:bg-indigo-600">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

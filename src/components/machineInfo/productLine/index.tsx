@@ -1,5 +1,9 @@
-import { DepartmentItem } from "@/components/userInfo/department/type";
-import { EditProductLineItem, ProductLineItem } from "./types";
+import SubmitButton from "@/components/buttons";
+import {
+  EditProductLineItem,
+  ProductLineItem,
+} from "@/scripts/Apis/machineInfo/types";
+import { DepartmentItem } from "@/scripts/Apis/userInfo/types";
 
 interface Props {
   productLineList: ProductLineItem[];
@@ -11,6 +15,7 @@ interface Props {
   patchProductLine: () => void;
   deleteProductLine: () => void;
   handleClickEditProductLine: (item: ProductLineItem, index: number) => void;
+  isPending: boolean;
 }
 export default function ProductLineIndex({
   productLineList,
@@ -22,6 +27,7 @@ export default function ProductLineIndex({
   patchProductLine,
   deleteProductLine,
   handleClickEditProductLine,
+  isPending,
 }: Props) {
   return (
     <table className="w-full ">
@@ -69,12 +75,12 @@ export default function ProductLineIndex({
                   </select>
                 </td>
                 <td>
-                  <button
-                    className="p-1 bg-green-500 hover:bg-green-600"
-                    onClick={() => patchProductLine()}
-                  >
-                    送出
-                  </button>
+                  <SubmitButton
+                    name="送出"
+                    classNames="p-1 bg-green-500 hover:bg-green-600"
+                    onclick={() => patchProductLine()}
+                    isPending={isPending}
+                  />
                   <span> / </span>
                   <button
                     className="p-1 bg-red-500 hover:bg-red-600"

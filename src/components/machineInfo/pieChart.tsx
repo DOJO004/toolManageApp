@@ -1,25 +1,24 @@
+import { MachineStatusItem } from "@/scripts/Apis/machineInfo/types";
 import Image from "next/image";
-import { formatMilliseconds, formatPercent } from "./functions";
-import { MachineStatusItem } from "./types";
+import {
+  formatMilliseconds,
+  formatPercent,
+  setMachineBackgroundColor,
+  translateMachineStatus,
+} from "./functions";
 
 interface MachineInfoPieChartProps {
   selectMachineInfo: MachineStatusItem;
-  machineStatus: (status: string) => string;
-  machineStatusBgColor: (status: string) => string;
 }
 
 const MachineInfoPieChart = ({
   selectMachineInfo,
-  machineStatus,
-  machineStatusBgColor,
 }: MachineInfoPieChartProps) => {
   // 稼動時數轉成百分比
   const machineActivation = formatPercent(selectMachineInfo?.Activation);
 
   // 設定圖表顏色
-  const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${machineActivation}%, #B9E6B5 ${machineActivation}%, #B9E6B5)`;
-
-  // 進行深層比較
+  const gradientColorsOutSide = `conic-gradient(#16A34A 0, #16A34A ${machineActivation}%, #b8b8b8 ${machineActivation}%, #b8b8b8)`;
 
   return (
     <div className="w-full p-2 bg-gray-900 rounded-md">
@@ -35,7 +34,12 @@ const MachineInfoPieChart = ({
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Image src="/wi-fi.png" alt="wifi img" width={40} height={40} />
+            <Image
+              src="/images/icons/wifi.svg"
+              alt="wifi img"
+              width={24}
+              height={24}
+            />
             <p>{selectMachineInfo?.MachineIP}</p>
           </div>
         </div>
@@ -65,9 +69,9 @@ const MachineInfoPieChart = ({
               <p>{formatMilliseconds(selectMachineInfo?.TotalConnectTime)}</p>
             </div>
             <div
-              className={`w-full p-2 my-2 text-center rounded-md ${machineStatusBgColor(selectMachineInfo?.Status)}`}
+              className={`w-full p-2 my-2 text-center rounded-md ${setMachineBackgroundColor(selectMachineInfo?.Status)}`}
             >
-              <p>{machineStatus(selectMachineInfo?.Status)}</p>
+              <p>{translateMachineStatus(selectMachineInfo?.Status)}</p>
             </div>
           </div>
         </div>

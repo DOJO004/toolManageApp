@@ -1,4 +1,6 @@
-import { ToolSpecItem, editToolSpecItem } from "./types";
+import SubmitButton from "@/components/buttons";
+import { formatTime } from "@/scripts/Apis/toolInfo/functions";
+import { ToolSpecItem, editToolSpecItem } from "@/scripts/Apis/toolInfo/types";
 
 interface Props {
   toolSpecList: ToolSpecItem[];
@@ -9,6 +11,7 @@ interface Props {
   patchToolSpec: () => void;
   deleteToolSpec: () => void;
   handleEditToolSpecMode: (item: ToolSpecItem, index: number) => void;
+  isPending: boolean;
 }
 
 export default function ToolSpecIndex({
@@ -20,11 +23,13 @@ export default function ToolSpecIndex({
   patchToolSpec,
   deleteToolSpec,
   handleEditToolSpecMode,
+  isPending,
 }: Props) {
   return (
     <table className="w-full ">
       <thead className="bg-indigo-500 border-b-2">
         <tr>
+          <td className="p-1 whitespace-nowrap ">刀具類型</td>
           <td className="p-1 whitespace-nowrap ">ID</td>
           <td className="p-1 whitespace-nowrap ">名稱</td>
           <td className="p-1 whitespace-nowrap ">Φ</td>
@@ -49,6 +54,7 @@ export default function ToolSpecIndex({
             <tr key={item.ToolSpecId} className="text-center hover:bg-gray-700">
               {editToolSpecMode && editToolSpecModeIndex === index ? (
                 <>
+                  <td className="p-1 ">{item.ToolTypeData.Name}</td>
                   <td className="p-1 ">{item.ToolSpecId}</td>
                   <td className="p-1 ">
                     <input
@@ -142,21 +148,22 @@ export default function ToolSpecIndex({
                   </td>
                   <td className="p-1 ">
                     <input
-                      type="number"
+                      type="text"
                       className="w-24 text-center text-black rounded-md"
                       value={editToolSpec.ProcessTime}
+                      placeholder="hh:mm:ss"
                       onChange={(e) =>
                         handleEditToolSpec("ProcessTime", e.target.value)
                       }
                     />
                   </td>
                   <td className="p-1 whitespace-nowrap">
-                    <span
-                      className="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
-                      onClick={() => patchToolSpec()}
-                    >
-                      完成
-                    </span>
+                    <SubmitButton
+                      name="完成"
+                      classNames="p-1 bg-green-500 rounded-md cursor-pointer hover:bg-green-600"
+                      onclick={() => patchToolSpec()}
+                      isPending={isPending}
+                    />
                     <span> / </span>
                     <span
                       className="p-1 bg-red-500 rounded-md cursor-pointer hover:bg-red-600"
@@ -168,6 +175,9 @@ export default function ToolSpecIndex({
                 </>
               ) : (
                 <>
+                  <td className="p-1 whitespace-nowrap">
+                    {item.ToolTypeData.Name}
+                  </td>
                   <td className="p-1 whitespace-nowrap ">{item.ToolSpecId}</td>
                   <td className="p-1 whitespace-nowrap ">{item.Name}</td>
                   <td className="p-1 whitespace-nowrap ">
@@ -193,7 +203,7 @@ export default function ToolSpecIndex({
                     {item.MaxLife.ProcessLength}
                   </td>
                   <td className="p-1 whitespace-nowrap ">
-                    {item.MaxLife.ProcessTime}
+                    {formatTime(item.MaxLife.ProcessTime)}
                   </td>
                   <td className="p-1 whitespace-nowrap ">
                     <button

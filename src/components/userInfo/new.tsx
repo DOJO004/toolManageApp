@@ -1,27 +1,32 @@
+import {
+  DepartmentItem,
+  NewUserInfo,
+  PermissionMenuItem,
+} from "@/scripts/Apis/userInfo/types";
 import { FormEvent } from "react";
-import { DepartmentItem } from "./department/type";
-import { PermissionMenuItem } from "./permissions/type";
-import type { NewUserInfo } from "./types";
+import SubmitButton from "../buttons";
 interface NewUserInfoProps {
   setNewUserMode: (value: boolean) => void;
   departmentList: DepartmentItem[];
   postUserInfo: (e: FormEvent) => void;
   handleSetUserInfo: (key: string, value: string) => void;
-  userInfo: NewUserInfo;
+  newUserInfo: NewUserInfo;
   setFocusInput: (value: boolean) => void;
   focusInput: boolean;
   permissionList: PermissionMenuItem[];
   handleCheckPermission: (checked: boolean, permissionId: string) => void;
+  isPending: boolean;
 }
 export default function UserInfoNew({
   setNewUserMode,
   departmentList,
   postUserInfo,
   handleSetUserInfo,
-  userInfo,
+  newUserInfo,
   setFocusInput,
   focusInput,
   permissionList,
+  isPending,
 }: NewUserInfoProps) {
   return (
     <div className="p-4 bg-gray-900 rounded-md">
@@ -42,7 +47,7 @@ export default function UserInfoNew({
               type="text"
               id="UserAccount"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.UserAccount}
+              value={newUserInfo.UserAccount}
               onChange={(e) => handleSetUserInfo("UserAccount", e.target.value)}
             />
           </div>
@@ -52,7 +57,7 @@ export default function UserInfoNew({
               type="password"
               id="Password"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.Password}
+              value={newUserInfo.Password}
               onChange={(e) => handleSetUserInfo("Password", e.target.value)}
             />
           </div>
@@ -62,7 +67,7 @@ export default function UserInfoNew({
               type="text"
               id="EmployeeId"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.EmployeeId}
+              value={newUserInfo.EmployeeId}
               onChange={(e) => handleSetUserInfo("EmployeeId", e.target.value)}
             />
           </div>
@@ -72,7 +77,7 @@ export default function UserInfoNew({
               type="text"
               id="UserName"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.UserName}
+              value={newUserInfo.UserName}
               onChange={(e) => handleSetUserInfo("UserName", e.target.value)}
             />
           </div>
@@ -81,7 +86,7 @@ export default function UserInfoNew({
             <select
               id="DepartmentId"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.DepartmentId}
+              value={newUserInfo.DepartmentId}
               onChange={(e) =>
                 handleSetUserInfo("DepartmentId", e.target.value)
               }
@@ -103,7 +108,7 @@ export default function UserInfoNew({
               type="email"
               id="EMailAddress"
               className="w-full p-2 text-black rounded-md "
-              value={userInfo.EMailAddress}
+              value={newUserInfo.EMailAddress}
               onChange={(e) =>
                 handleSetUserInfo("EMailAddress", e.target.value)
               }
@@ -117,8 +122,8 @@ export default function UserInfoNew({
                 onClick={() => setFocusInput(!focusInput)}
               >
                 <option value="">
-                  {userInfo.PermissionIds.length
-                    ? `已選擇 ${userInfo.PermissionIds.length}`
+                  {newUserInfo.PermissionIds?.length
+                    ? `已選擇 ${newUserInfo.PermissionIds?.length}`
                     : "選擇權限"}
                 </option>
               </select>
@@ -150,9 +155,12 @@ export default function UserInfoNew({
             </div>
           </div>
         </div>
-        <button className="w-full p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          新增
-        </button>
+        <SubmitButton
+          name="新增"
+          classNames="w-full p-2 my-4 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={() => {}}
+          isPending={isPending}
+        />
       </form>
     </div>
   );

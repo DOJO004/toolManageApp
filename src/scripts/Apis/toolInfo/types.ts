@@ -23,7 +23,7 @@ export interface ToolTypeItem {
 export interface GetLoadingLogListResponse {
   RC: string;
   Values: {
-    ToolMacLoadingOpsList: any[];
+    ToolMacLoadingOpsList: ToolLoadingItem[];
     ReqInt: number;
   };
 }
@@ -71,7 +71,7 @@ export interface NewToolSpecItem {
   TotalLength: number;
   HandleDiameter: number;
   ProcessCnt: number;
-  ProcessTime: number;
+  ProcessTime: string;
   ProcessLength: number;
   RepairCnt: number;
 }
@@ -86,12 +86,74 @@ export interface editToolSpecItem {
   TotalLength: number;
   HandleDiameter: number;
   ProcessCnt: number;
-  ProcessTime: number;
+  ProcessTime: string;
   ProcessLength: number;
   RepairCnt: number;
 }
 
 // toolStock
+export interface GetToolStockListResponse {
+  Values: {
+    ReqInt: number;
+    TotalPages: number;
+    TotalRecords: number;
+    StockToolList: ToolStockItem[];
+  };
+}
+
+export interface ToolStockItem {
+  ToolSn: string;
+  ToolSpecId: string;
+  ToolSpecName: string;
+  ToolTypeData: {
+    Id: string;
+    Name: string;
+  };
+  LifeStatus: string;
+  LifePercentage: number;
+  LastStorageId: number;
+  SpecData: {
+    BladeDiameter: number;
+    BladeHeight: number;
+    TotalLength: number;
+    HandleDiameter: number;
+  };
+  LifeData: {
+    ProcessCnt: number;
+    ProcessTime: number;
+    ProcessLength: number;
+    RepairCnt: number;
+  };
+  MaxLife: {
+    ProcessCnt: number;
+    ProcessTime: number;
+    ProcessLength: number;
+    RepairCnt: number;
+  };
+  PositionData: {
+    PositionStatus: number;
+    StorageInfo: {
+      StorageNo: number;
+      StorageName: string;
+    };
+    LoadingInfo: {
+      MachineId: string;
+      AtcNo: number;
+      MachineSpec: {
+        MachineSn: string;
+        MachineName: string;
+      };
+    };
+  };
+  Receiver: {
+    AccountId: string;
+    UserAccount: string;
+    EmployeeId: string;
+    UserName: string;
+  };
+  LastModify: string;
+}
+
 export interface GetToolStockCountListResponse {
   Values: {
     ReqInt: number;
@@ -121,6 +183,7 @@ export interface ToolStatusItem {
     PositionStatus: number;
     MachineSn: string;
     StorageId: number;
+    StorageName: string;
   };
   LastOperator: {
     AccountId: string;
@@ -135,6 +198,30 @@ export interface NewToolStockItem {
   StorageId: string;
   ToolSpecId: string;
   Qty: number;
+}
+
+export interface ToolLoadingItem {
+  ToolSn: string;
+  OpActions: number;
+  MachineLoading: {
+    MachineId: string;
+    AtcNo: number;
+    MachineSpec: {
+      MachineSn: string;
+      MachineName: string;
+    };
+  };
+  StockInfo: {
+    StorageNo: number;
+    StorageName: string;
+  };
+  OperatorInfo: {
+    AccountId: string;
+    UserAccount: string;
+    EmployeeId: string;
+    UserName: string;
+  };
+  LogTime: string;
 }
 
 // storage
@@ -172,4 +259,57 @@ export interface BasicResponse {
       MultiStorageIds: number[];
     };
   };
+}
+
+// toolInfo filterData
+export interface FilterData {
+  toolState: string[];
+  activeState: number[];
+  position: string[];
+}
+
+// notify
+
+export interface GetNotifyListResponse {
+  Values: {
+    NotifyParameterList: NotifyItem[];
+    TotalRecords: 1;
+    TotalPages: 1;
+    ReqInt: 0;
+  };
+}
+
+export interface NotifyItem {
+  ParameterNo: number;
+  ToolSpecInfo: {
+    Id: string;
+    Name: string;
+    ToolTypeInfo: {
+      Id: string;
+      Name: string;
+    };
+  };
+  NotifyActions: number[];
+  NotifyPercent: number;
+  LineTokenList: LineTokenItem[];
+  MailAddressList: MailAddressItem[];
+  LastModify: string;
+}
+
+export interface LineTokenItem {
+  TokenName: string;
+  Token: string;
+}
+export interface MailAddressItem {
+  Recipient: string;
+  MailAddress: string;
+}
+
+export interface NotifyDataItem {
+  ParameterNo: number;
+  ToolSpecId: string;
+  NotifyActions: number[];
+  NotifyPercent: number;
+  LineTokenList: LineTokenItem[];
+  MailAddressList: MailAddressItem[];
 }

@@ -1,6 +1,6 @@
+import { StorageMenuItem } from "@/scripts/Apis/toolInfo/types";
+import { UserAccountItem } from "@/scripts/Apis/userInfo/types";
 import React, { FormEvent } from "react";
-import { StorageItem } from "../storage/types";
-import { UserAccountItem } from "../userInfo/types";
 
 interface Props {
   postDisableLabelBindTool: (e: FormEvent) => void;
@@ -9,7 +9,7 @@ interface Props {
   returnType: string;
   returnData: any;
   userList: UserAccountItem[];
-  storageList: StorageItem[];
+  storageList: StorageMenuItem[];
   handleReturnData: (value: string | number, name: string) => void;
   setReturnMode: React.Dispatch<React.SetStateAction<boolean>>;
 }

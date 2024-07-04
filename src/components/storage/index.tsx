@@ -1,15 +1,18 @@
+import {
+  EditStorageItem,
+  StorageMenuItem,
+} from "@/scripts/Apis/toolInfo/types";
 import React from "react";
-import { EditStorageItem, StorageItem } from "./types";
 
 interface Props {
-  storageList: StorageItem[];
+  storageList: StorageMenuItem[];
   editIndex: number;
   editStorage: EditStorageItem;
   editMode: boolean;
   setEditStorage: React.Dispatch<React.SetStateAction<EditStorageItem>>;
   patchStorage: () => void;
   deleteStorage: () => void;
-  handleEditMode: (item: StorageItem, index: number) => void;
+  handleEditMode: (item: StorageMenuItem, index: number) => void;
 }
 export default function StorageIndex({
   storageList,

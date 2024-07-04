@@ -1,4 +1,5 @@
-import { NewToolSpecItem, ToolTypeItem } from "@/scripts/Apis/toolInfo/type";
+import SubmitButton from "@/components/buttons";
+import { NewToolSpecItem, ToolTypeItem } from "@/scripts/Apis/toolInfo/types";
 import React, { FormEvent } from "react";
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
   newToolSpec: NewToolSpecItem;
   toolTypeList: ToolTypeItem[];
   handleNewToolSpec: (key: string, value: string | number) => void;
+  isPending: boolean;
 }
 
 export function NewToolSpec({
@@ -15,6 +17,7 @@ export function NewToolSpec({
   newToolSpec,
   toolTypeList,
   handleNewToolSpec,
+  isPending,
 }: Props) {
   return (
     <div className="p-2 bg-gray-900 rounded-md">
@@ -32,7 +35,7 @@ export function NewToolSpec({
         </button>
       </div>
       <form onSubmit={(e) => postNewToolSpec(e)}>
-        <div className="flex gap-2 mx-auto my-4 overflow-auto text-center whitespace-nowrap">
+        <div className="grid grid-cols-4 gap-2">
           <div className="">
             <label htmlFor="ID" className="block">
               刀具類型
@@ -40,7 +43,7 @@ export function NewToolSpec({
             <select
               id="ID"
               value={newToolSpec.ToolTypeId}
-              className="w-full text-black rounded-md min-w-24"
+              className="w-full p-1 text-black rounded-md"
               onChange={(e) => handleNewToolSpec("ToolTypeId", e.target.value)}
             >
               <option value="" className="text-gray-400 ">
@@ -60,7 +63,7 @@ export function NewToolSpec({
             <input
               id="ID"
               type="text"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              className="w-full p-1 text-center text-black rounded-md "
               placeholder="刀具規格 ID"
               value={newToolSpec.ToolSpecId}
               onChange={(e) => handleNewToolSpec("ToolSpecId", e.target.value)}
@@ -73,7 +76,7 @@ export function NewToolSpec({
             <input
               id="Name"
               type="text"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              className="w-full p-1 text-center text-black rounded-md "
               placeholder="刀具規格名稱"
               value={newToolSpec.Name}
               onChange={(e) => handleNewToolSpec("Name", e.target.value)}
@@ -87,7 +90,7 @@ export function NewToolSpec({
             <input
               id="Φ"
               type="number"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              className="w-full p-1 text-center text-black rounded-md "
               value={newToolSpec.BladeDiameter}
               onChange={(e) =>
                 handleNewToolSpec("BladeDiameter", e.target.value)
@@ -101,7 +104,7 @@ export function NewToolSpec({
             <input
               id="height"
               type="number"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              className="w-full p-1 text-center text-black rounded-md "
               value={newToolSpec.BladeHeight}
               onChange={(e) => handleNewToolSpec("BladeHeight", e.target.value)}
             />
@@ -113,7 +116,7 @@ export function NewToolSpec({
             <input
               id="totalLength"
               type="number"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              className="w-full p-1 text-center text-black rounded-md "
               value={newToolSpec.TotalLength}
               onChange={(e) => handleNewToolSpec("TotalLength", e.target.value)}
             />
@@ -125,7 +128,7 @@ export function NewToolSpec({
             <input
               id="手柄Φ"
               type="number"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              className="w-full p-1 text-center text-black rounded-md "
               value={newToolSpec.HandleDiameter}
               onChange={(e) =>
                 handleNewToolSpec("HandleDiameter", e.target.value)
@@ -138,8 +141,8 @@ export function NewToolSpec({
             </label>
             <input
               id="safetyStock"
-              type="text"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              type="number"
+              className="w-full p-1 text-center text-black rounded-md "
               value={newToolSpec.SafetyStock}
               onChange={(e) => handleNewToolSpec("SafetyStock", e.target.value)}
             />
@@ -152,7 +155,7 @@ export function NewToolSpec({
             <input
               id="RepairCnt"
               type="number"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              className="w-full p-1 text-center text-black rounded-md "
               value={newToolSpec.RepairCnt}
               onChange={(e) => handleNewToolSpec("RepairCnt", e.target.value)}
             />
@@ -164,7 +167,7 @@ export function NewToolSpec({
             <input
               id="ProcessCnt"
               type="number"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              className="w-full p-1 text-center text-black rounded-md "
               value={newToolSpec.ProcessCnt}
               onChange={(e) => handleNewToolSpec("ProcessCnt", e.target.value)}
             />
@@ -176,7 +179,7 @@ export function NewToolSpec({
             <input
               id="ProcessLength"
               type="number"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              className="w-full p-1 text-center text-black rounded-md "
               value={newToolSpec.ProcessLength}
               onChange={(e) =>
                 handleNewToolSpec("ProcessLength", e.target.value)
@@ -189,16 +192,20 @@ export function NewToolSpec({
             </label>
             <input
               id="ProcessTime"
-              type="number"
-              className="w-full text-center text-black rounded-md min-w-24 "
+              type="text"
+              className="w-full p-1 text-center text-black rounded-md "
+              placeholder="hh:mm:ss"
               value={newToolSpec.ProcessTime}
               onChange={(e) => handleNewToolSpec("ProcessTime", e.target.value)}
             />
           </div>
         </div>
-        <button className="w-full my-4 bg-indigo-500 rounded-md hover:bg-indigo-600">
-          送出
-        </button>
+        <SubmitButton
+          name="送出"
+          classNames="w-full my-4 bg-indigo-500 rounded-md hover:bg-indigo-600"
+          onclick={(e) => postNewToolSpec(e)}
+          isPending={isPending}
+        />
       </form>
     </div>
   );
