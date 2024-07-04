@@ -17,9 +17,11 @@ import {
 } from "@/scripts/Apis/toolInfo/toolInfoApis";
 import { FilterData, ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { LangContext } from "../../layout";
 
 export default function Page() {
+  const dict = useContext(LangContext);
   const [toolInfoList, setToolInfoList] = useState<ToolStockItem[]>([]);
   const [toolInfoData, setToolInfoData] = useState<ToolStockItem>(
     {} as ToolStockItem
@@ -145,6 +147,9 @@ export default function Page() {
   useEffect(() => {
     filterToolStatusList();
   }, [filterData]);
+
+  if (!dict) return <DefaultSkeleton />;
+
   return (
     <div className="relative w-full h-full p-2 ">
       <div className="grid grid-cols-2 gap-2">
@@ -153,13 +158,13 @@ export default function Page() {
       </div>
       <div className="p-2 overflow-auto text-center bg-gray-900 rounded-md h-[600px]">
         <div className="sticky my-4 bg-gray-900 -top-2">
-          <h3 className="my-4">刀具狀態列表</h3>
+          <h3 className="my-4">{dict.tool_info.title}</h3>
           <div>
             <div className="flex items-center justify-center gap-2">
               <input
                 type="search"
                 className="p-2 text-black rounded-md w-96"
-                placeholder="搜尋刀具序號"
+                placeholder={dict.tool_info.search.search_tool_placeholder}
                 onChange={(e) => searchTool(e.target.value)}
               />
               <button
@@ -179,25 +184,25 @@ export default function Page() {
               className={`transition-all duration-300 ease-in-out my-4 overflow-hidden ${filterMode ? "h-32" : "h-0"}`}
             >
               <div className="flex items-center justify-center gap-2 my-2">
-                <p>狀態:</p>
+                <p>{dict.tool_info.search.status.label}:</p>
                 <ul className="flex gap-2">
                   <li
                     className={`cursor-pointer p-1 border rounded-md ${filterData.toolState.includes("Normal") ? "bg-indigo-500" : ""}`}
                     onClick={() => handleSetFilterData("toolState", "Normal")}
                   >
-                    正常
+                    {dict.tool_info.search.status.normal}
                   </li>
                   <li
                     className={`cursor-pointer p-1 border rounded-md ${filterData.toolState.includes("Warning") ? "bg-indigo-500" : ""}`}
                     onClick={() => handleSetFilterData("toolState", "Warning")}
                   >
-                    警告
+                    {dict.tool_info.search.status.warning}
                   </li>
                   <li
                     className={`cursor-pointer p-1 border rounded-md ${filterData.toolState.includes("Alarm") ? "bg-indigo-500" : ""}`}
                     onClick={() => handleSetFilterData("toolState", "Alarm")}
                   >
-                    警報
+                    {dict.tool_info.search.status.alarm}
                   </li>
                   <li
                     className={`cursor-pointer p-1 border rounded-md ${filterData.toolState.includes("NeedRepair") ? "bg-indigo-500" : ""}`}
@@ -205,7 +210,7 @@ export default function Page() {
                       handleSetFilterData("toolState", "NeedRepair")
                     }
                   >
-                    需要維修
+                    {dict.tool_info.search.status.need_repair}
                   </li>
                   <li
                     className={`cursor-pointer p-1 border rounded-md ${filterData.toolState.includes("Repairing") ? "bg-indigo-500" : ""}`}
@@ -213,35 +218,35 @@ export default function Page() {
                       handleSetFilterData("toolState", "Repairing")
                     }
                   >
-                    維修中
+                    {dict.tool_info.search.status.repairing}
                   </li>
                 </ul>
               </div>
               <div className="flex items-center justify-center gap-2 my-2">
-                <p>裝載狀態:</p>
+                <p>{dict.tool_info.search.active_state.label}:</p>
                 <ul className="flex gap-2">
                   <li
                     className={`p-1 border rounded-md cursor-pointer ${filterData.activeState.includes(0) ? "bg-indigo-500" : ""}`}
                     onClick={() => handleSetFilterData("activeState", 0)}
                   >
-                    倉儲中
+                    {dict.tool_info.search.active_state.in_storage}
                   </li>
                   <li
                     className={`p-1 border rounded-md cursor-pointer ${filterData.activeState.includes(1) ? "bg-indigo-500" : ""}`}
                     onClick={() => handleSetFilterData("activeState", 1)}
                   >
-                    移出倉儲
+                    {dict.tool_info.search.active_state.move_out_storage}
                   </li>
                   <li
                     className={`p-1 border rounded-md cursor-pointer ${filterData.activeState.includes(2) ? "bg-indigo-500" : ""}`}
                     onClick={() => handleSetFilterData("activeState", 2)}
                   >
-                    裝載中
+                    {dict.tool_info.search.active_state.in_use}
                   </li>
                 </ul>
               </div>
               <div className="flex items-center justify-center gap-2 my-2">
-                <p>位置:</p>
+                <p>{dict.tool_info.search.location.label}:</p>
                 <ul className="flex gap-2">
                   {positionList.map((item) => (
                     <li
@@ -257,14 +262,25 @@ export default function Page() {
             </div>
           </div>
           <div className="grid grid-cols-6 mt-4 bg-indigo-500 ">
-            <p className="p-1 font-bold whitespace-nowrap">刀具序號</p>
-            <p className="p-1 font-bold whitespace-nowrap">狀態 / 修整次數</p>
-            <p className="p-1 font-bold whitespace-nowrap">裝載狀態 / 位置</p>
-            <p className="p-1 font-bold whitespace-nowrap" title="公分表示">
-              累積加工長度 <span className="text-sm text-gray-300">cm</span>
+            <p className="p-1 font-bold whitespace-nowrap">
+              {dict.tool_info.tool_sn}
             </p>
-            <p className="p-1 font-bold whitespace-nowrap">累積加工時間</p>
-            <p className="p-1 font-bold whitespace-nowrap">累積加工次數</p>
+            <p className="p-1 font-bold whitespace-nowrap">
+              {dict.tool_info.status} / {dict.tool_info.repair_times}
+            </p>
+            <p className="p-1 font-bold whitespace-nowrap">
+              {dict.tool_info.loading} / {dict.tool_info.location}
+            </p>
+            <p className="p-1 font-bold whitespace-nowrap">
+              {dict.tool_info.process_length}{" "}
+              <span className="text-sm text-gray-300">cm</span>
+            </p>
+            <p className="p-1 font-bold whitespace-nowrap">
+              {dict.tool_info.process_time}
+            </p>
+            <p className="p-1 font-bold whitespace-nowrap">
+              {dict.tool_info.process_count}
+            </p>
           </div>
         </div>
         {toolInfoList?.length > 0 ? (
@@ -289,9 +305,7 @@ export default function Page() {
                 {/* 上機中的位置 */}
                 {item.PositionData.LoadingInfo?.MachineSpec.MachineName}
                 {/* 倉儲中的位置 */}
-                <span title="倉儲編號">
-                  {item.PositionData.StorageInfo?.StorageName}
-                </span>
+                <span>{item.PositionData.StorageInfo?.StorageName}</span>
               </p>
               <p className="p-1 whitespace-nowrap">
                 {formatMMToCM(item.LifeData.ProcessLength)}
@@ -305,7 +319,7 @@ export default function Page() {
             </div>
           ))
         ) : (
-          <DefaultSkeleton />
+          <div>no data...</div>
         )}
       </div>
     </div>

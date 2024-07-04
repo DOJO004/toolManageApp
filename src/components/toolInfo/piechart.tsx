@@ -1,3 +1,4 @@
+import { LangContext } from "@/app/[lang]/layout";
 import {
   formatMMToCM,
   toolLifeStatusTextColor,
@@ -5,6 +6,8 @@ import {
 } from "@/scripts/Apis/toolInfo/functions";
 import { ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 import Image from "next/image";
+import { useContext } from "react";
+import DefaultSkeleton from "../skeletons/default";
 import ImagePlaceholder from "../skeletons/imagePlaceholder";
 
 interface PieChartProps {
@@ -12,12 +15,14 @@ interface PieChartProps {
   formatTime: (time: number) => string;
 }
 const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
-  console.log("toolInfoData", toolInfoData);
+  const dict = useContext(LangContext);
 
   const toolLifePercent = toolInfoData?.LifePercentage;
   const toolLifeStatus = toolInfoData?.LifeStatus;
 
   const gradientColorsOutSide = `conic-gradient(${toolStatusPieChartColor(toolLifeStatus)} 0, ${toolStatusPieChartColor(toolLifeStatus)} ${toolLifePercent}%, gray ${toolLifePercent}%, gray)`;
+
+  if (!dict) return <DefaultSkeleton />;
 
   return (
     <>
@@ -30,7 +35,9 @@ const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
                 {toolInfoData?.ToolSpecName}
               </h4>
             </div>
-            <div title="修整次數 / 最大修整次數">
+            <div
+              title={`${dict.tool_info.repair_times} / ${dict.tool_info.max_repair_times}`}
+            >
               <div className="flex items-center">
                 <Image
                   src={"/images/icons/repair.svg"}
@@ -40,8 +47,7 @@ const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
                   className="mx-2"
                 />
                 <p>
-                  {toolInfoData?.LifeData?.RepairCnt} /{" "}
-                  {toolInfoData?.MaxLife?.RepairCnt}
+                  {`${toolInfoData?.LifeData?.RepairCnt} / ${toolInfoData?.MaxLife?.RepairCnt}`}
                 </p>
               </div>
             </div>
@@ -63,14 +69,18 @@ const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
             </div>
             <div>
               <div>
-                <p className="my-2 md:whitespace-nowrap">累積加工長度：</p>
+                <p className="my-2 md:whitespace-nowrap">
+                  {dict.tool_info.process_length}：
+                </p>
                 <h4 className="flex items-end">
                   {formatMMToCM(toolInfoData?.LifeData?.ProcessLength)}
                   <span className="text-sm text-gray-300"> cm</span>
                 </h4>
               </div>
               <div>
-                <p className="my-2 md:whitespace-nowrap">累積加工時間：</p>
+                <p className="my-2 md:whitespace-nowrap">
+                  {dict.tool_info.process_time}：
+                </p>
                 <h4>{formatTime(toolInfoData?.LifeData?.ProcessTime)}</h4>
               </div>
             </div>

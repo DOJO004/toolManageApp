@@ -1,51 +1,108 @@
 {
-    "root": {
-        "welcome": "歡迎",
-        "name": "CLMS"
+    "root":{
+        "welcome":"歡迎",
+        "name":"CLMS"
     },
-    "login": {
-        "tittle": "登入",
-        "account": "帳號",
-        "account_placeholder": "輸入您的帳號",
-        "password": "密碼",
-        "password_placeholder": "輸入您的密碼",
-        "login": "登入",
-        "login_success": "登入成功",
-        "login_fail": "登入失敗"
+    "login":{
+        "tittle":"登入",
+        "account":"帳號",
+        "account_placeholder":"輸入你的帳號",
+        "password":"密碼",
+        "password_placeholder":"輸入你的密碼",
+        "login":"登入",
+        "login_success":"登入成功",
+        "login_fail":"登入失敗"
     },
-    "navbar": {
-        "dashboard": {
-            "title": "儀表板"
+    "navbar":{
+       "dashboard":{
+           "title":"儀表板"
+       },
+       "return_tool":{
+           "title":"歸還刀具"
+       },
+       "receive_tool":{
+           "title":"領取刀具"
+       },
+       "repair_and_scrap":{
+           "title":"修整和報廢"
+       },
+       "tool_info":{
+           "title":"刀具資訊",
+           "submenu":{
+               "overview":"總覽",
+               "storage_list":"倉儲列表",
+               "tool_type":"刀具類型",
+               "tool_spec":"刀具規格",
+               "tool_stock":"刀具庫存"
+           }           
+       },
+       "machine_info":{
+           "title":"設備資訊",
+           "submenu":{
+               "overview":"總覽",
+               "product_line":"產品線",
+               "machine_type":"設備類型",
+               "machine_spec":"設備規格"
+           }
+       },
+       "label_info":{
+           "title":"標籤資訊"
+       },
+       "user_info":{
+           "title":"使用者資訊",
+              "submenu":{
+                  "overview":"總覽",
+                  "department":"部門列表",
+                  "permissions":"權限列表"
+              }
+       },
+       "setting":{
+           "title":"設定"
+       },
+       "logout":{
+           "title":"登出",
+           "description":"你確定要登出嗎？",
+           "confirm":"登出",
+           "cancel":"取消"
+       }
+    },
+    "tool_info":{
+        "title": "刀具資訊清單",
+        "tool_sn": "刀具序號",
+        "status": "狀態",
+        "repair_times": "修整次數",
+        "max_repair_times": "最大修整次數",
+        "loading": "加載中",
+        "location": "位置",
+        "process_length": "加工長度",
+        "process_time": "加工時間",
+        "process_count": "加工次數",
+        "search":{
+            "search_tool_placeholder": "搜尋刀具序號",
+            "status":{
+                "label":"狀態",
+                "normal":"正常",
+                "warning":"警告",
+                "alarm":"警報",
+                "need_repair":"需要修整",
+                "repairing":"修整中"
+            },
+            "active_state":{
+                "label":"活動狀態",
+                "in_storage":"在庫",
+                "move_out_storage":"移出庫",
+                "in_use":"使用中"
+            },
+            "location":{
+                "label":"位置"
+            }
         },
-        "return_tool": {
-            "title": "歸還工具"
-        },
-        "receive_tool": {
-            "title": "接收工具"
-        },
-        "repair_and_scrap": {
-            "title": "維修與報廢"
-        },
-        "tool_info": {
-            "title": "工具資訊"
-        },
-        "machine_info": {
-            "title": "機器資訊"
-        },
-        "label_info": {
-            "title": "標籤資訊"
-        },
-        "user_info": {
-            "title": "使用者資訊"
-        },
-        "setting": {
-            "title": "設定"
-        },
-        "logout": {
-            "title": "登出",
-            "description": "您確定要登出嗎？",
-            "confirm": "登出",
-            "cancel": "取消"
-        }
+        "tool_install_log":{
+            "title": "刀具安裝記錄",
+            "machine_name": "設備名稱",
+            "status": "狀態",
+            "storage_name": "倉儲名稱",
+            "update_time": "更新時間"
+         }
     }
 }

@@ -257,7 +257,7 @@ const Navbar = () => {
       </div>
       <div
         className={` transition-all ease-in-out relative duration-300 overflow-hidden ${
-          openMenu ? "w-full md:w-32 " : "w-0"
+          openMenu ? "w-full md:w-40 " : "w-0"
         }`}
       >
         {clickItemName === dict.navbar.tool_info.title && openMenu && (

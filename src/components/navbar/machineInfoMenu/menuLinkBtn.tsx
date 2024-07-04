@@ -45,8 +45,8 @@ const MenuLinkBtn = ({
             <Image
               src={item.src}
               alt={item.alt}
-              width={30}
-              height={30}
+              width={25}
+              height={25}
               className="mr-2"
             />
             <div className="hidden truncate md:block">{item.name}</div>
