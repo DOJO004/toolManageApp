@@ -35,10 +35,10 @@ export default function Login() {
       setCookie("loginTime", res.data.Values.LoginTime, 30);
       setCookie("permission", res.data.Values.PermissionList, 30);
       setCookie("userName", res.data.Values.UserInfo.UserName, 30);
-      SweetAlert(reqInt, "登入成功");
+      SweetAlert(reqInt, dict.login.login_success);
       router.push("/tool-manager/tool-info");
     } else {
-      SweetAlert(reqInt, "登入失敗");
+      SweetAlert(reqInt, dict.login.login_fail);
     }
     setWaitLogin(false);
   };
@@ -77,8 +77,8 @@ export default function Login() {
           <Image
             src={
               showPassword
-                ? "/icons/visibility.svg"
-                : "/icons/visibility_off.svg"
+                ? "images/icons/visibility.svg"
+                : "images/icons/visibility_off.svg"
             }
             width={20}
             height={20}

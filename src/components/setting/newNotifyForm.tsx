@@ -43,7 +43,12 @@ export default function NewNotifyForm({
         className="absolute top-2 right-2 hover:scale-110"
         onClick={() => setNewNotifyMode(false)}
       >
-        <Image src={"/icons/close.svg"} alt="cancel" width={24} height={24} />
+        <Image
+          src={"/images/icons/close.svg"}
+          alt="cancel"
+          width={24}
+          height={24}
+        />
       </button>
       <div className="grid grid-cols-2 gap-2">
         <div>
@@ -86,7 +91,12 @@ export default function NewNotifyForm({
             className="flex items-center p-1 mx-auto border rounded-md hover:bg-indigo-500 "
             onClick={() => addLineForm()}
           >
-            <Image src={"/icons/add.svg"} alt="add" width={24} height={24} />
+            <Image
+              src={"/images/icons/add.svg"}
+              alt="add"
+              width={24}
+              height={24}
+            />
             Line
           </button>
 
@@ -124,7 +134,7 @@ export default function NewNotifyForm({
                   onClick={() => removeLineForm(index)}
                 >
                   <Image
-                    src={"/icons/close.svg"}
+                    src={"/images/icons/close.svg"}
                     alt="delete"
                     width={24}
                     height={24}
@@ -139,7 +149,12 @@ export default function NewNotifyForm({
             className="flex items-center p-1 mx-auto border rounded-md hover:bg-indigo-500"
             onClick={() => addEmailForm()}
           >
-            <Image src={"/icons/add.svg"} alt="add" width={24} height={24} />
+            <Image
+              src={"/images/icons/add.svg"}
+              alt="add"
+              width={24}
+              height={24}
+            />
             Email
           </button>
           {
@@ -179,7 +194,7 @@ export default function NewNotifyForm({
                   onClick={() => removeEmailForm(index)}
                 >
                   <Image
-                    src={"/icons/close.svg"}
+                    src={"/images/icons/close.svg"}
                     alt="delete"
                     width={24}
                     height={24}

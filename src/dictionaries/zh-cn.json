@@ -1,0 +1,51 @@
+{
+    "root": {
+        "welcome": "歡迎",
+        "name": "CLMS"
+    },
+    "login": {
+        "tittle": "登入",
+        "account": "帳號",
+        "account_placeholder": "輸入您的帳號",
+        "password": "密碼",
+        "password_placeholder": "輸入您的密碼",
+        "login": "登入",
+        "login_success": "登入成功",
+        "login_fail": "登入失敗"
+    },
+    "navbar": {
+        "dashboard": {
+            "title": "儀表板"
+        },
+        "return_tool": {
+            "title": "歸還工具"
+        },
+        "receive_tool": {
+            "title": "接收工具"
+        },
+        "repair_and_scrap": {
+            "title": "維修與報廢"
+        },
+        "tool_info": {
+            "title": "工具資訊"
+        },
+        "machine_info": {
+            "title": "機器資訊"
+        },
+        "label_info": {
+            "title": "標籤資訊"
+        },
+        "user_info": {
+            "title": "使用者資訊"
+        },
+        "setting": {
+            "title": "設定"
+        },
+        "logout": {
+            "title": "登出",
+            "description": "您確定要登出嗎？",
+            "confirm": "登出",
+            "cancel": "取消"
+        }
+    }
+}

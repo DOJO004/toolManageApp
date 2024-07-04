@@ -35,7 +35,7 @@ const MachineInfoPieChart = ({
           </div>
           <div className="flex items-center gap-2">
             <Image
-              src="/icons/wifi.svg"
+              src="/images/icons/wifi.svg"
               alt="wifi img"
               width={24}
               height={24}

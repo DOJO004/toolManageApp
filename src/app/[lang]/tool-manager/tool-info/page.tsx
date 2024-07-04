@@ -167,7 +167,7 @@ export default function Page() {
                 onClick={() => setFilterMode(!filterMode)}
               >
                 <Image
-                  src="/icons/filter.svg"
+                  src="/images/icons/filter.svg"
                   alt="filter"
                   width={20}
                   height={20}

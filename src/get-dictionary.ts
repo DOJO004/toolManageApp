@@ -1,9 +1,9 @@
 const dictionaries: Record<string, () => Promise<any>> = {
   en: () => import("./dictionaries/en.json").then((module) => module.default),
-  "zh-TW": () =>
-    import("./dictionaries/zh-TW.json").then((module) => module.default),
-  "zh-CN": () =>
-    import("./dictionaries/zh-CN.json").then((module) => module.default),
+  "zh-tw": () =>
+    import("./dictionaries/zh-tw.json").then((module) => module.default),
+  "zh-cn": () =>
+    import("./dictionaries/zh-cn.json").then((module) => module.default),
 };
 
 export const getDictionary = async (locale: string): Promise<any> => {

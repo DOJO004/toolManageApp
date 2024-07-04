@@ -28,7 +28,7 @@ export default function Form({
           <div className="flex items-end ">
             <label htmlFor="labelCode">標籤號碼</label>
             <Image
-              src={"/icons/bulb.svg"}
+              src={"/images/icons/bulb.svg"}
               width={30}
               height={30}
               alt="hit"

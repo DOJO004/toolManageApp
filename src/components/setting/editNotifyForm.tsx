@@ -43,14 +43,19 @@ export default function EditNotifyForm({
           className="absolute top-2 right-2 hover:scale-110 "
           onClick={() => setEditNotifyMode(false)}
         >
-          <Image src="/icons/close.svg" alt="cancel" width={24} height={24} />
+          <Image
+            src="/images/icons/close.svg"
+            alt="cancel"
+            width={24}
+            height={24}
+          />
         </button>
         <button
           className="absolute top-2 left-2 hover:scale-110"
           onClick={() => deleteNotify()}
         >
           <Image
-            src={"/icons/delete.svg"}
+            src={"/images/icons/delete.svg"}
             alt="delete"
             width={24}
             height={24}
@@ -97,7 +102,12 @@ export default function EditNotifyForm({
               className="flex items-center p-1 mx-auto border rounded-md hover:bg-indigo-500"
               onClick={() => addLineForm()}
             >
-              <Image src={"/icons/add.svg"} alt="add" width={24} height={24} />
+              <Image
+                src={"/images/icons/add.svg"}
+                alt="add"
+                width={24}
+                height={24}
+              />
               Line
             </button>
 
@@ -133,7 +143,7 @@ export default function EditNotifyForm({
                   onClick={() => removeLineForm(index)}
                 >
                   <Image
-                    src={"/icons/close.svg"}
+                    src={"/images/icons/close.svg"}
                     alt="delete"
                     width={24}
                     height={24}
@@ -147,7 +157,12 @@ export default function EditNotifyForm({
               className="flex items-center p-1 mx-auto border rounded-md hover:bg-indigo-500"
               onClick={() => addEmailForm()}
             >
-              <Image src={"/icons/add.svg"} alt="add" width={24} height={24} />
+              <Image
+                src={"/images/icons/add.svg"}
+                alt="add"
+                width={24}
+                height={24}
+              />
               Email
             </button>
             {notifyData.MailAddressList?.map((item, index) => (
@@ -185,7 +200,7 @@ export default function EditNotifyForm({
                   onClick={() => removeEmailForm(index)}
                 >
                   <Image
-                    src={"/icons/close.svg"}
+                    src={"/images/icons/close.svg"}
                     alt="delete"
                     width={24}
                     height={24}

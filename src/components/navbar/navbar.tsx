@@ -1,37 +1,105 @@
 "use client";
 
+import { LangContext } from "@/app/[lang]/layout";
 import { getPermission } from "@/scripts/Apis/mainApi";
 import { ApiUserLogout } from "@/scripts/Apis/userInfo/userInfoApis";
 import { AlertColor } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useNotice } from "../context/NoticeContext";
-import navbarItem from "./items";
+import DefaultSkeleton from "../skeletons/default";
 import MachineInfoMenu from "./machineInfoMenu/menu";
 import ToolStatusMenu from "./toolInfoMenu/menu";
 import UserInfoMenu from "./userInfoMenu/menu";
 
 const Navbar = () => {
+  const dict = useContext(LangContext);
+
   const { setShowNotice } = useNotice();
   const [openMenu, setOpenMenu] = useState(false);
   const [checkAdmin, setCheckAdmin] = useState(false);
   const [clickItemName, setClickItemName] = useState("");
   const [userName, setUserName] = useState("");
 
+  const navbarItem = [
+    {
+      src: "/images/icons/redo.svg",
+      alt: "receive tool image",
+      width: 30,
+      height: 30,
+      name: dict?.navbar.receive_tool.title,
+      path: "/tool-manager/receive-tool",
+    },
+    {
+      src: "/images/icons/undo.svg",
+      alt: "receive tool image",
+      width: 30,
+      height: 30,
+      name: dict?.navbar.return_tool.title,
+      path: "/tool-manager/return-tool",
+    },
+    {
+      src: "/images/icons/repair.svg",
+      alt: "repair svg ",
+      width: 30,
+      height: 30,
+      name: dict?.navbar.repair_and_scrap.title,
+      path: "/tool-manager/repair-and-scrap",
+    },
+    {
+      src: "/images/icons/tool.svg",
+      alt: "tool svg",
+      width: 30,
+      height: 30,
+      name: dict?.navbar.tool_info.title,
+      path: "/tool-manager/tool-info",
+    },
+    {
+      src: "/images/icons/machine.svg",
+      alt: "machine svg",
+      width: 30,
+      height: 30,
+      name: dict?.navbar.machine_info.title,
+      path: "/tool-manager/machine-info",
+    },
+    {
+      src: "/images/icons/label.svg",
+      alt: "label svg",
+      width: 30,
+      height: 30,
+      name: dict?.navbar.label_info.title,
+      path: "/tool-manager/elabel-info",
+    },
+    {
+      src: "/images/icons/user.svg",
+      alt: "user info image",
+      width: 30,
+      height: 30,
+      name: dict?.navbar.user_info.title,
+      path: "/tool-manager/user-info",
+    },
+    {
+      src: "/images/icons/setting.svg",
+      alt: "notification icon",
+      width: 30,
+      height: 30,
+      name: dict?.navbar.setting.title,
+      path: "/tool-manager/setting",
+    },
+  ];
+
   const handleNavbarMenu = (name: string) => {
     console.log("name = ", name);
+    const hasSubMenuName = [
+      dict?.navbar.tool_info.title,
+      dict?.navbar.machine_info.title,
+      dict?.navbar.user_info.title,
+    ];
     setClickItemName(name);
 
-    if (
-      name === "dashboard" ||
-      name === "領取刀具" ||
-      name === "歸還刀具" ||
-      name === "修整/報廢" ||
-      name === "電子標籤資訊" ||
-      name === "通知設定"
-    ) {
+    if (!hasSubMenuName.includes(name)) {
       setOpenMenu(false);
       return;
     }
@@ -56,11 +124,11 @@ const Navbar = () => {
   const logout = async () => {
     const confirm = await Swal.fire({
       icon: "warning",
-      title: "登出",
-      text: "確定要登出嗎?",
+      title: dict?.navbar.logout.title,
+      text: dict?.navbar.logout.description,
       showCancelButton: true,
-      confirmButtonText: "確定",
-      cancelButtonText: "取消",
+      confirmButtonText: dict?.navbar.logout.confirm,
+      cancelButtonText: dict?.navbar.logout.cancel,
     });
 
     if (confirm.isConfirmed) {
@@ -109,6 +177,8 @@ const Navbar = () => {
     getUserName();
   }, []);
 
+  if (!dict) return <DefaultSkeleton />;
+
   return (
     <div className="sticky h-full bg-gray-900 rounded-md top-2 md:flex">
       <div className="overflow-auto md:flex md:justify-center">
@@ -119,7 +189,7 @@ const Navbar = () => {
           >
             <Link href="/tool-manager/dashboard" className="w-full">
               <Image
-                src="/logo.png"
+                src="/images/logo.png"
                 alt="logo image"
                 loader={({ src, width }) => `${src}?w=${width}`}
                 width={100}
@@ -174,13 +244,13 @@ const Navbar = () => {
             onClick={() => logout()}
           >
             <Image
-              src="/icons/logout.svg"
+              src="/images/icons/logout.svg"
               alt="logout image"
               width={30}
               height={30}
               className="mx-auto"
             />
-            <p>登出</p>
+            <p>{dict.navbar.logout.title}</p>
           </li>
           <li className="p-2 mt-4 border rounded-md">{userName}</li>
         </ul>
@@ -190,13 +260,13 @@ const Navbar = () => {
           openMenu ? "w-full md:w-32 " : "w-0"
         }`}
       >
-        {clickItemName === "刀具資訊" && openMenu && (
+        {clickItemName === dict.navbar.tool_info.title && openMenu && (
           <ToolStatusMenu setOpenMenu={setOpenMenu} />
         )}
-        {clickItemName === "設備資訊" && openMenu && (
+        {clickItemName === dict.navbar.machine_info.title && openMenu && (
           <MachineInfoMenu setOpenMenu={setOpenMenu} />
         )}
-        {clickItemName === "使用者資訊" && openMenu && (
+        {clickItemName === dict.navbar.user_info.title && openMenu && (
           <UserInfoMenu setOpenMenu={setOpenMenu} />
         )}
       </div>

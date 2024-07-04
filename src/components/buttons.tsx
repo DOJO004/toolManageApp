@@ -22,7 +22,7 @@ export default function SubmitButton({
     >
       {isPending ? (
         <Image
-          src={"/icons/progress.svg"}
+          src={"/images/icons/progress.svg"}
           alt="progress"
           width={30}
           height={30}

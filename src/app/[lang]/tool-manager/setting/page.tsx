@@ -200,7 +200,7 @@ export default function Page() {
       <h1 className="text-center">設定</h1>
       <div className="flex items-center mt-4 border-b-2">
         <Image
-          src="/icons/notification.svg"
+          src="/images/icons/notification.svg"
           alt="notification svg"
           width={24}
           height={24}
@@ -211,7 +211,7 @@ export default function Page() {
         className="flex p-1 mt-4 border rounded-md hover:bg-indigo-500"
         onClick={() => handleNewNotifyMode()}
       >
-        <Image src="/icons/add.svg" alt="add" width={24} height={24} />
+        <Image src="/images/icons/add.svg" alt="add" width={24} height={24} />
         新增
       </button>
       <div className={`overflow-hidden ${newNotifyMode ? "h-auto" : "h-0"}`}>

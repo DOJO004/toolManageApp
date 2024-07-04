@@ -12,19 +12,19 @@ const UserInfoMenu = ({ setOpenMenu }: UserInfoMenuProps) => {
   const menuItem = [
     {
       href: "/tool-manager/user-info",
-      src: "/icons/list.svg",
+      src: "/images/icons/list.svg",
       alt: "user info overview",
       name: "總覽",
     },
     {
       href: "/tool-manager/user-info/department",
-      src: "/icons/department.svg",
+      src: "/images/icons/department.svg",
       alt: "department icon",
       name: "部門資訊",
     },
     {
       href: "/tool-manager/user-info/permissions",
-      src: "/icons/permissions.svg",
+      src: "/images/icons/permissions.svg",
       alt: "permissions svg",
       name: "權限資訊",
     },

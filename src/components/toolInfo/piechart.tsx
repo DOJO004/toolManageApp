@@ -33,7 +33,7 @@ const PieChart = ({ toolInfoData, formatTime }: PieChartProps) => {
             <div title="修整次數 / 最大修整次數">
               <div className="flex items-center">
                 <Image
-                  src={"/icons/repair.svg"}
+                  src={"/images/icons/repair.svg"}
                   alt="repair svg"
                   width={20}
                   height={20}

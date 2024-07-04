@@ -19,7 +19,7 @@ export function SweetAlertSelect(
     input: "select",
     inputOptions: option,
     showCancelButton: true,
-    confirmButtonText: "確認",
+    confirmButtonText: "ok",
     preConfirm: async (value) => {
       try {
         const url = console.log("select", value);

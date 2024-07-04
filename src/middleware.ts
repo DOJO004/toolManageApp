@@ -34,13 +34,10 @@ export function middleware(request: NextRequest) {
       lowerPathname.startsWith(`/${locale}/`) || lowerPathname === `/${locale}`
   );
 
-  console.log("pathnameHasLocale = ", pathnameHasLocale);
-
   if (pathnameHasLocale) return NextResponse.next();
 
   // Redirect if there is no locale
   const locale = getLocale(request);
-  console.log("locale = ", locale);
 
   request.nextUrl.pathname = `/${locale}${pathname}`;
 
@@ -52,7 +49,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Skip all internal paths (_next)
-    "/((?!_next).*)",
+    "/((?!_next|images).*)",
     // Optional: only run on root (/) URL
     // '/'
   ],

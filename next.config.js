@@ -5,10 +5,10 @@ const nextConfig = {
   output: "standalone",
 
   // Change images path
-  images: {
-    loader: "custom",
-    loaderFile: "./my-loader.ts",
-  },
+  // images: {
+  //   loader: "custom",
+  //   loaderFile: "./my-loader.ts",
+  // },
   experimental: {
     forceSwcTransforms: true,
   },

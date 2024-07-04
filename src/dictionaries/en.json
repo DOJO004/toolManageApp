@@ -9,6 +9,43 @@
         "account_placeholder":"Enter your account",
         "password":"Password",
         "password_placeholder":"Enter your password",
-        "login":"Login"
+        "login":"Login",
+        "login_success":"Login success",
+        "login_fail":"Login fail"
+    },
+    "navbar":{
+       "dashboard":{
+           "title":"Dashboard"
+       },
+       "return_tool":{
+           "title":"Return Tool"
+       },
+       "receive_tool":{
+           "title":"Receive Tool"
+       },
+       "repair_and_scrap":{
+           "title":"Repair and Scrap"
+       },
+       "tool_info":{
+           "title":"Tool Info"
+       },
+       "machine_info":{
+           "title":"Machine Info"
+       },
+       "label_info":{
+           "title":"Label Info"
+       },
+       "user_info":{
+           "title":"User Info"
+       },
+       "setting":{
+           "title":"Setting"
+       },
+       "logout":{
+           "title":"Logout",
+           "description":"Are you sure you want to logout?",
+           "confirm":"Logout",
+           "cancel":"Cancel"
+       }
     }
-}
+}   

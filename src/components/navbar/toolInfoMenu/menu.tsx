@@ -20,7 +20,12 @@ const ToolStatusMenu = ({ setOpenMenu }: ToolStatusMenuProps) => {
         className="block ml-auto w-fit"
         onClick={() => setOpenMenu(false)}
       >
-        <Image src="/icons/back.svg" alt="back icon" width={20} height={20} />
+        <Image
+          src="/images/icons/back.svg"
+          alt="back icon"
+          width={20}
+          height={20}
+        />
       </button>
       {menuItem.map((item, index) => (
         <Link

@@ -186,7 +186,7 @@ export default function Page() {
             className="p-1 rounded-full hover:bg-gray-900 h-fit"
           >
             <Image
-              src={"/icons/filter.svg"}
+              src={"/images/icons/filter.svg"}
               alt="filter icon"
               width={30}
               height={30}
