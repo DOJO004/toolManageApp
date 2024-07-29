@@ -1,48 +1,41 @@
-import { match as matchLocale } from "@formatjs/intl-localematcher";
-import Negotiator from "negotiator";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 const locales = ["en-us", "zh-tw", "zh-cn"];
 const defaultLocale = "en-us";
 
-// Get the preferred locale
-function getLocale(request: NextRequest): string {
-  // Negotiator expects plain object so we need to transform headers
-  const negotiatorHeaders: Record<string, string> = {};
-  request.headers.forEach((value, key) => {
-    negotiatorHeaders[key] = value;
-  });
-
-  // Use negotiator and intl-localematcher to get best locale
-  const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
-    locales
-  );
-
-  const matchedLocale = matchLocale(languages, locales, defaultLocale);
-
-  return matchedLocale;
+function getLocaleCookie(request: NextRequest): string {
+  const cookie = request.headers.get("cookie");
+  if (cookie) {
+    const langCookie = cookie
+      .split(";")
+      .find((c) => c.trim().startsWith("lang="));
+    if (langCookie) {
+      return langCookie.split("=")[1];
+    }
+  }
+  return defaultLocale;
 }
 
 export function middleware(request: NextRequest) {
-  // Check if there is any supported locale in the pathname
   const { pathname } = request.nextUrl;
   const lowerPathname = pathname.toLowerCase();
 
+  // Check if there is any supported locale in the pathname
   const pathnameHasLocale = locales.some(
     (locale) =>
       lowerPathname.startsWith(`/${locale}/`) || lowerPathname === `/${locale}`
   );
 
-  if (pathnameHasLocale) return NextResponse.next();
+  if (pathnameHasLocale) {
+    return NextResponse.next();
+  }
 
-  // Redirect if there is no locale
-  const locale = getLocale(request);
+  // Get locale from cookie
+  const locale = getLocaleCookie(request);
 
+  // Redirect if there is no locale in the pathname
   request.nextUrl.pathname = `/${locale}${pathname}`;
 
-  // e.g. incoming request is /products
-  // The new URL is now /en-US/products
   return NextResponse.redirect(request.nextUrl);
 }
 
@@ -50,7 +43,5 @@ export const config = {
   matcher: [
     // Skip all internal paths (_next)
     "/((?!_next|images).*)",
-    // Optional: only run on root (/) URL
-    // '/'
   ],
 };

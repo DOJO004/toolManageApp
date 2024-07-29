@@ -39,6 +39,13 @@ export default function NewNotifyForm({
   return (
     <div className="relative items-center p-4 mt-4 text-center bg-gray-900 rounded-md ">
       <h2>新增通知</h2>
+      <a
+        href="https://oberonlai.blog/line-notify-setting/"
+        className="text-gray-500 hover:text-white"
+        target="_blank"
+      >
+        如何申請 Line Token?
+      </a>
       <button
         className="absolute top-2 right-2 hover:scale-110"
         onClick={() => setNewNotifyMode(false)}

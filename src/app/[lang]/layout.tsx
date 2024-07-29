@@ -20,6 +20,7 @@ export default function RootLayout(props: {
     }
     fetchDictionary();
   }, [props.params.lang]);
+
   return (
     <html lang={props.params.lang}>
       <body className={`${roboto.className} px-4 `}>

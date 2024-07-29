@@ -29,7 +29,7 @@ export const getPermission = () => {
     const userPermission = cookies.find((cookie) =>
       cookie.startsWith("permission=")
     );
-    const permission = userPermission.split("=")[1];
+    const permission = userPermission?.split("=")[1];
     return permission;
   }
   return "SuperAdmin";

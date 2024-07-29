@@ -1,6 +1,7 @@
 import { StorageMenuItem } from "@/scripts/Apis/toolInfo/types";
 import { UserAccountItem } from "@/scripts/Apis/userInfo/types";
 import React, { FormEvent } from "react";
+import SubmitButton from "../buttons";
 
 interface Props {
   postDisableLabelBindTool: (e: FormEvent) => void;
@@ -110,7 +111,12 @@ export default function ReturnToolFrom({
           ))}
         </select>
       </div>
-      <button className="w-full p-2 mt-4 bg-indigo-500 rounded-md">歸還</button>
+      <SubmitButton
+        name="歸還"
+        classNames="w-full p-2 mt-4 bg-indigo-500 rounded-md"
+        onclick={() => {}}
+        isPending={false}
+      />
     </form>
   );
 }

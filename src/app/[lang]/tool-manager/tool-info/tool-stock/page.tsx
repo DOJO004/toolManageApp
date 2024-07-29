@@ -183,7 +183,7 @@ export default function Page() {
           <h2 className="my-4">刀具庫存</h2>
           <button
             onClick={() => setFilterMode(!filterMode)}
-            className="p-1 rounded-full hover:bg-gray-900 h-fit"
+            className={`p-1 rounded-full hover:bg-gray-900 h-fit ${filterMode ? "bg-gray-900" : ""}`}
           >
             <Image
               src={"/images/icons/filter.svg"}

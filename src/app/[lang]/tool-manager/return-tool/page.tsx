@@ -39,6 +39,7 @@ export default function Page() {
     StorageId: 0,
     ToolSn: "",
   });
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   const getBindLabelList = async () => {
     setBindLabelList(sortBindLabelList(await apiGetBindLabelList()));
@@ -53,6 +54,7 @@ export default function Page() {
   };
 
   const postDisableLabelBindTool = async (e?: FormEvent) => {
+    setIsPending(true);
     if (e) {
       e.preventDefault();
     }
@@ -66,13 +68,13 @@ export default function Page() {
     } else {
       handleNotice("error", true, `歸還失敗，errorCode = ${reqInt}`);
     }
+    setIsPending(false);
     return reqInt;
   };
 
   const postRepairTool = async (e: FormEvent) => {
     e.preventDefault();
-    // const returnToolReqInt = await postDisableLabelBindTool();
-    // if (returnToolReqInt === 0) {
+    setIsPending(true);
     const reqInt = await apiRepairTool(returnData);
     if (reqInt === 0) {
       getBindLabelList();
@@ -81,15 +83,12 @@ export default function Page() {
     } else {
       handleNotice("error", true, `送修失敗，errorCode = ${reqInt}`);
     }
-    // } else {
-    //   handleNotice("error", true, `送修失敗，errorCode = ${returnToolReqInt}`);
-    // }
+    setIsPending(false);
   };
 
   const postScrapTool = async (e: FormEvent) => {
     e.preventDefault();
-    // const returnToolReqInt = await postDisableLabelBindTool();
-    // if (returnToolReqInt === 0) {
+    setIsPending(true);
     const reqInt = await apiScrapTool(returnData);
     if (reqInt === 0) {
       getBindLabelList();
@@ -98,9 +97,7 @@ export default function Page() {
     } else {
       handleNotice("error", true, `報廢失敗。errorCode = ${reqInt}`);
     }
-    // } else {
-    //   handleNotice("error", true, `報廢失敗。errorCode = ${returnToolReqInt}`);
-    // }
+    setIsPending(false);
   };
 
   //sort bind label list

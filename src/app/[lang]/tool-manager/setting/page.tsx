@@ -195,6 +195,28 @@ export default function Page() {
     getToolSpecList();
   }, []);
 
+  const setCookie = (name: string, value: string, days?: number) => {
+    let expires = "";
+    if (days) {
+      const date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = `${name}=${value}${expires}; path=/`;
+  };
+
+  const getCookie = (name: string) => {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const cookie = cookies.find((cookie) => cookie.startsWith(`${name}=`));
+    const value = cookie?.split("=")[1];
+    return value;
+  };
+
+  useEffect(() => {
+    setCookie("lang", "zh-tw");
+    console.log(getCookie("lang"));
+  }, []);
+
   return (
     <div className="w-full min-h-screen p-4">
       <h1 className="text-center">設定</h1>
