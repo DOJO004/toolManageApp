@@ -82,7 +82,9 @@ export default function Page() {
   const filterToolStatus = (data: ToolStockItem[]) =>
     data.filter(
       (item) =>
-        item.LifeStatus === "Normal" && item.PositionData.PositionStatus === 0
+        item.LifeStatus !== "Repairing" &&
+        item.LifeStatus !== "Scrap" &&
+        item.PositionData.PositionStatus === 0
     );
 
   const searchUnbindTool = async (e: FormEvent) => {
