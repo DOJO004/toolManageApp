@@ -150,7 +150,7 @@ export default function Page() {
   const hintLabelCodeImage = () => {
     Swal.fire({
       title: "看這邊😀",
-      imageUrl: "/label hint.png",
+      imageUrl: "/images/label hint.png",
       imageWidth: 500,
       imageHeight: 300,
       imageAlt: "Custom image",
