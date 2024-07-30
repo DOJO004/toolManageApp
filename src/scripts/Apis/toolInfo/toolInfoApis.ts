@@ -280,7 +280,7 @@ export async function apiGetToolStockCountList() {
       return [];
     }
   } catch (error) {
-    console.error("Error", error);
+    console.error("apiGetToolStockCountList Error", error);
     return [];
   }
 }

@@ -42,8 +42,11 @@ export default function Page() {
   const [isPending, setIsPending] = useState(false);
 
   const getToolStockList = async () => {
-    setToolStockList(await apiGetToolStockCountList());
-    setToolSpecClass(handleToolSpecClass(await apiGetToolStockCountList()));
+    const toolStockList = await apiGetToolStockCountList();
+    const toolSpecClass = handleToolSpecClass(toolStockList);
+
+    setToolStockList(toolStockList);
+    setToolSpecClass(toolSpecClass);
   };
 
   const getToolSpecList = async () => {
@@ -200,18 +203,13 @@ export default function Page() {
           新增
         </button>
         <div className="flex justify-center gap-2"></div>
+        {/* filter */}
         <div className="relative ">
           <div
             className={`overflow-hidden transition-all rounded-md duration-300 flex flex-col m-4 gap-4 bg-gray-900 ${filterMode ? "h-60" : "h-0"}`}
           >
             <div className="grid items-center grid-cols-6 gap-2 m-4">
               <label htmlFor="">篩選刀具類型 : </label>
-              <button
-                className="p-1 border border-gray-500 rounded-md hover:bg-indigo-500"
-                onClick={() => setSelectToolClass([])}
-              >
-                All
-              </button>
               {toolSpecClass.map((name) => (
                 <button
                   key={name}
@@ -225,28 +223,28 @@ export default function Page() {
             <div className="grid items-center grid-cols-6 gap-2 m-4">
               <label htmlFor="filterToolStatus">篩選刀具狀態 : </label>
               <button
-                className="p-1 border border-gray-500 rounded-md hover:bg-indigo-500"
-                onClick={() => setSelectToolStatus([])}
-              >
-                All
-              </button>
-              <button
                 className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500  ${selectedButtonBackgroundColor(selectToolStatus, "Normal")}`}
                 onClick={() => handleFilterToolStatusName("Normal")}
               >
                 正常
               </button>
               <button
+                className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500  ${selectedButtonBackgroundColor(selectToolStatus, "Warning")}`}
+                onClick={() => handleFilterToolStatusName("Warning")}
+              >
+                警告
+              </button>
+              <button
+                className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500  ${selectedButtonBackgroundColor(selectToolStatus, "Alarm")}`}
+                onClick={() => handleFilterToolStatusName("Alarm")}
+              >
+                警報
+              </button>
+              <button
                 className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500  ${selectedButtonBackgroundColor(selectToolStatus, "Repairing")}`}
                 onClick={() => handleFilterToolStatusName("Repairing")}
               >
                 維修中
-              </button>
-              <button
-                className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500  ${selectedButtonBackgroundColor(selectToolStatus, "NeedRepair")}`}
-                onClick={() => handleFilterToolStatusName("NeedRepair")}
-              >
-                待修整
               </button>
               <button
                 className={`p-1 border border-gray-500 rounded-md hover:bg-indigo-500  ${selectedButtonBackgroundColor(selectToolStatus, "Scrap")}`}

@@ -36,7 +36,7 @@ export default function Login() {
       setCookie("permission", res.data.Values.PermissionList, 30);
       setCookie("userName", res.data.Values.UserInfo.UserName, 30);
       SweetAlert(reqInt, dict.login.login_success);
-      router.push("/tool-manager/tool-info");
+      router.push("/tool-manager/dashboard");
     } else {
       SweetAlert(reqInt, dict.login.login_fail);
     }

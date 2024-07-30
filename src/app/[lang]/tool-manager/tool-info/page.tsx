@@ -205,20 +205,18 @@ export default function Page() {
                     {dict.tool_info.search.status.alarm}
                   </li>
                   <li
-                    className={`cursor-pointer p-1 border rounded-md ${filterData.toolState.includes("NeedRepair") ? "bg-indigo-500" : ""}`}
-                    onClick={() =>
-                      handleSetFilterData("toolState", "NeedRepair")
-                    }
-                  >
-                    {dict.tool_info.search.status.need_repair}
-                  </li>
-                  <li
                     className={`cursor-pointer p-1 border rounded-md ${filterData.toolState.includes("Repairing") ? "bg-indigo-500" : ""}`}
                     onClick={() =>
                       handleSetFilterData("toolState", "Repairing")
                     }
                   >
                     {dict.tool_info.search.status.repairing}
+                  </li>
+                  <li
+                    className={`cursor-pointer p-1 border rounded-md ${filterData.toolState.includes("Scrap") ? "bg-indigo-500" : ""}`}
+                    onClick={() => handleSetFilterData("toolState", "Scrap")}
+                  >
+                    {dict.tool_info.search.status.scrap}
                   </li>
                 </ul>
               </div>

@@ -80,21 +80,21 @@
         "search":{
             "search_tool_placeholder": "搜索刀具序号",
             "status":{
-                "label":"状态",
-                "normal":"正常",
-                "warning":"警告",
-                "alarm":"警报",
-                "need_repair":"需要修整",
-                "repairing":"修整中"
+            "label":"状态",
+            "normal":"正常",
+            "warning":"警告",
+            "alarm":"报警",
+            "repairing":"修整中",
+            "scrap":"报废"
             },
             "active_state":{
-                "label":"活动状态",
-                "in_storage":"在库",
-                "move_out_storage":"移出库",
-                "in_use":"使用中"
+            "label":"活动状态",
+            "in_storage":"在库",
+            "move_out_storage":"移出库",
+            "in_use":"使用中"
             },
             "location":{
-                "label":"位置"
+            "label":"位置"
             }
         },
         "tool_install_log":{

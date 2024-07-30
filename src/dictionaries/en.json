@@ -77,24 +77,24 @@
         "process_length": "Process Length",
         "process_time": "Process Time",
         "process_count": "Process Count",
-        "search":{
-            "search_tool_placeholder": "Search Tool SN",
+        "search": {
+            "search_tool_placeholder": "Search tool serial number",
             "status":{
-                "label":"Status",
-                "normal":"Normal",
-                "warning":"Warning",
-                "alarm":"Alarm",
-                "need_repair":"Need Repair",
-                "repairing":"Repairing"
+            "label":"Status",
+            "normal":"Normal",
+            "warning":"Warning",
+            "alarm":"Alarm",
+            "repairing":"Repairing",
+            "scrap":"Scrap"
             },
             "active_state":{
-                "label":"Active State",
-                "in_storage":"In Storage",
-                "move_out_storage":"Move Out Storage",
-                "in_use":"In Use"
+            "label":"Active State",
+            "in_storage":"In Storage",
+            "move_out_storage":"Moved Out",
+            "in_use":"In Use"
             },
             "location":{
-                "label":"Location"
+            "label":"Location"
             }
         },
         "tool_install_log":{

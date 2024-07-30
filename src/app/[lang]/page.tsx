@@ -33,7 +33,7 @@ export default function Page() {
         {dict.root.welcome}
         <span className="text-blue-500">{dict.root.name}</span>
       </h1>
-      <Login />1
+      <Login />
       <div className="absolute top-0 right-5">
         <Image
           src="/images/icons/language.svg"

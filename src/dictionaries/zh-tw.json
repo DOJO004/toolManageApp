@@ -84,8 +84,8 @@
                 "normal":"正常",
                 "warning":"警告",
                 "alarm":"警報",
-                "need_repair":"需要修整",
-                "repairing":"修整中"
+                "repairing":"修整中",
+                "scrap": "報廢"
             },
             "active_state":{
                 "label":"活動狀態",
