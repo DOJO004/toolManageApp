@@ -121,9 +121,14 @@ export default function Page() {
 
   const removeLineForm = (index: number) => {
     setLineForms((prev: number[]) => prev.filter((i) => i !== index));
+
     setNotifyData((prevState) => ({
       ...prevState,
       LineTokenList: prevState.LineTokenList.filter((_, i) => i !== index),
+      NotifyActions:
+        prevState.LineTokenList.length <= 1
+          ? prevState.NotifyActions.filter((i) => i !== 0)
+          : prevState.NotifyActions,
     }));
   };
 
@@ -132,6 +137,10 @@ export default function Page() {
     setNotifyData((prevState) => ({
       ...prevState,
       MailAddressList: prevState.MailAddressList.filter((_, i) => i !== index),
+      NotifyActions:
+        prevState.MailAddressList.length <= 1
+          ? prevState.NotifyActions.filter((i) => i !== 1)
+          : prevState.NotifyActions,
     }));
   };
 
@@ -188,12 +197,18 @@ export default function Page() {
       LineTokenList: [],
       MailAddressList: [],
     });
+    setLineForms([]);
+    setEmailForms([]);
   };
 
   useEffect(() => {
     getNotifyList();
     getToolSpecList();
   }, []);
+
+  useEffect(() => {
+    console.log("notifyData", notifyData);
+  }, [notifyData]);
 
   const setCookie = (name: string, value: string, days?: number) => {
     let expires = "";
