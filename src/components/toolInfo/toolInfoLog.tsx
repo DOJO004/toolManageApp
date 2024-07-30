@@ -1,10 +1,10 @@
 "use client";
 
-import { LangContext } from "@/app/[lang]/layout";
 import { setOpActionsText } from "@/scripts/Apis/toolInfo/functions";
 import { apiGetToolLoadingLogList } from "@/scripts/Apis/toolInfo/toolInfoApis";
 import { ToolLoadingItem, ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 import { useContext, useEffect, useState } from "react";
+import { LangContext } from "../context/langContext";
 import DefaultSkeleton from "../skeletons/default";
 
 interface ToolInfoLogProps {

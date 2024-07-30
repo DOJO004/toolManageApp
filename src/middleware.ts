@@ -1,14 +1,16 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 const locales = ["en-us", "zh-tw", "zh-cn"];
-const defaultLocale = "en-us";
+const defaultLocale = "zh-tw";
 
 function getLocaleCookie(request: NextRequest): string {
   const cookie = request.headers.get("cookie");
+
   if (cookie) {
     const langCookie = cookie
       .split(";")
       .find((c) => c.trim().startsWith("lang="));
+
     if (langCookie) {
       return langCookie.split("=")[1];
     }

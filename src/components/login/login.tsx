@@ -1,6 +1,5 @@
 "use client";
 
-import { LangContext } from "@/app/[lang]/layout";
 import { setCookie } from "@/scripts/Apis/mainApi";
 import { UserLoginInfo } from "@/scripts/Apis/userInfo/types";
 import { ApiUserLogin } from "@/scripts/Apis/userInfo/userInfoApis";
@@ -8,6 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useContext, useState } from "react";
 import SubmitButton from "../buttons";
+import { LangContext } from "../context/langContext";
 import SweetAlert from "../sweetAlert";
 import { LoginResponse } from "./types";
 

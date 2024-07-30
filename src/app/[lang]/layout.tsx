@@ -1,14 +1,13 @@
 "use client";
+import { LangContext } from "@/components/context/langContext";
 import { getDictionary } from "@/get-dictionary";
 import { Roboto_Condensed } from "next/font/google";
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./globals.css";
 
 const roboto = Roboto_Condensed({ subsets: ["latin"] });
 
-export const LangContext = createContext<any>(null);
-
-export default function RootLayout(props: {
+export default function Layout(props: {
   children: React.ReactNode;
   params: { lang: string };
 }) {

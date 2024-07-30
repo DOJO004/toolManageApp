@@ -1,5 +1,6 @@
 "use client";
-import { LangContext } from "@/app/[lang]/layout";
+
+import { LangContext } from "@/components/context/langContext";
 import DefaultSkeleton from "@/components/skeletons/default";
 import Image from "next/image";
 import Link from "next/link";

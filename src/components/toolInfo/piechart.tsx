@@ -1,4 +1,3 @@
-import { LangContext } from "@/app/[lang]/layout";
 import {
   formatMMToCM,
   toolLifeStatusTextColor,
@@ -7,6 +6,7 @@ import {
 import { ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 import Image from "next/image";
 import { useContext } from "react";
+import { LangContext } from "../context/langContext";
 import DefaultSkeleton from "../skeletons/default";
 import ImagePlaceholder from "../skeletons/imagePlaceholder";
 

@@ -1,5 +1,5 @@
 "use client";
-import { LangContext } from "@/app/[lang]/layout";
+import { LangContext } from "@/components/context/langContext";
 import { useContext, useState } from "react";
 import MenuLinkBtn from "./menuLinkBtn";
 interface MachineInfoMenuProps {

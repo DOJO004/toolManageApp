@@ -1,4 +1,5 @@
 "use client";
+import { LangContext } from "@/components/context/langContext";
 import DefaultSkeleton from "@/components/skeletons/default";
 import PieChart from "@/components/toolInfo/piechart";
 import ToolInfoLog from "@/components/toolInfo/toolInfoLog";
@@ -18,7 +19,6 @@ import {
 import { FilterData, ToolStockItem } from "@/scripts/Apis/toolInfo/types";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
-import { LangContext } from "../../layout";
 
 export default function Page() {
   const dict = useContext(LangContext);

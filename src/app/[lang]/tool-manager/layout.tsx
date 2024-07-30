@@ -3,8 +3,14 @@ import { NoticeProvider, useNotice } from "@/components/context/NoticeContext";
 import Alert from "@mui/material/Alert";
 import { useEffect } from "react";
 import Navbar from "../../../components/navbar/navbar";
+interface Props {
+  children: React.ReactNode;
+  params: {
+    lang: string;
+  };
+}
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children, params }: Props) => {
   const { showNotice, setShowNotice } = useNotice();
 
   useEffect(() => {
@@ -39,10 +45,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const LayoutWithProvider = ({ children }: { children: React.ReactNode }) => {
+const LayoutWithProvider = ({ children, params }: Props) => {
   return (
     <NoticeProvider>
-      <Layout>{children}</Layout>
+      <Layout params={params}>{children}</Layout>
     </NoticeProvider>
   );
 };

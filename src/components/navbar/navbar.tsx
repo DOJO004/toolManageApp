@@ -1,6 +1,5 @@
 "use client";
 
-import { LangContext } from "@/app/[lang]/layout";
 import { getPermission } from "@/scripts/Apis/mainApi";
 import { ApiUserLogout } from "@/scripts/Apis/userInfo/userInfoApis";
 import { AlertColor } from "@mui/material";
@@ -8,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { LangContext } from "../context/langContext";
 import { useNotice } from "../context/NoticeContext";
 import DefaultSkeleton from "../skeletons/default";
 import MachineInfoMenu from "./machineInfoMenu/menu";
